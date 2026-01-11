@@ -10,7 +10,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+   
 </head>
 <body class="bg-slate-50 text-slate-900 antialiased">
     <div class="relative overflow-hidden">

@@ -18,7 +18,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- App assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
         :root {
