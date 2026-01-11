@@ -130,12 +130,21 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center">
-                        <input id="is_active" name="is_active" type="checkbox" value="1" {{ old('is_active', $job->is_active) ? 'checked' : '' }} 
-                               class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                        <label for="is_active" class="ml-3 block text-sm text-gray-700">
-                            Active (Job will be visible to candidates)
-                        </label>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <input id="is_active" name="is_active" type="checkbox" value="1" {{ old('is_active', $job->is_active) ? 'checked' : '' }} 
+                                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="is_active" class="ml-3 block text-sm text-gray-700">
+                                Active (Job will be visible to candidates)
+                            </label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="requires_video" name="requires_video" type="checkbox" value="1" {{ old('requires_video', $job->requires_video) ? 'checked' : '' }} 
+                                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="requires_video" class="ml-3 block text-sm text-gray-700">
+                                Require video application (Candidates must upload a video when applying)
+                            </label>
+                        </div>
                     </div>
 
                     <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">

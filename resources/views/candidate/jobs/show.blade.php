@@ -61,11 +61,29 @@
             @if(!$hasApplied && auth()->user()->candidateProfile && auth()->user()->candidateProfile->verification_status === 'approved')
                 <div class="bg-white shadow rounded-lg p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Apply for this Job</h3>
-                    <form method="POST" action="{{ route('candidate.jobs.apply', $job) }}">
+                    @if($job->requires_video)
+                        <div class="mb-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                            <p class="text-blue-800 text-sm">
+                                <strong>Video Required:</strong> This job requires a video application. Please upload a video introducing yourself and explaining why you're a good fit for this position.
+                            </p>
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('candidate.jobs.apply', $job) }}" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700">Cover Letter (Optional)</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cover Letter (Optional)</label>
                             <textarea name="cover_letter" rows="5" class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Tell the employer why you're a good fit..."></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                Application Video {{ $job->requires_video ? '*' : '(Optional)' }}
+                            </label>
+                            <input type="file" name="application_video" accept="video/mp4,video/mov,video/avi,video/wmv" 
+                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('application_video') border-red-300 @enderror">
+                            <p class="mt-1 text-xs text-gray-500">MP4, MOV, AVI or WMV. Max size: 100MB</p>
+                            @error('application_video')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
                         </div>
                         <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
                             Submit Application

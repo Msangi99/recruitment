@@ -25,12 +25,60 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('candidate.profile.update') }}" class="bg-white shadow-lg rounded-lg p-8">
+            <form method="POST" action="{{ route('candidate.profile.update') }}" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-8">
                 @csrf
                 @method('PUT')
 
-                <!-- Personal Information -->
+                <!-- Profile Picture -->
                 <div class="mb-8">
+                    <h3 class="text-lg font-medium text-gray-900 mb-6 pb-2 border-b border-gray-200">Profile Picture</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-6">
+                            @if($profile->profile_picture)
+                                @php
+                                    // Generate image URL - direct from public directory
+                                    $imageUrl = asset($profile->profile_picture);
+                                    $fileExists = file_exists(public_path($profile->profile_picture));
+                                @endphp
+                                @if($fileExists)
+                                    <img src="{{ $imageUrl }}?v={{ time() }}" alt="Profile Picture" class="h-24 w-24 rounded-full object-cover border-2 border-gray-300"
+                                         onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                @endif
+                                <div class="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-300" style="{{ $fileExists ? 'display:none;' : 'display:flex;' }}">
+                                    <span class="text-gray-500 text-2xl font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                                </div>
+                            @else
+                                <div class="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-300">
+                                    <span class="text-gray-500 text-2xl font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
+                                </div>
+                            @endif
+                            <div class="flex-1">
+                                <label for="profile_picture" class="block text-sm font-medium text-gray-700 mb-2">Upload Profile Picture</label>
+                            <input type="file" id="profile_picture" name="profile_picture" accept="image/jpeg,image/jpg,image/png,image/gif" 
+                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('profile_picture') border-red-300 @enderror"
+                                   onchange="validateImageFile(this); console.log('File selected:', this.files[0]);">
+                                <p class="mt-1 text-xs text-gray-500">JPEG, JPG, PNG or GIF. Max size: 2MB</p>
+                                <p id="file-info" class="mt-1 text-xs text-blue-600 hidden"></p>
+                                <div id="image-error" class="hidden mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
+                                    <p class="text-sm text-red-600 font-medium" id="image-error-message"></p>
+                                </div>
+                                @error('profile_picture')
+                                    <div class="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
+                                        <p class="text-sm text-red-600 font-medium">{{ $message }}</p>
+                                    </div>
+                                @enderror
+                                @if(session('error'))
+                                    <div class="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
+                                        <p class="text-sm text-red-600 font-medium">{{ session('error') }}</p>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="mb-8 border-t pt-8">
                     <h3 class="text-lg font-medium text-gray-900 mb-6 pb-2 border-b border-gray-200">Personal Information</h3>
                     <div class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -131,11 +179,15 @@
                         <div>
                             <label for="skill-input" class="block text-sm font-medium text-gray-700 mb-2">Skills * (Press Enter after each skill)</label>
                             <div id="skills-container" class="mb-3 flex flex-wrap gap-2">
-                                @if($profile->skills && $profile->skills->count() > 0)
-                                    @foreach($profile->skills as $skill)
+                                @php
+                                    $skills = $profile->skills ?? collect();
+                                    $skillsCollection = is_array($skills) ? collect($skills) : $skills;
+                                @endphp
+                                @if($skills && count($skillsCollection) > 0)
+                                    @foreach($skillsCollection as $skill)
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800">
-                                            {{ $skill->name }}
-                                            <button type="button" onclick="removeSkill('{{ $skill->name }}')" class="ml-2 text-indigo-600 hover:text-indigo-800">×</button>
+                                            {{ is_object($skill) ? $skill->name : $skill }}
+                                            <button type="button" onclick="removeSkill('{{ is_object($skill) ? $skill->name : $skill }}')" class="ml-2 text-indigo-600 hover:text-indigo-800">×</button>
                                         </span>
                                     @endforeach
                                 @endif
@@ -150,11 +202,15 @@
                         <div>
                             <label for="language-input" class="block text-sm font-medium text-gray-700 mb-2">Languages * (Press Enter after each language)</label>
                             <div id="languages-container" class="mb-3 flex flex-wrap gap-2">
-                                @if($profile->languages && $profile->languages->count() > 0)
-                                    @foreach($profile->languages as $language)
+                                @php
+                                    $languages = $profile->languages ?? collect();
+                                    $languagesCollection = is_array($languages) ? collect($languages) : $languages;
+                                @endphp
+                                @if($languages && count($languagesCollection) > 0)
+                                    @foreach($languagesCollection as $language)
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-                                            {{ $language->name }}
-                                            <button type="button" onclick="removeLanguage('{{ $language->name }}')" class="ml-2 text-blue-600 hover:text-blue-800">×</button>
+                                            {{ is_object($language) ? $language->name : $language }}
+                                            <button type="button" onclick="removeLanguage('{{ is_object($language) ? $language->name : $language }}')" class="ml-2 text-blue-600 hover:text-blue-800">×</button>
                                         </span>
                                     @endforeach
                                 @endif
@@ -229,8 +285,76 @@
 </div>
 
 <script>
-let skills = @json(old('skills', $profile->skills ? $profile->skills->pluck('name')->toArray() : []));
-let languages = @json(old('languages', $profile->languages ? $profile->languages->pluck('name')->toArray() : []));
+// Client-side image validation
+function validateImageFile(input) {
+    const errorDiv = document.getElementById('image-error');
+    const errorMessage = document.getElementById('image-error-message');
+    const fileInfo = document.getElementById('file-info');
+    const file = input.files[0];
+    
+    if (!file) {
+        errorDiv.classList.add('hidden');
+        fileInfo.classList.add('hidden');
+        return;
+    }
+    
+    // Show file info
+    fileInfo.classList.remove('hidden');
+    fileInfo.textContent = `Selected: ${file.name} (${(file.size / 1024).toFixed(2)} KB, ${file.type})`;
+    
+    // Check file type
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+        errorDiv.classList.remove('hidden');
+        errorMessage.textContent = 'Invalid file type. Please upload a JPEG, PNG, or GIF image.';
+        input.value = '';
+        fileInfo.classList.add('hidden');
+        return;
+    }
+    
+    // Check file size (2MB = 2 * 1024 * 1024 bytes)
+    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+    if (file.size > maxSize) {
+        errorDiv.classList.remove('hidden');
+        errorMessage.textContent = 'File size exceeds 2MB limit. Please upload a smaller image.';
+        input.value = '';
+        fileInfo.classList.add('hidden');
+        return;
+    }
+    
+    // Hide error if validation passes
+    errorDiv.classList.add('hidden');
+    console.log('File validated successfully:', {
+        name: file.name,
+        size: file.size,
+        type: file.type
+    });
+}
+
+@php
+    $skillsForJs = [];
+    $languagesForJs = [];
+    
+    if ($profile->skills) {
+        $skillsCollection = is_array($profile->skills) ? collect($profile->skills) : $profile->skills;
+        if (is_object($skillsCollection) && method_exists($skillsCollection, 'pluck')) {
+            $skillsForJs = $skillsCollection->pluck('name')->toArray();
+        } else {
+            $skillsForJs = is_array($profile->skills) ? $profile->skills : [];
+        }
+    }
+    
+    if ($profile->languages) {
+        $languagesCollection = is_array($profile->languages) ? collect($profile->languages) : $profile->languages;
+        if (is_object($languagesCollection) && method_exists($languagesCollection, 'pluck')) {
+            $languagesForJs = $languagesCollection->pluck('name')->toArray();
+        } else {
+            $languagesForJs = is_array($profile->languages) ? $profile->languages : [];
+        }
+    }
+@endphp
+let skills = @json(old('skills', $skillsForJs));
+let languages = @json(old('languages', $languagesForJs));
 
 // Skills input handler
 document.getElementById('skill-input').addEventListener('keypress', function(e) {

@@ -38,6 +38,7 @@ class JobListing extends Model
         'status',
         'positions_available',
         'application_deadline',
+        'requires_video',
     ];
 
     protected $casts = [
@@ -46,6 +47,7 @@ class JobListing extends Model
         'salary_min' => 'decimal:2',
         'salary_max' => 'decimal:2',
         'is_active' => 'boolean',
+        'requires_video' => 'boolean',
         'application_deadline' => 'date',
     ];
 

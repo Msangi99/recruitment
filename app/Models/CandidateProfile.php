@@ -14,6 +14,7 @@ class CandidateProfile extends Model
 
     protected $fillable = [
         'user_id',
+        'profile_picture',
         'date_of_birth',
         'citizenship',
         'residency_status',

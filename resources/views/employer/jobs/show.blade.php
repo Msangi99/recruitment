@@ -78,7 +78,35 @@
                                             {{ $application->created_at->format('M d, Y') }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('employer.candidates.show', $application->candidate) }}" class="text-indigo-600 hover:text-indigo-900">View Profile</a>
+                                            <div class="flex justify-end space-x-2">
+                                                <button onclick="showApplicationDetails({{ $application->id }})" class="text-indigo-600 hover:text-indigo-900">View Details</button>
+                                                <a href="{{ route('employer.candidates.show', $application->candidate) }}" class="text-green-600 hover:text-green-900">Profile</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <!-- Application Details Row (Hidden by default) -->
+                                    <tr id="application-{{ $application->id }}" class="hidden">
+                                        <td colspan="4" class="px-6 py-4 bg-gray-50">
+                                            <div class="space-y-4">
+                                                @if($application->cover_letter)
+                                                    <div>
+                                                        <h4 class="text-sm font-medium text-gray-900 mb-2">Cover Letter:</h4>
+                                                        <p class="text-sm text-gray-700 whitespace-pre-wrap">{{ $application->cover_letter }}</p>
+                                                    </div>
+                                                @endif
+                                                @if($application->video_path)
+                                                    <div>
+                                                        <h4 class="text-sm font-medium text-gray-900 mb-2">Application Video:</h4>
+                                                        <video controls class="w-full max-w-2xl rounded-lg shadow-md">
+                                                            <source src="{{ asset($application->video_path) }}" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    </div>
+                                                @endif
+                                                @if(!$application->cover_letter && !$application->video_path)
+                                                    <p class="text-sm text-gray-500 italic">No additional details provided.</p>
+                                                @endif
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -90,4 +118,15 @@
         </div>
     </div>
 </div>
+
+<script>
+function showApplicationDetails(applicationId) {
+    const row = document.getElementById('application-' + applicationId);
+    if (row.classList.contains('hidden')) {
+        row.classList.remove('hidden');
+    } else {
+        row.classList.add('hidden');
+    }
+}
+</script>
 @endsection

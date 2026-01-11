@@ -64,10 +64,12 @@ class JobListingController extends Controller
             'positions_available' => 'nullable|integer|min:1',
             'application_deadline' => 'nullable|date',
             'is_active' => 'boolean',
+            'requires_video' => 'boolean',
         ]);
 
         $validated['employer_id'] = auth()->id();
         $validated['is_active'] = $request->has('is_active');
+        $validated['requires_video'] = $request->has('requires_video');
 
         JobListing::create($validated);
 
@@ -119,9 +121,11 @@ class JobListingController extends Controller
             'positions_available' => 'nullable|integer|min:1',
             'application_deadline' => 'nullable|date',
             'is_active' => 'boolean',
+            'requires_video' => 'boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+        $validated['requires_video'] = $request->has('requires_video');
         $job->update($validated);
 
         return redirect()->route('employer.jobs.index')

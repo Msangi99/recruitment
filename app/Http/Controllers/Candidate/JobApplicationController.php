@@ -7,6 +7,7 @@ use App\Models\JobListing;
 use App\Models\JobApplication;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class JobApplicationController extends Controller
 {
@@ -110,14 +111,54 @@ class JobApplicationController extends Controller
             return back()->with('error', 'This job is no longer accepting applications.');
         }
 
+        // Validate video if job requires it
+        $videoRules = [];
+        if ($job->requires_video) {
+            $videoRules['application_video'] = 'required|mimes:mp4,mov,avi,wmv|max:102400'; // Max 100MB
+        } else {
+            $videoRules['application_video'] = 'nullable|mimes:mp4,mov,avi,wmv|max:102400';
+        }
+
         $validated = $request->validate([
             'cover_letter' => 'nullable|string|max:2000',
-        ]);
+        ] + $videoRules);
+
+        // Handle video upload
+        $videoPath = null;
+        if ($request->hasFile('application_video')) {
+            try {
+                $file = $request->file('application_video');
+                
+                // Ensure directory exists in public folder
+                $directory = public_path('application-videos');
+                if (!file_exists($directory)) {
+                    mkdir($directory, 0755, true);
+                }
+                
+                // Generate unique filename
+                $extension = $file->getClientOriginalExtension();
+                $fileName = 'video_' . auth()->id() . '_' . $job->id . '_' . time() . '.' . $extension;
+                $destinationPath = $directory . '/' . $fileName;
+                
+                // Move uploaded file to public directory
+                if ($file->move($directory, $fileName)) {
+                    $videoPath = 'application-videos/' . $fileName;
+                } else {
+                    return back()->with('error', 'Failed to upload video. Please try again.')->withInput();
+                }
+            } catch (\Exception $e) {
+                \Log::error('Video upload error: ' . $e->getMessage());
+                return back()->with('error', 'An error occurred while uploading the video. Please try again.')->withInput();
+            }
+        } elseif ($job->requires_video) {
+            return back()->with('error', 'Video is required for this job application.')->withInput();
+        }
 
         JobApplication::create([
             'job_id' => $job->id,
             'candidate_id' => $candidate->id,
             'cover_letter' => $validated['cover_letter'] ?? null,
+            'video_path' => $videoPath,
             'status' => 'pending',
         ]);
 

@@ -101,22 +101,47 @@
                 <div class="p-0">
                     <ul class="divide-y divide-gray-100">
                         @forelse($job->applications as $application)
-                            <li class="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-600 border border-gray-200">
-                                        {{ substr($application->candidate->name, 0, 1) }}
+                            <li class="px-6 py-4 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-center justify-between mb-2">
+                                    <div class="flex items-center">
+                                        @if($application->candidate->candidateProfile && $application->candidate->candidateProfile->profile_picture)
+                                            <img src="{{ asset($application->candidate->candidateProfile->profile_picture) }}" alt="{{ $application->candidate->name }}" class="h-10 w-10 rounded-full object-cover border border-gray-200">
+                                        @else
+                                            <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-600 border border-gray-200">
+                                                {{ substr($application->candidate->name, 0, 1) }}
+                                            </div>
+                                        @endif
+                                        <div class="ml-4">
+                                            <p class="text-sm font-bold text-gray-900">{{ $application->candidate->name }}</p>
+                                            <p class="text-xs text-gray-500">{{ $application->candidate->email }}</p>
+                                        </div>
                                     </div>
-                                    <div class="ml-4">
-                                        <p class="text-sm font-bold text-gray-900">{{ $application->candidate->name }}</p>
-                                        <p class="text-xs text-gray-500">{{ $application->candidate->email }}</p>
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-[11px] font-bold text-gray-400">{{ $application->created_at->diffForHumans() }}</span>
+                                        <a href="{{ route('admin.candidates.show', $application->candidate) }}" class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
+                                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-[11px] font-bold text-gray-400">{{ $application->created_at->diffForHumans() }}</span>
-                                    <a href="{{ route('admin.candidates.show', $application->candidate) }}" class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
-                                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                                    </a>
-                                </div>
+                                @if($application->cover_letter || $application->video_path)
+                                    <div class="mt-3 pt-3 border-t border-gray-100 space-y-2">
+                                        @if($application->cover_letter)
+                                            <div>
+                                                <p class="text-xs font-bold text-gray-500 mb-1">Cover Letter:</p>
+                                                <p class="text-xs text-gray-700 line-clamp-2">{{ \Illuminate\Support\Str::limit($application->cover_letter, 150) }}</p>
+                                            </div>
+                                        @endif
+                                        @if($application->video_path)
+                                            <div>
+                                                <p class="text-xs font-bold text-gray-500 mb-1">Application Video:</p>
+                                                <video controls class="w-full max-w-md rounded-lg shadow-sm" style="max-height: 200px;">
+                                                    <source src="{{ asset($application->video_path) }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endif
                             </li>
                         @empty
                             <li class="px-6 py-12 text-center text-gray-500 italic">

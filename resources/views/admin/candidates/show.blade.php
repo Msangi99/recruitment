@@ -16,9 +16,13 @@
         <div class="p-6">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center">
-                    <div class="h-20 w-20 rounded-full bg-blue-50 flex items-center justify-center border-2 border-white shadow-md ring-4 ring-blue-50">
-                        <span class="text-3xl font-bold text-blue-600">{{ substr($candidate->name, 0, 1) }}</span>
-                    </div>
+                    @if($candidate->candidateProfile && $candidate->candidateProfile->profile_picture)
+                        <img src="{{ asset($candidate->candidateProfile->profile_picture) }}" alt="{{ $candidate->name }}" class="h-20 w-20 rounded-full object-cover border-2 border-white shadow-md ring-4 ring-blue-50">
+                    @else
+                        <div class="h-20 w-20 rounded-full bg-blue-50 flex items-center justify-center border-2 border-white shadow-md ring-4 ring-blue-50">
+                            <span class="text-3xl font-bold text-blue-600">{{ substr($candidate->name, 0, 1) }}</span>
+                        </div>
+                    @endif
                     <div class="ml-6">
                         <h2 class="text-2xl font-bold text-gray-900">{{ $candidate->name }}</h2>
                         <div class="flex items-center text-gray-500 mt-1">
@@ -87,9 +91,14 @@
                             <div class="md:col-span-2">
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Skills</dt>
                                 <dd class="flex flex-wrap gap-2">
-                                    @if($candidate->candidateProfile && $candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
-                                        @foreach($candidate->candidateProfile->skills as $skill)
-                                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">{{ $skill->name }}</span>
+                                    @php
+                                        $adminSkills = $candidate->candidateProfile->skills ?? collect();
+                                        $adminSkillsCollection = is_array($adminSkills) ? collect($adminSkills) : $adminSkills;
+                                        $adminSkillsCount = count($adminSkillsCollection);
+                                    @endphp
+                                    @if($candidate->candidateProfile && $adminSkills && $adminSkillsCount > 0)
+                                        @foreach($adminSkillsCollection as $skill)
+                                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">{{ is_object($skill) ? $skill->name : $skill }}</span>
                                         @endforeach
                                     @else
                                         <span class="text-sm text-gray-500 italic">No skills listed</span>

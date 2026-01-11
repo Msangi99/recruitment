@@ -14,6 +14,7 @@ class JobApplication extends Model
         'job_id',
         'candidate_id',
         'cover_letter',
+        'video_path',
         'status',
         'reviewed_at',
         'reviewed_by',
