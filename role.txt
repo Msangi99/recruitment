@@ -1,0 +1,144 @@
+A Recruitment & Job Placement System with:
+
+Public marketing website
+
+Job portal
+
+Candidate database
+
+Employer interaction
+
+Admin-controlled workflow
+
+Paid consultation & booking system
+
+2️⃣ MAIN USER ROLES
+
+There are 3 core users:
+
+🔹 Admin (Coyzon Team)
+
+Login dashboard
+
+Post & manage jobs
+
+Manage candidates
+
+Verify candidates
+
+View full candidate details
+
+Approve / reject interview requests
+
+Manage appointments
+
+Manage paid consultations
+
+View payments
+
+Content management (pages, FAQs, industries, etc.)
+
+🔹 Job Seekers (Candidates)
+
+Register & login
+
+Create professional profile
+
+Upload CV & documents
+
+Optional intro video
+
+Submit profile for verification
+
+Apply for jobs
+
+Book paid consultations
+
+Receive email notifications
+
+🔹 Employers
+
+Browse jobs
+
+Browse verified candidates only
+
+Cannot see candidate contact details
+
+Request interviews via form
+
+Book free consultations
+
+3️⃣ CORE FEATURES (TECHNICALLy)
+🌍 Frontend (Public Website)
+
+Modern corporate UI
+
+Hero section with fade / cross-fade images
+
+Industry cards
+
+Circular recruitment process
+
+Interactive world map
+
+FAQ accordion
+
+Team section
+
+Responsive (mobile + desktop)
+
+💼 Job System
+
+Admin job posting
+
+Advanced job filters
+
+Job application flow
+
+Login-required applications
+
+Job status (Open / Closed / Urgent)
+
+👤 Candidate System
+
+Multi-step registration
+
+Profile verification by admin
+
+Privacy protection (no contacts shown)
+
+Candidate filtering for employers
+
+Interview request workflow
+
+📅 Appointment Booking
+
+Free employer consultation
+
+Partnership request (approval-based)
+
+Paid career consultation
+
+Calendar scheduling
+
+Email notifications
+
+💳 Payment Integration
+
+M-Pesa
+
+Tigo Pesa
+
+Card (Stripe / Flutterwave / Paystack)
+
+Payment before booking
+
+🔐 Security & Compliance
+
+Role-based access
+
+Data privacy
+
+Email verification
+
+Admin approval flows

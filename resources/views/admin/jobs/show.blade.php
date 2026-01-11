@@ -1,0 +1,162 @@
+@extends('layouts.admin')
+
+@section('title', 'Job Details')
+
+@section('content')
+<div class="space-y-6">
+    <div class="flex items-center space-x-2 text-sm text-gray-500">
+        <a href="{{ route('admin.jobs.index') }}" class="hover:fb-blue flex items-center font-medium">
+            <i data-lucide="chevron-left" class="w-4 h-4 mr-1"></i>
+            Back to Jobs
+        </a>
+    </div>
+
+    <!-- Job Header Card -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="p-6 md:p-8">
+            <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
+                <div class="flex items-start">
+                    <div class="h-16 w-16 rounded-xl bg-blue-50 flex items-center justify-center border border-blue-100 text-blue-600 shadow-sm flex-shrink-0">
+                        <i data-lucide="briefcase" class="w-8 h-8"></i>
+                    </div>
+                    <div class="ml-6">
+                        <h2 class="text-2xl font-bold text-gray-900">{{ $job->title }}</h2>
+                        <div class="mt-2 flex flex-wrap gap-4 text-sm font-medium text-gray-500">
+                            <span class="flex items-center"><i data-lucide="building-2" class="w-4 h-4 mr-1.5 text-gray-400"></i> {{ $job->company_name }}</span>
+                            <span class="flex items-center"><i data-lucide="map-pin" class="w-4 h-4 mr-1.5 text-gray-400"></i> {{ $job->location }}, {{ $job->country }}</span>
+                            <span class="flex items-center"><i data-lucide="tag" class="w-4 h-4 mr-1.5 text-gray-400"></i> {{ $job->category->name ?? 'Uncategorized' }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('admin.jobs.edit', $job) }}" class="px-6 py-2 bg-gray-100 text-gray-800 font-bold rounded-xl hover:bg-gray-200 transition-colors border border-gray-200 shadow-sm flex items-center">
+                        <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                        Edit
+                    </a>
+                    <form method="POST" action="{{ route('admin.jobs.toggleStatus', $job) }}" class="inline">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit" class="px-6 py-2 rounded-xl font-bold transition-all shadow-sm flex items-center
+                            {{ $job->is_active ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100' }}">
+                            <i data-lucide="{{ $job->is_active ? 'eye-off' : 'eye' }}" class="w-4 h-4 mr-2"></i>
+                            {{ $job->is_active ? 'Deactivate' : 'Activate' }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 flex items-center justify-between">
+            <div class="flex gap-6">
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Type</span>
+                    <span class="text-sm font-bold text-gray-700">{{ ucfirst($job->employment_type) }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Salary</span>
+                    <span class="text-sm font-bold text-gray-700">{{ $job->salary_range ?? 'Not specified' }}</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Posted On</span>
+                    <span class="text-sm font-bold text-gray-700">{{ $job->created_at->format('M d, Y') }}</span>
+                </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold {{ $job->is_active ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600' }}">
+                {{ $job->is_active ? 'ACTIVE' : 'INACTIVE' }}
+            </span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Job Details -->
+        <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                <h3 class="font-bold text-gray-900 mb-4 flex items-center">
+                    <i data-lucide="align-left" class="w-5 h-5 mr-2 fb-blue"></i>
+                    Job Description
+                </h3>
+                <div class="prose max-w-none text-gray-700 text-sm leading-relaxed">
+                    {!! nl2br(e($job->description)) !!}
+                </div>
+
+                @if($job->requirements)
+                    <h3 class="font-bold text-gray-900 mt-8 mb-4 flex items-center">
+                        <i data-lucide="list-checks" class="w-5 h-5 mr-2 fb-blue"></i>
+                        Key Requirements
+                    </h3>
+                    <div class="prose max-w-none text-gray-700 text-sm leading-relaxed">
+                        {!! nl2br(e($job->requirements)) !!}
+                    </div>
+                @endif
+            </div>
+
+            <!-- Applications -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="font-bold text-gray-900 flex items-center">
+                        <i data-lucide="users" class="w-5 h-5 mr-2 fb-blue"></i>
+                        Recent Applications
+                    </h3>
+                    <span class="text-xs font-bold text-gray-500">{{ $job->applications->count() }} total</span>
+                </div>
+                <div class="p-0">
+                    <ul class="divide-y divide-gray-100">
+                        @forelse($job->applications as $application)
+                            <li class="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-600 border border-gray-200">
+                                        {{ substr($application->candidate->name, 0, 1) }}
+                                    </div>
+                                    <div class="ml-4">
+                                        <p class="text-sm font-bold text-gray-900">{{ $application->candidate->name }}</p>
+                                        <p class="text-xs text-gray-500">{{ $application->candidate->email }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-[11px] font-bold text-gray-400">{{ $application->created_at->diffForHumans() }}</span>
+                                    <a href="{{ route('admin.candidates.show', $application->candidate) }}" class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
+                                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        @empty
+                            <li class="px-6 py-12 text-center text-gray-500 italic">
+                                <div class="flex flex-col items-center">
+                                    <i data-lucide="users-2" class="w-10 h-10 text-gray-200 mb-2"></i>
+                                    <p>No applications received for this job yet.</p>
+                                </div>
+                            </li>
+                        @endforelse
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="space-y-6">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h3 class="font-bold text-gray-900 mb-4">Job Summary</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between py-2 border-b border-gray-50">
+                        <span class="text-sm text-gray-500">ID</span>
+                        <span class="text-sm font-bold text-gray-900">#{{ $job->id }}</span>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-50">
+                        <span class="text-sm text-gray-500">Views</span>
+                        <span class="text-sm font-bold text-gray-900">{{ $job->views_count ?? 0 }}</span>
+                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-50">
+                        <span class="text-sm text-gray-500">Employment</span>
+                        <span class="text-sm font-bold text-gray-900 uppercase">{{ $job->employment_type }}</span>
+                    </div>
+                    <div class="flex items-center justify-between py-2">
+                        <span class="text-sm text-gray-500">Visibility</span>
+                        <span class="text-sm font-bold {{ $job->is_active ? 'text-green-600' : 'text-red-600' }}">
+                            {{ $job->is_active ? 'Public' : 'Hidden' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
