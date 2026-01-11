@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CandidateProfile extends Model
@@ -19,8 +20,6 @@ class CandidateProfile extends Model
         'gender',
         'marital_status',
         'education_level',
-        'skills',
-        'languages',
         'years_of_experience',
         'expected_salary',
         'currency',
@@ -73,5 +72,21 @@ class CandidateProfile extends Model
     public function isPending(): bool
     {
         return $this->verification_status === 'pending';
+    }
+
+    /**
+     * Get the skills for the profile
+     */
+    public function skills(): BelongsToMany
+    {
+        return $this->belongsToMany(Skill::class, 'candidate_profile_skill');
+    }
+
+    /**
+     * Get the languages for the profile
+     */
+    public function languages(): BelongsToMany
+    {
+        return $this->belongsToMany(Language::class, 'candidate_profile_language');
     }
 }

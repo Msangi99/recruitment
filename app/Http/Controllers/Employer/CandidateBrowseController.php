@@ -17,15 +17,17 @@ class CandidateBrowseController extends Controller
                 $q->where('verification_status', 'approved')
                   ->where('is_public', true);
             })
-            ->with('candidateProfile');
+            ->with(['candidateProfile.skills', 'candidateProfile.languages']);
 
         // Search filter
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%");
-            })->orWhereHas('candidateProfile', function($q) use ($search) {
-                $q->where('skills', 'like', "%{$search}%");
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhereHas('candidateProfile.skills', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  });
             });
         }
 
@@ -58,7 +60,7 @@ class CandidateBrowseController extends Controller
             abort(404);
         }
 
-        $candidate->load('candidateProfile');
+        $candidate->load(['candidateProfile.skills', 'candidateProfile.languages']);
         
         return view('employer.candidates.show', compact('candidate'));
     }

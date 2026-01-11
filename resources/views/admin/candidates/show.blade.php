@@ -87,9 +87,9 @@
                             <div class="md:col-span-2">
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Skills</dt>
                                 <dd class="flex flex-wrap gap-2">
-                                    @if($candidate->candidateProfile->skills)
+                                    @if($candidate->candidateProfile && $candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
                                         @foreach($candidate->candidateProfile->skills as $skill)
-                                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">{{ $skill }}</span>
+                                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">{{ $skill->name }}</span>
                                         @endforeach
                                     @else
                                         <span class="text-sm text-gray-500 italic">No skills listed</span>

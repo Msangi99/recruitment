@@ -34,22 +34,22 @@
                             <dt class="text-sm font-medium text-gray-500">Years of Experience</dt>
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $candidate->candidateProfile->years_of_experience ?? 'N/A' }} years</dd>
                         </div>
-                        @if($candidate->candidateProfile && $candidate->candidateProfile->skills)
+                        @if($candidate->candidateProfile && $candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
                             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt class="text-sm font-medium text-gray-500">Skills</dt>
                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                     @foreach($candidate->candidateProfile->skills as $skill)
-                                        <span class="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm text-gray-700 mr-2 mb-2">{{ $skill }}</span>
+                                        <span class="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm text-gray-700 mr-2 mb-2">{{ $skill->name }}</span>
                                     @endforeach
                                 </dd>
                             </div>
                         @endif
-                        @if($candidate->candidateProfile && $candidate->candidateProfile->languages)
+                        @if($candidate->candidateProfile && $candidate->candidateProfile->languages && $candidate->candidateProfile->languages->count() > 0)
                             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt class="text-sm font-medium text-gray-500">Languages</dt>
                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                     @foreach($candidate->candidateProfile->languages as $language)
-                                        <span class="inline-block bg-blue-100 rounded-full px-3 py-1 text-sm text-blue-700 mr-2 mb-2">{{ $language }}</span>
+                                        <span class="inline-block bg-blue-100 rounded-full px-3 py-1 text-sm text-blue-700 mr-2 mb-2">{{ $language->name }}</span>
                                     @endforeach
                                 </dd>
                             </div>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
 use App\Models\CandidateProfile;
+use App\Models\Skill;
+use App\Models\Language;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -12,6 +14,10 @@ class ProfileController extends Controller
     {
         $candidate = auth()->user();
         $profile = $candidate->candidateProfile;
+        
+        if ($profile) {
+            $profile->load(['skills', 'languages']);
+        }
         
         return view('candidate.profile.show', compact('profile'));
     }
@@ -63,18 +69,26 @@ class ProfileController extends Controller
             $languages = json_decode($languages, true);
         }
 
+        // Ensure they are arrays
+        if (!is_array($skills)) {
+            $skills = [];
+        }
+        if (!is_array($languages)) {
+            $languages = [];
+        }
+
         $validated = $request->validate([
             'education_level' => 'required|string|max:100',
             'years_of_experience' => 'required|integer|min:0|max:50',
-            'skills' => 'required|array|min:1',
-            'skills.*' => 'string|max:100',
-            'languages' => 'required|array|min:1',
-            'languages.*' => 'string|max:50',
         ]);
 
-        // Replace with decoded arrays
-        $validated['skills'] = $skills;
-        $validated['languages'] = $languages;
+        // Validate skills and languages
+        if (empty($skills) || count($skills) === 0) {
+            return response()->json(['success' => false, 'message' => 'Please add at least one skill.'], 422);
+        }
+        if (empty($languages) || count($languages) === 0) {
+            return response()->json(['success' => false, 'message' => 'Please add at least one language.'], 422);
+        }
 
         $candidate = auth()->user();
         $profile = $candidate->candidateProfile;
@@ -83,7 +97,25 @@ class ProfileController extends Controller
             return response()->json(['success' => false, 'message' => 'Please complete step 1 first'], 400);
         }
 
+        // Update profile basic info
         $profile->update($validated);
+
+        // Sync skills - create skills if they don't exist
+        $skillIds = [];
+        foreach ($skills as $skillName) {
+            $skill = \App\Models\Skill::firstOrCreate(['name' => trim($skillName)]);
+            $skillIds[] = $skill->id;
+        }
+        $profile->skills()->sync($skillIds);
+
+        // Sync languages - create languages if they don't exist
+        $languageIds = [];
+        foreach ($languages as $languageName) {
+            $language = \App\Models\Language::firstOrCreate(['name' => trim($languageName)]);
+            $languageIds[] = $language->id;
+        }
+        $profile->languages()->sync($languageIds);
+
         return response()->json(['success' => true, 'step' => 3]);
     }
 
@@ -118,6 +150,7 @@ class ProfileController extends Controller
                 ->with('error', 'Please create your profile first.');
         }
 
+        $profile->load(['skills', 'languages']);
         return view('candidate.profile.edit', compact('profile'));
     }
 
@@ -187,9 +220,6 @@ class ProfileController extends Controller
             }
         }
 
-        // Add skills and languages to validated array
-        $validated['skills'] = $skills;
-        $validated['languages'] = $languages;
         $validated['is_available'] = $request->has('is_available');
 
         // If profile was verified, reset to pending after edit
@@ -199,6 +229,22 @@ class ProfileController extends Controller
         }
 
         $profile->update($validated);
+
+        // Sync skills - create skills if they don't exist
+        $skillIds = [];
+        foreach ($skills as $skillName) {
+            $skill = \App\Models\Skill::firstOrCreate(['name' => trim($skillName)]);
+            $skillIds[] = $skill->id;
+        }
+        $profile->skills()->sync($skillIds);
+
+        // Sync languages - create languages if they don't exist
+        $languageIds = [];
+        foreach ($languages as $languageName) {
+            $language = \App\Models\Language::firstOrCreate(['name' => trim($languageName)]);
+            $languageIds[] = $language->id;
+        }
+        $profile->languages()->sync($languageIds);
 
         return redirect()->route('candidate.profile.show')
             ->with('success', 'Profile updated successfully. ' . ($profile->verification_status === 'pending' ? 'Your profile will be reviewed again by admin.' : ''));

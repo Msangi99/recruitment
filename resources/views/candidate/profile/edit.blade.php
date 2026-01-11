@@ -131,11 +131,11 @@
                         <div>
                             <label for="skill-input" class="block text-sm font-medium text-gray-700 mb-2">Skills * (Press Enter after each skill)</label>
                             <div id="skills-container" class="mb-3 flex flex-wrap gap-2">
-                                @if($profile->skills)
+                                @if($profile->skills && $profile->skills->count() > 0)
                                     @foreach($profile->skills as $skill)
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800">
-                                            {{ $skill }}
-                                            <button type="button" onclick="removeSkill('{{ $skill }}')" class="ml-2 text-indigo-600 hover:text-indigo-800">×</button>
+                                            {{ $skill->name }}
+                                            <button type="button" onclick="removeSkill('{{ $skill->name }}')" class="ml-2 text-indigo-600 hover:text-indigo-800">×</button>
                                         </span>
                                     @endforeach
                                 @endif
@@ -150,11 +150,11 @@
                         <div>
                             <label for="language-input" class="block text-sm font-medium text-gray-700 mb-2">Languages * (Press Enter after each language)</label>
                             <div id="languages-container" class="mb-3 flex flex-wrap gap-2">
-                                @if($profile->languages)
+                                @if($profile->languages && $profile->languages->count() > 0)
                                     @foreach($profile->languages as $language)
                                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-                                            {{ $language }}
-                                            <button type="button" onclick="removeLanguage('{{ $language }}')" class="ml-2 text-blue-600 hover:text-blue-800">×</button>
+                                            {{ $language->name }}
+                                            <button type="button" onclick="removeLanguage('{{ $language->name }}')" class="ml-2 text-blue-600 hover:text-blue-800">×</button>
                                         </span>
                                     @endforeach
                                 @endif
@@ -229,8 +229,8 @@
 </div>
 
 <script>
-let skills = @json(old('skills', $profile->skills ?? []));
-let languages = @json(old('languages', $profile->languages ?? []));
+let skills = @json(old('skills', $profile->skills ? $profile->skills->pluck('name')->toArray() : []));
+let languages = @json(old('languages', $profile->languages ? $profile->languages->pluck('name')->toArray() : []));
 
 // Skills input handler
 document.getElementById('skill-input').addEventListener('keypress', function(e) {
