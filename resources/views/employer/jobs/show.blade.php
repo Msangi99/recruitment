@@ -48,7 +48,13 @@
                 </div>
             </div>
 
-            @if($job->applications->count() > 0)
+            @if(session('success'))
+                <div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($job->applications && $job->applications->count() > 0)
                 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
                     <div class="px-4 py-5 sm:px-6">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Applications ({{ $job->applications->count() }})</h3>
@@ -70,9 +76,24 @@
                                             <div class="text-sm font-medium text-gray-900">{{ $application->candidate->name }}</div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                {{ ucfirst($application->status) }}
-                                            </span>
+                                            <form method="POST" action="{{ route('employer.jobs.applications.updateStatus', [$job, $application]) }}" class="inline-block" id="status-form-{{ $application->id }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <select name="status" id="status-select-{{ $application->id }}" onchange="this.form.submit()" class="text-sm font-semibold border-2 rounded-lg px-4 py-2 shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer transition-colors
+                                                    {{ $application->status === 'pending' ? 'bg-yellow-50 text-yellow-900 border-yellow-400 hover:bg-yellow-100' : 
+                                                       ($application->status === 'shortlisted' ? 'bg-blue-50 text-blue-900 border-blue-400 hover:bg-blue-100' : 
+                                                       ($application->status === 'reviewed' ? 'bg-gray-50 text-gray-900 border-gray-400 hover:bg-gray-100' :
+                                                       ($application->status === 'interview' ? 'bg-purple-50 text-purple-900 border-purple-400 hover:bg-purple-100' : 
+                                                       ($application->status === 'offered' ? 'bg-green-50 text-green-900 border-green-400 hover:bg-green-100' : 
+                                                       ($application->status === 'rejected' ? 'bg-red-50 text-red-900 border-red-400 hover:bg-red-100' : 'bg-gray-50 text-gray-900 border-gray-400 hover:bg-gray-100'))))) }}">
+                                                    <option value="pending" {{ $application->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                                    <option value="reviewed" {{ $application->status === 'reviewed' ? 'selected' : '' }}>Reviewed</option>
+                                                    <option value="shortlisted" {{ $application->status === 'shortlisted' ? 'selected' : '' }}>Shortlisted</option>
+                                                    <option value="interview" {{ $application->status === 'interview' ? 'selected' : '' }}>Interview</option>
+                                                    <option value="offered" {{ $application->status === 'offered' ? 'selected' : '' }}>Offered</option>
+                                                    <option value="rejected" {{ $application->status === 'rejected' ? 'selected' : '' }}>Rejected</option>
+                                                </select>
+                                            </form>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $application->created_at->format('M d, Y') }}
@@ -103,6 +124,22 @@
                                                         </video>
                                                     </div>
                                                 @endif
+                                                @if($application->employer_notes)
+                                                    <div>
+                                                        <h4 class="text-sm font-medium text-gray-900 mb-2">Your Notes:</h4>
+                                                        <p class="text-sm text-gray-700 whitespace-pre-wrap">{{ $application->employer_notes }}</p>
+                                                    </div>
+                                                @endif
+                                                <div>
+                                                    <h4 class="text-sm font-medium text-gray-900 mb-2">Add Notes:</h4>
+                                                    <form method="POST" action="{{ route('employer.jobs.applications.updateStatus', [$job, $application]) }}" class="space-y-2">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="status" value="{{ $application->status }}">
+                                                        <textarea name="employer_notes" rows="3" class="w-full text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" placeholder="Add your notes about this candidate...">{{ old('employer_notes', $application->employer_notes) }}</textarea>
+                                                        <button type="submit" class="px-3 py-1 text-xs bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Save Notes</button>
+                                                    </form>
+                                                </div>
                                                 @if(!$application->cover_letter && !$application->video_path)
                                                     <p class="text-sm text-gray-500 italic">No additional details provided.</p>
                                                 @endif

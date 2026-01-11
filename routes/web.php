@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
         // Job Management
         Route::resource('jobs', JobListingController::class);
         Route::patch('/jobs/{job}/toggle-status', [JobListingController::class, 'toggleStatus'])->name('jobs.toggleStatus');
+        Route::patch('/jobs/{job}/applications/{application}/status', [JobListingController::class, 'updateApplicationStatus'])->name('jobs.applications.updateStatus');
 
         // Browse Candidates (Verified Only)
         Route::get('/candidates', [CandidateBrowseController::class, 'index'])->name('candidates.index');

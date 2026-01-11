@@ -152,4 +152,31 @@ class JobListingController extends Controller
         $job->update(['is_active' => !$job->is_active]);
         return back()->with('success', 'Job status updated.');
     }
+
+    public function updateApplicationStatus(Request $request, JobListing $job, JobApplication $application)
+    {
+        // Verify the application belongs to this job and the job belongs to this employer
+        if ($application->job_id !== $job->id || $job->employer_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,reviewed,shortlisted,interview,offered,rejected,withdrawn',
+            'employer_notes' => 'nullable|string|max:1000',
+        ]);
+
+        $updateData = [
+            'status' => $validated['status'],
+            'reviewed_by' => auth()->id(),
+            'reviewed_at' => now(),
+        ];
+
+        if ($request->filled('employer_notes')) {
+            $updateData['employer_notes'] = $validated['employer_notes'];
+        }
+
+        $application->update($updateData);
+
+        return back()->with('success', 'Application status updated successfully.');
+    }
 }
