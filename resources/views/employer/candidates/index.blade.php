@@ -69,12 +69,17 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="text-sm text-gray-900">
-                                        @if($candidate->candidateProfile && $candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
-                                            @foreach($candidate->candidateProfile->skills->take(3) as $skill)
-                                                <span class="inline-block bg-gray-100 rounded-full px-2 py-1 text-xs text-gray-700 mr-1">{{ $skill->name }}</span>
+                                        @php
+                                            $skills = $candidate->candidateProfile->skills ?? collect();
+                                            $skillsCollection = is_array($skills) ? collect($skills) : $skills;
+                                            $skillsCount = count($skillsCollection);
+                                        @endphp
+                                        @if($candidate->candidateProfile && $skills && $skillsCount > 0)
+                                            @foreach($skillsCollection->take(3) as $skill)
+                                                <span class="inline-block bg-gray-100 rounded-full px-2 py-1 text-xs text-gray-700 mr-1">{{ is_object($skill) ? $skill->name : $skill }}</span>
                                             @endforeach
-                                            @if($candidate->candidateProfile->skills->count() > 3)
-                                                <span class="text-xs text-gray-500">+{{ $candidate->candidateProfile->skills->count() - 3 }} more</span>
+                                            @if($skillsCount > 3)
+                                                <span class="text-xs text-gray-500">+{{ $skillsCount - 3 }} more</span>
                                             @endif
                                         @else
                                             <span class="text-gray-400">N/A</span>
