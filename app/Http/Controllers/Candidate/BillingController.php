@@ -100,7 +100,23 @@ class BillingController extends Controller
             'plan_id' => 'required|in:basic,premium',
             'payment_gateway' => 'required|in:selcom,azampay',
             'payment_method' => 'required|in:mobile,card,bank',
-            'mobile_provider' => 'required_if:payment_method,mobile|nullable|in:Mpesa,"Tigo Pesa","Airtel Money",Halopesa,Azampay',
+            'mobile_provider' => [
+                'required_if:payment_method,mobile',
+                'nullable',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->payment_method === 'mobile' && $request->payment_gateway === 'selcom') {
+                        $validProviders = ['Mpesa', 'Tigo Pesa', 'Airtel Money', 'Halopesa'];
+                        if (!in_array($value, $validProviders)) {
+                            $fail('The selected mobile provider is invalid for Selcom.');
+                        }
+                    } elseif ($request->payment_method === 'mobile' && $request->payment_gateway === 'azampay') {
+                        $validProviders = ['Mpesa', 'Tigo Pesa', 'Airtel', 'Azampay'];
+                        if (!in_array($value, $validProviders)) {
+                            $fail('The selected mobile provider is invalid for AzamPay.');
+                        }
+                    }
+                },
+            ],
             'account_number' => 'required_if:payment_method,mobile|nullable|string|max:20',
         ], [
             'payment_gateway.required' => 'Please select a payment gateway.',

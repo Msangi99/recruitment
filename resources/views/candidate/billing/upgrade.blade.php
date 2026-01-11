@@ -13,7 +13,10 @@
                 <h2 class="mt-4 text-2xl font-bold text-gray-900">Upgrade Your Plan</h2>
             </div>
 
-            @if($errors->any())
+            @php
+                $submittedPlanId = old('plan_id');
+            @endphp
+            @if($errors->any() && $submittedPlanId)
                 <div class="mb-6 bg-red-50 border border-red-200 rounded-lg p-4">
                     <div class="flex">
                         <div class="flex-shrink-0">
@@ -22,7 +25,7 @@
                             </svg>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm font-medium text-red-800">Please fix the following errors:</h3>
+                            <h3 class="text-sm font-medium text-red-800">Please fix the following errors for {{ $submittedPlanId === 'premium' ? 'Premium' : 'Basic' }} Plan:</h3>
                             <div class="mt-2 text-sm text-red-700">
                                 <ul class="list-disc list-inside space-y-1">
                                     @foreach($errors->all() as $error)
@@ -74,18 +77,23 @@
                             @csrf
                             <input type="hidden" name="plan_id" value="{{ $plan['id'] }}">
                             
+                            @php
+                                $submittedPlanId = old('plan_id');
+                                $isThisForm = ($submittedPlanId === $plan['id']);
+                            @endphp
+                            
                             <!-- Payment Gateway Selection -->
                             <div class="mb-4 border-t border-gray-200 pt-4">
                                 <label for="payment_gateway_{{ $plan['id'] }}" class="block text-sm font-medium text-gray-700 mb-2">Payment Gateway *</label>
                                 <select id="payment_gateway_{{ $plan['id'] }}" name="payment_gateway" required 
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('payment_gateway') border-red-300 @enderror">
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('payment_gateway') ? 'border-red-300' : '' }}">
                                     <option value="">Choose Gateway</option>
-                                    <option value="selcom" {{ old('payment_gateway') == 'selcom' ? 'selected' : '' }}>Selcom (M-Pesa, Tigo Pesa, Airtel Money, Halopesa, Card)</option>
-                                    <option value="azampay" {{ old('payment_gateway') == 'azampay' ? 'selected' : '' }}>AzamPay (M-Pesa, Tigo Pesa, Airtel, Bank, Card)</option>
+                                    <option value="selcom" {{ $isThisForm && old('payment_gateway') == 'selcom' ? 'selected' : '' }}>Selcom (M-Pesa, Tigo Pesa, Airtel Money, Halopesa, Card)</option>
+                                    <option value="azampay" {{ $isThisForm && old('payment_gateway') == 'azampay' ? 'selected' : '' }}>AzamPay (M-Pesa, Tigo Pesa, Airtel, Bank, Card)</option>
                                 </select>
-                                @error('payment_gateway')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                @if($isThisForm && $errors->has('payment_gateway'))
+                                    <p class="mt-1 text-sm text-red-600">{{ $errors->first('payment_gateway') }}</p>
+                                @endif
                             </div>
 
                             <!-- Payment Method Selection (for both gateways) -->
@@ -93,53 +101,53 @@
                                 <div class="mb-3">
                                     <label for="payment_method_{{ $plan['id'] }}" class="block text-sm font-medium text-gray-700 mb-2">Payment Method *</label>
                                     <select id="payment_method_{{ $plan['id'] }}" name="payment_method" 
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('payment_method') border-red-300 @enderror">
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('payment_method') ? 'border-red-300' : '' }}">
                                         <option value="">Select Method</option>
-                                        <option value="mobile" {{ old('payment_method') == 'mobile' ? 'selected' : '' }}>Mobile Money</option>
-                                        <option value="card" {{ old('payment_method') == 'card' ? 'selected' : '' }}>Card Payment</option>
+                                        <option value="mobile" {{ $isThisForm && old('payment_method') == 'mobile' ? 'selected' : '' }}>Mobile Money</option>
+                                        <option value="card" {{ $isThisForm && old('payment_method') == 'card' ? 'selected' : '' }}>Card Payment</option>
                                         <span id="bank_option_{{ $plan['id'] }}" style="display: none;">
-                                            <option value="bank" {{ old('payment_method') == 'bank' ? 'selected' : '' }}>Bank Transfer</option>
+                                            <option value="bank" {{ $isThisForm && old('payment_method') == 'bank' ? 'selected' : '' }}>Bank Transfer</option>
                                         </span>
                                     </select>
-                                    @error('payment_method')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                                    @if($isThisForm && $errors->has('payment_method'))
+                                        <p class="mt-1 text-sm text-red-600">{{ $errors->first('payment_method') }}</p>
+                                    @endif
                                 </div>
 
                                 <!-- Mobile Money Provider -->
                                 <div id="mobile_provider_field_{{ $plan['id'] }}" style="display: none;" class="mb-3">
                                     <label for="mobile_provider_{{ $plan['id'] }}" class="block text-sm font-medium text-gray-700 mb-2">Mobile Provider *</label>
                                     <select id="mobile_provider_{{ $plan['id'] }}" name="mobile_provider" 
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('mobile_provider') border-red-300 @enderror">
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('mobile_provider') ? 'border-red-300' : '' }}">
                                         <option value="">Select Provider</option>
                                         <span id="selcom_providers_{{ $plan['id'] }}">
-                                            <option value="Mpesa" {{ old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
-                                            <option value="Tigo Pesa" {{ old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
-                                            <option value="Airtel Money" {{ old('mobile_provider') == 'Airtel Money' ? 'selected' : '' }}>Airtel Money</option>
-                                            <option value="Halopesa" {{ old('mobile_provider') == 'Halopesa' ? 'selected' : '' }}>Halopesa</option>
+                                            <option value="Mpesa" {{ $isThisForm && old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
+                                            <option value="Tigo Pesa" {{ $isThisForm && old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
+                                            <option value="Airtel Money" {{ $isThisForm && old('mobile_provider') == 'Airtel Money' ? 'selected' : '' }}>Airtel Money</option>
+                                            <option value="Halopesa" {{ $isThisForm && old('mobile_provider') == 'Halopesa' ? 'selected' : '' }}>Halopesa</option>
                                         </span>
                                         <span id="azampay_providers_{{ $plan['id'] }}" style="display: none;">
-                                            <option value="Mpesa" {{ old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
-                                            <option value="Tigo Pesa" {{ old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
-                                            <option value="Airtel" {{ old('mobile_provider') == 'Airtel' ? 'selected' : '' }}>Airtel Money</option>
-                                            <option value="Azampay" {{ old('mobile_provider') == 'Azampay' ? 'selected' : '' }}>Azampay</option>
+                                            <option value="Mpesa" {{ $isThisForm && old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
+                                            <option value="Tigo Pesa" {{ $isThisForm && old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
+                                            <option value="Airtel" {{ $isThisForm && old('mobile_provider') == 'Airtel' ? 'selected' : '' }}>Airtel Money</option>
+                                            <option value="Azampay" {{ $isThisForm && old('mobile_provider') == 'Azampay' ? 'selected' : '' }}>Azampay</option>
                                         </span>
                                     </select>
-                                    @error('mobile_provider')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                                    @if($isThisForm && $errors->has('mobile_provider'))
+                                        <p class="mt-1 text-sm text-red-600">{{ $errors->first('mobile_provider') }}</p>
+                                    @endif
                                 </div>
 
                                 <!-- Account Number for Mobile Money -->
                                 <div id="account_number_field_{{ $plan['id'] }}" style="display: none;" class="mb-3">
                                     <label for="account_number_{{ $plan['id'] }}" class="block text-sm font-medium text-gray-700 mb-2">Mobile Number *</label>
-                                    <input type="text" id="account_number_{{ $plan['id'] }}" name="account_number" value="{{ old('account_number') }}"
+                                    <input type="text" id="account_number_{{ $plan['id'] }}" name="account_number" value="{{ $isThisForm ? old('account_number') : '' }}"
                                            placeholder="e.g., 0625933171" 
-                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 @error('account_number') border-red-300 @enderror">
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('account_number') ? 'border-red-300' : '' }}">
                                     <p class="mt-1 text-xs text-gray-500">Enter your mobile money number</p>
-                                    @error('account_number')
-                                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
+                                    @if($isThisForm && $errors->has('account_number'))
+                                        <p class="mt-1 text-sm text-red-600">{{ $errors->first('account_number') }}</p>
+                                    @endif
                                 </div>
                             </div>
                             
@@ -167,62 +175,54 @@ document.addEventListener('DOMContentLoaded', function() {
         const paymentMethod = document.getElementById('payment_method_' + planId);
         const mobileProviderField = document.getElementById('mobile_provider_field_' + planId);
         const accountNumberField = document.getElementById('account_number_field_' + planId);
+        const mobileProviderSelect = document.getElementById('mobile_provider_' + planId);
+        
+        // Function to update provider visibility based on gateway
+        function updateProvidersForGateway(gateway) {
+            if (gateway === 'selcom') {
+                if (selcomProviders) selcomProviders.style.display = 'inline';
+                if (azampayProviders) azampayProviders.style.display = 'none';
+                if (bankOption) bankOption.style.display = 'none';
+                // Remove bank option if exists
+                const bankOpt = paymentMethod.querySelector('option[value="bank"]');
+                if (bankOpt && bankOpt.parentElement) bankOpt.remove();
+            } else if (gateway === 'azampay') {
+                if (selcomProviders) selcomProviders.style.display = 'none';
+                if (azampayProviders) azampayProviders.style.display = 'inline';
+                if (bankOption) bankOption.style.display = 'inline';
+                // Add bank option if not exists
+                if (!paymentMethod.querySelector('option[value="bank"]')) {
+                    const bankOpt = document.createElement('option');
+                    bankOpt.value = 'bank';
+                    bankOpt.textContent = 'Bank Transfer';
+                    paymentMethod.appendChild(bankOpt);
+                }
+            }
+        }
         
         if (gatewaySelect) {
-            // Initialize on page load
+            // Initialize on page load based on current value
             if (gatewaySelect.value === 'selcom' || gatewaySelect.value === 'azampay') {
                 paymentMethodSection.style.display = 'block';
-                
-                if (gatewaySelect.value === 'selcom') {
-                    if (selcomProviders) selcomProviders.style.display = 'inline';
-                    if (azampayProviders) azampayProviders.style.display = 'none';
-                    if (bankOption) bankOption.style.display = 'none';
-                    // Remove bank option if exists
-                    const bankOpt = paymentMethod.querySelector('option[value="bank"]');
-                    if (bankOpt) bankOpt.remove();
-                } else {
-                    if (selcomProviders) selcomProviders.style.display = 'none';
-                    if (azampayProviders) azampayProviders.style.display = 'inline';
-                    if (bankOption) bankOption.style.display = 'inline';
-                    // Add bank option if not exists
-                    if (!paymentMethod.querySelector('option[value="bank"]')) {
-                        const bankOpt = document.createElement('option');
-                        bankOpt.value = 'bank';
-                        bankOpt.textContent = 'Bank Transfer';
-                        paymentMethod.appendChild(bankOpt);
-                    }
-                }
+                updateProvidersForGateway(gatewaySelect.value);
             }
             
             gatewaySelect.addEventListener('change', function() {
                 if (this.value === 'selcom' || this.value === 'azampay') {
                     paymentMethodSection.style.display = 'block';
+                    updateProvidersForGateway(this.value);
                     
-                    // Show/hide providers based on gateway
-                    if (this.value === 'selcom') {
-                        if (selcomProviders) selcomProviders.style.display = 'inline';
-                        if (azampayProviders) azampayProviders.style.display = 'none';
-                        if (bankOption) bankOption.style.display = 'none';
-                        // Remove bank option if exists
-                        const bankOpt = paymentMethod.querySelector('option[value="bank"]');
-                        if (bankOpt) bankOpt.remove();
-                    } else {
-                        if (selcomProviders) selcomProviders.style.display = 'none';
-                        if (azampayProviders) azampayProviders.style.display = 'inline';
-                        if (bankOption) bankOption.style.display = 'inline';
-                        // Add bank option if not exists
-                        if (!paymentMethod.querySelector('option[value="bank"]')) {
-                            const bankOpt = document.createElement('option');
-                            bankOpt.value = 'bank';
-                            bankOpt.textContent = 'Bank Transfer';
-                            paymentMethod.appendChild(bankOpt);
+                    // Clear fields when switching gateways (unless there's old input)
+                    const hasOldInput = paymentMethod && paymentMethod.value;
+                    if (!hasOldInput) {
+                        if (paymentMethod) paymentMethod.value = '';
+                        if (mobileProviderSelect) mobileProviderSelect.value = '';
+                        if (mobileProviderField) mobileProviderField.style.display = 'none';
+                        if (accountNumberField) {
+                            accountNumberField.value = '';
+                            accountNumberField.style.display = 'none';
                         }
                     }
-                    
-                    // Clear fields when switching gateways
-                    if (paymentMethod) paymentMethod.value = '';
-                    if (mobileProviderField) mobileProviderField.style.display = 'none';
-                    if (accountNumberField) accountNumberField.style.display = 'none';
                 } else {
                     paymentMethodSection.style.display = 'none';
                 }
