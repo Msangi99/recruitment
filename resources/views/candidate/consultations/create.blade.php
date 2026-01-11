@@ -81,6 +81,121 @@
                         @enderror
                     </div>
 
+                    <!-- Payment Gateway Selection -->
+                    <div class="border-t border-gray-200 pt-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Payment Method</h3>
+                        
+                        <div class="mb-4">
+                            <label for="payment_gateway" class="block text-sm font-medium text-gray-700 mb-2">Select Payment Gateway *</label>
+                            <select id="payment_gateway" name="payment_gateway" required 
+                                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('payment_gateway') border-red-300 @enderror">
+                                <option value="">Choose Payment Gateway</option>
+                                <option value="selcom" {{ old('payment_gateway') == 'selcom' ? 'selected' : '' }}>Selcom (M-Pesa, Tigo Pesa, Airtel Money, Halopesa, Card)</option>
+                                <option value="azampay" {{ old('payment_gateway') == 'azampay' ? 'selected' : '' }}>AzamPay (M-Pesa, Tigo Pesa, Airtel, Bank, Card)</option>
+                            </select>
+                            @error('payment_gateway')
+                                <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <!-- Payment Method Selection (for both gateways) -->
+                        <div id="payment_method_section" style="display: none;">
+                            <div class="mb-4">
+                                <label for="payment_method" class="block text-sm font-medium text-gray-700 mb-2">Payment Method *</label>
+                                <select id="payment_method" name="payment_method" 
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('payment_method') border-red-300 @enderror">
+                                    <option value="">Select Method</option>
+                                    <option value="mobile" {{ old('payment_method') == 'mobile' ? 'selected' : '' }}>Mobile Money</option>
+                                    <option value="card" {{ old('payment_method') == 'card' ? 'selected' : '' }}>Card Payment</option>
+                                    <span id="bank_option" style="display: none;">
+                                        <option value="bank" {{ old('payment_method') == 'bank' ? 'selected' : '' }}>Bank Transfer</option>
+                                    </span>
+                                </select>
+                                @error('payment_method')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Mobile Money Provider -->
+                            <div id="mobile_provider_field" style="display: none;" class="mb-4">
+                                <label for="mobile_provider" class="block text-sm font-medium text-gray-700 mb-2">Mobile Provider *</label>
+                                <select id="mobile_provider" name="mobile_provider" 
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('mobile_provider') border-red-300 @enderror">
+                                    <option value="">Select Provider</option>
+                                    <span id="selcom_providers">
+                                        <option value="Mpesa" {{ old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
+                                        <option value="Tigo Pesa" {{ old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
+                                        <option value="Airtel Money" {{ old('mobile_provider') == 'Airtel Money' ? 'selected' : '' }}>Airtel Money</option>
+                                        <option value="Halopesa" {{ old('mobile_provider') == 'Halopesa' ? 'selected' : '' }}>Halopesa</option>
+                                    </span>
+                                    <span id="azampay_providers" style="display: none;">
+                                        <option value="Mpesa" {{ old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
+                                        <option value="Tigo Pesa" {{ old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
+                                        <option value="Airtel" {{ old('mobile_provider') == 'Airtel' ? 'selected' : '' }}>Airtel Money</option>
+                                        <option value="Azampay" {{ old('mobile_provider') == 'Azampay' ? 'selected' : '' }}>Azampay</option>
+                                    </span>
+                                </select>
+                                @error('mobile_provider')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Account Number for Mobile Money -->
+                            <div id="account_number_field" style="display: none;" class="mb-4">
+                                <label for="account_number" class="block text-sm font-medium text-gray-700 mb-2">Mobile Number *</label>
+                                <input type="text" id="account_number" name="account_number" value="{{ old('account_number') }}" 
+                                       placeholder="e.g., 0625933171" 
+                                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('account_number') border-red-300 @enderror">
+                                <p class="mt-1 text-xs text-gray-500">Enter your mobile money number</p>
+                                @error('account_number')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                            <div class="mb-4">
+                                <label for="payment_method" class="block text-sm font-medium text-gray-700 mb-2">Payment Method *</label>
+                                <select id="payment_method" name="payment_method" 
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('payment_method') border-red-300 @enderror">
+                                    <option value="">Select Method</option>
+                                    <option value="mobile" {{ old('payment_method') == 'mobile' ? 'selected' : '' }}>Mobile Money</option>
+                                    <option value="bank" {{ old('payment_method') == 'bank' ? 'selected' : '' }}>Bank Transfer</option>
+                                    <option value="card" {{ old('payment_method') == 'card' ? 'selected' : '' }}>Card Payment</option>
+                                </select>
+                                @error('payment_method')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Mobile Money Provider -->
+                            <div id="mobile_provider_field" style="display: none;" class="mb-4">
+                                <label for="mobile_provider" class="block text-sm font-medium text-gray-700 mb-2">Mobile Provider *</label>
+                                <select id="mobile_provider" name="mobile_provider" 
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('mobile_provider') border-red-300 @enderror">
+                                    <option value="">Select Provider</option>
+                                    <option value="Mpesa" {{ old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
+                                    <option value="Tigo Pesa" {{ old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
+                                    <option value="Airtel" {{ old('mobile_provider') == 'Airtel' ? 'selected' : '' }}>Airtel Money</option>
+                                    <option value="Azampay" {{ old('mobile_provider') == 'Azampay' ? 'selected' : '' }}>Azampay</option>
+                                </select>
+                                @error('mobile_provider')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Account Number for Mobile Money -->
+                            <div id="account_number_field" style="display: none;" class="mb-4">
+                                <label for="account_number" class="block text-sm font-medium text-gray-700 mb-2">Mobile Number *</label>
+                                <input type="text" id="account_number" name="account_number" value="{{ old('account_number') }}" 
+                                       placeholder="e.g., 0625933171" 
+                                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('account_number') border-red-300 @enderror">
+                                <p class="mt-1 text-xs text-gray-500">Enter your mobile money number</p>
+                                @error('account_number')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="bg-indigo-50 border border-indigo-200 rounded-md p-4">
                         <p class="text-sm text-indigo-800">
                             <strong>Payment Required:</strong> This consultation costs TZS 30,000 (or $12). You will be redirected to payment after submitting this form.
@@ -104,6 +219,7 @@
 </div>
 
 <script>
+// Meeting mode toggle
 document.getElementById('meeting_mode').addEventListener('change', function() {
     const meetingLinkField = document.getElementById('meeting_link_field');
     const meetingLocationField = document.getElementById('meeting_location_field');
@@ -120,8 +236,106 @@ document.getElementById('meeting_mode').addEventListener('change', function() {
     }
 });
 
-if (document.getElementById('meeting_mode').value) {
-    document.getElementById('meeting_mode').dispatchEvent(new Event('change'));
+// Payment gateway toggle
+const paymentGatewaySelect = document.getElementById('payment_gateway');
+if (paymentGatewaySelect) {
+    const paymentMethodSection = document.getElementById('payment_method_section');
+    const selcomProviders = document.getElementById('selcom_providers');
+    const azampayProviders = document.getElementById('azampay_providers');
+    const bankOption = document.getElementById('bank_option');
+    const paymentMethod = document.getElementById('payment_method');
+    
+    // Initialize on page load
+    if (paymentGatewaySelect.value === 'selcom' || paymentGatewaySelect.value === 'azampay') {
+        paymentMethodSection.style.display = 'block';
+        
+        if (paymentGatewaySelect.value === 'selcom') {
+            if (selcomProviders) selcomProviders.style.display = 'inline';
+            if (azampayProviders) azampayProviders.style.display = 'none';
+            if (bankOption) bankOption.style.display = 'none';
+            // Remove bank option if exists
+            const bankOpt = paymentMethod.querySelector('option[value="bank"]');
+            if (bankOpt) bankOpt.remove();
+        } else {
+            if (selcomProviders) selcomProviders.style.display = 'none';
+            if (azampayProviders) azampayProviders.style.display = 'inline';
+            if (bankOption) bankOption.style.display = 'inline';
+            // Add bank option if not exists
+            if (!paymentMethod.querySelector('option[value="bank"]')) {
+                const bankOpt = document.createElement('option');
+                bankOpt.value = 'bank';
+                bankOpt.textContent = 'Bank Transfer';
+                paymentMethod.appendChild(bankOpt);
+            }
+        }
+    }
+    
+    paymentGatewaySelect.addEventListener('change', function() {
+        if (this.value === 'selcom' || this.value === 'azampay') {
+            paymentMethodSection.style.display = 'block';
+            
+            // Show/hide providers based on gateway
+            if (this.value === 'selcom') {
+                if (selcomProviders) selcomProviders.style.display = 'inline';
+                if (azampayProviders) azampayProviders.style.display = 'none';
+                if (bankOption) bankOption.style.display = 'none';
+                // Remove bank option if exists
+                const bankOpt = paymentMethod.querySelector('option[value="bank"]');
+                if (bankOpt) bankOpt.remove();
+            } else {
+                if (selcomProviders) selcomProviders.style.display = 'none';
+                if (azampayProviders) azampayProviders.style.display = 'inline';
+                if (bankOption) bankOption.style.display = 'inline';
+                // Add bank option if not exists
+                if (!paymentMethod.querySelector('option[value="bank"]')) {
+                    const bankOpt = document.createElement('option');
+                    bankOpt.value = 'bank';
+                    bankOpt.textContent = 'Bank Transfer';
+                    paymentMethod.appendChild(bankOpt);
+                }
+            }
+            
+            // Clear fields when switching gateways
+            if (paymentMethod) paymentMethod.value = '';
+            const mobileProviderField = document.getElementById('mobile_provider_field');
+            const accountNumberField = document.getElementById('account_number_field');
+            if (mobileProviderField) mobileProviderField.style.display = 'none';
+            if (accountNumberField) accountNumberField.style.display = 'none';
+        } else {
+            paymentMethodSection.style.display = 'none';
+        }
+    });
+}
+
+// Payment method toggle
+const paymentMethodSelect = document.getElementById('payment_method');
+if (paymentMethodSelect) {
+    // Initialize on page load
+    if (paymentMethodSelect.value === 'mobile') {
+        const mobileProviderField = document.getElementById('mobile_provider_field');
+        const accountNumberField = document.getElementById('account_number_field');
+        if (mobileProviderField) mobileProviderField.style.display = 'block';
+        if (accountNumberField) accountNumberField.style.display = 'block';
+    }
+    
+    paymentMethodSelect.addEventListener('change', function() {
+        const mobileProviderField = document.getElementById('mobile_provider_field');
+        const accountNumberField = document.getElementById('account_number_field');
+        
+        if (this.value === 'mobile') {
+            if (mobileProviderField) mobileProviderField.style.display = 'block';
+            if (accountNumberField) accountNumberField.style.display = 'block';
+        } else {
+            if (mobileProviderField) mobileProviderField.style.display = 'none';
+            if (accountNumberField) accountNumberField.style.display = 'none';
+        }
+    });
+}
+
+// Initialize meeting mode on page load
+const meetingModeSelect = document.getElementById('meeting_mode');
+if (meetingModeSelect && meetingModeSelect.value) {
+    meetingModeSelect.dispatchEvent(new Event('change'));
 }
 </script>
         </div>

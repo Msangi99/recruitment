@@ -43,6 +43,33 @@ class DocumentController extends Controller
         return back()->with('success', 'Document uploaded successfully. Waiting for admin verification.');
     }
 
+    public function show(Document $document)
+    {
+        // Ensure user owns the document
+        if ($document->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // Check if file exists
+        if (!Storage::disk('private')->exists($document->file_path)) {
+            abort(404, 'Document not found');
+        }
+
+        // Get file path and determine if it should be displayed inline or downloaded
+        $filePath = Storage::disk('private')->path($document->file_path);
+        $mimeType = Storage::disk('private')->mimeType($document->file_path);
+        
+        // For images and PDFs, display inline; for other files, force download
+        $disposition = in_array($mimeType, ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf']) 
+            ? 'inline' 
+            : 'attachment';
+
+        return response()->file($filePath, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => $disposition . '; filename="' . $document->file_name . '"',
+        ]);
+    }
+
     public function destroy(Document $document)
     {
         if ($document->user_id !== auth()->id()) {

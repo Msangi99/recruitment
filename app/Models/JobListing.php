@@ -35,6 +35,7 @@ class JobListing extends Model
         'salary_currency',
         'salary_period',
         'is_active',
+        'status',
         'positions_available',
         'application_deadline',
     ];

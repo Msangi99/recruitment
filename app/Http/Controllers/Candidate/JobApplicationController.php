@@ -37,6 +37,35 @@ class JobApplicationController extends Controller
             $query->where('location', 'like', "%{$request->location}%");
         }
 
+        // Experience level filter
+        if ($request->filled('min_experience')) {
+            $query->where('experience_required', '<=', $request->min_experience);
+        }
+
+        // Education level filter
+        if ($request->filled('education_level')) {
+            $query->where('education_level', $request->education_level);
+        }
+
+        // Language filter
+        if ($request->filled('language')) {
+            $query->whereJsonContains('languages', $request->language);
+        }
+
+        // Salary range filter
+        if ($request->filled('min_salary')) {
+            $query->where(function($q) use ($request) {
+                $q->where('salary_min', '>=', $request->min_salary)
+                  ->orWhere('salary_max', '>=', $request->min_salary);
+            });
+        }
+        if ($request->filled('max_salary')) {
+            $query->where(function($q) use ($request) {
+                $q->where('salary_min', '<=', $request->max_salary)
+                  ->orWhere('salary_max', '<=', $request->max_salary);
+            });
+        }
+
         $jobs = $query->latest()->paginate(20);
         $categories = Category::where('is_active', true)->get();
         $myApplications = JobApplication::where('candidate_id', $candidate->id)

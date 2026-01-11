@@ -82,9 +82,19 @@
                                             {{ $payment->created_at->format('M d, Y') }}
                                         </td>
                                         <td class="px-6 py-4 text-sm text-gray-900">
-                                            {{ ucfirst($payment->appointment_type) }} Consultation
+                                            @if($payment->appointment_type == 'subscription')
+                                                {{ $payment->notes ?? 'Subscription' }}
+                                            @else
+                                                {{ ucfirst($payment->appointment_type) }} Consultation
+                                            @endif
                                             @if($payment->scheduled_at)
-                                                <div class="text-xs text-gray-500">{{ $payment->scheduled_at->format('M d, Y h:i A') }}</div>
+                                                <div class="text-xs text-gray-500">
+                                                    @if($payment->appointment_type == 'subscription')
+                                                        Expires: {{ $payment->scheduled_at->format('M d, Y') }}
+                                                    @else
+                                                        {{ $payment->scheduled_at->format('M d, Y h:i A') }}
+                                                    @endif
+                                                </div>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">

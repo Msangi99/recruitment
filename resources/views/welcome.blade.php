@@ -21,7 +21,9 @@
         <header class="relative z-10">
             <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
                 <div class="flex items-center gap-3">
-                    <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white text-lg font-extrabold shadow-lg">CZ</div>
+                    <a href="{{ route('home') }}" class="flex items-center">
+                        <img src="{{ asset('logo.jpg') }}" alt="COYZON Logo" class="h-11 w-auto">
+                    </a>
                     <div>
                         <p class="text-xs uppercase tracking-[3px] text-slate-500 font-semibold">Coyzon</p>
                         <p class="text-lg font-bold text-slate-900">Recruitment Platform</p>
@@ -30,8 +32,11 @@
 
                 <div class="hidden items-center gap-6 text-sm font-semibold text-slate-600 md:flex">
                     <a href="#how-it-works" class="hover:text-slate-900">How it works</a>
+                    <a href="#industries" class="hover:text-slate-900">Industries</a>
                     <a href="#solutions" class="hover:text-slate-900">Solutions</a>
                     <a href="#testimonials" class="hover:text-slate-900">Stories</a>
+                    <a href="#faq" class="hover:text-slate-900">FAQ</a>
+                    <a href="#team" class="hover:text-slate-900">Team</a>
                 </div>
 
                 <div class="flex items-center gap-3">
@@ -53,7 +58,7 @@
         </header>
 
         <main class="relative z-10">
-            <!-- Hero -->
+            <!-- Hero with Image Carousel -->
             <section class="mx-auto max-w-7xl px-6 pb-16 pt-6 lg:flex lg:items-center lg:gap-12">
                 <div class="flex-1 space-y-6">
                     <span class="inline-flex items-center gap-2 rounded-full bg-white/60 px-4 py-2 text-xs font-semibold uppercase tracking-[2px] text-blue-700 ring-1 ring-blue-100 shadow-sm">
@@ -91,7 +96,32 @@
                 </div>
 
                 <div class="relative mt-10 flex-1 lg:mt-0">
-                    <div class="rounded-3xl border border-white/80 bg-white/70 p-6 shadow-2xl backdrop-blur">
+                    <!-- Hero Image Carousel -->
+                    <div class="relative h-96 rounded-3xl overflow-hidden shadow-2xl">
+                        <div id="hero-carousel" class="relative h-full">
+                            <div class="hero-slide active absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-100">
+                                <img src="{{ asset('user1.jpg') }}" alt="Recruitment" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                            </div>
+                            <div class="hero-slide absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0">
+                                <img src="{{ asset('user2.jpg') }}" alt="Teamwork" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                            </div>
+                            <div class="hero-slide absolute inset-0 transition-opacity duration-1000 ease-in-out opacity-0">
+                                <img src="{{ asset('user3.jpeg') }}" alt="Success" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                            </div>
+                        </div>
+                        <!-- Carousel Indicators -->
+                        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+                            <button class="carousel-indicator active w-2 h-2 rounded-full bg-white transition-all duration-300" data-slide="0"></button>
+                            <button class="carousel-indicator w-2 h-2 rounded-full bg-white/50 transition-all duration-300" data-slide="1"></button>
+                            <button class="carousel-indicator w-2 h-2 rounded-full bg-white/50 transition-all duration-300" data-slide="2"></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Card Overlay -->
+                    <div class="absolute -bottom-6 left-6 right-6 rounded-3xl border border-white/80 bg-white/90 p-6 shadow-2xl backdrop-blur">
                         <div class="grid grid-cols-2 gap-4">
                             <div class="rounded-2xl border border-slate-100 bg-gradient-to-br from-blue-50 to-white p-4 shadow-sm">
                                 <p class="text-xs uppercase tracking-[2px] text-slate-500 font-semibold mb-2">Employers</p>
@@ -114,6 +144,134 @@
                                         <i data-lucide="timer" class="h-6 w-6"></i>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Industry Cards -->
+            @if($categories && $categories->count() > 0)
+            <section id="industries" class="mx-auto max-w-7xl px-6 pb-14">
+                <div class="text-center mb-10">
+                    <p class="text-xs uppercase tracking-[2px] text-blue-700 font-semibold">Industries We Serve</p>
+                    <h2 class="mt-2 text-2xl font-bold text-slate-900">Connecting talent across diverse sectors</h2>
+                </div>
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    @foreach($categories->take(8) as $category)
+                    <div class="group rounded-2xl border border-slate-100 bg-white p-6 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                            @if($category->icon)
+                                <i data-lucide="{{ $category->icon }}" class="h-6 w-6"></i>
+                            @else
+                                <i data-lucide="briefcase" class="h-6 w-6"></i>
+                            @endif
+                        </div>
+                        <h3 class="text-lg font-semibold text-slate-900 mb-2">{{ $category->name }}</h3>
+                        @if($category->description)
+                        <p class="text-sm text-slate-600">{{ \Illuminate\Support\Str::limit($category->description, 80) }}</p>
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+            </section>
+            @endif
+
+            <!-- Circular Recruitment Process -->
+            <section class="mx-auto max-w-7xl px-6 pb-14">
+                <div class="text-center mb-10">
+                    <p class="text-xs uppercase tracking-[2px] text-blue-700 font-semibold">Our Process</p>
+                    <h2 class="mt-2 text-2xl font-bold text-slate-900">A circular journey from talent to opportunity</h2>
+                </div>
+                <div class="relative flex items-center justify-center py-12">
+                    <!-- Circular Process Visualization -->
+                    <div class="relative w-96 h-96">
+                        <!-- Circle -->
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 400 400">
+                            <circle cx="200" cy="200" r="180" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+                            <circle cx="200" cy="200" r="180" fill="none" stroke="#3b82f6" stroke-width="3" stroke-dasharray="1130" stroke-dashoffset="0" class="process-circle"/>
+                        </svg>
+                        
+                        <!-- Process Steps -->
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="grid grid-cols-2 gap-8 w-full h-full p-12">
+                                <!-- Step 1: Register -->
+                                <div class="process-step flex flex-col items-center justify-start text-center" data-step="1">
+                                    <div class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center mb-3 shadow-lg">
+                                        <span class="text-xl font-bold">1</span>
+                                    </div>
+                                    <h4 class="font-semibold text-sm text-slate-900">Register</h4>
+                                    <p class="text-xs text-slate-600 mt-1">Create profile</p>
+                                </div>
+                                
+                                <!-- Step 2: Verify -->
+                                <div class="process-step flex flex-col items-center justify-start text-center" data-step="2">
+                                    <div class="w-16 h-16 rounded-full bg-emerald-600 text-white flex items-center justify-center mb-3 shadow-lg">
+                                        <span class="text-xl font-bold">2</span>
+                                    </div>
+                                    <h4 class="font-semibold text-sm text-slate-900">Verify</h4>
+                                    <p class="text-xs text-slate-600 mt-1">Admin approval</p>
+                                </div>
+                                
+                                <!-- Step 3: Match -->
+                                <div class="process-step flex flex-col items-center justify-end text-center" data-step="3">
+                                    <div class="w-16 h-16 rounded-full bg-indigo-600 text-white flex items-center justify-center mb-3 shadow-lg">
+                                        <span class="text-xl font-bold">3</span>
+                                    </div>
+                                    <h4 class="font-semibold text-sm text-slate-900">Match</h4>
+                                    <p class="text-xs text-slate-600 mt-1">Find opportunities</p>
+                                </div>
+                                
+                                <!-- Step 4: Connect -->
+                                <div class="process-step flex flex-col items-center justify-end text-center" data-step="4">
+                                    <div class="w-16 h-16 rounded-full bg-amber-600 text-white flex items-center justify-center mb-3 shadow-lg">
+                                        <span class="text-xl font-bold">4</span>
+                                    </div>
+                                    <h4 class="font-semibold text-sm text-slate-900">Connect</h4>
+                                    <p class="text-xs text-slate-600 mt-1">Interview & hire</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Interactive World Map -->
+            <section class="mx-auto max-w-7xl px-6 pb-14">
+                <div class="text-center mb-10">
+                    <p class="text-xs uppercase tracking-[2px] text-blue-700 font-semibold">Global Reach</p>
+                    <h2 class="mt-2 text-2xl font-bold text-slate-900">Connecting talent worldwide</h2>
+                </div>
+                <div class="relative rounded-3xl border border-slate-100 bg-white p-8 shadow-lg overflow-hidden">
+                    <div id="world-map" class="relative h-96 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl flex items-center justify-center">
+                        <!-- Simplified World Map SVG -->
+                        <svg viewBox="0 0 1000 500" class="w-full h-full">
+                            <!-- Continents simplified -->
+                            <g class="continent" data-region="africa">
+                                <path d="M450 200 L480 180 L500 200 L510 250 L500 300 L480 320 L450 310 L440 280 L440 240 Z" 
+                                      fill="#3b82f6" opacity="0.3" class="hover:opacity-60 cursor-pointer transition-opacity"/>
+                                <circle cx="470" cy="250" r="8" fill="#3b82f6" class="pulse-dot"/>
+                            </g>
+                            <g class="continent" data-region="europe">
+                                <path d="M480 100 L520 90 L540 120 L530 150 L510 160 L490 140 L480 120 Z" 
+                                      fill="#6366f1" opacity="0.3" class="hover:opacity-60 cursor-pointer transition-opacity"/>
+                                <circle cx="510" cy="120" r="8" fill="#6366f1" class="pulse-dot"/>
+                            </g>
+                            <g class="continent" data-region="asia">
+                                <path d="M600 120 L700 100 L720 150 L710 200 L680 220 L650 200 L620 180 L600 150 Z" 
+                                      fill="#8b5cf6" opacity="0.3" class="hover:opacity-60 cursor-pointer transition-opacity"/>
+                                <circle cx="660" cy="160" r="8" fill="#8b5cf6" class="pulse-dot"/>
+                            </g>
+                            <g class="continent" data-region="americas">
+                                <path d="M200 150 L250 140 L280 180 L270 250 L240 280 L210 260 L190 220 L190 180 Z" 
+                                      fill="#ec4899" opacity="0.3" class="hover:opacity-60 cursor-pointer transition-opacity"/>
+                                <circle cx="230" cy="200" r="8" fill="#ec4899" class="pulse-dot"/>
+                            </g>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center bg-white/90 backdrop-blur px-8 py-6 rounded-2xl shadow-lg">
+                                <p class="text-2xl font-bold text-slate-900 mb-2">50+ Countries</p>
+                                <p class="text-sm text-slate-600">Active recruitment partnerships</p>
                             </div>
                         </div>
                     </div>
@@ -234,6 +392,99 @@
                 </div>
             </section>
 
+            <!-- FAQ Accordion -->
+            <section id="faq" class="mx-auto max-w-4xl px-6 pb-14">
+                <div class="text-center mb-10">
+                    <p class="text-xs uppercase tracking-[2px] text-blue-700 font-semibold">Frequently Asked Questions</p>
+                    <h2 class="mt-2 text-2xl font-bold text-slate-900">Everything you need to know</h2>
+                </div>
+                <div class="space-y-4">
+                    <div class="faq-item rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+                        <button class="faq-button w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors" data-faq="1">
+                            <span class="font-semibold text-slate-900">How does the verification process work?</span>
+                            <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-4">
+                            <p class="text-sm text-slate-600">Candidates submit their profiles with required documents. Our admin team reviews and verifies all information, including ID, passport, CV, and professional credentials. Once approved, profiles become visible to employers.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+                        <button class="faq-button w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors" data-faq="2">
+                            <span class="font-semibold text-slate-900">What payment methods are accepted?</span>
+                            <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-4">
+                            <p class="text-sm text-slate-600">We accept M-Pesa, Tigo Pesa, Airtel Money, Halopesa, and credit/debit cards through our secure payment gateway. All payments are processed securely and are required before booking consultations.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+                        <button class="faq-button w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors" data-faq="3">
+                            <span class="font-semibold text-slate-900">Can employers see my contact information?</span>
+                            <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-4">
+                            <p class="text-sm text-slate-600">No, your contact information is kept private. Employers can only see your verified profile, skills, and professional information. Contact details are only shared after you accept an interview request.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+                        <button class="faq-button w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors" data-faq="4">
+                            <span class="font-semibold text-slate-900">How long does profile verification take?</span>
+                            <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-4">
+                            <p class="text-sm text-slate-600">Typically, profile verification is completed within 24-48 hours after submission. You'll receive email notifications at each stage of the process.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden">
+                        <button class="faq-button w-full px-6 py-4 text-left flex items-center justify-between hover:bg-slate-50 transition-colors" data-faq="5">
+                            <span class="font-semibold text-slate-900">Is there a fee for employers to post jobs?</span>
+                            <i data-lucide="chevron-down" class="h-5 w-5 text-slate-400 faq-icon transition-transform"></i>
+                        </button>
+                        <div class="faq-content hidden px-6 pb-4">
+                            <p class="text-sm text-slate-600">Job posting is free for employers. However, consultations with candidates require payment. Employers can browse verified candidates and request interviews at no cost.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Team Section -->
+            <section id="team" class="mx-auto max-w-7xl px-6 pb-14">
+                <div class="text-center mb-10">
+                    <p class="text-xs uppercase tracking-[2px] text-blue-700 font-semibold">Our Team</p>
+                    <h2 class="mt-2 text-2xl font-bold text-slate-900">Meet the people behind COYZON</h2>
+                </div>
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
+                    <div class="text-center">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden shadow-lg ring-2 ring-white">
+                            <img src="{{ asset('user1.jpg') }}" alt="John Doe" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-semibold text-slate-900">John Doe</h3>
+                        <p class="text-sm text-slate-600">CEO & Founder</p>
+                        <p class="text-xs text-slate-500 mt-2">20+ years in recruitment</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden shadow-lg ring-2 ring-white">
+                            <img src="{{ asset('user2.jpg') }}" alt="Jane Smith" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-semibold text-slate-900">Jane Smith</h3>
+                        <p class="text-sm text-slate-600">Head of Operations</p>
+                        <p class="text-xs text-slate-500 mt-2">Expert in talent matching</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden shadow-lg ring-2 ring-white">
+                            <img src="{{ asset('user3.jpeg') }}" alt="Mike Wilson" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-semibold text-slate-900">Mike Wilson</h3>
+                        <p class="text-sm text-slate-600">Tech Lead</p>
+                        <p class="text-xs text-slate-500 mt-2">Building the platform</p>
+                    </div>
+                </div>
+            </section>
+
             <!-- CTA -->
             <section class="mx-auto max-w-6xl px-6 pb-20">
                 <div class="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-900 to-blue-700 px-8 py-10 shadow-2xl">
@@ -275,7 +526,102 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            
+            // Hero Image Carousel
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.hero-slide');
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            const totalSlides = slides.length;
+            
+            function showSlide(index) {
+                slides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    slide.style.opacity = i === index ? '1' : '0';
+                });
+                indicators.forEach((indicator, i) => {
+                    indicator.classList.toggle('active', i === index);
+                    indicator.style.opacity = i === index ? '1' : '0.5';
+                });
+            }
+            
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                showSlide(currentSlide);
+            }
+            
+            // Auto-advance carousel
+            setInterval(nextSlide, 5000);
+            
+            // Manual indicator clicks
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    currentSlide = index;
+                    showSlide(currentSlide);
+                });
+            });
+            
+            // FAQ Accordion
+            const faqButtons = document.querySelectorAll('.faq-button');
+            faqButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const faqItem = button.closest('.faq-item');
+                    const content = faqItem.querySelector('.faq-content');
+                    const icon = button.querySelector('.faq-icon');
+                    const isOpen = !content.classList.contains('hidden');
+                    
+                    // Close all FAQs
+                    document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                    document.querySelectorAll('.faq-icon').forEach(i => {
+                        i.style.transform = 'rotate(0deg)';
+                    });
+                    
+                    // Toggle current FAQ
+                    if (isOpen) {
+                        content.classList.add('hidden');
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.classList.remove('hidden');
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+            
+            // World Map Interactions
+            const continents = document.querySelectorAll('.continent');
+            continents.forEach(continent => {
+                continent.addEventListener('mouseenter', function() {
+                    const region = this.getAttribute('data-region');
+                    // Add hover effect
+                });
+            });
+            
+            // Process Circle Animation
+            const processCircle = document.querySelector('.process-circle');
+            if (processCircle) {
+                let progress = 0;
+                setInterval(() => {
+                    progress = (progress + 1) % 100;
+                    const offset = 1130 - (1130 * progress / 100);
+                    processCircle.style.strokeDashoffset = offset;
+                }, 50);
+            }
         });
     </script>
+    
+    <style>
+        .hero-slide {
+            transition: opacity 1s ease-in-out;
+        }
+        .pulse-dot {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
+        }
+        .faq-content {
+            transition: all 0.3s ease;
+        }
+    </style>
 </body>
 </html>

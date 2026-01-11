@@ -43,7 +43,9 @@
                     </button>
 
                     <div class="hidden lg:flex items-center gap-3">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900 text-white font-black">CZ</div>
+                        <a href="{{ route('home') }}" class="flex items-center">
+                            <img src="{{ asset('logo.jpg') }}" alt="COYZON Logo" class="h-10 w-auto">
+                        </a>
                         <div>
                             <p class="text-xs uppercase tracking-[3px] text-slate-500 font-semibold">@yield('page_label', 'Portal')</p>
                             <p class="text-lg font-semibold text-slate-900">@yield('title', 'Dashboard')</p>
@@ -109,7 +111,9 @@
                    class="fixed inset-y-0 left-0 z-50 h-screen w-72 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-slate-100 shadow-2xl transition-transform duration-300">
                 <div class="flex h-full flex-col">
                     <div class="flex h-16 items-center gap-3 border-b border-white/10 px-6">
-                        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-lg font-black shadow-inner">CZ</div>
+                        <a href="{{ route('home') }}" class="flex items-center">
+                            <img src="{{ asset('logo.jpg') }}" alt="COYZON Logo" class="h-10 w-auto">
+                        </a>
                         <div>
                             <p class="text-[11px] font-semibold uppercase tracking-[3px] text-white/60">Coyzon</p>
                             <p class="text-base font-bold text-white leading-tight">@yield('page_label', 'Portal')</p>

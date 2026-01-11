@@ -18,16 +18,81 @@
                 </div>
             @endif
 
-            <form method="GET" action="{{ route('candidate.jobs.index') }}" class="mb-4 flex space-x-2">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search jobs..." class="flex-1 rounded-md border-gray-300 shadow-sm">
-                <select name="category_id" class="rounded-md border-gray-300 shadow-sm">
-                    <option value="">All Categories</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                    @endforeach
-                </select>
-                <input type="text" name="location" value="{{ request('location') }}" placeholder="Location" class="rounded-md border-gray-300 shadow-sm">
-                <button type="submit" class="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">Search</button>
+            <form method="GET" action="{{ route('candidate.jobs.index') }}" class="mb-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                        <!-- Search -->
+                        <div class="lg:col-span-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search jobs, companies..." class="w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        
+                        <!-- Category -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                            <select name="category_id" class="w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">All Categories</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <!-- Location -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                            <input type="text" name="location" value="{{ request('location') }}" placeholder="City, Country" class="w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        
+                        <!-- Education Level -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Education Level</label>
+                            <select name="education_level" class="w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Any</option>
+                                <option value="high-school" {{ request('education_level') == 'high-school' ? 'selected' : '' }}>High School</option>
+                                <option value="diploma" {{ request('education_level') == 'diploma' ? 'selected' : '' }}>Diploma</option>
+                                <option value="bachelor" {{ request('education_level') == 'bachelor' ? 'selected' : '' }}>Bachelor's Degree</option>
+                                <option value="master" {{ request('education_level') == 'master' ? 'selected' : '' }}>Master's Degree</option>
+                                <option value="phd" {{ request('education_level') == 'phd' ? 'selected' : '' }}>PhD</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Experience -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Min Experience (Years)</label>
+                            <input type="number" name="min_experience" value="{{ request('min_experience') }}" placeholder="0" min="0" max="50" class="w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        
+                        <!-- Language -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                            <select name="language" class="w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Any</option>
+                                <option value="English" {{ request('language') == 'English' ? 'selected' : '' }}>English</option>
+                                <option value="Swahili" {{ request('language') == 'Swahili' ? 'selected' : '' }}>Swahili</option>
+                                <option value="French" {{ request('language') == 'French' ? 'selected' : '' }}>French</option>
+                                <option value="Arabic" {{ request('language') == 'Arabic' ? 'selected' : '' }}>Arabic</option>
+                                <option value="Spanish" {{ request('language') == 'Spanish' ? 'selected' : '' }}>Spanish</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Salary Range -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Min Salary</label>
+                            <input type="number" name="min_salary" value="{{ request('min_salary') }}" placeholder="0" min="0" class="w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Max Salary</label>
+                            <input type="number" name="max_salary" value="{{ request('max_salary') }}" placeholder="No limit" min="0" class="w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end gap-2">
+                        <a href="{{ route('candidate.jobs.index') }}" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Clear</a>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Search</button>
+                    </div>
+                </div>
             </form>
 
             <div class="bg-white shadow overflow-hidden sm:rounded-md">

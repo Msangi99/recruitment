@@ -23,11 +23,16 @@ use App\Http\Controllers\Employer\JobListingController;
 use App\Http\Controllers\Employer\CandidateBrowseController;
 use App\Http\Controllers\Employer\InterviewRequestController;
 use App\Http\Controllers\Employer\ConsultationController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Payment\AzamPayController;
 
 // Public routes
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// AzamPay webhook (no auth required)
+Route::post('/azampay/webhook', [AzamPayController::class, 'webhook'])->name('azampay.webhook');
+Route::get('/azampay/redirect', [AzamPayController::class, 'redirect'])->name('azampay.redirect');
+Route::get('/azampay/cancel', [AzamPayController::class, 'cancel'])->name('azampay.cancel');
 
 // Authentication routes
 Route::middleware('guest')->group(function () {
@@ -83,6 +88,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/verification/profile/{profile}/reject', [VerificationController::class, 'rejectProfile'])->name('verification.profile.reject');
         Route::post('/verification/document/{document}/approve', [VerificationController::class, 'verifyDocument'])->name('verification.document.approve');
         Route::post('/verification/document/{document}/reject', [VerificationController::class, 'rejectDocument'])->name('verification.document.reject');
+        Route::get('/documents/{document}', [VerificationController::class, 'viewDocument'])->name('documents.show');
 
         // Job Management
         Route::resource('jobs', JobManagementController::class);
@@ -152,6 +158,7 @@ Route::middleware('auth')->group(function () {
         // Documents
         Route::get('/documents', [DocumentController::class, 'index'])->name('documents.index');
         Route::post('/documents', [DocumentController::class, 'store'])->name('documents.store');
+        Route::get('/documents/{document}', [DocumentController::class, 'show'])->name('documents.show');
         Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
         // Paid Consultations

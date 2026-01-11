@@ -7,6 +7,7 @@ use App\Models\CandidateProfile;
 use App\Models\Document;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class VerificationController extends Controller
 {
@@ -90,5 +91,30 @@ class VerificationController extends Controller
         ]);
 
         return back()->with('success', 'Document rejected.');
+    }
+
+    /**
+     * View document (for admins)
+     */
+    public function viewDocument(Document $document)
+    {
+        // Check if file exists
+        if (!Storage::disk('private')->exists($document->file_path)) {
+            abort(404, 'Document not found');
+        }
+
+        // Get file path and determine if it should be displayed inline or downloaded
+        $filePath = Storage::disk('private')->path($document->file_path);
+        $mimeType = Storage::disk('private')->mimeType($document->file_path);
+        
+        // For images and PDFs, display inline; for other files, force download
+        $disposition = in_array($mimeType, ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf']) 
+            ? 'inline' 
+            : 'attachment';
+
+        return response()->file($filePath, [
+            'Content-Type' => $mimeType,
+            'Content-Disposition' => $disposition . '; filename="' . $document->file_name . '"',
+        ]);
     }
 }

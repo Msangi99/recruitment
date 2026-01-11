@@ -128,7 +128,10 @@
                                            ($document->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
                                         {{ strtoupper($document->verification_status) }}
                                     </span>
-                                    <a href="#" class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
+                                    <a href="{{ route('admin.documents.show', $document) }}" 
+                                       target="_blank"
+                                       class="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+                                       title="View Document">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
                                     </a>
                                 </div>
