@@ -42,7 +42,7 @@ class CandidateManagementController extends Controller
             abort(404);
         }
 
-        $candidate->load(['candidateProfile', 'documents']);
+        $candidate->load(['candidateProfile.experienceCategory', 'candidateProfile.skills', 'candidateProfile.languages', 'documents']);
         
         return view('admin.candidates.show', compact('candidate'));
     }

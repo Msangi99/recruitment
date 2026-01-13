@@ -1,0 +1,118 @@
+@extends('layouts.admin')
+
+@section('title', 'Settings')
+
+@section('content')
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold text-gray-900">Settings</h2>
+    </div>
+
+    @if(session('success'))
+        <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('admin.settings.update') }}">
+        @csrf
+        @method('PUT')
+
+        <!-- Email Notification Settings -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    Email Notification Settings
+                </h3>
+                <p class="text-sm text-gray-500 mt-1">Configure email addresses for system notifications</p>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- Enable Email Notifications -->
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" id="email_notifications_enabled" name="email_notifications_enabled" value="1"
+                               {{ \App\Models\Setting::get('email_notifications_enabled', '1') == '1' ? 'checked' : '' }}
+                               class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    </div>
+                    <div class="ml-3">
+                        <label for="email_notifications_enabled" class="text-sm font-medium text-gray-700">Enable Email Notifications</label>
+                        <p class="text-xs text-gray-500">Enable or disable all email notifications from the system</p>
+                    </div>
+                </div>
+
+                <!-- HR Email -->
+                <div>
+                    <label for="hr_email" class="block text-sm font-medium text-gray-700 mb-2">
+                        HR Email Address <span class="text-red-500">*</span>
+                    </label>
+                    <input type="email" id="hr_email" name="hr_email" 
+                           value="{{ old('hr_email', \App\Models\Setting::get('hr_email')) }}"
+                           placeholder="hr@yourcompany.com"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('hr_email') border-red-300 @enderror">
+                    <p class="mt-1 text-xs text-gray-500">
+                        This email will receive all interview requests submitted by employers. 
+                        When an employer requests an interview with a candidate, a notification will be sent to this address.
+                    </p>
+                    @error('hr_email')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Notification Email -->
+                <div>
+                    <label for="notification_email" class="block text-sm font-medium text-gray-700 mb-2">
+                        General Notification Email
+                    </label>
+                    <input type="email" id="notification_email" name="notification_email" 
+                           value="{{ old('notification_email', \App\Models\Setting::get('notification_email')) }}"
+                           placeholder="notifications@yourcompany.com"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('notification_email') border-red-300 @enderror">
+                    <p class="mt-1 text-xs text-gray-500">
+                        This email will receive general system notifications (optional).
+                    </p>
+                    @error('notification_email')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Box -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h4 class="text-sm font-medium text-blue-800">Email Notification Info</h4>
+                    <div class="mt-2 text-sm text-blue-700">
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong>HR Email:</strong> Receives employer interview requests</li>
+                            <li><strong>Candidate Notifications:</strong> Candidates receive emails when appointments are confirmed or cancelled</li>
+                            <li><strong>Employer Notifications:</strong> Employers receive emails when their interview requests are approved or cancelled (with reason)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div class="flex justify-end">
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
+                Save Settings
+            </button>
+        </div>
+    </form>
+</div>
+@endsection

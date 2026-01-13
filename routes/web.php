@@ -149,6 +149,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/contact-messages/{contactMessage}/reply', [\App\Http\Controllers\Admin\ContactMessageController::class, 'reply'])->name('contact-messages.reply');
         Route::patch('/contact-messages/{contactMessage}/notes', [\App\Http\Controllers\Admin\ContactMessageController::class, 'updateNotes'])->name('contact-messages.notes');
         Route::delete('/contact-messages/{contactMessage}', [\App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
+
+        // Settings Management
+        Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+        Route::put('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
     });
 
     // Employer routes removed - employers can now browse candidates and request interviews without an account

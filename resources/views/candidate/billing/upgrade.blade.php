@@ -96,7 +96,7 @@
                                 @endif
                             </div>
 
-                            <!-- Payment Method Selection (for both gateways) -->
+                            <!-- Payment Method Selection -->
                             <div id="payment_method_section_{{ $plan['id'] }}" style="display: none;" class="mb-4">
                                 <div class="mb-3">
                                     <label for="payment_method_{{ $plan['id'] }}" class="block text-sm font-medium text-gray-700 mb-2">Payment Method *</label>
@@ -105,9 +105,6 @@
                                         <option value="">Select Method</option>
                                         <option value="mobile" {{ $isThisForm && old('payment_method') == 'mobile' ? 'selected' : '' }}>Mobile Money</option>
                                         <option value="card" {{ $isThisForm && old('payment_method') == 'card' ? 'selected' : '' }}>Card Payment</option>
-                                        <span id="bank_option_{{ $plan['id'] }}" style="display: none;">
-                                            <option value="bank" {{ $isThisForm && old('payment_method') == 'bank' ? 'selected' : '' }}>Bank Transfer</option>
-                                        </span>
                                     </select>
                                     @if($isThisForm && $errors->has('payment_method'))
                                         <p class="mt-1 text-sm text-red-600">{{ $errors->first('payment_method') }}</p>
@@ -120,18 +117,6 @@
                                     <select id="mobile_provider_{{ $plan['id'] }}" name="mobile_provider" 
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('mobile_provider') ? 'border-red-300' : '' }}">
                                         <option value="">Select Provider</option>
-                                        <span id="selcom_providers_{{ $plan['id'] }}">
-                                            <option value="Mpesa" {{ $isThisForm && old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
-                                            <option value="Tigo Pesa" {{ $isThisForm && old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
-                                            <option value="Airtel Money" {{ $isThisForm && old('mobile_provider') == 'Airtel Money' ? 'selected' : '' }}>Airtel Money</option>
-                                            <option value="Halopesa" {{ $isThisForm && old('mobile_provider') == 'Halopesa' ? 'selected' : '' }}>Halopesa</option>
-                                        </span>
-                                        <span id="azampay_providers_{{ $plan['id'] }}" style="display: none;">
-                                            <option value="Mpesa" {{ $isThisForm && old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
-                                            <option value="Tigo Pesa" {{ $isThisForm && old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
-                                            <option value="Airtel" {{ $isThisForm && old('mobile_provider') == 'Airtel' ? 'selected' : '' }}>Airtel Money</option>
-                                            <option value="Azampay" {{ $isThisForm && old('mobile_provider') == 'Azampay' ? 'selected' : '' }}>Azampay</option>
-                                        </span>
                                     </select>
                                     @if($isThisForm && $errors->has('mobile_provider'))
                                         <p class="mt-1 text-sm text-red-600">{{ $errors->first('mobile_provider') }}</p>
@@ -165,84 +150,96 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Mobile providers for each gateway
+    const selcomProviders = [
+        { value: 'Mpesa', label: 'M-Pesa' },
+        { value: 'Tigo Pesa', label: 'Tigo Pesa' },
+        { value: 'Airtel Money', label: 'Airtel Money' },
+        { value: 'Halopesa', label: 'Halopesa' }
+    ];
+    
+    const azampayProviders = [
+        { value: 'Mpesa', label: 'M-Pesa' },
+        { value: 'Tigo Pesa', label: 'Tigo Pesa' },
+        { value: 'Airtel', label: 'Airtel Money' },
+        { value: 'Azampay', label: 'Azampay' }
+    ];
+
     // Handle payment gateway selection for each plan
     ['basic', 'premium'].forEach(function(planId) {
         const gatewaySelect = document.getElementById('payment_gateway_' + planId);
         const paymentMethodSection = document.getElementById('payment_method_section_' + planId);
-        const selcomProviders = document.getElementById('selcom_providers_' + planId);
-        const azampayProviders = document.getElementById('azampay_providers_' + planId);
-        const bankOption = document.getElementById('bank_option_' + planId);
-        const paymentMethod = document.getElementById('payment_method_' + planId);
+        const paymentMethodSelect = document.getElementById('payment_method_' + planId);
         const mobileProviderField = document.getElementById('mobile_provider_field_' + planId);
-        const accountNumberField = document.getElementById('account_number_field_' + planId);
         const mobileProviderSelect = document.getElementById('mobile_provider_' + planId);
+        const accountNumberField = document.getElementById('account_number_field_' + planId);
         
-        // Function to update provider visibility based on gateway
-        function updateProvidersForGateway(gateway) {
-            if (gateway === 'selcom') {
-                if (selcomProviders) selcomProviders.style.display = 'inline';
-                if (azampayProviders) azampayProviders.style.display = 'none';
-                if (bankOption) bankOption.style.display = 'none';
-                // Remove bank option if exists
-                const bankOpt = paymentMethod.querySelector('option[value="bank"]');
-                if (bankOpt && bankOpt.parentElement) bankOpt.remove();
-            } else if (gateway === 'azampay') {
-                if (selcomProviders) selcomProviders.style.display = 'none';
-                if (azampayProviders) azampayProviders.style.display = 'inline';
-                if (bankOption) bankOption.style.display = 'inline';
-                // Add bank option if not exists
-                if (!paymentMethod.querySelector('option[value="bank"]')) {
-                    const bankOpt = document.createElement('option');
-                    bankOpt.value = 'bank';
-                    bankOpt.textContent = 'Bank Transfer';
-                    paymentMethod.appendChild(bankOpt);
+        // Function to update providers based on gateway
+        function updateProviders(gateway) {
+            const providers = gateway === 'azampay' ? azampayProviders : selcomProviders;
+            const oldValue = mobileProviderSelect.value;
+            
+            // Clear existing options
+            mobileProviderSelect.innerHTML = '<option value="">Select Provider</option>';
+            
+            // Add provider options
+            providers.forEach(function(provider) {
+                const option = document.createElement('option');
+                option.value = provider.value;
+                option.textContent = provider.label;
+                if (oldValue === provider.value) {
+                    option.selected = true;
+                }
+                mobileProviderSelect.appendChild(option);
+            });
+            
+            // Add/remove bank option for AzamPay
+            const existingBankOption = paymentMethodSelect.querySelector('option[value="bank"]');
+            if (gateway === 'azampay') {
+                if (!existingBankOption) {
+                    const bankOption = document.createElement('option');
+                    bankOption.value = 'bank';
+                    bankOption.textContent = 'Bank Transfer';
+                    paymentMethodSelect.appendChild(bankOption);
+                }
+            } else {
+                if (existingBankOption) {
+                    existingBankOption.remove();
                 }
             }
         }
         
         if (gatewaySelect) {
-            // Initialize on page load based on current value
+            // Initialize on page load
             if (gatewaySelect.value === 'selcom' || gatewaySelect.value === 'azampay') {
                 paymentMethodSection.style.display = 'block';
-                updateProvidersForGateway(gatewaySelect.value);
+                updateProviders(gatewaySelect.value);
+                
+                // Check if mobile is selected
+                if (paymentMethodSelect.value === 'mobile') {
+                    mobileProviderField.style.display = 'block';
+                    accountNumberField.style.display = 'block';
+                }
             }
             
             gatewaySelect.addEventListener('change', function() {
                 if (this.value === 'selcom' || this.value === 'azampay') {
                     paymentMethodSection.style.display = 'block';
-                    updateProvidersForGateway(this.value);
-                    
-                    // Clear fields when switching gateways (unless there's old input)
-                    const hasOldInput = paymentMethod && paymentMethod.value;
-                    if (!hasOldInput) {
-                        if (paymentMethod) paymentMethod.value = '';
-                        if (mobileProviderSelect) mobileProviderSelect.value = '';
-                        if (mobileProviderField) mobileProviderField.style.display = 'none';
-                        if (accountNumberField) {
-                            accountNumberField.value = '';
-                            accountNumberField.style.display = 'none';
-                        }
-                    }
+                    updateProviders(this.value);
                 } else {
                     paymentMethodSection.style.display = 'none';
                 }
             });
         }
         
-        if (paymentMethod) {
-            // Initialize on page load
-            if (paymentMethod.value === 'mobile') {
-                if (mobileProviderField) mobileProviderField.style.display = 'block';
-                if (accountNumberField) accountNumberField.style.display = 'block';
-            }
-            
-            paymentMethod.addEventListener('change', function() {
+        if (paymentMethodSelect) {
+            paymentMethodSelect.addEventListener('change', function() {
                 if (this.value === 'mobile') {
-                    if (mobileProviderField) mobileProviderField.style.display = 'block';
-                    if (accountNumberField) accountNumberField.style.display = 'block';
+                    mobileProviderField.style.display = 'block';
+                    accountNumberField.style.display = 'block';
                 } else {
-                    if (mobileProviderField) mobileProviderField.style.display = 'none';
-                    if (accountNumberField) accountNumberField.style.display = 'none';
+                    mobileProviderField.style.display = 'none';
+                    accountNumberField.style.display = 'none';
                 }
             });
         }

@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Appointment;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class AppointmentManagementController extends Controller
 {
@@ -46,6 +49,7 @@ class AppointmentManagementController extends Controller
         ]);
 
         $updateData = ['status' => $request->status];
+        $oldStatus = $appointment->status;
 
         if ($request->status === 'confirmed') {
             $updateData['confirmed_at'] = now();
@@ -62,6 +66,117 @@ class AppointmentManagementController extends Controller
 
         $appointment->update($updateData);
 
+        // Send email notifications
+        if (Setting::emailNotificationsEnabled()) {
+            try {
+                if ($request->status === 'confirmed' && $oldStatus !== 'confirmed') {
+                    $this->sendConfirmationEmails($appointment);
+                } elseif ($request->status === 'cancelled' && $oldStatus !== 'cancelled') {
+                    $this->sendCancellationEmail($appointment, $request->notes);
+                }
+            } catch (\Exception $e) {
+                Log::error('Failed to send appointment notification email', [
+                    'appointment_id' => $appointment->id,
+                    'error' => $e->getMessage()
+                ]);
+            }
+        }
+
         return back()->with('success', 'Appointment status updated successfully.');
+    }
+
+    /**
+     * Send confirmation emails to both employer and candidate
+     */
+    protected function sendConfirmationEmails(Appointment $appointment)
+    {
+        $hrEmail = Setting::getHrEmail();
+        
+        // Email data
+        $emailData = [
+            'candidateName' => $appointment->user->name ?? 'Candidate',
+            'companyName' => $appointment->company_name ?? 'Company',
+            'jobTitle' => $appointment->job_title ?? $appointment->title ?? 'Position',
+            'scheduledAt' => $appointment->scheduled_at->format('l, F j, Y \a\t g:i A'),
+            'duration' => $appointment->duration_minutes ?? 30,
+            'meetingMode' => $appointment->meeting_mode ?? 'online',
+            'meetingLink' => $appointment->meeting_link,
+            'meetingLocation' => $appointment->meeting_location,
+            'requirements' => $appointment->requirements,
+            'notes' => $appointment->notes,
+            'hrEmail' => $hrEmail,
+        ];
+        
+        // Send email to employer
+        $employerEmail = $appointment->interviewer_email;
+        if ($employerEmail) {
+            $emailData['employerName'] = $appointment->company_name;
+            
+            Mail::send('emails.appointment-approved', $emailData, function ($message) use ($employerEmail, $appointment) {
+                $message->to($employerEmail)
+                        ->subject('Interview Request Approved - ' . ($appointment->user->name ?? 'Candidate'));
+            });
+            
+            Log::info('Sent appointment confirmation email to employer', [
+                'appointment_id' => $appointment->id,
+                'email' => $employerEmail
+            ]);
+        }
+        
+        // Send email to candidate
+        $candidateEmail = $appointment->user->email ?? null;
+        if ($candidateEmail) {
+            Mail::send('emails.appointment-candidate-notification', $emailData, function ($message) use ($candidateEmail, $appointment) {
+                $message->to($candidateEmail)
+                        ->subject('🎉 Interview Scheduled with ' . ($appointment->company_name ?? 'Employer'));
+            });
+            
+            Log::info('Sent appointment confirmation email to candidate', [
+                'appointment_id' => $appointment->id,
+                'email' => $candidateEmail
+            ]);
+        }
+        
+        // Send notification to HR email if set
+        if ($hrEmail) {
+            Mail::send('emails.appointment-approved', array_merge($emailData, ['employerName' => 'HR Team']), function ($message) use ($hrEmail, $appointment) {
+                $message->to($hrEmail)
+                        ->subject('[Admin] Interview Confirmed - ' . ($appointment->user->name ?? 'Candidate') . ' with ' . ($appointment->company_name ?? 'Employer'));
+            });
+        }
+    }
+
+    /**
+     * Send cancellation email to employer with reason
+     */
+    protected function sendCancellationEmail(Appointment $appointment, $cancellationReason = null)
+    {
+        $hrEmail = Setting::getHrEmail();
+        
+        // Email data
+        $emailData = [
+            'employerName' => $appointment->company_name ?? 'Employer',
+            'candidateName' => $appointment->user->name ?? 'Candidate',
+            'companyName' => $appointment->company_name ?? 'Company',
+            'jobTitle' => $appointment->job_title ?? $appointment->title ?? 'Position',
+            'scheduledAt' => $appointment->scheduled_at->format('l, F j, Y \a\t g:i A'),
+            'cancellationReason' => $cancellationReason ?? $appointment->cancellation_reason,
+            'hrEmail' => $hrEmail,
+        ];
+        
+        // Send email to employer
+        $employerEmail = $appointment->interviewer_email;
+        if ($employerEmail) {
+            Mail::send('emails.appointment-cancelled-employer', $emailData, function ($message) use ($employerEmail, $appointment) {
+                $message->to($employerEmail)
+                        ->subject('Interview Request Cancelled - ' . ($appointment->user->name ?? 'Candidate'));
+            });
+            
+            Log::info('Sent appointment cancellation email to employer', [
+                'appointment_id' => $appointment->id,
+                'email' => $employerEmail,
+                'reason' => $emailData['cancellationReason']
+            ]);
+        }
     }
 }

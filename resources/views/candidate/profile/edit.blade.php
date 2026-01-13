@@ -167,11 +167,35 @@
                                 @enderror
                             </div>
                             <div>
+                                <label for="course_studied" class="block text-sm font-medium text-gray-700 mb-2">Course/Field of Study *</label>
+                                <input type="text" id="course_studied" name="course_studied" value="{{ old('course_studied', $profile->course_studied) }}" required 
+                                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('course_studied') border-red-300 @enderror"
+                                       placeholder="e.g., Computer Science, Business Administration">
+                                @error('course_studied')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
                                 <label for="years_of_experience" class="block text-sm font-medium text-gray-700 mb-2">Years of Experience *</label>
                                 <input type="number" id="years_of_experience" name="years_of_experience" value="{{ old('years_of_experience', $profile->years_of_experience) }}" required min="0" max="50" 
                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('years_of_experience') border-red-300 @enderror"
                                        placeholder="0">
                                 @error('years_of_experience')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="experience_category_id" class="block text-sm font-medium text-gray-700 mb-2">Experience Category *</label>
+                                <select id="experience_category_id" name="experience_category_id" required 
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('experience_category_id') border-red-300 @enderror">
+                                    <option value="">Select Category</option>
+                                    @foreach(\App\Models\Category::where('is_active', true)->orderBy('name')->get() as $category)
+                                        <option value="{{ $category->id }}" {{ old('experience_category_id', $profile->experience_category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('experience_category_id')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>

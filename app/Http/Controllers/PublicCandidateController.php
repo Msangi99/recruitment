@@ -114,7 +114,7 @@ class PublicCandidateController extends Controller
             abort(404);
         }
 
-        $candidate->load('candidateProfile');
+        $candidate->load(['candidateProfile.experienceCategory', 'candidateProfile.skills', 'candidateProfile.languages']);
         
         return view('public.candidates.show', compact('candidate'));
     }

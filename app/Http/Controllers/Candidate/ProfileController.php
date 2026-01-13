@@ -18,7 +18,7 @@ class ProfileController extends Controller
         $profile = $candidate->candidateProfile;
         
         if ($profile) {
-            $profile->load(['skills', 'languages']);
+            $profile->load(['skills', 'languages', 'experienceCategory']);
         }
         
         return view('candidate.profile.show', compact('profile'));
@@ -81,7 +81,9 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'education_level' => 'required|string|max:100',
+            'course_studied' => 'required|string|max:255',
             'years_of_experience' => 'required|integer|min:0|max:50',
+            'experience_category_id' => 'required|exists:categories,id',
         ]);
 
         // Validate skills and languages
@@ -152,7 +154,7 @@ class ProfileController extends Controller
                 ->with('error', 'Please create your profile first.');
         }
 
-        $profile->load(['skills', 'languages']);
+        $profile->load(['skills', 'languages', 'experienceCategory']);
         return view('candidate.profile.edit', compact('profile'));
     }
 
@@ -207,7 +209,9 @@ class ProfileController extends Controller
             'gender' => 'required|in:male,female,other',
             'marital_status' => 'required|in:single,married,divorced,widowed',
             'education_level' => 'required|string|max:100',
+            'course_studied' => 'required|string|max:255',
             'years_of_experience' => 'required|integer|min:0|max:50',
+            'experience_category_id' => 'required|exists:categories,id',
             'expected_salary' => 'nullable|numeric|min:0',
             'currency' => 'nullable|string|max:10',
             'target_destination' => 'nullable|string|max:255',

@@ -74,11 +74,25 @@
                         <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
                             <div>
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Education Level</dt>
-                                <dd class="text-sm font-semibold text-gray-900">{{ $candidate->candidateProfile->education_level ?? 'Not specified' }}</dd>
+                                <dd class="text-sm font-semibold text-gray-900">{{ ucfirst(str_replace('-', ' ', $candidate->candidateProfile->education_level ?? 'Not specified')) }}</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Course/Field of Study</dt>
+                                <dd class="text-sm font-semibold text-gray-900">{{ $candidate->candidateProfile->course_studied ?? 'Not specified' }}</dd>
                             </div>
                             <div>
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Years of Experience</dt>
                                 <dd class="text-sm font-semibold text-gray-900">{{ $candidate->candidateProfile->years_of_experience ?? '0' }} years</dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Experience Category</dt>
+                                <dd class="text-sm font-semibold text-gray-900">
+                                    @if($candidate->candidateProfile->experienceCategory)
+                                        <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-bold">{{ $candidate->candidateProfile->experienceCategory->name }}</span>
+                                    @else
+                                        <span class="text-gray-500">Not specified</span>
+                                    @endif
+                                </dd>
                             </div>
                             <div>
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Verification Status</dt>
@@ -93,9 +107,9 @@
                             <div class="md:col-span-2">
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Skills</dt>
                                 <dd class="flex flex-wrap gap-2">
-                                    @if($candidate->candidateProfile->skills)
+                                    @if($candidate->candidateProfile->skills && count($candidate->candidateProfile->skills) > 0)
                                         @foreach($candidate->candidateProfile->skills as $skill)
-                                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">{{ $skill }}</span>
+                                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">{{ is_object($skill) ? $skill->name : $skill }}</span>
                                         @endforeach
                                     @else
                                         <span class="text-sm text-gray-500 italic">No skills listed</span>

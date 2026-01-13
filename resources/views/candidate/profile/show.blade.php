@@ -81,11 +81,25 @@
                         <dl>
                             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                 <dt class="text-sm font-medium text-gray-500">Education Level</dt>
-                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ ucfirst($profile->education_level ?? 'N/A') }}</dd>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ ucfirst(str_replace('-', ' ', $profile->education_level ?? 'N/A')) }}</dd>
                             </div>
                             <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt class="text-sm font-medium text-gray-500">Experience</dt>
-                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $profile->years_of_experience ?? 'N/A' }} years</dd>
+                                <dt class="text-sm font-medium text-gray-500">Course/Field of Study</dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $profile->course_studied ?? 'N/A' }}</dd>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Years of Experience</dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{{ $profile->years_of_experience ?? '0' }} years</dd>
+                            </div>
+                            <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                <dt class="text-sm font-medium text-gray-500">Experience Category</dt>
+                                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                    @if($profile->experienceCategory)
+                                        <span class="inline-block bg-blue-100 rounded-full px-3 py-1 text-sm text-blue-700">{{ $profile->experienceCategory->name }}</span>
+                                    @else
+                                        N/A
+                                    @endif
+                                </dd>
                             </div>
                             @php
                                 $skills = $profile->skills ?? collect();

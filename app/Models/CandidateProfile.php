@@ -21,7 +21,9 @@ class CandidateProfile extends Model
         'gender',
         'marital_status',
         'education_level',
+        'course_studied',
         'years_of_experience',
+        'experience_category_id',
         'expected_salary',
         'currency',
         'target_destination',
@@ -89,5 +91,13 @@ class CandidateProfile extends Model
     public function languages(): BelongsToMany
     {
         return $this->belongsToMany(Language::class, 'candidate_profile_language');
+    }
+
+    /**
+     * Get the experience category for the profile
+     */
+    public function experienceCategory(): BelongsTo
+    {
+        return $this->belongsTo(Category::class, 'experience_category_id');
     }
 }
