@@ -233,7 +233,7 @@ class ProfileController extends Controller
         } else {
             // Keep existing skills if not provided in form - extract names from relationship
             $profile->load('skills');
-            $skills = $profile->skills->pluck('name')->toArray();
+            $skills = $profile->skills ? $profile->skills->pluck('name')->toArray() : [];
         }
 
         if ($request->has('languages') && !empty($languages)) {
@@ -249,7 +249,7 @@ class ProfileController extends Controller
         } else {
             // Keep existing languages if not provided in form - extract names from relationship
             $profile->load('languages');
-            $languages = $profile->languages->pluck('name')->toArray();
+            $languages = $profile->languages ? $profile->languages->pluck('name')->toArray() : [];
         }
 
         $validated['is_available'] = $request->has('is_available');
