@@ -156,6 +156,7 @@
                                 </span>
                             @endif
                         </a>
+                        <x-admin-sidebar-item href="{{ route('admin.settings.index') }}" icon="settings" label="Settings" :active="request()->routeIs('admin.settings.*')" />
                     </nav>
                 </div>
             </div>
