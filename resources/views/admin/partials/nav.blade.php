@@ -1,7 +1,7 @@
 <!-- Mobile menu button -->
 <div class="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white shadow-sm border-b">
     <div class="flex items-center justify-between h-16 px-4">
-        <h1 class="text-xl font-semibold text-gray-900">COYZON Admin</h1>
+        <h1 class="text-xl font-semibold text-gray-900">Implore Admin</h1>
         <button id="mobile-menu-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none">
             <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -14,7 +14,7 @@
 <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-16 lg:pt-0 transition-transform -translate-x-full lg:translate-x-0 bg-white border-r border-gray-200">
     <div class="h-full px-3 py-4 overflow-y-auto">
         <div class="hidden lg:block px-3 mb-4">
-            <h1 class="text-xl font-semibold text-gray-900">COYZON Admin</h1>
+            <h1 class="text-xl font-semibold text-gray-900">Implore Admin</h1>
         </div>
         <ul class="space-y-2">
             <li>
@@ -71,6 +71,22 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
                     </svg>
                     Payments
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('admin.contact-messages.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg {{ request()->routeIs('admin.contact-messages.*') ? 'bg-indigo-100 text-indigo-700' : 'text-gray-700 hover:bg-gray-100' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    Emails
+                    @php
+                        $unreadMessages = \App\Models\ContactMessage::unread()->count();
+                    @endphp
+                    @if($unreadMessages > 0)
+                        <span class="ml-auto inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                            {{ $unreadMessages }}
+                        </span>
+                    @endif
                 </a>
             </li>
         </ul>

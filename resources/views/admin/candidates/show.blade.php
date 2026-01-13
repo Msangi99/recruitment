@@ -17,7 +17,9 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex items-center">
                     @if($candidate->candidateProfile && $candidate->candidateProfile->profile_picture)
-                        <img src="{{ asset($candidate->candidateProfile->profile_picture) }}" alt="{{ $candidate->name }}" class="h-20 w-20 rounded-full object-cover border-2 border-white shadow-md ring-4 ring-blue-50">
+                        <div class="h-20 w-20 rounded-full overflow-hidden border-2 border-white shadow-md ring-4 ring-blue-50">
+                            <img src="{{ asset($candidate->candidateProfile->profile_picture) }}" alt="{{ $candidate->name }}" class="w-full h-full object-cover">
+                        </div>
                     @else
                         <div class="h-20 w-20 rounded-full bg-blue-50 flex items-center justify-center border-2 border-white shadow-md ring-4 ring-blue-50">
                             <span class="text-3xl font-bold text-blue-600">{{ substr($candidate->name, 0, 1) }}</span>
@@ -91,14 +93,9 @@
                             <div class="md:col-span-2">
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Skills</dt>
                                 <dd class="flex flex-wrap gap-2">
-                                    @php
-                                        $adminSkills = $candidate->candidateProfile->skills ?? collect();
-                                        $adminSkillsCollection = is_array($adminSkills) ? collect($adminSkills) : $adminSkills;
-                                        $adminSkillsCount = count($adminSkillsCollection);
-                                    @endphp
-                                    @if($candidate->candidateProfile && $adminSkills && $adminSkillsCount > 0)
-                                        @foreach($adminSkillsCollection as $skill)
-                                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">{{ is_object($skill) ? $skill->name : $skill }}</span>
+                                    @if($candidate->candidateProfile->skills)
+                                        @foreach($candidate->candidateProfile->skills as $skill)
+                                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-lg text-xs font-bold border border-gray-200">{{ $skill }}</span>
                                         @endforeach
                                     @else
                                         <span class="text-sm text-gray-500 italic">No skills listed</span>
@@ -137,12 +134,20 @@
                                            ($document->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
                                         {{ strtoupper($document->verification_status) }}
                                     </span>
-                                    <a href="{{ route('admin.documents.show', $document) }}" 
-                                       target="_blank"
-                                       class="p-2 text-gray-400 hover:text-blue-600 transition-colors"
-                                       title="View Document">
+                                    <a href="{{ asset($document->file_path) }}" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 transition-colors" title="View Document">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
                                     </a>
+                                    @if($document->verification_status === 'pending')
+                                        <form method="POST" action="{{ route('admin.verification.document.approve', $document) }}" class="inline">
+                                            @csrf
+                                            <button type="submit" class="text-green-600 hover:text-green-700 text-xs font-semibold" title="Approve Document">
+                                                Approve
+                                            </button>
+                                        </form>
+                                        <button type="button" onclick="showRejectDocModal({{ $document->id }})" class="text-red-600 hover:text-red-700 text-xs font-semibold" title="Reject Document">
+                                            Reject
+                                        </button>
+                                    @endif
                                 </div>
                             </li>
                         @empty

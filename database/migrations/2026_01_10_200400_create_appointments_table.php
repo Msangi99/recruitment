@@ -17,15 +17,22 @@ return new class extends Migration
             $table->foreignId('employer_id')->nullable()->constrained('users')->nullOnDelete(); // Optional employer
             
             // Appointment Details
+            $table->string('title')->nullable(); // Interview title/position
             $table->enum('appointment_type', ['consultation', 'counselling', 'interview', 'other']);
             $table->enum('meeting_mode', ['online', 'in-person']);
             $table->dateTime('scheduled_at');
             $table->integer('duration_minutes')->default(30);
             
+            // Company/Employer Details
+            $table->string('company_name')->nullable();
+            $table->string('job_title')->nullable(); // Interviewer's job title
+            $table->string('interviewer_email')->nullable();
+            
             // Meeting Information
             $table->string('meeting_link')->nullable(); // Zoom/Google Meet link
             $table->string('meeting_location')->nullable(); // For in-person meetings
             $table->text('notes')->nullable();
+            $table->text('requirements')->nullable(); // Additional requirements/qualifications needed
             
             // Payment Information
             $table->decimal('amount', 10, 2); // TZS 30,000 or $12

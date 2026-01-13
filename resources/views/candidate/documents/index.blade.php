@@ -97,7 +97,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end gap-3">
-                                        <a href="{{ route('candidate.documents.show', $document) }}" 
+                                        <a href="{{ asset($document->file_path) }}" 
                                            target="_blank"
                                            class="text-indigo-600 hover:text-indigo-900 flex items-center gap-1">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

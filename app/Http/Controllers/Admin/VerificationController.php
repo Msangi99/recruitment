@@ -98,23 +98,15 @@ class VerificationController extends Controller
      */
     public function viewDocument(Document $document)
     {
-        // Check if file exists
-        if (!Storage::disk('private')->exists($document->file_path)) {
-            abort(404, 'Document not found');
-        }
-
-        // Get file path and determine if it should be displayed inline or downloaded
-        $filePath = Storage::disk('private')->path($document->file_path);
-        $mimeType = Storage::disk('private')->mimeType($document->file_path);
-        
-        // For images and PDFs, display inline; for other files, force download
-        $disposition = in_array($mimeType, ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf']) 
-            ? 'inline' 
-            : 'attachment';
-
-        return response()->file($filePath, [
-            'Content-Type' => $mimeType,
-            'Content-Disposition' => $disposition . '; filename="' . $document->file_name . '"',
+        \Log::info('Admin viewing document', [
+            'admin_id' => auth()->id(),
+            'admin_role' => auth()->user()->role,
+            'document_id' => $document->id,
+            'document_path' => $document->file_path,
+            'user_id' => $document->user_id,
         ]);
+
+        // Redirect to public URL (like profile pictures)
+        return redirect(asset($document->file_path));
     }
 }

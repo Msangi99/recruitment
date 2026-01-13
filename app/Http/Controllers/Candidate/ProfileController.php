@@ -167,7 +167,9 @@ class ProfileController extends Controller
             'has_file' => $request->hasFile('profile_picture'),
             'all_files' => array_keys($request->allFiles()),
             'method' => $request->method(),
-            'content_type' => $request->header('Content-Type')
+            'content_type' => $request->header('Content-Type'),
+            'post_data' => $request->all(),
+            'files_array' => $_FILES ?? 'No $_FILES'
         ]);
         
         if (!$profile) {
@@ -212,24 +214,36 @@ class ProfileController extends Controller
             'is_available' => 'boolean',
         ]);
 
-        // Validate skills and languages separately
-        if (empty($skills) || !is_array($skills)) {
-            return back()->withErrors(['skills' => 'At least one skill is required.'])->withInput();
-        }
-        if (empty($languages) || !is_array($languages)) {
-            return back()->withErrors(['languages' => 'At least one language is required.'])->withInput();
+        // Validate skills and languages separately (only if provided in the request)
+        // If not provided, keep existing values from database
+        if ($request->has('skills')) {
+            if (empty($skills) || !is_array($skills)) {
+                return back()->withErrors(['skills' => 'At least one skill is required.'])->withInput();
+            }
+            // Validate each skill
+            foreach ($skills as $skill) {
+                if (!is_string($skill) || strlen($skill) > 100) {
+                    return back()->withErrors(['skills' => 'Each skill must be a string with max 100 characters.'])->withInput();
+                }
+            }
+        } else {
+            // Keep existing skills if not provided in form
+            $skills = $profile->skills ?? [];
         }
 
-        // Validate each skill and language
-        foreach ($skills as $skill) {
-            if (!is_string($skill) || strlen($skill) > 100) {
-                return back()->withErrors(['skills' => 'Each skill must be a string with max 100 characters.'])->withInput();
+        if ($request->has('languages')) {
+            if (empty($languages) || !is_array($languages)) {
+                return back()->withErrors(['languages' => 'At least one language is required.'])->withInput();
             }
-        }
-        foreach ($languages as $language) {
-            if (!is_string($language) || strlen($language) > 50) {
-                return back()->withErrors(['languages' => 'Each language must be a string with max 50 characters.'])->withInput();
+            // Validate each language
+            foreach ($languages as $language) {
+                if (!is_string($language) || strlen($language) > 50) {
+                    return back()->withErrors(['languages' => 'Each language must be a string with max 50 characters.'])->withInput();
+                }
             }
+        } else {
+            // Keep existing languages if not provided in form
+            $languages = $profile->languages ?? [];
         }
 
         $validated['is_available'] = $request->has('is_available');

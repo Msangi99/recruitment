@@ -26,21 +26,57 @@ class DocumentController extends Controller
 
         $candidate = auth()->user();
 
+        if (!$request->hasFile('document') || !$request->file('document')->isValid()) {
+            return back()->withErrors(['document' => 'Invalid file upload. Please try again.'])->withInput();
+        }
+
         $file = $request->file('document');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('documents/' . $candidate->id, $fileName, 'private');
+        
+        // Get file info before moving
+        $originalName = $file->getClientOriginalName();
+        $mimeType = $file->getMimeType();
+        $fileSize = $file->getSize();
+        
+        // Clean filename - replace spaces and special characters with underscores
+        $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
+        $fileName = time() . '_' . $cleanName;
+        
+        // Store in public/documents folder (like profile pictures)
+        $destinationPath = public_path('documents/' . $candidate->id);
+        
+        // Create directory if it doesn't exist
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+        
+        try {
+            // Move file to public folder
+            $file->move($destinationPath, $fileName);
+            
+            // Store relative path for database (without public/)
+            $filePath = 'documents/' . $candidate->id . '/' . $fileName;
 
-        Document::create([
-            'user_id' => $candidate->id,
-            'document_type' => $validated['document_type'],
-            'file_name' => $file->getClientOriginalName(),
-            'file_path' => $filePath,
-            'file_type' => $file->getMimeType(),
-            'file_size' => $file->getSize(),
-            'verification_status' => 'pending',
-        ]);
+            Document::create([
+                'user_id' => $candidate->id,
+                'document_type' => $validated['document_type'],
+                'file_name' => $cleanName,
+                'file_path' => $filePath,
+                'file_type' => $mimeType,
+                'file_size' => $fileSize,
+                'verification_status' => 'pending',
+            ]);
 
-        return back()->with('success', 'Document uploaded successfully. Waiting for admin verification.');
+            return back()->with('success', 'Document uploaded successfully. Waiting for admin verification.');
+            
+        } catch (\Exception $e) {
+            \Log::error('Document upload failed', [
+                'user_id' => $candidate->id,
+                'error' => $e->getMessage(),
+                'file_name' => $originalName,
+            ]);
+            
+            return back()->withErrors(['document' => 'Failed to upload document. Please try again.'])->withInput();
+        }
     }
 
     public function show(Document $document)
@@ -50,24 +86,8 @@ class DocumentController extends Controller
             abort(403);
         }
 
-        // Check if file exists
-        if (!Storage::disk('private')->exists($document->file_path)) {
-            abort(404, 'Document not found');
-        }
-
-        // Get file path and determine if it should be displayed inline or downloaded
-        $filePath = Storage::disk('private')->path($document->file_path);
-        $mimeType = Storage::disk('private')->mimeType($document->file_path);
-        
-        // For images and PDFs, display inline; for other files, force download
-        $disposition = in_array($mimeType, ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf']) 
-            ? 'inline' 
-            : 'attachment';
-
-        return response()->file($filePath, [
-            'Content-Type' => $mimeType,
-            'Content-Disposition' => $disposition . '; filename="' . $document->file_name . '"',
-        ]);
+        // Redirect to public URL (like profile pictures)
+        return redirect(asset($document->file_path));
     }
 
     public function destroy(Document $document)

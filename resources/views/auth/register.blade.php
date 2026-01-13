@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register - COYZON')
+@section('title', 'Register - Implore Recruitment')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -12,39 +12,32 @@
                 </svg>
             </div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Join COYZON
+                Join Implore
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
-                Create your account to start your recruitment journey
+                Create your job seeker account to find overseas opportunities
             </p>
+        </div>
+
+        <!-- Info for Employers -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-blue-700">
+                        <strong>Looking to hire?</strong> Employers can browse candidates and request interviews without creating an account.
+                        <a href="{{ route('public.candidates.index') }}" class="underline font-medium">Browse candidates →</a>
+                    </p>
+                </div>
+            </div>
         </div>
 
         <form class="mt-8 space-y-6" action="{{ route('register') }}" method="POST">
             @csrf
-
-            <!-- Role Selection -->
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">I am a:</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <input id="role-candidate" name="role" type="radio" value="candidate" required
-                               class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-                        <label for="role-candidate" class="ml-3 block text-sm font-medium text-gray-700">
-                            Job Seeker
-                        </label>
-                    </div>
-                    <div>
-                        <input id="role-employer" name="role" type="radio" value="employer" required
-                               class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-                        <label for="role-employer" class="ml-3 block text-sm font-medium text-gray-700">
-                            Employer
-                        </label>
-                    </div>
-                </div>
-                @error('role')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                @enderror
-            </div>
 
             <!-- Personal Information -->
             <div class="rounded-md shadow-sm -space-y-px">

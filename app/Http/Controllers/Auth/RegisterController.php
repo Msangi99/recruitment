@@ -37,7 +37,6 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'in:candidate,employer'],
             'phone' => ['nullable', 'string', 'max:20'],
             'country' => ['nullable', 'string', 'max:100'],
         ]);
@@ -49,7 +48,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => $data['role'],
+            'role' => 'candidate', // Only candidates can register - employers don't need accounts
             'phone' => $data['phone'] ?? null,
             'country' => $data['country'] ?? null,
             'is_active' => true,
@@ -58,15 +57,8 @@ class RegisterController extends Controller
 
     protected function redirectBasedOnRole(User $user)
     {
-        switch ($user->role) {
-            case 'employer':
-                return redirect()->route('employer.dashboard')
-                    ->with('success', 'Welcome! Please complete your employer profile.');
-            case 'candidate':
-                return redirect()->route('candidate.profile.create')
-                    ->with('success', 'Welcome! Please complete your candidate profile.');
-            default:
-                return redirect('/');
-        }
+        // All registered users are candidates now
+        return redirect()->route('candidate.profile.create')
+            ->with('success', 'Welcome! Please complete your candidate profile.');
     }
 }

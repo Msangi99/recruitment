@@ -33,14 +33,37 @@ class JobApplicationController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        // Location filter
+        // Country filter (specific countries)
+        if ($request->filled('country')) {
+            $query->where('country', $request->country);
+        }
+
+        // Location filter (city/region)
         if ($request->filled('location')) {
             $query->where('location', 'like', "%{$request->location}%");
         }
 
+        // Job Type (employment_type) filter
+        if ($request->filled('employment_type')) {
+            $query->where('employment_type', $request->employment_type);
+        }
+
         // Experience level filter
-        if ($request->filled('min_experience')) {
-            $query->where('experience_required', '<=', $request->min_experience);
+        if ($request->filled('experience_level')) {
+            switch ($request->experience_level) {
+                case 'no-experience':
+                    $query->where('experience_required', 0);
+                    break;
+                case '0-1':
+                    $query->whereBetween('experience_required', [0, 1]);
+                    break;
+                case '1-3':
+                    $query->whereBetween('experience_required', [1, 3]);
+                    break;
+                case '3+':
+                    $query->where('experience_required', '>=', 3);
+                    break;
+            }
         }
 
         // Education level filter
@@ -50,7 +73,19 @@ class JobApplicationController extends Controller
 
         // Language filter
         if ($request->filled('language')) {
-            $query->whereJsonContains('languages', $request->language);
+            if ($request->language === 'no-requirement') {
+                $query->where(function($q) {
+                    $q->whereNull('languages')
+                      ->orWhereJsonLength('languages', 0);
+                });
+            } else {
+                $query->whereJsonContains('languages', $request->language);
+            }
+        }
+
+        // Salary period filter (hourly, monthly, etc.)
+        if ($request->filled('salary_period')) {
+            $query->where('salary_period', $request->salary_period);
         }
 
         // Salary range filter
@@ -65,6 +100,24 @@ class JobApplicationController extends Controller
                 $q->where('salary_min', '<=', $request->max_salary)
                   ->orWhere('salary_max', '<=', $request->max_salary);
             });
+        }
+
+        // Date posted filter
+        if ($request->filled('date_posted')) {
+            switch ($request->date_posted) {
+                case '24-hours':
+                    $query->where('created_at', '>=', now()->subDay());
+                    break;
+                case '3-days':
+                    $query->where('created_at', '>=', now()->subDays(3));
+                    break;
+                case '7-days':
+                    $query->where('created_at', '>=', now()->subDays(7));
+                    break;
+                case '14-days':
+                    $query->where('created_at', '>=', now()->subDays(14));
+                    break;
+            }
         }
 
         $jobs = $query->latest()->paginate(20);

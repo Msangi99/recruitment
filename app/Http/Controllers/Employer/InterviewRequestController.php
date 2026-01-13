@@ -44,24 +44,34 @@ class InterviewRequestController extends Controller
         }
 
         $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255',
+            'job_title' => 'required|string|max:255',
+            'interviewer_email' => 'required|email|max:255',
             'scheduled_at' => 'required|date|after:now',
             'meeting_mode' => 'required|in:online,in-person',
             'duration_minutes' => 'required|integer|min:15|max:120',
             'meeting_link' => 'required_if:meeting_mode,online|nullable|url',
             'meeting_location' => 'required_if:meeting_mode,in-person|nullable|string|max:255',
             'notes' => 'nullable|string|max:1000',
+            'requirements' => 'nullable|string|max:2000',
         ]);
 
         $appointment = Appointment::create([
             'user_id' => $candidate->id,
             'employer_id' => auth()->id(),
             'appointment_type' => 'interview',
+            'title' => $validated['title'],
+            'company_name' => $validated['company_name'],
+            'job_title' => $validated['job_title'],
+            'interviewer_email' => $validated['interviewer_email'],
             'meeting_mode' => $validated['meeting_mode'],
             'scheduled_at' => $validated['scheduled_at'],
             'duration_minutes' => $validated['duration_minutes'],
             'meeting_link' => $validated['meeting_link'] ?? null,
             'meeting_location' => $validated['meeting_location'] ?? null,
             'notes' => $validated['notes'] ?? null,
+            'requirements' => $validated['requirements'] ?? null,
             'amount' => 0, // Free for employers
             'currency' => 'TZS',
             'payment_status' => 'completed', // Free

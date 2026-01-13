@@ -11,6 +11,6 @@ class HomeController extends Controller
     {
         $categories = Category::where('is_active', true)->get();
         
-        return view('welcome', compact('categories'));
+        return view('home', compact('categories'));
     }
 }

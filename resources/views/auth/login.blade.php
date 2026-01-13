@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login - COYZON')
+@section('title', 'Login - Implore Recruitment')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -12,11 +12,28 @@
                 </svg>
             </div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Sign in to COYZON
+                Sign in to Implore
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
                 Your gateway to global recruitment opportunities
             </p>
+        </div>
+        
+        <!-- Info for Employers -->
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-blue-700">
+                        <strong>Looking to hire?</strong> Employers can browse candidates and request interviews without logging in.
+                        <a href="{{ route('public.candidates.index') }}" class="underline font-medium">Browse candidates →</a>
+                    </p>
+                </div>
+            </div>
         </div>
 
         <form class="mt-8 space-y-6" action="{{ route('login') }}" method="POST">

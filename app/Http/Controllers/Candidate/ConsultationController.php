@@ -34,11 +34,26 @@ class ConsultationController extends Controller
 
     public function create()
     {
+        $candidate = auth()->user();
+        
+        // Check if profile is verified (as per documentation requirement)
+        if (!$candidate->candidateProfile || $candidate->candidateProfile->verification_status !== 'approved') {
+            return redirect()->route('candidate.profile.create')
+                ->with('error', 'Your profile must be verified before booking a consultation. Please complete and submit your profile for verification.');
+        }
+
         return view('candidate.consultations.create');
     }
 
     public function store(Request $request)
     {
+        $candidate = auth()->user();
+        
+        // Verify profile is approved (security check)
+        if (!$candidate->candidateProfile || $candidate->candidateProfile->verification_status !== 'approved') {
+            return back()->with('error', 'Your profile must be verified before booking a consultation.')->withInput();
+        }
+
         $validated = $request->validate([
             'scheduled_at' => 'required|date|after:now',
             'meeting_mode' => 'required|in:online,in-person',
@@ -55,8 +70,6 @@ class ConsultationController extends Controller
             'mobile_provider.required_if' => 'Please select a mobile money provider.',
             'account_number.required_if' => 'Please enter your mobile money number.',
         ]);
-
-        $candidate = auth()->user();
 
         // Create appointment
         $appointment = Appointment::create([

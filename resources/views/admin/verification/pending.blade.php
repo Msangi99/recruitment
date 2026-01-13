@@ -27,15 +27,15 @@
                     @forelse($pendingProfiles as $profile)
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
+                                <a href="{{ route('admin.candidates.show', $profile->user) }}" class="flex items-center hover:opacity-75 transition-opacity">
                                     <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
                                         <span class="text-gray-600 font-bold text-sm">{{ substr($profile->user->name, 0, 1) }}</span>
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-bold text-gray-900">{{ $profile->user->name }}</div>
+                                        <div class="text-sm font-bold text-gray-900 hover:text-blue-600">{{ $profile->user->name }}</div>
                                         <div class="text-xs text-gray-500">{{ $profile->user->email }}</div>
                                     </div>
-                                </div>
+                                </a>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900 font-medium">{{ $profile->education_level ?? 'N/A' }}</div>
@@ -43,9 +43,9 @@
                             </td>
                             <td class="px-6 py-4">
                                 @if($profile->user->documents->count() > 0)
-                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-blue-100 text-blue-700">
+                                    <a href="{{ route('admin.candidates.show', $profile->user) }}" class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors cursor-pointer" title="Click to view documents">
                                         {{ $profile->user->documents->count() }} document(s)
-                                    </span>
+                                    </a>
                                 @else
                                     <span class="text-xs text-gray-400 font-medium italic">No documents</span>
                                 @endif
@@ -55,6 +55,9 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold">
                                 <div class="flex justify-end space-x-2">
+                                    <a href="{{ route('admin.candidates.show', $profile->user) }}" class="px-4 py-1.5 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg transition-colors">
+                                        View Details
+                                    </a>
                                     <form method="POST" action="{{ route('admin.verification.profile.approve', $profile) }}" class="inline">
                                         @csrf
                                         <button type="submit" class="px-4 py-1.5 bg-green-100 text-green-700 hover:bg-green-200 rounded-lg transition-colors">

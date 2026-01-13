@@ -12,22 +12,61 @@ use App\Http\Controllers\Admin\VerificationController;
 use App\Http\Controllers\Admin\AppointmentManagementController;
 use App\Http\Controllers\Admin\PaymentManagementController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Employer\EmployerController;
 use App\Http\Controllers\Candidate\CandidateController;
 use App\Http\Controllers\Candidate\ProfileController;
 use App\Http\Controllers\Candidate\JobApplicationController;
 use App\Http\Controllers\Candidate\ConsultationController as CandidateConsultationController;
 use App\Http\Controllers\Candidate\DocumentController;
 use App\Http\Controllers\Candidate\BillingController;
-use App\Http\Controllers\Employer\JobListingController;
-use App\Http\Controllers\Employer\CandidateBrowseController;
-use App\Http\Controllers\Employer\InterviewRequestController;
-use App\Http\Controllers\Employer\ConsultationController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Payment\AzamPayController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PublicJobController;
+use App\Http\Controllers\PublicCandidateController;
 
 // Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Public Job Browsing (no login required)
+Route::get('/jobs', [PublicJobController::class, 'index'])->name('public.jobs.index');
+Route::get('/jobs/{job}', [PublicJobController::class, 'show'])->name('public.jobs.show');
+
+// Public Candidate Browsing for Employers (no login required)
+Route::get('/candidates', [PublicCandidateController::class, 'index'])->name('public.candidates.index');
+Route::get('/candidates/{candidate}', [PublicCandidateController::class, 'show'])->name('public.candidates.show');
+Route::get('/candidates/{candidate}/interview', [PublicCandidateController::class, 'interviewForm'])->name('public.candidates.interview');
+Route::post('/candidates/{candidate}/interview', [PublicCandidateController::class, 'submitInterview'])->name('public.candidates.interview.store');
+
+// Serve static files from public folder (for php artisan serve compatibility)
+// Profile pictures
+Route::get('/profile-pictures/{filename}', function ($filename) {
+    $path = public_path("profile-pictures/{$filename}");
+    if (!file_exists($path)) abort(404);
+    return response()->file($path);
+});
+
+// Documents
+Route::get('/documents/{user_id}/{filename}', function ($user_id, $filename) {
+    $path = public_path("documents/{$user_id}/{$filename}");
+    if (!file_exists($path)) abort(404);
+    return response()->file($path);
+})->where(['user_id' => '[0-9]+', 'filename' => '.*']);
+
+// Application videos
+Route::get('/application-videos/{filename}', function ($filename) {
+    $path = public_path("application-videos/{$filename}");
+    if (!file_exists($path)) abort(404);
+    return response()->file($path);
+});
+
+// Contact Us
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Legal Pages
+Route::view('/terms', 'legal.terms')->name('terms');
+Route::view('/privacy', 'legal.privacy')->name('privacy');
+Route::view('/about', 'about')->name('about');
 
 // AzamPay webhook (no auth required)
 Route::post('/azampay/webhook', [AzamPayController::class, 'webhook'])->name('azampay.webhook');
@@ -63,8 +102,6 @@ Route::middleware('auth')->group(function () {
         switch ($user->role) {
             case 'admin':
                 return redirect()->route('admin.dashboard');
-            case 'employer':
-                return redirect()->route('employer.dashboard');
             case 'candidate':
                 return redirect()->route('candidate.dashboard');
             default:
@@ -86,9 +123,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/verification/pending', [VerificationController::class, 'pending'])->name('verification.pending');
         Route::post('/verification/profile/{profile}/approve', [VerificationController::class, 'verifyProfile'])->name('verification.profile.approve');
         Route::post('/verification/profile/{profile}/reject', [VerificationController::class, 'rejectProfile'])->name('verification.profile.reject');
+        Route::get('/verification/document/{document}/view', [VerificationController::class, 'viewDocument'])->name('verification.document.view');
         Route::post('/verification/document/{document}/approve', [VerificationController::class, 'verifyDocument'])->name('verification.document.approve');
         Route::post('/verification/document/{document}/reject', [VerificationController::class, 'rejectDocument'])->name('verification.document.reject');
-        Route::get('/documents/{document}', [VerificationController::class, 'viewDocument'])->name('documents.show');
 
         // Job Management
         Route::resource('jobs', JobManagementController::class);
@@ -105,34 +142,17 @@ Route::middleware('auth')->group(function () {
 
         // Category Management
         Route::resource('categories', CategoryController::class);
+
+        // Contact Messages Management
+        Route::get('/contact-messages', [\App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact-messages.index');
+        Route::get('/contact-messages/{contactMessage}', [\App\Http\Controllers\Admin\ContactMessageController::class, 'show'])->name('contact-messages.show');
+        Route::post('/contact-messages/{contactMessage}/reply', [\App\Http\Controllers\Admin\ContactMessageController::class, 'reply'])->name('contact-messages.reply');
+        Route::patch('/contact-messages/{contactMessage}/notes', [\App\Http\Controllers\Admin\ContactMessageController::class, 'updateNotes'])->name('contact-messages.notes');
+        Route::delete('/contact-messages/{contactMessage}', [\App\Http\Controllers\Admin\ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
     });
 
-    // Employer routes
-    Route::middleware('role:employer')->prefix('employer')->name('employer.')->group(function () {
-        // Dashboard
-        Route::get('/dashboard', [EmployerController::class, 'dashboard'])->name('dashboard');
-
-        // Job Management
-        Route::resource('jobs', JobListingController::class);
-        Route::patch('/jobs/{job}/toggle-status', [JobListingController::class, 'toggleStatus'])->name('jobs.toggleStatus');
-        Route::patch('/jobs/{job}/applications/{application}/status', [JobListingController::class, 'updateApplicationStatus'])->name('jobs.applications.updateStatus');
-
-        // Browse Candidates (Verified Only)
-        Route::get('/candidates', [CandidateBrowseController::class, 'index'])->name('candidates.index');
-        Route::get('/candidates/{candidate}', [CandidateBrowseController::class, 'show'])->name('candidates.show');
-
-        // Interview Requests
-        Route::get('/interviews', [InterviewRequestController::class, 'index'])->name('interviews.index');
-        Route::get('/interviews/create/{candidate}', [InterviewRequestController::class, 'create'])->name('interviews.create');
-        Route::post('/interviews/{candidate}', [InterviewRequestController::class, 'store'])->name('interviews.store');
-        Route::get('/interviews/{appointment}', [InterviewRequestController::class, 'show'])->name('interviews.show');
-
-        // Free Consultations
-        Route::get('/consultations', [ConsultationController::class, 'index'])->name('consultations.index');
-        Route::get('/consultations/create', [ConsultationController::class, 'create'])->name('consultations.create');
-        Route::post('/consultations', [ConsultationController::class, 'store'])->name('consultations.store');
-        Route::get('/consultations/{appointment}', [ConsultationController::class, 'show'])->name('consultations.show');
-    });
+    // Employer routes removed - employers can now browse candidates and request interviews without an account
+    // See public routes: /candidates and /candidates/{id}/interview
 
     // Candidate routes
     Route::middleware('role:candidate')->prefix('candidate')->name('candidate.')->group(function () {
