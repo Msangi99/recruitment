@@ -101,31 +101,22 @@
                                     @endif
                                 </dd>
                             </div>
-                            @php
-                                $skills = $profile->skills ?? collect();
-                                $skillsCollection = is_array($skills) ? collect($skills) : $skills;
-                                $skillsCount = count($skillsCollection);
-                                
-                                $languages = $profile->languages ?? collect();
-                                $languagesCollection = is_array($languages) ? collect($languages) : $languages;
-                                $languagesCount = count($languagesCollection);
-                            @endphp
-                            @if($skills && $skillsCount > 0)
+                            @if($profile->skills && $profile->skills->count() > 0)
                                 <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">Skills</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        @foreach($skillsCollection as $skill)
-                                            <span class="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm text-gray-700 mr-2 mb-2">{{ is_object($skill) ? $skill->name : $skill }}</span>
+                                        @foreach($profile->skills as $skill)
+                                            <span class="inline-block bg-gray-100 rounded-full px-3 py-1 text-sm text-gray-700 mr-2 mb-2">{{ $skill->name }}</span>
                                         @endforeach
                                     </dd>
                                 </div>
                             @endif
-                            @if($languages && $languagesCount > 0)
+                            @if($profile->languages && $profile->languages->count() > 0)
                                 <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                                     <dt class="text-sm font-medium text-gray-500">Languages</dt>
                                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                        @foreach($languagesCollection as $language)
-                                            <span class="inline-block bg-blue-100 rounded-full px-3 py-1 text-sm text-blue-700 mr-2 mb-2">{{ is_object($language) ? $language->name : $language }}</span>
+                                        @foreach($profile->languages as $language)
+                                            <span class="inline-block bg-blue-100 rounded-full px-3 py-1 text-sm text-blue-700 mr-2 mb-2">{{ $language->name }}</span>
                                         @endforeach
                                     </dd>
                                 </div>

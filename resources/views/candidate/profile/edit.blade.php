@@ -359,26 +359,30 @@ function validateImageFile(input) {
     $skillsForJs = [];
     $languagesForJs = [];
     
-    if ($profile->skills) {
-        $skillsCollection = is_array($profile->skills) ? collect($profile->skills) : $profile->skills;
-        if (is_object($skillsCollection) && method_exists($skillsCollection, 'pluck')) {
-            $skillsForJs = $skillsCollection->pluck('name')->toArray();
-        } else {
-            $skillsForJs = is_array($profile->skills) ? $profile->skills : [];
-        }
+    // Get skills from relationship
+    if ($profile->relationLoaded('skills') && $profile->skills->count() > 0) {
+        $skillsForJs = $profile->skills->pluck('name')->toArray();
     }
     
-    if ($profile->languages) {
-        $languagesCollection = is_array($profile->languages) ? collect($profile->languages) : $profile->languages;
-        if (is_object($languagesCollection) && method_exists($languagesCollection, 'pluck')) {
-            $languagesForJs = $languagesCollection->pluck('name')->toArray();
-        } else {
-            $languagesForJs = is_array($profile->languages) ? $profile->languages : [];
-        }
+    // Get languages from relationship
+    if ($profile->relationLoaded('languages') && $profile->languages->count() > 0) {
+        $languagesForJs = $profile->languages->pluck('name')->toArray();
     }
+    
+    // Use old() values if form was submitted with errors
+    $skillsForJs = old('skills', $skillsForJs);
+    $languagesForJs = old('languages', $languagesForJs);
+    
+    // Ensure they are arrays
+    if (!is_array($skillsForJs)) $skillsForJs = [];
+    if (!is_array($languagesForJs)) $languagesForJs = [];
 @endphp
-let skills = @json(old('skills', $skillsForJs));
-let languages = @json(old('languages', $languagesForJs));
+let skills = @json($skillsForJs);
+let languages = @json($languagesForJs);
+
+// Debug: log what we received
+console.log('Loaded skills:', skills);
+console.log('Loaded languages:', languages);
 
 // Skills input handler
 document.getElementById('skill-input').addEventListener('keypress', function(e) {
@@ -474,6 +478,14 @@ function removeLanguageByIndex(index) {
 
 // Initialize display on page load
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure skills and languages are arrays
+    if (!Array.isArray(skills)) skills = [];
+    if (!Array.isArray(languages)) languages = [];
+    
+    console.log('Initializing with skills:', skills);
+    console.log('Initializing with languages:', languages);
+    
+    // Update display and hidden inputs
     updateSkillsDisplay();
     updateLanguagesDisplay();
     
