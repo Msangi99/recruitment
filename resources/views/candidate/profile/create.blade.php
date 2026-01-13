@@ -144,15 +144,15 @@
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Skills * (Press Enter after each skill)</label>
-                        <div id="skills-container" class="mt-2 flex flex-wrap gap-2 mb-2"></div>
-                        <input type="text" id="skill-input" placeholder="Type a skill and press Enter" class="block w-full rounded-md border-gray-300 shadow-sm">
+                        <label class="block text-sm font-medium text-gray-700">Skills * (separate with comma)</label>
+                        <input type="text" id="skills-input" name="skills_text" placeholder="e.g. IT, Developer, PHP, Communication" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <p class="mt-1 text-xs text-gray-500">Enter your skills separated by commas</p>
                         <input type="hidden" name="skills" id="skills-hidden">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Languages * (Press Enter after each language)</label>
-                        <div id="languages-container" class="mt-2 flex flex-wrap gap-2 mb-2"></div>
-                        <input type="text" id="language-input" placeholder="Type a language and press Enter" class="block w-full rounded-md border-gray-300 shadow-sm">
+                        <label class="block text-sm font-medium text-gray-700">Languages * (separate with comma)</label>
+                        <input type="text" id="languages-input" name="languages_text" placeholder="e.g. English, Swahili, French" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <p class="mt-1 text-xs text-gray-500">Enter languages you speak separated by commas</p>
                         <input type="hidden" name="languages" id="languages-hidden">
                     </div>
                     <div class="flex justify-between">
@@ -338,16 +338,24 @@ function submitStep1() {
 function submitStep2() {
     const form = document.getElementById('form-step2');
     
+    // Parse skills and languages from comma-separated input
+    const skillsInput = document.getElementById('skills-input').value.trim();
+    const languagesInput = document.getElementById('languages-input').value.trim();
+    
+    // Parse comma-separated values into arrays
+    skills = skillsInput ? skillsInput.split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
+    languages = languagesInput ? languagesInput.split(',').map(l => l.trim()).filter(l => l.length > 0) : [];
+    
     // Validate skills and languages
     if (skills.length === 0) {
-        alert('Please add at least one skill.');
-        document.getElementById('skill-input').focus();
+        alert('Please add at least one skill (e.g. IT, Developer, PHP)');
+        document.getElementById('skills-input').focus();
         return;
     }
     
     if (languages.length === 0) {
-        alert('Please add at least one language.');
-        document.getElementById('language-input').focus();
+        alert('Please add at least one language (e.g. English, Swahili)');
+        document.getElementById('languages-input').focus();
         return;
     }
     
@@ -502,64 +510,6 @@ function updateProgressIndicator(activeStep) {
             }
         }
     }
-}
-
-// Skills input handler
-document.getElementById('skill-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        const skill = this.value.trim();
-        if (skill && !skills.includes(skill)) {
-            skills.push(skill);
-            updateSkillsDisplay();
-            this.value = '';
-        }
-    }
-});
-
-// Languages input handler
-document.getElementById('language-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        const language = this.value.trim();
-        if (language && !languages.includes(language)) {
-            languages.push(language);
-            updateLanguagesDisplay();
-            this.value = '';
-        }
-    }
-});
-
-function updateSkillsDisplay() {
-    const container = document.getElementById('skills-container');
-    container.innerHTML = skills.map(skill => 
-        `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800">
-            ${skill}
-            <button type="button" onclick="removeSkill('${skill}')" class="ml-2 text-indigo-600 hover:text-indigo-800">×</button>
-        </span>`
-    ).join('');
-    document.getElementById('skills-hidden').value = JSON.stringify(skills);
-}
-
-function updateLanguagesDisplay() {
-    const container = document.getElementById('languages-container');
-    container.innerHTML = languages.map(lang => 
-        `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-            ${lang}
-            <button type="button" onclick="removeLanguage('${lang}')" class="ml-2 text-blue-600 hover:text-blue-800">×</button>
-        </span>`
-    ).join('');
-    document.getElementById('languages-hidden').value = JSON.stringify(languages);
-}
-
-function removeSkill(skill) {
-    skills = skills.filter(s => s !== skill);
-    updateSkillsDisplay();
-}
-
-function removeLanguage(language) {
-    languages = languages.filter(l => l !== language);
-    updateLanguagesDisplay();
 }
 
 // Initialize on page load

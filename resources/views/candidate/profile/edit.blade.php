@@ -200,26 +200,36 @@
                                 @enderror
                             </div>
                         </div>
+                        @php
+                            $existingSkills = '';
+                            $existingLanguages = '';
+                            
+                            if ($profile->skills && $profile->skills->count() > 0) {
+                                $existingSkills = $profile->skills->pluck('name')->implode(', ');
+                            }
+                            
+                            if ($profile->languages && $profile->languages->count() > 0) {
+                                $existingLanguages = $profile->languages->pluck('name')->implode(', ');
+                            }
+                        @endphp
                         <div>
-                            <label for="skill-input" class="block text-sm font-medium text-gray-700 mb-2">Skills * (Press Enter after each skill)</label>
-                            <div id="skills-container" class="mb-3 flex flex-wrap gap-2">
-                                {{-- Skills will be populated by JavaScript --}}
-                            </div>
-                            <input type="text" id="skill-input" placeholder="Type a skill and press Enter" 
-                                   class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                            <div id="skills-inputs-container"></div>
+                            <label for="skills-input" class="block text-sm font-medium text-gray-700 mb-2">Skills * (separate with comma)</label>
+                            <input type="text" id="skills-input" name="skills_text" 
+                                   value="{{ old('skills_text', $existingSkills) }}"
+                                   placeholder="e.g. IT, Developer, PHP, Communication" 
+                                   class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('skills') border-red-300 @enderror">
+                            <p class="mt-1 text-xs text-gray-500">Enter your skills separated by commas</p>
                             @error('skills')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
                         <div>
-                            <label for="language-input" class="block text-sm font-medium text-gray-700 mb-2">Languages * (Press Enter after each language)</label>
-                            <div id="languages-container" class="mb-3 flex flex-wrap gap-2">
-                                {{-- Languages will be populated by JavaScript --}}
-                            </div>
-                            <input type="text" id="language-input" placeholder="Type a language and press Enter" 
-                                   class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                            <div id="languages-inputs-container"></div>
+                            <label for="languages-input" class="block text-sm font-medium text-gray-700 mb-2">Languages * (separate with comma)</label>
+                            <input type="text" id="languages-input" name="languages_text" 
+                                   value="{{ old('languages_text', $existingLanguages) }}"
+                                   placeholder="e.g. English, Swahili, French" 
+                                   class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('languages') border-red-300 @enderror">
+                            <p class="mt-1 text-xs text-gray-500">Enter languages you speak separated by commas</p>
                             @error('languages')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -333,144 +343,56 @@ function validateImageFile(input) {
     });
 }
 
-@php
-    $skillsForJs = [];
-    $languagesForJs = [];
-    
-    // Get skills from relationship (with null safety)
-    if ($profile->skills && $profile->skills->count() > 0) {
-        $skillsForJs = $profile->skills->pluck('name')->toArray();
-    }
-    
-    // Get languages from relationship (with null safety)
-    if ($profile->languages && $profile->languages->count() > 0) {
-        $languagesForJs = $profile->languages->pluck('name')->toArray();
-    }
-    
-    // Use old() values if form was submitted with errors
-    $skillsForJs = old('skills', $skillsForJs);
-    $languagesForJs = old('languages', $languagesForJs);
-    
-    // Ensure they are arrays
-    if (!is_array($skillsForJs)) $skillsForJs = [];
-    if (!is_array($languagesForJs)) $languagesForJs = [];
-@endphp
-let skills = @json($skillsForJs);
-let languages = @json($languagesForJs);
-
-// Debug: log what we received
-console.log('Loaded skills:', skills);
-console.log('Loaded languages:', languages);
-
-// Skills input handler
-document.getElementById('skill-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        const skill = this.value.trim();
-        if (skill && !skills.includes(skill)) {
-            skills.push(skill);
-            updateSkillsDisplay();
-            this.value = '';
-        }
-    }
-});
-
-// Languages input handler
-document.getElementById('language-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        const language = this.value.trim();
-        if (language && !languages.includes(language)) {
-            languages.push(language);
-            updateLanguagesDisplay();
-            this.value = '';
-        }
-    }
-});
-
-function updateSkillsDisplay() {
-    const container = document.getElementById('skills-container');
-    container.innerHTML = skills.map((skill, index) => 
-        `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800">
-            ${skill.replace(/'/g, "&#39;")}
-            <button type="button" onclick="removeSkillByIndex(${index})" class="ml-2 text-indigo-600 hover:text-indigo-800">×</button>
-        </span>`
-    ).join('');
-    
-    // Update hidden inputs for form submission
-    updateSkillsInputs();
-}
-
-function updateSkillsInputs() {
-    // Remove existing skill inputs
-    const container = document.getElementById('skills-inputs-container');
-    container.innerHTML = '';
-    
-    // Add new inputs for each skill
-    skills.forEach(skill => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'skills[]';
-        input.value = skill;
-        container.appendChild(input);
-    });
-}
-
-function updateLanguagesDisplay() {
-    const container = document.getElementById('languages-container');
-    container.innerHTML = languages.map((lang, index) => 
-        `<span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-            ${lang.replace(/'/g, "&#39;")}
-            <button type="button" onclick="removeLanguageByIndex(${index})" class="ml-2 text-blue-600 hover:text-blue-800">×</button>
-        </span>`
-    ).join('');
-    
-    // Update hidden inputs for form submission
-    updateLanguagesInputs();
-}
-
-function updateLanguagesInputs() {
-    // Remove existing language inputs
-    const container = document.getElementById('languages-inputs-container');
-    container.innerHTML = '';
-    
-    // Add new inputs for each language
-    languages.forEach(language => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'languages[]';
-        input.value = language;
-        container.appendChild(input);
-    });
-}
-
-function removeSkillByIndex(index) {
-    skills.splice(index, 1);
-    updateSkillsDisplay();
-}
-
-function removeLanguageByIndex(index) {
-    languages.splice(index, 1);
-    updateLanguagesDisplay();
-}
-
-// Initialize display on page load
+// Form submission - parse comma-separated skills and languages
 document.addEventListener('DOMContentLoaded', function() {
-    // Ensure skills and languages are arrays
-    if (!Array.isArray(skills)) skills = [];
-    if (!Array.isArray(languages)) languages = [];
+    const form = document.querySelector('form');
     
-    console.log('Initializing with skills:', skills);
-    console.log('Initializing with languages:', languages);
-    
-    // Update display and hidden inputs
-    updateSkillsDisplay();
-    updateLanguagesDisplay();
-    
-    // Also update inputs when form is submitted
-    document.querySelector('form').addEventListener('submit', function() {
-        updateSkillsInputs();
-        updateLanguagesInputs();
+    form.addEventListener('submit', function(e) {
+        // Get comma-separated values
+        const skillsInput = document.getElementById('skills-input');
+        const languagesInput = document.getElementById('languages-input');
+        
+        // Parse comma-separated values into arrays
+        const skillsText = skillsInput ? skillsInput.value.trim() : '';
+        const languagesText = languagesInput ? languagesInput.value.trim() : '';
+        
+        const skills = skillsText ? skillsText.split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
+        const languages = languagesText ? languagesText.split(',').map(l => l.trim()).filter(l => l.length > 0) : [];
+        
+        // Validate
+        if (skills.length === 0) {
+            e.preventDefault();
+            alert('Please add at least one skill (e.g. IT, Developer, PHP)');
+            skillsInput.focus();
+            return false;
+        }
+        
+        if (languages.length === 0) {
+            e.preventDefault();
+            alert('Please add at least one language (e.g. English, Swahili)');
+            languagesInput.focus();
+            return false;
+        }
+        
+        // Create hidden inputs for skills array
+        skills.forEach(skill => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'skills[]';
+            input.value = skill;
+            form.appendChild(input);
+        });
+        
+        // Create hidden inputs for languages array
+        languages.forEach(language => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'languages[]';
+            input.value = language;
+            form.appendChild(input);
+        });
+        
+        return true;
     });
 });
 </script>
