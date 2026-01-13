@@ -203,18 +203,7 @@
                         <div>
                             <label for="skill-input" class="block text-sm font-medium text-gray-700 mb-2">Skills * (Press Enter after each skill)</label>
                             <div id="skills-container" class="mb-3 flex flex-wrap gap-2">
-                                @php
-                                    $skills = $profile->skills ?? collect();
-                                    $skillsCollection = is_array($skills) ? collect($skills) : $skills;
-                                @endphp
-                                @if($skills && count($skillsCollection) > 0)
-                                    @foreach($skillsCollection as $skill)
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-indigo-100 text-indigo-800">
-                                            {{ is_object($skill) ? $skill->name : $skill }}
-                                            <button type="button" onclick="removeSkill('{{ is_object($skill) ? $skill->name : $skill }}')" class="ml-2 text-indigo-600 hover:text-indigo-800">×</button>
-                                        </span>
-                                    @endforeach
-                                @endif
+                                {{-- Skills will be populated by JavaScript --}}
                             </div>
                             <input type="text" id="skill-input" placeholder="Type a skill and press Enter" 
                                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
@@ -226,18 +215,7 @@
                         <div>
                             <label for="language-input" class="block text-sm font-medium text-gray-700 mb-2">Languages * (Press Enter after each language)</label>
                             <div id="languages-container" class="mb-3 flex flex-wrap gap-2">
-                                @php
-                                    $languages = $profile->languages ?? collect();
-                                    $languagesCollection = is_array($languages) ? collect($languages) : $languages;
-                                @endphp
-                                @if($languages && count($languagesCollection) > 0)
-                                    @foreach($languagesCollection as $language)
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-                                            {{ is_object($language) ? $language->name : $language }}
-                                            <button type="button" onclick="removeLanguage('{{ is_object($language) ? $language->name : $language }}')" class="ml-2 text-blue-600 hover:text-blue-800">×</button>
-                                        </span>
-                                    @endforeach
-                                @endif
+                                {{-- Languages will be populated by JavaScript --}}
                             </div>
                             <input type="text" id="language-input" placeholder="Type a language and press Enter" 
                                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
@@ -359,13 +337,13 @@ function validateImageFile(input) {
     $skillsForJs = [];
     $languagesForJs = [];
     
-    // Get skills from relationship
-    if ($profile->relationLoaded('skills') && $profile->skills->count() > 0) {
+    // Get skills from relationship (with null safety)
+    if ($profile->skills && $profile->skills->count() > 0) {
         $skillsForJs = $profile->skills->pluck('name')->toArray();
     }
     
-    // Get languages from relationship
-    if ($profile->relationLoaded('languages') && $profile->languages->count() > 0) {
+    // Get languages from relationship (with null safety)
+    if ($profile->languages && $profile->languages->count() > 0) {
         $languagesForJs = $profile->languages->pluck('name')->toArray();
     }
     

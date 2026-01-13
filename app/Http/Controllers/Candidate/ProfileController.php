@@ -220,8 +220,8 @@ class ProfileController extends Controller
 
         // Validate skills and languages separately (only if provided in the request)
         // If not provided, keep existing values from database
-        if ($request->has('skills')) {
-            if (empty($skills) || !is_array($skills)) {
+        if ($request->has('skills') && !empty($skills)) {
+            if (!is_array($skills)) {
                 return back()->withErrors(['skills' => 'At least one skill is required.'])->withInput();
             }
             // Validate each skill
@@ -231,12 +231,13 @@ class ProfileController extends Controller
                 }
             }
         } else {
-            // Keep existing skills if not provided in form
-            $skills = $profile->skills ?? [];
+            // Keep existing skills if not provided in form - extract names from relationship
+            $profile->load('skills');
+            $skills = $profile->skills->pluck('name')->toArray();
         }
 
-        if ($request->has('languages')) {
-            if (empty($languages) || !is_array($languages)) {
+        if ($request->has('languages') && !empty($languages)) {
+            if (!is_array($languages)) {
                 return back()->withErrors(['languages' => 'At least one language is required.'])->withInput();
             }
             // Validate each language
@@ -246,8 +247,9 @@ class ProfileController extends Controller
                 }
             }
         } else {
-            // Keep existing languages if not provided in form
-            $languages = $profile->languages ?? [];
+            // Keep existing languages if not provided in form - extract names from relationship
+            $profile->load('languages');
+            $languages = $profile->languages->pluck('name')->toArray();
         }
 
         $validated['is_available'] = $request->has('is_available');
