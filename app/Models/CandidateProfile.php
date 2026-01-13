@@ -37,8 +37,6 @@ class CandidateProfile extends Model
 
     protected $casts = [
         'date_of_birth' => 'date',
-        'skills' => 'array',
-        'languages' => 'array',
         'expected_salary' => 'decimal:2',
         'verified_at' => 'datetime',
         'is_public' => 'boolean',
