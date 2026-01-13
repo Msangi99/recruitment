@@ -32,7 +32,7 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#about" class="text-gray-600 hover:text-blue-600 font-medium">About Us</a>
                     <a href="{{ route('public.jobs.index') }}" class="text-gray-600 hover:text-blue-600 font-medium">Find Job</a>
-                    <a href="{{ route('public.candidates.index') }}" class="text-gray-600 hover:text-blue-600 font-medium">Find Candidate</a>
+                    <a href="{{ route('public.candidates.index') }}" class="text-gray-600 hover:text-blue-600 font-medium">Book Appointment</a>
                     <a href="{{ route('contact') }}" class="text-gray-600 hover:text-blue-600 font-medium">Contact Us</a>
                     @guest
                         <a href="{{ route('login') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">Login</a>
@@ -73,7 +73,7 @@
                         Find a Job
                     </a>
                     <a href="{{ route('public.candidates.index') }}" class="px-8 py-4 bg-indigo-600 text-white text-lg font-semibold rounded-xl hover:bg-indigo-700 shadow-lg hover:shadow-xl transition-all">
-                        Find a Candidate
+                        Book Appointment
                     </a>
                 </div>
 
@@ -923,7 +923,7 @@
                     Register as Job Seeker
                 </a>
                 <a href="{{ route('public.candidates.index') }}" class="px-8 py-4 bg-indigo-900 text-white font-semibold rounded-xl hover:bg-indigo-800 shadow-lg hover:shadow-xl transition-all">
-                    Browse Candidates
+                    Book Appointment
                 </a>
                 <a href="{{ route('contact') }}" class="px-8 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-blue-600 transition-all">
                     Contact Us
