@@ -343,54 +343,32 @@ function validateImageFile(input) {
     });
 }
 
-// Form submission - parse comma-separated skills and languages
+// Form validation before submission
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     
     form.addEventListener('submit', function(e) {
-        // Get comma-separated values
         const skillsInput = document.getElementById('skills-input');
         const languagesInput = document.getElementById('languages-input');
         
-        // Parse comma-separated values into arrays
         const skillsText = skillsInput ? skillsInput.value.trim() : '';
         const languagesText = languagesInput ? languagesInput.value.trim() : '';
         
-        const skills = skillsText ? skillsText.split(',').map(s => s.trim()).filter(s => s.length > 0) : [];
-        const languages = languagesText ? languagesText.split(',').map(l => l.trim()).filter(l => l.length > 0) : [];
-        
-        // Validate
-        if (skills.length === 0) {
+        // Validate skills
+        if (!skillsText) {
             e.preventDefault();
             alert('Please add at least one skill (e.g. IT, Developer, PHP)');
             skillsInput.focus();
             return false;
         }
         
-        if (languages.length === 0) {
+        // Validate languages
+        if (!languagesText) {
             e.preventDefault();
             alert('Please add at least one language (e.g. English, Swahili)');
             languagesInput.focus();
             return false;
         }
-        
-        // Create hidden inputs for skills array
-        skills.forEach(skill => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'skills[]';
-            input.value = skill;
-            form.appendChild(input);
-        });
-        
-        // Create hidden inputs for languages array
-        languages.forEach(language => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'languages[]';
-            input.value = language;
-            form.appendChild(input);
-        });
         
         return true;
     });

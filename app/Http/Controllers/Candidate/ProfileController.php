@@ -179,9 +179,24 @@ class ProfileController extends Controller
                 ->with('error', 'Please create your profile first.');
         }
 
-        // Handle skills and languages - can come as array (skills[]) or JSON string
+        // Handle skills and languages - can come as:
+        // 1. Array (skills[]) from hidden inputs
+        // 2. JSON string
+        // 3. Comma-separated text (skills_text)
         $skills = $request->input('skills', []);
         $languages = $request->input('languages', []);
+        
+        // Check if comma-separated text was provided (skills_text, languages_text)
+        $skillsText = $request->input('skills_text', '');
+        $languagesText = $request->input('languages_text', '');
+        
+        // If comma-separated text provided, parse it
+        if (!empty($skillsText)) {
+            $skills = array_filter(array_map('trim', explode(',', $skillsText)));
+        }
+        if (!empty($languagesText)) {
+            $languages = array_filter(array_map('trim', explode(',', $languagesText)));
+        }
         
         // If skills/languages come as a single JSON string, decode it
         if (is_string($skills) && !empty($skills)) {
@@ -218,12 +233,8 @@ class ProfileController extends Controller
             'is_available' => 'boolean',
         ]);
 
-        // Validate skills and languages separately (only if provided in the request)
-        // If not provided, keep existing values from database
-        if ($request->has('skills') && !empty($skills)) {
-            if (!is_array($skills)) {
-                return back()->withErrors(['skills' => 'At least one skill is required.'])->withInput();
-            }
+        // Validate skills and languages
+        if (!empty($skills)) {
             // Validate each skill
             foreach ($skills as $skill) {
                 if (!is_string($skill) || strlen($skill) > 100) {
@@ -236,10 +247,7 @@ class ProfileController extends Controller
             $skills = $profile->skills ? $profile->skills->pluck('name')->toArray() : [];
         }
 
-        if ($request->has('languages') && !empty($languages)) {
-            if (!is_array($languages)) {
-                return back()->withErrors(['languages' => 'At least one language is required.'])->withInput();
-            }
+        if (!empty($languages)) {
             // Validate each language
             foreach ($languages as $language) {
                 if (!is_string($language) || strlen($language) > 50) {
