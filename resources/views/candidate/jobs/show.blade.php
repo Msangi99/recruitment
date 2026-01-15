@@ -93,7 +93,16 @@
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-                        <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+                        <div id="upload-progress" class="mb-4 hidden">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="text-sm font-medium text-indigo-700">Uploading video...</span>
+                                <span id="progress-percent" class="text-sm font-medium text-indigo-700">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <button type="submit" id="submit-btn" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed">
                             Submit Application
                         </button>
                     </form>
@@ -117,6 +126,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const videoInput = document.getElementById('application_video');
     const warningEl = document.getElementById('video-size-warning');
     const form = videoInput ? videoInput.closest('form') : null;
+    const submitBtn = document.getElementById('submit-btn');
+    const progressDiv = document.getElementById('upload-progress');
+    const progressBar = document.getElementById('progress-bar');
+    const progressPercent = document.getElementById('progress-percent');
     
     if (videoInput) {
         const maxSize = parseInt(videoInput.dataset.maxSize) || (2 * 1024 * 1024); // Default 2MB
@@ -146,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (form) {
             form.addEventListener('submit', function(e) {
+                // Check file size first
                 if (videoInput.files && videoInput.files[0]) {
                     const file = videoInput.files[0];
                     if (file.size > maxSize) {
@@ -153,6 +167,61 @@ document.addEventListener('DOMContentLoaded', function() {
                         alert(`Video file is too large. Maximum size is ${maxSizeMB}MB.`);
                         return false;
                     }
+                    
+                    // Show progress bar for video uploads
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    const xhr = new XMLHttpRequest();
+                    
+                    // Show progress UI
+                    progressDiv.classList.remove('hidden');
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Uploading...';
+                    
+                    xhr.upload.addEventListener('progress', function(e) {
+                        if (e.lengthComputable) {
+                            const percent = Math.round((e.loaded / e.total) * 100);
+                            progressBar.style.width = percent + '%';
+                            progressPercent.textContent = percent + '%';
+                        }
+                    });
+                    
+                    xhr.addEventListener('load', function() {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            // Success - redirect to applications page
+                            progressBar.style.width = '100%';
+                            progressPercent.textContent = '100%';
+                            submitBtn.textContent = 'Success! Redirecting...';
+                            
+                            // Parse redirect URL from response or redirect to applications
+                            window.location.href = '{{ route("candidate.applications.index") }}';
+                        } else {
+                            // Error
+                            progressDiv.classList.add('hidden');
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = 'Submit Application';
+                            
+                            // Try to parse error message
+                            try {
+                                const response = JSON.parse(xhr.responseText);
+                                alert(response.message || 'Upload failed. Please try again.');
+                            } catch {
+                                alert('Upload failed. Please try again.');
+                            }
+                        }
+                    });
+                    
+                    xhr.addEventListener('error', function() {
+                        progressDiv.classList.add('hidden');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Submit Application';
+                        alert('Upload failed. Please check your connection and try again.');
+                    });
+                    
+                    xhr.open('POST', form.action);
+                    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                    xhr.send(formData);
                 }
             });
         }

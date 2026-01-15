@@ -142,17 +142,22 @@
                                     @endif
                                     
                                     @if($application->video_path)
-                                        <div class="bg-purple-50 rounded-lg p-3">
-                                            <p class="font-medium text-purple-700 mb-2 flex items-center">
-                                                <i data-lucide="video" class="w-4 h-4 mr-2"></i> Application Video
-                                            </p>
-                                            <video controls class="w-full max-w-lg rounded-lg shadow-sm" preload="metadata">
-                                                <source src="{{ asset($application->video_path) }}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                            <a href="{{ asset($application->video_path) }}" target="_blank" class="inline-flex items-center mt-2 text-sm text-purple-600 hover:text-purple-800">
-                                                <i data-lucide="external-link" class="w-4 h-4 mr-1"></i> Open in new tab
-                                            </a>
+                                        <div class="bg-purple-50 rounded-lg p-3" x-data="{ showVideo: false }">
+                                            <button @click="showVideo = !showVideo" class="w-full font-medium text-purple-700 flex items-center justify-between">
+                                                <span class="flex items-center">
+                                                    <i data-lucide="video" class="w-4 h-4 mr-2"></i> Application Video
+                                                </span>
+                                                <i data-lucide="chevron-down" class="w-4 h-4 transition-transform" :class="{ 'rotate-180': showVideo }"></i>
+                                            </button>
+                                            <div x-show="showVideo" x-collapse class="mt-2">
+                                                <video controls class="w-full max-w-lg rounded-lg shadow-sm" preload="metadata">
+                                                    <source src="{{ asset($application->video_path) }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                                <a href="{{ asset($application->video_path) }}" target="_blank" class="inline-flex items-center mt-2 text-sm text-purple-600 hover:text-purple-800">
+                                                    <i data-lucide="external-link" class="w-4 h-4 mr-1"></i> Open in new tab
+                                                </a>
+                                            </div>
                                         </div>
                                     @endif
                                 </div>
