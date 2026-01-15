@@ -130,7 +130,7 @@ class JobApplicationController extends Controller
     }
 
     public function show(JobListing $job)
-    {
+    { 
         if (!$job->is_active) {
             abort(404);
         }
