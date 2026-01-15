@@ -134,7 +134,7 @@ class JobManagementController extends Controller
     public function updateApplicationStatus(Request $request, JobApplication $application)
     {
         $validated = $request->validate([
-            'status' => 'required|in:pending,reviewed,accepted,rejected',
+            'status' => 'required|in:pending,reviewed,shortlisted,interview,offered,rejected,withdrawn',
         ]);
 
         $application->update(['status' => $validated['status']]);

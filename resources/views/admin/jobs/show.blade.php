@@ -123,8 +123,11 @@
                                             <button @click="open = !open" class="px-2 py-1 rounded-full text-xs font-bold cursor-pointer hover:opacity-80 flex items-center gap-1
                                                 {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
                                                 {{ $application->status === 'reviewed' ? 'bg-blue-100 text-blue-700' : '' }}
-                                                {{ $application->status === 'accepted' ? 'bg-green-100 text-green-700' : '' }}
-                                                {{ $application->status === 'rejected' ? 'bg-red-100 text-red-700' : '' }}">
+                                                {{ $application->status === 'shortlisted' ? 'bg-purple-100 text-purple-700' : '' }}
+                                                {{ $application->status === 'interview' ? 'bg-indigo-100 text-indigo-700' : '' }}
+                                                {{ $application->status === 'offered' ? 'bg-green-100 text-green-700' : '' }}
+                                                {{ $application->status === 'rejected' ? 'bg-red-100 text-red-700' : '' }}
+                                                {{ $application->status === 'withdrawn' ? 'bg-gray-100 text-gray-700' : '' }}">
                                                 {{ ucfirst($application->status) }}
                                                 <i data-lucide="chevron-down" class="w-3 h-3"></i>
                                             </button>
@@ -149,9 +152,25 @@
                                                 <form method="POST" action="{{ route('admin.applications.updateStatus', $application) }}">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <input type="hidden" name="status" value="accepted">
-                                                    <button type="submit" class="w-full px-3 py-2 text-left text-sm hover:bg-green-50 flex items-center gap-2 {{ $application->status === 'accepted' ? 'bg-green-50' : '' }}">
-                                                        <span class="w-2 h-2 rounded-full bg-green-500"></span> Accepted
+                                                    <input type="hidden" name="status" value="shortlisted">
+                                                    <button type="submit" class="w-full px-3 py-2 text-left text-sm hover:bg-purple-50 flex items-center gap-2 {{ $application->status === 'shortlisted' ? 'bg-purple-50' : '' }}">
+                                                        <span class="w-2 h-2 rounded-full bg-purple-500"></span> Shortlisted
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{{ route('admin.applications.updateStatus', $application) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="interview">
+                                                    <button type="submit" class="w-full px-3 py-2 text-left text-sm hover:bg-indigo-50 flex items-center gap-2 {{ $application->status === 'interview' ? 'bg-indigo-50' : '' }}">
+                                                        <span class="w-2 h-2 rounded-full bg-indigo-500"></span> Interview
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{{ route('admin.applications.updateStatus', $application) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="offered">
+                                                    <button type="submit" class="w-full px-3 py-2 text-left text-sm hover:bg-green-50 flex items-center gap-2 {{ $application->status === 'offered' ? 'bg-green-50' : '' }}">
+                                                        <span class="w-2 h-2 rounded-full bg-green-500"></span> Offered
                                                     </button>
                                                 </form>
                                                 <form method="POST" action="{{ route('admin.applications.updateStatus', $application) }}">
@@ -160,6 +179,14 @@
                                                     <input type="hidden" name="status" value="rejected">
                                                     <button type="submit" class="w-full px-3 py-2 text-left text-sm hover:bg-red-50 flex items-center gap-2 {{ $application->status === 'rejected' ? 'bg-red-50' : '' }}">
                                                         <span class="w-2 h-2 rounded-full bg-red-500"></span> Rejected
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{{ route('admin.applications.updateStatus', $application) }}">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="status" value="withdrawn">
+                                                    <button type="submit" class="w-full px-3 py-2 text-left text-sm hover:bg-gray-50 flex items-center gap-2 {{ $application->status === 'withdrawn' ? 'bg-gray-50' : '' }}">
+                                                        <span class="w-2 h-2 rounded-full bg-gray-500"></span> Withdrawn
                                                     </button>
                                                 </form>
                                             </div>
