@@ -116,6 +116,18 @@
                                     @endif
                                 </dd>
                             </div>
+                            <div class="md:col-span-2">
+                                <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Languages</dt>
+                                <dd class="flex flex-wrap gap-2">
+                                    @if($candidate->candidateProfile->languages && count($candidate->candidateProfile->languages) > 0)
+                                        @foreach($candidate->candidateProfile->languages as $language)
+                                            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-bold border border-green-200">{{ is_object($language) ? $language->name : $language }}</span>
+                                        @endforeach
+                                    @else
+                                        <span class="text-sm text-gray-500 italic">No languages listed</span>
+                                    @endif
+                                </dd>
+                            </div>
                         </dl>
                     </div>
                 </div>

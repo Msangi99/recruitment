@@ -16,17 +16,20 @@ class PublicCandidateController extends Controller
                 $q->where('verification_status', 'approved')
                   ->where('is_public', true);
             })
-            ->with('candidateProfile');
+            ->with(['candidateProfile.skills', 'candidateProfile.languages']);
 
-        // Search filter (name or skills)
+        // Search filter (name, skills, or target destination)
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            })->orWhereHas('candidateProfile', function($q) use ($search) {
-                $q->where('skills', 'like', "%{$search}%")
-                  ->orWhere('target_destination', 'like', "%{$search}%");
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhereHas('candidateProfile', function($q) use ($search) {
+                      $q->where('target_destination', 'like', "%{$search}%");
+                  })
+                  ->orWhereHas('candidateProfile.skills', function($q) use ($search) {
+                      $q->where('name', 'like', "%{$search}%");
+                  });
             });
         }
 
@@ -51,8 +54,8 @@ class PublicCandidateController extends Controller
 
         // Language spoken filter
         if ($request->filled('language')) {
-            $query->whereHas('candidateProfile', function($q) use ($request) {
-                $q->whereJsonContains('languages', $request->language);
+            $query->whereHas('candidateProfile.languages', function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->language . '%');
             });
         }
 

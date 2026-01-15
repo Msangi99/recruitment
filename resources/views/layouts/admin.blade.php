@@ -27,6 +27,17 @@
     .sidebar-scroll::-webkit-scrollbar { width: 6px; }
     .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
     .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); border-radius: 9999px; }
+
+    /* Custom button styles */
+    .fb-blue-bg {
+        background-color: #2563eb;
+    }
+    .fb-blue {
+        color: #2563eb;
+    }
+    .hover\:fb-blue:hover {
+        color: #2563eb;
+    }
 </style>
 </head>
 <body class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased" x-data="{ mobileSidebarOpen: false }">

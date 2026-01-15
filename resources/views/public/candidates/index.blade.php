@@ -178,10 +178,18 @@
                                     </p>
                                 @endif
                                 
-                                @if($candidate->candidateProfile->skills)
-                                    <p class="text-gray-600">
-                                        <span class="font-medium">Skills:</span> {{ \Illuminate\Support\Str::limit($candidate->candidateProfile->skills, 50) }}
-                                    </p>
+                                @if($candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
+                                    <div class="text-gray-600">
+                                        <span class="font-medium">Skills:</span>
+                                        <div class="flex flex-wrap gap-1 mt-1">
+                                            @foreach($candidate->candidateProfile->skills->take(3) as $skill)
+                                                <span class="inline-block bg-blue-50 text-blue-700 px-2 py-0.5 text-xs rounded">{{ $skill->name }}</span>
+                                            @endforeach
+                                            @if($candidate->candidateProfile->skills->count() > 3)
+                                                <span class="text-xs text-gray-500">+{{ $candidate->candidateProfile->skills->count() - 3 }} more</span>
+                                            @endif
+                                        </div>
+                                    </div>
                                 @endif
                             </div>
 
