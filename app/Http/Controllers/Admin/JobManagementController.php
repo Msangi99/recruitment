@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\JobListing;
+use App\Models\JobApplication;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -128,5 +129,16 @@ class JobManagementController extends Controller
     {
         $job->update(['is_active' => !$job->is_active]);
         return back()->with('success', 'Job status updated.');
+    }
+
+    public function updateApplicationStatus(Request $request, JobApplication $application)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,reviewed,accepted,rejected',
+        ]);
+
+        $application->update(['status' => $validated['status']]);
+
+        return back()->with('success', 'Application status updated to ' . ucfirst($validated['status']) . '.');
     }
 }

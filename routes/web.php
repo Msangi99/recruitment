@@ -168,6 +168,7 @@ Route::middleware('auth')->group(function () {
         // Job Management
         Route::resource('jobs', JobManagementController::class);
         Route::patch('/jobs/{job}/toggle-status', [JobManagementController::class, 'toggleStatus'])->name('jobs.toggleStatus');
+        Route::patch('/applications/{application}/status', [JobManagementController::class, 'updateApplicationStatus'])->name('applications.updateStatus');
 
         // Appointment Management
         Route::get('/appointments', [AppointmentManagementController::class, 'index'])->name('appointments.index');
