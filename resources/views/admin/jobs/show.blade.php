@@ -101,21 +101,60 @@
                 <div class="p-0">
                     <ul class="divide-y divide-gray-100">
                         @forelse($job->applications as $application)
-                            <li class="px-6 py-4 hover:bg-gray-50 transition-colors flex items-center justify-between">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-600 border border-gray-200">
-                                        {{ substr($application->candidate->name, 0, 1) }}
+                            <li class="px-6 py-4 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-600 border border-gray-200">
+                                            {{ substr($application->candidate->name, 0, 1) }}
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-bold text-gray-900">{{ $application->candidate->name }}</p>
+                                            <p class="text-xs text-gray-500">{{ $application->candidate->email }}</p>
+                                        </div>
                                     </div>
-                                    <div class="ml-4">
-                                        <p class="text-sm font-bold text-gray-900">{{ $application->candidate->name }}</p>
-                                        <p class="text-xs text-gray-500">{{ $application->candidate->email }}</p>
+                                    <div class="flex items-center gap-3">
+                                        @if($application->video_path)
+                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
+                                                <i data-lucide="video" class="w-3 h-3 mr-1"></i> Video
+                                            </span>
+                                        @endif
+                                        <span class="px-2 py-1 rounded-full text-xs font-bold 
+                                            {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                            {{ $application->status === 'reviewed' ? 'bg-blue-100 text-blue-700' : '' }}
+                                            {{ $application->status === 'accepted' ? 'bg-green-100 text-green-700' : '' }}
+                                            {{ $application->status === 'rejected' ? 'bg-red-100 text-red-700' : '' }}">
+                                            {{ ucfirst($application->status) }}
+                                        </span>
+                                        <span class="text-[11px] font-bold text-gray-400">{{ $application->created_at->diffForHumans() }}</span>
+                                        <a href="{{ route('admin.candidates.show', $application->candidate) }}" class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
+                                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-4">
-                                    <span class="text-[11px] font-bold text-gray-400">{{ $application->created_at->diffForHumans() }}</span>
-                                    <a href="{{ route('admin.candidates.show', $application->candidate) }}" class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
-                                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                                    </a>
+                                
+                                {{-- Application Details --}}
+                                <div class="mt-3 ml-14 space-y-2">
+                                    @if($application->cover_letter)
+                                        <div class="text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
+                                            <p class="font-medium text-gray-700 mb-1">Cover Letter:</p>
+                                            <p class="text-gray-600">{{ Str::limit($application->cover_letter, 200) }}</p>
+                                        </div>
+                                    @endif
+                                    
+                                    @if($application->video_path)
+                                        <div class="bg-purple-50 rounded-lg p-3">
+                                            <p class="font-medium text-purple-700 mb-2 flex items-center">
+                                                <i data-lucide="video" class="w-4 h-4 mr-2"></i> Application Video
+                                            </p>
+                                            <video controls class="w-full max-w-lg rounded-lg shadow-sm" preload="metadata">
+                                                <source src="{{ asset($application->video_path) }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                            <a href="{{ asset($application->video_path) }}" target="_blank" class="inline-flex items-center mt-2 text-sm text-purple-600 hover:text-purple-800">
+                                                <i data-lucide="external-link" class="w-4 h-4 mr-1"></i> Open in new tab
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                             </li>
                         @empty
@@ -148,12 +187,18 @@
                         <span class="text-sm text-gray-500">Employment</span>
                         <span class="text-sm font-bold text-gray-900 uppercase">{{ $job->employment_type }}</span>
                     </div>
-                    <div class="flex items-center justify-between py-2">
-                        <span class="text-sm text-gray-500">Visibility</span>
-                        <span class="text-sm font-bold {{ $job->is_active ? 'text-green-600' : 'text-red-600' }}">
-                            {{ $job->is_active ? 'Public' : 'Hidden' }}
-                        </span>
-                    </div>
+                    <div class="flex items-center justify-between py-2 border-b border-gray-50">
+                                        <span class="text-sm text-gray-500">Visibility</span>
+                                        <span class="text-sm font-bold {{ $job->is_active ? 'text-green-600' : 'text-red-600' }}">
+                                            {{ $job->is_active ? 'Public' : 'Hidden' }}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-between py-2">
+                                        <span class="text-sm text-gray-500">Video Required</span>
+                                        <span class="text-sm font-bold {{ $job->requires_video ? 'text-purple-600' : 'text-gray-500' }}">
+                                            {{ $job->requires_video ? 'Yes' : 'No' }}
+                                        </span>
+                                    </div>
                 </div>
             </div>
         </div>

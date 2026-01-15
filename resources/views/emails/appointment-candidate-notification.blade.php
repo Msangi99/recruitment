@@ -103,11 +103,11 @@
             
             <p>Good luck with your interview!</p>
             
-            <p>Best regards,<br>Implore Recruitment Team</p>
+            <p>Best regards,<br>Coyzon Recruitment Team</p>
         </div>
         
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Implore Recruitment. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Coyzon Recruitment. All rights reserved.</p>
         </div>
     </div>
 </body>

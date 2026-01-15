@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $candidate->name }} - Implore Recruitment</title>
+    <title>{{ $candidate->name }} - Coyzon Recruitment</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50">
@@ -13,14 +13,14 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo.jpg') }}" alt="Implore Logo" class="h-10 w-auto">
-                        <span class="ml-3 text-xl font-bold text-gray-900">Implore</span>
+                        <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-10 w-auto">
+                        <span class="ml-3 text-xl font-bold text-gray-900">Coyzon</span>
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="{{ route('home') }}" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
                     <a href="{{ route('public.jobs.index') }}" class="text-gray-600 hover:text-blue-600 font-medium">Find Job</a>
-                    <a href="{{ route('public.candidates.index') }}" class="text-blue-600 font-medium">Find Candidate</a>
+                    <a href="{{ route('public.candidates.index') }}" class="text-blue-600 font-medium">Book Appointment</a>
                     <a href="{{ route('contact') }}" class="text-gray-600 hover:text-blue-600 font-medium">Contact Us</a>
                     @guest
                         <a href="{{ route('login') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">Login</a>

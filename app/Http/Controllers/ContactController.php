@@ -39,7 +39,7 @@ class ContactController extends Controller
             // Try to send email notification to admin (optional, won't fail if mail not configured)
             try {
                 Mail::send('emails.contact', $validated, function ($message) use ($validated) {
-                    $message->to(config('mail.admin_email', 'info@implore.com'))
+                    $message->to(config('mail.admin_email', 'info@coyzon.com'))
                         ->subject('Contact Form: ' . $validated['subject'])
                         ->replyTo($validated['email'], $validated['name']);
                 });
@@ -51,7 +51,7 @@ class ContactController extends Controller
             return back()->with('success', 'Thank you for contacting us! We will get back to you shortly.');
         } catch (\Exception $e) {
             Log::error('Contact form error: ' . $e->getMessage());
-            return back()->with('error', 'An error occurred. Please try again or email us directly at info@implore.com')->withInput();
+            return back()->with('error', 'An error occurred. Please try again or email us directly at info@coyzon.com')->withInput();
         }
     }
 }

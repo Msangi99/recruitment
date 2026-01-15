@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register - Implore Recruitment')
+@section('title', 'Register - Coyzon Recruitment')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -12,7 +12,7 @@
                 </svg>
             </div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Join Implore
+                Join Coyzon
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
                 Create your job seeker account to find overseas opportunities

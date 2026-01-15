@@ -74,13 +74,21 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Cover Letter (Optional)</label>
                             <textarea name="cover_letter" rows="5" class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Tell the employer why you're a good fit..."></textarea>
                         </div>
+                        @php
+                            $uploadMax = min(
+                                (int) ini_get('upload_max_filesize') * (stripos(ini_get('upload_max_filesize'), 'M') ? 1 : (stripos(ini_get('upload_max_filesize'), 'G') ? 1024 : 0.001)),
+                                (int) ini_get('post_max_size') * (stripos(ini_get('post_max_size'), 'M') ? 1 : (stripos(ini_get('post_max_size'), 'G') ? 1024 : 0.001))
+                            );
+                        @endphp
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 Application Video {{ $job->requires_video ? '*' : '(Optional)' }}
                             </label>
-                            <input type="file" name="application_video" accept="video/mp4,video/mov,video/avi,video/wmv" 
-                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('application_video') border-red-300 @enderror">
-                            <p class="mt-1 text-xs text-gray-500">MP4, MOV, AVI or WMV. Max size: 100MB</p>
+                            <input type="file" name="application_video" id="application_video" accept="video/mp4,video/mov,video/avi,video/wmv" 
+                                   class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('application_video') border-red-300 @enderror"
+                                   data-max-size="{{ $uploadMax * 1024 * 1024 }}">
+                            <p class="mt-1 text-xs text-gray-500">MP4, MOV, AVI or WMV. Max size: {{ $uploadMax }}MB</p>
+                            <p id="video-size-warning" class="mt-2 text-sm text-red-600 hidden"></p>
                             @error('application_video')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
@@ -102,3 +110,53 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const videoInput = document.getElementById('application_video');
+    const warningEl = document.getElementById('video-size-warning');
+    const form = videoInput ? videoInput.closest('form') : null;
+    
+    if (videoInput) {
+        const maxSize = parseInt(videoInput.dataset.maxSize) || (2 * 1024 * 1024); // Default 2MB
+        const maxSizeMB = (maxSize / (1024 * 1024)).toFixed(0);
+        
+        videoInput.addEventListener('change', function() {
+            // Reset warning styles
+            warningEl.classList.remove('text-green-600');
+            warningEl.classList.add('text-red-600');
+            
+            if (this.files && this.files[0]) {
+                const file = this.files[0];
+                const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                
+                if (file.size > maxSize) {
+                    warningEl.textContent = `File size (${fileSizeMB}MB) exceeds the ${maxSizeMB}MB server limit. Please choose a smaller video.`;
+                    warningEl.classList.remove('hidden');
+                    this.value = ''; // Clear the input
+                } else {
+                    warningEl.textContent = `Video selected: ${file.name} (${fileSizeMB}MB) ✓`;
+                    warningEl.classList.remove('hidden');
+                    warningEl.classList.remove('text-red-600');
+                    warningEl.classList.add('text-green-600');
+                }
+            }
+        });
+        
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                if (videoInput.files && videoInput.files[0]) {
+                    const file = videoInput.files[0];
+                    if (file.size > maxSize) {
+                        e.preventDefault();
+                        alert(`Video file is too large. Maximum size is ${maxSizeMB}MB.`);
+                        return false;
+                    }
+                }
+            });
+        }
+    }
+});
+</script>
+@endpush

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Implore - Professional Overseas Recruitment Platform</title>
+    <title>Coyzon - Professional Overseas Recruitment Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -25,8 +25,8 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo.jpg') }}" alt="Implore Logo" class="h-10 w-auto">
-                        <span class="ml-3 text-xl font-bold text-gray-900">Implore</span>
+                        <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-10 w-auto">
+                        <span class="ml-3 text-xl font-bold text-gray-900">Coyzon</span>
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
@@ -81,7 +81,7 @@
                 <div class="bg-white/80 backdrop-blur rounded-2xl p-8 shadow-xl">
                     <h2 class="text-3xl font-bold text-gray-900 mb-4">What We Do</h2>
                     <p class="text-lg text-gray-600">
-                        Implore is a licensed recruitment agency specializing in sourcing, screening, and placing candidates into overseas employment opportunities that match their qualifications and career ambitions.
+                        Coyzon is a licensed recruitment agency specializing in sourcing, screening, and placing candidates into overseas employment opportunities that match their qualifications and career ambitions.
                     </p>
                 </div>
             </div>
@@ -153,7 +153,7 @@
     <!-- Trust / Closing CTA -->
     <section class="py-16 bg-gray-50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Trust Implore?</h2>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Trust Coyzon?</h2>
             <p class="text-lg text-gray-600 mb-8">
                 We ensure every worker receives accurate job descriptions, fair contracts, and support throughout their overseas journey. Our ethical approach builds trust with both candidates and employers.
             </p>
@@ -186,7 +186,7 @@
             
             <div class="prose prose-lg max-w-4xl mx-auto text-gray-700 space-y-6 mb-16">
                 <p>
-                    At Implore, recruitment is providing the right professionals, skilled on professionalism, transparency, and trust, we specialize in delivering reliable recruitment solutions that bridge employers and skilled workers across multiple industries.
+                    At Coyzon, recruitment is providing the right professionals, skilled on professionalism, transparency, and trust, we specialize in delivering reliable recruitment solutions that bridge employers and skilled workers across multiple industries.
                 </p>
                 <p>
                     For Workers: We understand that finding overseas opportunities is more than just a job search — it's about security, growth, and building a future. That's why our approach is tailored, strategic, and research-backed. From sourcing job candidates to conducting thorough screenings and ensuring necessary placements, we streamline the hiring process to help employers find individuals that align with their goals and company culture.
@@ -198,7 +198,7 @@
                     Our team of HR and board-complete specialists is dedicated to delivering quality with each step of the hiring process, while our vision is to become a trusted global recruitment...
                 </p>
                 <p class="font-semibold">Professional, Transparent, Results</p>
-                <p>Implore — Your trusted partner in global recruitment excellence.</p>
+                <p>Coyzon — Your trusted partner in global recruitment excellence.</p>
             </div>
 
             <!-- Our Vision -->
@@ -598,7 +598,7 @@
 
             <div class="bg-blue-600 text-white rounded-2xl p-8 text-center">
                 <p class="text-xl font-semibold mb-2">
-                    <strong>NOTE:</strong> "Why Choose Us" section should be designed with clarity, simplicity, and visual appeal in mind. The layout should be easy-to-scan, with appropriate spacing and neat, allowing visitors to quickly understand Implore's value at a glance.
+                    <strong>NOTE:</strong> "Why Choose Us" section should be designed with clarity, simplicity, and visual appeal in mind. The layout should be easy-to-scan, with appropriate spacing and neat, allowing visitors to quickly understand Coyzon's value at a glance.
                 </p>
             </div>
         </div>
@@ -647,7 +647,7 @@
 
             <div class="mt-8 bg-blue-50 border-l-4 border-blue-600 p-6 rounded-lg">
                 <p class="text-gray-800">
-                    <strong>NOTE:</strong> On the "Target Client" section, use a design narrative that clearly explains Implore's value proposition. Sections should strategically balance "branding, content, and easy-to-understand. The layout should clearly highlight each client category with icon visuals + bold headers + supporting descriptive text that quickly signals who Implore serves and how the platform tailored workforce solutions provided will support industry.
+                    <strong>NOTE:</strong> On the "Target Client" section, use a design narrative that clearly explains Coyzon's value proposition. Sections should strategically balance "branding, content, and easy-to-understand. The layout should clearly highlight each client category with icon visuals + bold headers + supporting descriptive text that quickly signals who Coyzon serves and how the platform tailored workforce solutions provided will support industry.
                 </p>
             </div>
         </div>
@@ -743,7 +743,7 @@
 
             <div class="bg-indigo-600 text-white rounded-2xl p-8 mb-8">
                 <p class="text-lg text-center">
-                    <strong>NOTE:</strong> Target Destinations – World Map Design Concept: The "Target Destinations" section should be designed with an attractive or vibrant world map that showcases each destination region visually appealing. The design should highlight the destinations using custom icons and global node. The visual should highlight the destination nodes on a stylized world map that shows Implore operates at a global scale and internationally recruited and Cultural context can also be incorporated overall with global.
+                    <strong>NOTE:</strong> Target Destinations – World Map Design Concept: The "Target Destinations" section should be designed with an attractive or vibrant world map that showcases each destination region visually appealing. The design should highlight the destinations using custom icons and global node. The visual should highlight the destination nodes on a stylized world map that shows Coyzon operates at a global scale and internationally recruited and Cultural context can also be incorporated overall with global.
                 </p>
             </div>
 

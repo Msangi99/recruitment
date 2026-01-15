@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reply from Implore</title>
+    <title>Reply from Coyzon</title>
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-        <h1 style="color: white; margin: 0; font-size: 28px;">Implore</h1>
+        <h1 style="color: white; margin: 0; font-size: 28px;">Coyzon</h1>
         <p style="color: #E0E7FF; margin: 10px 0 0 0;">Professional Overseas Recruitment</p>
     </div>
     
@@ -32,17 +32,17 @@
         
         <p style="font-size: 16px;">
             Best regards,<br>
-            <strong>The Implore Team</strong>
+            <strong>The Coyzon Team</strong>
         </p>
     </div>
     
     <div style="background: #1F2937; padding: 20px; text-align: center; border-radius: 0 0 10px 10px;">
         <p style="color: #9CA3AF; margin: 0; font-size: 14px;">
-            Implore - Professional Overseas Recruitment<br>
+            Coyzon - Professional Overseas Recruitment<br>
             Dar es Salaam, Tanzania
         </p>
         <p style="color: #6B7280; margin: 10px 0 0 0; font-size: 12px;">
-            &copy; {{ date('Y') }} Implore. All rights reserved.
+            &copy; {{ date('Y') }} Coyzon. All rights reserved.
         </p>
     </div>
 </body>

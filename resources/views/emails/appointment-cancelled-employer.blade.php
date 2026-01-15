@@ -67,15 +67,15 @@
                 <li>Contact us if you have any questions about this decision</li>
             </ul>
             
-            <p>If you have any questions, please contact us at <a href="mailto:{{ $hrEmail ?? 'hr@implore.co.tz' }}">{{ $hrEmail ?? 'hr@implore.co.tz' }}</a></p>
+            <p>If you have any questions, please contact us at <a href="mailto:{{ $hrEmail ?? 'hr@coyzon.co.tz' }}">{{ $hrEmail ?? 'hr@coyzon.co.tz' }}</a></p>
             
             <p>We apologize for any inconvenience caused.</p>
             
-            <p>Best regards,<br>Implore Recruitment Team</p>
+            <p>Best regards,<br>Coyzon Recruitment Team</p>
         </div>
         
         <div class="footer">
-            <p>&copy; {{ date('Y') }} Implore Recruitment. All rights reserved.</p>
+            <p>&copy; {{ date('Y') }} Coyzon Recruitment. All rights reserved.</p>
         </div>
     </div>
 </body>

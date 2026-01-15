@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<title>{{ config('app.name', 'Implore') }} Admin - @yield('title')</title>
+<title>{{ config('app.name', 'Coyzon') }} Admin - @yield('title')</title>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.bunny.net">
@@ -51,7 +51,7 @@
 
             <div class="hidden lg:flex items-center gap-3">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('logo.jpg') }}" alt="Implore Logo" class="h-10 w-auto">
+                    <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-10 w-auto">
                 </a>
                 <div>
                     <p class="text-xs uppercase tracking-[3px] text-slate-500 font-semibold">Admin</p>
@@ -122,10 +122,10 @@
         <div class="flex h-full flex-col">
             <div class="flex h-16 items-center gap-3 border-b border-white/10 px-6">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('logo.jpg') }}" alt="Implore Logo" class="h-10 w-auto">
+                    <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-10 w-auto">
                 </a>
                 <div>
-                    <p class="text-[11px] font-semibold uppercase tracking-[3px] text-white/60">Implore</p>
+                    <p class="text-[11px] font-semibold uppercase tracking-[3px] text-white/60">Coyzon</p>
                     <p class="text-base font-bold text-white leading-tight">Admin Console</p>
                 </div>
                 <button @click="mobileSidebarOpen = false" class="ml-auto flex h-10 w-10 items-center justify-center rounded-lg text-white/70 hover:bg-white/5 lg:hidden">
@@ -157,16 +157,7 @@
                         <x-admin-sidebar-item href="{{ route('admin.appointments.index') }}" icon="calendar" label="Appointments" :active="request()->routeIs('admin.appointments.*')" />
                         <x-admin-sidebar-item href="{{ route('admin.payments.index') }}" icon="credit-card" label="Payments" :active="request()->routeIs('admin.payments.*')" />
                         @php $unreadEmails = \App\Models\ContactMessage::unread()->count(); @endphp
-                        <a href="{{ route('admin.contact-messages.index') }}"
-                           class="group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all {{ request()->routeIs('admin.contact-messages.*') ? 'bg-blue-500/20 text-white' : 'text-white/70 hover:bg-white/5 hover:text-white' }}">
-                            <i data-lucide="mail" class="h-5 w-5"></i>
-                            <span>Emails</span>
-                            @if($unreadEmails > 0)
-                                <span class="ml-auto inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
-                                    {{ $unreadEmails }}
-                                </span>
-                            @endif
-                        </a>
+                        <x-admin-sidebar-item href="{{ route('admin.contact-messages.index') }}" icon="mail" label="Emails" :active="request()->routeIs('admin.contact-messages.*')" :badge="$unreadEmails > 0 ? $unreadEmails : null" />
                         <x-admin-sidebar-item href="{{ route('admin.settings.index') }}" icon="settings" label="Settings" :active="request()->routeIs('admin.settings.*')" />
                     </nav>
                 </div>
@@ -178,7 +169,7 @@
                         <i data-lucide="zap" class="h-5 w-5"></i>
                     </div>
                     <div class="min-w-0">
-                        <p class="text-sm font-semibold text-white">Implore Admin</p>
+                        <p class="text-sm font-semibold text-white">Coyzon Admin</p>
                         <p class="text-[11px] font-medium text-white/50">Built with Laravel & Tailwind</p>
                     </div>
                 </div>

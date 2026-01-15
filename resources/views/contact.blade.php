@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Contact Us - Implore Recruitment</title>
+    <title>Contact Us - Coyzon Recruitment</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -15,14 +15,14 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo.jpg') }}" alt="Implore Logo" class="h-10 w-auto">
-                        <span class="ml-3 text-xl font-bold text-gray-900">Implore</span>
+                        <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-10 w-auto">
+                        <span class="ml-3 text-xl font-bold text-gray-900">Coyzon</span>
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900">Home</a>
                     <a href="{{ route('public.jobs.index') }}" class="text-gray-600 hover:text-gray-900">Find Job</a>
-                    <a href="{{ route('public.candidates.index') }}" class="text-gray-600 hover:text-gray-900">Find Candidate</a>
+                    <a href="{{ route('public.candidates.index') }}" class="text-gray-600 hover:text-gray-900">Book Appointment</a>
                     <a href="{{ route('contact') }}" class="text-gray-900 font-semibold">Contact</a>
                     @guest
                         <a href="{{ route('login') }}" class="text-indigo-600 hover:text-indigo-700">Login</a>
@@ -73,7 +73,7 @@
                         <i data-lucide="mail" class="h-5 w-5 text-indigo-600 mt-0.5"></i>
                         <div>
                             <p class="text-sm font-medium text-gray-700">Email</p>
-                            <a href="mailto:info@implore.com" class="text-indigo-600 hover:text-indigo-700">info@implore.com</a>
+                            <a href="mailto:info@coyzon.com" class="text-indigo-600 hover:text-indigo-700">info@coyzon.com</a>
                         </div>
                     </div>
 
@@ -92,7 +92,7 @@
                         <i data-lucide="globe" class="h-5 w-5 text-indigo-600 mt-0.5"></i>
                         <div>
                             <p class="text-sm font-medium text-gray-700">Website</p>
-                            <a href="https://www.implore.com" class="text-indigo-600 hover:text-indigo-700">www.implore.com</a>
+                            <a href="https://www.coyzon.com" class="text-indigo-600 hover:text-indigo-700">www.coyzon.com</a>
                         </div>
                     </div>
 
@@ -125,16 +125,16 @@
                 <div class="bg-white rounded-lg shadow-md p-6">
                     <h2 class="text-xl font-semibold text-gray-900 mb-4">Social Media / Follow us</h2>
                     <div class="flex space-x-4">
-                        <a href="https://facebook.com/implore" target="_blank" class="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full hover:bg-blue-700">
+                        <a href="https://facebook.com/coyzon" target="_blank" class="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full hover:bg-blue-700">
                             <i data-lucide="facebook" class="h-5 w-5"></i>
                         </a>
-                        <a href="https://instagram.com/implore" target="_blank" class="flex items-center justify-center w-10 h-10 bg-pink-600 text-white rounded-full hover:bg-pink-700">
+                        <a href="https://instagram.com/coyzon" target="_blank" class="flex items-center justify-center w-10 h-10 bg-pink-600 text-white rounded-full hover:bg-pink-700">
                             <i data-lucide="instagram" class="h-5 w-5"></i>
                         </a>
-                        <a href="https://linkedin.com/company/implore" target="_blank" class="flex items-center justify-center w-10 h-10 bg-blue-700 text-white rounded-full hover:bg-blue-800">
+                        <a href="https://linkedin.com/company/coyzon" target="_blank" class="flex items-center justify-center w-10 h-10 bg-blue-700 text-white rounded-full hover:bg-blue-800">
                             <i data-lucide="linkedin" class="h-5 w-5"></i>
                         </a>
-                        <a href="https://tiktok.com/@implore" target="_blank" class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full hover:bg-gray-800">
+                        <a href="https://tiktok.com/@coyzon" target="_blank" class="flex items-center justify-center w-10 h-10 bg-black text-white rounded-full hover:bg-gray-800">
                             <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"></path>
                             </svg>
