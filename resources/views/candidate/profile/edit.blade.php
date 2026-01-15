@@ -204,6 +204,16 @@
                             $existingSkills = '';
                             $existingLanguages = '';
                             
+                            // Load skills if not already loaded
+                            if (!$profile->relationLoaded('skills')) {
+                                $profile->load('skills');
+                            }
+                            
+                            // Load languages if not already loaded
+                            if (!$profile->relationLoaded('languages')) {
+                                $profile->load('languages');
+                            }
+                            
                             if ($profile->skills && $profile->skills->count() > 0) {
                                 $existingSkills = $profile->skills->pluck('name')->implode(', ');
                             }

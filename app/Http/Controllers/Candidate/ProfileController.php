@@ -104,21 +104,41 @@ class ProfileController extends Controller
         // Update profile basic info
         $profile->update($validated);
 
+        // Log what we're syncing
+        Log::info('StoreStep2 - syncing skills and languages', [
+            'user_id' => auth()->id(),
+            'profile_id' => $profile->id,
+            'skills' => $skills,
+            'languages' => $languages,
+        ]);
+
         // Sync skills - create skills if they don't exist
         $skillIds = [];
         foreach ($skills as $skillName) {
-            $skill = \App\Models\Skill::firstOrCreate(['name' => trim($skillName)]);
-            $skillIds[] = $skill->id;
+            $skillName = trim($skillName);
+            if (!empty($skillName)) {
+                $skill = \App\Models\Skill::firstOrCreate(['name' => $skillName]);
+                $skillIds[] = $skill->id;
+            }
         }
         $profile->skills()->sync($skillIds);
 
         // Sync languages - create languages if they don't exist
         $languageIds = [];
         foreach ($languages as $languageName) {
-            $language = \App\Models\Language::firstOrCreate(['name' => trim($languageName)]);
-            $languageIds[] = $language->id;
+            $languageName = trim($languageName);
+            if (!empty($languageName)) {
+                $language = \App\Models\Language::firstOrCreate(['name' => $languageName]);
+                $languageIds[] = $language->id;
+            }
         }
         $profile->languages()->sync($languageIds);
+
+        Log::info('StoreStep2 - sync complete', [
+            'user_id' => auth()->id(),
+            'skill_ids' => $skillIds,
+            'language_ids' => $languageIds,
+        ]);
 
         return response()->json(['success' => true, 'step' => 3]);
     }
@@ -192,10 +212,10 @@ class ProfileController extends Controller
         
         // If comma-separated text provided, parse it
         if (!empty($skillsText)) {
-            $skills = array_filter(array_map('trim', explode(',', $skillsText)));
+            $skills = array_values(array_filter(array_map('trim', explode(',', $skillsText))));
         }
         if (!empty($languagesText)) {
-            $languages = array_filter(array_map('trim', explode(',', $languagesText)));
+            $languages = array_values(array_filter(array_map('trim', explode(',', $languagesText))));
         }
         
         // If skills/languages come as a single JSON string, decode it
@@ -391,21 +411,41 @@ class ProfileController extends Controller
         // Refresh profile to get updated data
         $profile->refresh();
 
+        // Log what we're about to sync
+        Log::info('Profile update - syncing skills and languages', [
+            'user_id' => auth()->id(),
+            'profile_id' => $profile->id,
+            'skills_to_sync' => $skills,
+            'languages_to_sync' => $languages,
+        ]);
+
         // Sync skills - create skills if they don't exist
         $skillIds = [];
         foreach ($skills as $skillName) {
-            $skill = \App\Models\Skill::firstOrCreate(['name' => trim($skillName)]);
-            $skillIds[] = $skill->id;
+            $skillName = trim($skillName);
+            if (!empty($skillName)) {
+                $skill = \App\Models\Skill::firstOrCreate(['name' => $skillName]);
+                $skillIds[] = $skill->id;
+            }
         }
         $profile->skills()->sync($skillIds);
 
         // Sync languages - create languages if they don't exist
         $languageIds = [];
         foreach ($languages as $languageName) {
-            $language = \App\Models\Language::firstOrCreate(['name' => trim($languageName)]);
-            $languageIds[] = $language->id;
+            $languageName = trim($languageName);
+            if (!empty($languageName)) {
+                $language = \App\Models\Language::firstOrCreate(['name' => $languageName]);
+                $languageIds[] = $language->id;
+            }
         }
         $profile->languages()->sync($languageIds);
+        
+        Log::info('Profile update - sync complete', [
+            'user_id' => auth()->id(),
+            'skill_ids_synced' => $skillIds,
+            'language_ids_synced' => $languageIds,
+        ]);
 
         $successMessage = 'Profile updated successfully.';
         if ($request->hasFile('profile_picture')) {
