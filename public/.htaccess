@@ -18,8 +18,28 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+    # Route video files through Laravel for streaming support
+    RewriteRule ^application-videos/(.*)$ index.php [L]
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
+
+# Enable video streaming headers
+<IfModule mod_headers.c>
+    <FilesMatch "\.(mp4|mov|avi|wmv|webm)$">
+        Header set Accept-Ranges "bytes"
+        Header set Cache-Control "public, max-age=86400"
+    </FilesMatch>
+</IfModule>
+
+# Set proper MIME types for videos
+<IfModule mod_mime.c>
+    AddType video/mp4 .mp4
+    AddType video/quicktime .mov
+    AddType video/x-msvideo .avi
+    AddType video/x-ms-wmv .wmv
+    AddType video/webm .webm
 </IfModule>

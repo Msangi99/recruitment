@@ -52,11 +52,49 @@ Route::get('/documents/{user_id}/{filename}', function ($user_id, $filename) {
     return response()->file($path);
 })->where(['user_id' => '[0-9]+', 'filename' => '.*']);
 
-// Application videos
-Route::get('/application-videos/{filename}', function ($filename) {
+// Application videos with streaming support
+Route::get('/application-videos/{filename}', function ($filename, \Illuminate\Http\Request $request) {
     $path = public_path("application-videos/{$filename}");
     if (!file_exists($path)) abort(404);
-    return response()->file($path);
+    
+    $size = filesize($path);
+    $mimeType = mime_content_type($path) ?: 'video/mp4';
+    
+    // Handle byte-range requests for video streaming
+    $start = 0;
+    $end = $size - 1;
+    $length = $size;
+    
+    if ($request->hasHeader('Range')) {
+        $range = $request->header('Range');
+        if (preg_match('/bytes=(\d+)-(\d*)/', $range, $matches)) {
+            $start = intval($matches[1]);
+            if (!empty($matches[2])) {
+                $end = intval($matches[2]);
+            }
+        }
+        $length = $end - $start + 1;
+        
+        $file = fopen($path, 'rb');
+        fseek($file, $start);
+        $data = fread($file, $length);
+        fclose($file);
+        
+        return response($data, 206)
+            ->header('Content-Type', $mimeType)
+            ->header('Content-Length', $length)
+            ->header('Content-Range', "bytes $start-$end/$size")
+            ->header('Accept-Ranges', 'bytes')
+            ->header('Cache-Control', 'public, max-age=86400');
+    }
+    
+    // Full file request
+    return response()->file($path, [
+        'Content-Type' => $mimeType,
+        'Accept-Ranges' => 'bytes',
+        'Content-Length' => $size,
+        'Cache-Control' => 'public, max-age=86400',
+    ]);
 });
 
 // Contact Us
