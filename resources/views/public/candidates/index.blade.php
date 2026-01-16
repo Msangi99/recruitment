@@ -191,6 +191,24 @@
                                         </div>
                                     </div>
                                 @endif
+                                @if($candidate->documents && $candidate->documents->count() > 0)
+                                    <div class="text-gray-600">
+                                        <span class="font-medium">Documents:</span>
+                                        <div class="flex flex-wrap gap-1 mt-1">
+                                            @foreach($candidate->documents as $document)
+                                                <span class="inline-block bg-gray-50 text-gray-700 px-2 py-0.5 text-xs rounded" title="{{ $document->file_name }}">
+                                                    @if($document->document_type == 'cv')
+                                                        CV
+                                                    @elseif($document->document_type == 'id')
+                                                        ID Identity
+                                                    @else
+                                                        {{ ucfirst($document->document_type) }}
+                                                    @endif
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="mt-4 flex items-center justify-between">

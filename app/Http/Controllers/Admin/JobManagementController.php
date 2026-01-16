@@ -57,11 +57,14 @@ class JobManagementController extends Controller
             'location' => 'required|string|max:255',
             'country' => 'required|string|max:100',
             'employment_type' => 'required|string',
+            'work_hours' => 'nullable|string',
             'education_level' => 'nullable|string',
             'experience_required' => 'nullable|string',
+            'languages' => 'nullable|string',
             'salary_min' => 'nullable|numeric|min:0',
             'salary_max' => 'nullable|numeric|min:0',
             'salary_currency' => 'nullable|string|max:10',
+            'salary_period' => 'nullable|string|max:20',
             'positions_available' => 'nullable|integer|min:1',
             'application_deadline' => 'nullable|date',
             'is_active' => 'boolean',
@@ -70,6 +73,11 @@ class JobManagementController extends Controller
         // Admin posts jobs without employer_id (system jobs)
         $validated['employer_id'] = null;
         $validated['is_active'] = $request->has('is_active');
+
+        // Ensure languages is saved as an array for JsonContains search
+        if ($request->filled('languages')) {
+            $validated['languages'] = (array) $request->input('languages');
+        }
 
         JobListing::create($validated);
 
@@ -101,17 +109,26 @@ class JobManagementController extends Controller
             'location' => 'required|string|max:255',
             'country' => 'required|string|max:100',
             'employment_type' => 'required|string',
+            'work_hours' => 'nullable|string',
             'education_level' => 'nullable|string',
             'experience_required' => 'nullable|string',
+            'languages' => 'nullable|string',
             'salary_min' => 'nullable|numeric|min:0',
             'salary_max' => 'nullable|numeric|min:0',
             'salary_currency' => 'nullable|string|max:10',
+            'salary_period' => 'nullable|string|max:20',
             'positions_available' => 'nullable|integer|min:1',
             'application_deadline' => 'nullable|date',
             'is_active' => 'boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
+
+        // Ensure languages is saved as an array for JsonContains search
+        if ($request->filled('languages')) {
+            $validated['languages'] = (array) $request->input('languages');
+        }
+
         $job->update($validated);
 
         return redirect()->route('admin.jobs.index')

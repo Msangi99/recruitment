@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Jobs - Coyzon Recruitment</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
@@ -20,13 +22,18 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="{{ route('home') }}" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
                     <a href="{{ route('public.jobs.index') }}" class="text-blue-600 font-medium">Find Job</a>
-                    <a href="{{ route('public.candidates.index') }}" class="text-gray-600 hover:text-blue-600 font-medium">Book Appointment</a>
-                    <a href="{{ route('contact') }}" class="text-gray-600 hover:text-blue-600 font-medium">Contact Us</a>
+                    <a href="{{ route('public.candidates.index') }}"
+                        class="text-gray-600 hover:text-blue-600 font-medium">Book Appointment</a>
+                    <a href="{{ route('contact') }}" class="text-gray-600 hover:text-blue-600 font-medium">Contact
+                        Us</a>
                     @guest
-                        <a href="{{ route('login') }}" class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">Login</a>
-                        <a href="{{ route('register') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Register</a>
+                        <a href="{{ route('login') }}"
+                            class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">Login</a>
+                        <a href="{{ route('register') }}"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Register</a>
                     @else
-                        <a href="{{ route('dashboard') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Dashboard</a>
+                        <a href="{{ route('dashboard') }}"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Dashboard</a>
                     @endguest
                 </div>
             </div>
@@ -58,155 +65,303 @@
                         <!-- Search -->
                         <div class="lg:col-span-3">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
-                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search jobs, companies..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <input type="text" name="search" value="{{ request('search') }}"
+                                placeholder="Search jobs, companies..."
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                         </div>
-                        
+
                         <!-- Category -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                            <select name="category_id" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="category_id"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">All Categories</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        
+
                         <!-- Country -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Location (Country)</label>
-                            <select name="country" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="country"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">All Countries</option>
-                                <option value="Poland" {{ request('country') == 'Poland' ? 'selected' : '' }}>Poland</option>
-                                <option value="Finland" {{ request('country') == 'Finland' ? 'selected' : '' }}>Finland</option>
-                                <option value="Germany" {{ request('country') == 'Germany' ? 'selected' : '' }}>Germany</option>
-                                <option value="Lithuania" {{ request('country') == 'Lithuania' ? 'selected' : '' }}>Lithuania</option>
-                                <option value="UAE" {{ request('country') == 'UAE' ? 'selected' : '' }}>UAE</option>
-                                <option value="Saudi Arabia" {{ request('country') == 'Saudi Arabia' ? 'selected' : '' }}>Saudi Arabia</option>
-                                <option value="Oman" {{ request('country') == 'Oman' ? 'selected' : '' }}>Oman</option>
-                                <option value="Qatar" {{ request('country') == 'Qatar' ? 'selected' : '' }}>Qatar</option>
+                                <option value="Canada" {{ request('country') == 'Canada' ? 'selected' : '' }}>Canada
+                                </option>
+                                <option value="Poland" {{ request('country') == 'Poland' ? 'selected' : '' }}>Poland
+                                </option>
+                                <option value="Germany" {{ request('country') == 'Germany' ? 'selected' : '' }}>Germany
+                                </option>
+                                <option value="Romania" {{ request('country') == 'Romania' ? 'selected' : '' }}>Romania
+                                </option>
+                                <option value="Croatia" {{ request('country') == 'Croatia' ? 'selected' : '' }}>Croatia
+                                </option>
+                                <option value="OMAN" {{ request('country') == 'OMAN' ? 'selected' : '' }}>OMAN</option>
+                                <option value="Australia" {{ request('country') == 'Australia' ? 'selected' : '' }}>
+                                    Australia</option>
+                                <option value="QUATAR" {{ request('country') == 'QUATAR' ? 'selected' : '' }}>QUATAR
+                                </option>
+                                <option value="Kuwait" {{ request('country') == 'Kuwait' ? 'selected' : '' }}>Kuwait
+                                </option>
                                 <option value="United Arab Emirates" {{ request('country') == 'United Arab Emirates' ? 'selected' : '' }}>United Arab Emirates</option>
-                                <option value="Jordan" {{ request('country') == 'Jordan' ? 'selected' : '' }}>Jordan</option>
-                                <option value="Bahrain" {{ request('country') == 'Bahrain' ? 'selected' : '' }}>Bahrain</option>
-                                <option value="Cyprus Republic" {{ request('country') == 'Cyprus Republic' ? 'selected' : '' }}>Cyprus Republic</option>
-                                <option value="UK" {{ request('country') == 'UK' ? 'selected' : '' }}>UK</option>
-                                <option value="USA" {{ request('country') == 'USA' ? 'selected' : '' }}>USA</option>
+                                <option value="Saudi Arabia" {{ request('country') == 'Saudi Arabia' ? 'selected' : '' }}>
+                                    Saudi Arabia</option>
+                                <option value="Serbia" {{ request('country') == 'Serbia' ? 'selected' : '' }}>Serbia
+                                </option>
+                                <option value="Bulgaria" {{ request('country') == 'Bulgaria' ? 'selected' : '' }}>Bulgaria
+                                </option>
+                                <option value="Ukraine" {{ request('country') == 'Ukraine' ? 'selected' : '' }}>Ukraine
+                                </option>
+                                <option value="Czech republic" {{ request('country') == 'Czech republic' ? 'selected' : '' }}>Czech republic</option>
+                                <option value="Latvia" {{ request('country') == 'Latvia' ? 'selected' : '' }}>Latvia
+                                </option>
+                                <option value="Slovakia" {{ request('country') == 'Slovakia' ? 'selected' : '' }}>Slovakia
+                                </option>
+                                <option value="Lithuania" {{ request('country') == 'Lithuania' ? 'selected' : '' }}>
+                                    Lithuania</option>
+                                <option value="Other Countries" {{ request('country') == 'Other Countries' ? 'selected' : '' }}>Other Countries</option>
                             </select>
                         </div>
-                        
+
                         <!-- Job Type -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Job Type</label>
-                            <select name="employment_type" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="employment_type"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">All Types</option>
-                                <option value="full-time" {{ request('employment_type') == 'full-time' ? 'selected' : '' }}>Full time</option>
-                                <option value="contract" {{ request('employment_type') == 'contract' ? 'selected' : '' }}>Contract</option>
+                                <option value="full-time" {{ request('employment_type') == 'full-time' ? 'selected' : '' }}>Full-time</option>
+                                <option value="contract" {{ request('employment_type') == 'contract' ? 'selected' : '' }}>
+                                    Contract</option>
+                                <option value="seasonal" {{ request('employment_type') == 'seasonal' ? 'selected' : '' }}>
+                                    Seasonal</option>
                                 <option value="temporary" {{ request('employment_type') == 'temporary' ? 'selected' : '' }}>Temporary</option>
-                                <option value="part-time" {{ request('employment_type') == 'part-time' ? 'selected' : '' }}>Part time</option>
-                                <option value="internship" {{ request('employment_type') == 'internship' ? 'selected' : '' }}>Internship</option>
                             </select>
                         </div>
-                        
+
                         <!-- Experience Level -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Experience Level</label>
-                            <select name="experience_level" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="experience_level"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">Any Experience</option>
                                 <option value="no-experience" {{ request('experience_level') == 'no-experience' ? 'selected' : '' }}>No experience</option>
-                                <option value="0-1" {{ request('experience_level') == '0-1' ? 'selected' : '' }}>0-1 years</option>
-                                <option value="1-3" {{ request('experience_level') == '1-3' ? 'selected' : '' }}>1-3 years</option>
-                                <option value="3+" {{ request('experience_level') == '3+' ? 'selected' : '' }}>3+ years</option>
+                                <option value="1-2" {{ request('experience_level') == '1-2' ? 'selected' : '' }}>1–2 years
+                                </option>
+                                <option value="3-5" {{ request('experience_level') == '3-5' ? 'selected' : '' }}>3–5 years
+                                </option>
+                                <option value="5+" {{ request('experience_level') == '5+' ? 'selected' : '' }}>5+ years
+                                </option>
                             </select>
                         </div>
-                        
+
                         <!-- Education Level -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Education Level</label>
-                            <select name="education_level" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="education_level"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">Any Education</option>
                                 <option value="no-formal-education" {{ request('education_level') == 'no-formal-education' ? 'selected' : '' }}>No formal education</option>
-                                <option value="secondary-education" {{ request('education_level') == 'secondary-education' ? 'selected' : '' }}>Secondary education</option>
-                                <option value="vocational-training" {{ request('education_level') == 'vocational-training' ? 'selected' : '' }}>Vocational training</option>
-                                <option value="diploma" {{ request('education_level') == 'diploma' ? 'selected' : '' }}>Diploma</option>
-                                <option value="bachelor" {{ request('education_level') == 'bachelor' ? 'selected' : '' }}>Bachelor's Degree</option>
-                                <option value="master" {{ request('education_level') == 'master' ? 'selected' : '' }}>Master's Degree</option>
-                                <option value="phd" {{ request('education_level') == 'phd' ? 'selected' : '' }}>PhD</option>
+                                <option value="secondary-school" {{ request('education_level') == 'secondary-school' ? 'selected' : '' }}>Secondary School</option>
+                                <option value="certificate" {{ request('education_level') == 'certificate' ? 'selected' : '' }}>Certificate</option>
+                                <option value="diploma" {{ request('education_level') == 'diploma' ? 'selected' : '' }}>
+                                    Diploma</option>
+                                <option value="bachelor" {{ request('education_level') == 'bachelor' ? 'selected' : '' }}>
+                                    Bachelor's Degree</option>
+                                <option value="master-plus" {{ request('education_level') == 'master-plus' ? 'selected' : '' }}>Master's Degree+</option>
                             </select>
                         </div>
-                        
+
+                        <!-- Language Requirement -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Language Requirement</label>
+                            <select name="language"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Any Language</option>
+                                <option value="no-requirement" {{ request('language') == 'no-requirement' ? 'selected' : '' }}>No language requirement</option>
+                                <option value="Basic English" {{ request('language') == 'Basic English' ? 'selected' : '' }}>Basic English</option>
+                                <option value="Intermediate English" {{ request('language') == 'Intermediate English' ? 'selected' : '' }}>Intermediate English</option>
+                                <option value="Advanced English" {{ request('language') == 'Advanced English' ? 'selected' : '' }}>Advanced English</option>
+                                <option value="Other language required" {{ request('language') == 'Other language required' ? 'selected' : '' }}>Other language required</option>
+                            </select>
+                        </div>
+
+                        <!-- Salary -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Salary</label>
+                            <select name="salary_period"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Any Salary</option>
+                                <option value="monthly" {{ request('salary_period') == 'monthly' ? 'selected' : '' }}>
+                                    Monthly</option>
+                                <option value="hourly" {{ request('salary_period') == 'hourly' ? 'selected' : '' }}>Hourly
+                                </option>
+                            </select>
+                        </div>
+
                         <!-- Date Posted -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Date Posted</label>
-                            <select name="date_posted" class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="date_posted"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">Anytime</option>
-                                <option value="24-hours" {{ request('date_posted') == '24-hours' ? 'selected' : '' }}>Last 24 hours</option>
-                                <option value="3-days" {{ request('date_posted') == '3-days' ? 'selected' : '' }}>Last 3 days</option>
-                                <option value="7-days" {{ request('date_posted') == '7-days' ? 'selected' : '' }}>Last 7 days</option>
-                                <option value="14-days" {{ request('date_posted') == '14-days' ? 'selected' : '' }}>Last 14 days</option>
+                                <option value="48-hours" {{ request('date_posted') == '48-hours' ? 'selected' : '' }}>Last
+                                    48 HR</option>
+                                <option value="7-days" {{ request('date_posted') == '7-days' ? 'selected' : '' }}>Last 7
+                                    days</option>
+                                <option value="30-days" {{ request('date_posted') == '30-days' ? 'selected' : '' }}>Last
+                                    30 days</option>
+                                <option value="30-plus" {{ request('date_posted') == '30-plus' ? 'selected' : '' }}>More
+                                    than 30 days</option>
+                            </select>
+                        </div>
+
+                        <!-- Hours of work -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Hours of Work</label>
+                            <select name="work_hours"
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">Any Hours</option>
+                                <option value="full-time" {{ request('work_hours') == 'full-time' ? 'selected' : '' }}>
+                                    Full time</option>
+                                <option value="part-time" {{ request('work_hours') == 'part-time' ? 'selected' : '' }}>
+                                    Part time</option>
                             </select>
                         </div>
                     </div>
-                    
+
                     <div class="flex justify-end gap-2">
-                        <a href="{{ route('public.jobs.index') }}" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Clear Filters</a>
-                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Apply Filters</button>
+                        <a href="{{ route('public.jobs.index') }}"
+                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Clear
+                            Filters</a>
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Apply Filters</button>
                     </div>
                 </div>
             </form>
 
-            <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job Title</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posted</th>
-                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        @forelse($jobs as $job)
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        <a href="{{ route('public.jobs.show', $job) }}" class="text-blue-600 hover:text-blue-900">
-                                            {{ $job->title }}
-                                        </a>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $job->company_name }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $job->location }}, {{ $job->country }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $job->category->name ?? 'N/A' }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                        {{ ucfirst($job->employment_type) }}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    {{ $job->created_at->format('M d, Y') }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <a href="{{ route('public.jobs.show', $job) }}" class="text-blue-600 hover:text-blue-900">View Details</a>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="px-6 py-8 text-center text-gray-500">
-                                    No jobs found matching your criteria.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+            <div class="space-y-4">
+                @forelse($jobs as $job)
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-gray-200 p-7 relative hover:shadow-md transition-shadow">
+                        <div class="absolute top-7 right-7 flex items-center gap-2">
+                            @if($job->status === 'urgent')
+                                <span
+                                    class="bg-[#3b82f6] text-white text-[10px] font-bold px-3 py-1 rounded uppercase tracking-wider">FEATURED</span>
+                            @endif
+                            <span
+                                class="bg-white text-[#3b82f6] text-[10px] font-bold px-3 py-1 rounded border border-[#3b82f6] uppercase tracking-wider">
+                                {{ str_replace('-', ' ', $job->employment_type) }}
+                            </span>
+                        </div>
+
+                        <div class="mb-6">
+                            <h3 class="text-xl font-bold text-[#1f2937] mb-1.5 line-clamp-1">
+                                <a href="{{ route('public.jobs.show', $job) }}"
+                                    class="hover:text-[#3b82f6] transition-colors">
+                                    {{ $job->title }}
+                                </a>
+                            </h3>
+                            <p class="text-[#3b82f6] text-lg font-medium">Confidential</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="text-2xl font-bold text-[#1f2937]">
+                                {{ $job->salary_currency }} {{ number_format($job->salary_min) }} -
+                                {{ number_format($job->salary_max) }} <span
+                                    class="text-lg font-normal text-gray-500 lowercase">per {{ $job->salary_period }}</span>
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
+                            <div class="bg-gray-50 p-4 rounded-lg flex flex-col justify-center">
+                                <span
+                                    class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 leading-none">EMPLOYMENT
+                                    TYPE</span>
+                                <span
+                                    class="text-[15px] font-bold text-[#1f2937]">{{ ucfirst(str_replace('-', ' ', $job->employment_type)) }}</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg flex flex-col justify-center">
+                                <span
+                                    class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 leading-none">MINIMUM
+                                    WORK EXPERIENCE</span>
+                                <span class="text-[15px] font-bold text-[#1f2937]">{{ $job->experience_required ?? 0 }}
+                                    Years</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg flex flex-col justify-center">
+                                <span
+                                    class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 leading-none">MINIMUM
+                                    EDUCATION LEVEL</span>
+                                <span
+                                    class="text-[15px] font-bold text-[#1f2937]">{{ $job->education_level ? ucfirst(str_replace('-', ' ', $job->education_level)) : 'N/A' }}</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-10 items-center">
+                            <div
+                                class="text-gray-600 text-[16px] leading-relaxed line-clamp-4 border-l-4 border-blue-50 pl-6 py-2">
+                                {{ $job->description }}
+                            </div>
+                            <div class="flex justify-start md:justify-end">
+                                <div
+                                    class="bg-gray-50 px-6 py-4 rounded-xl border border-gray-100 shadow-sm w-full max-w-sm">
+                                    <span
+                                        class="text-[11px] font-bold text-gray-400 uppercase block mb-2 tracking-widest">LOCATION</span>
+                                    <span class="text-[18px] font-bold text-[#1f2937]">{{ $job->location }},
+                                        {{ $job->country }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between border-t border-gray-100 pt-6">
+                            <div class="flex items-center gap-5 text-[15px] text-gray-400">
+                                <span>Posted {{ $job->created_at->diffForHumans() }}</span>
+                                <div class="flex items-center gap-1.5">
+                                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    <span class="text-gray-900 font-medium">{{ $job->location }}</span>
+                                </div>
+                            </div>
+
+                            @auth
+                                @if(auth()->user()->role === 'candidate')
+                                    <a href="{{ route('public.jobs.show', $job) }}"
+                                        class="inline-flex items-center px-8 py-2.5 bg-[#3b82f6] text-white font-bold rounded-lg hover:bg-blue-700 shadow-sm transition-all hover:shadow-md">
+                                        Apply Job
+                                    </a>
+                                @else
+                                    <a href="{{ route('public.jobs.show', $job) }}"
+                                        class="inline-flex items-center px-8 py-2.5 bg-gray-50 text-[#3b82f6] font-bold rounded-lg border border-[#3b82f6] hover:bg-blue-50 transition-all">
+                                        View Details
+                                    </a>
+                                @endif
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="inline-flex items-center px-8 py-2.5 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-all">
+                                    Login to Apply
+                                </a>
+                            @endauth
+                        </div>
+                    </div>
+                @empty
+                    <div class="bg-white p-12 text-center rounded-xl border border-gray-200 shadow-sm">
+                        <div class="mb-4">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-medium text-gray-900">No jobs found</h3>
+                        <p class="mt-1 text-gray-500">Try adjusting your filters or search keywords.</p>
+                    </div>
+                @endforelse
             </div>
 
             <div class="mt-4">
@@ -217,4 +372,5 @@
 
     @include('partials.footer')
 </body>
+
 </html>

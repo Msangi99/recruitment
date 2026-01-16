@@ -8,6 +8,8 @@ use App\Models\JobApplication;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class JobApplicationController extends Controller
 {
@@ -48,20 +50,25 @@ class JobApplicationController extends Controller
             $query->where('employment_type', $request->employment_type);
         }
 
+        // Hours of work (Full time/Part time) filter
+        if ($request->filled('work_hours')) {
+            $query->where('work_hours', $request->work_hours);
+        }
+
         // Experience level filter
         if ($request->filled('experience_level')) {
             switch ($request->experience_level) {
                 case 'no-experience':
                     $query->where('experience_required', 0);
                     break;
-                case '0-1':
-                    $query->whereBetween('experience_required', [0, 1]);
+                case '1-2':
+                    $query->whereBetween('experience_required', [1, 2]);
                     break;
-                case '1-3':
-                    $query->whereBetween('experience_required', [1, 3]);
+                case '3-5':
+                    $query->whereBetween('experience_required', [3, 5]);
                     break;
-                case '3+':
-                    $query->where('experience_required', '>=', 3);
+                case '5+':
+                    $query->where('experience_required', '>=', 5);
                     break;
             }
         }
@@ -105,17 +112,17 @@ class JobApplicationController extends Controller
         // Date posted filter
         if ($request->filled('date_posted')) {
             switch ($request->date_posted) {
-                case '24-hours':
-                    $query->where('created_at', '>=', now()->subDay());
-                    break;
-                case '3-days':
-                    $query->where('created_at', '>=', now()->subDays(3));
+                case '48-hours':
+                    $query->where('created_at', '>=', now()->subHours(48));
                     break;
                 case '7-days':
                     $query->where('created_at', '>=', now()->subDays(7));
                     break;
-                case '14-days':
-                    $query->where('created_at', '>=', now()->subDays(14));
+                case '30-days':
+                    $query->where('created_at', '>=', now()->subDays(30));
+                    break;
+                case '30-plus':
+                    $query->where('created_at', '<', now()->subDays(30));
                     break;
             }
         }

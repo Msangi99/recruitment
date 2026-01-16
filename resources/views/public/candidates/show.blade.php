@@ -222,6 +222,31 @@
                         </div>
                     @endif
 
+                    <!-- Documents -->
+                    @if($candidate->documents && $candidate->documents->count() > 0)
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Documents
+                            </h2>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($candidate->documents as $document)
+                                    <span class="inline-block bg-blue-50 text-blue-700 px-3 py-1 text-sm font-medium rounded-md border border-blue-100" title="{{ $document->file_name }}">
+                                        @if($document->document_type == 'cv')
+                                            CV
+                                        @elseif($document->document_type == 'id')
+                                            ID Identity
+                                        @else
+                                            {{ ucfirst($document->document_type) }}
+                                        @endif
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Target Destinations -->
                     @if($candidate->candidateProfile->target_destination)
                         <div>

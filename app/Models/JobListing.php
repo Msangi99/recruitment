@@ -26,6 +26,7 @@ class JobListing extends Model
         'location',
         'country',
         'employment_type',
+        'work_hours',
         'education_level',
         'experience_required',
         'required_skills',
