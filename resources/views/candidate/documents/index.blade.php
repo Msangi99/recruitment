@@ -32,7 +32,7 @@
                                     <label for="document_type" class="block text-sm font-medium text-gray-700 mb-2">Document
                                         Type *</label>
                                     <select id="document_type" name="document_type" required
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('document_type') border-red-300 @enderror">
+                                        class="appearance-none relative block w-full px-3 py-2 border {{ $errors->has('document_type') ? 'border-red-300' : 'border-gray-300' }} text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                                         <option value="">Select Type</option>
                                         <option value="cv">CV/Resume</option>
                                         <option value="id">National ID</option>
@@ -50,7 +50,7 @@
                                         *</label>
                                     <input type="file" id="document" name="document" required
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.mp4,.mov,.avi,.wmv"
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-500 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('document') border-red-300 @enderror">
+                                        class="appearance-none relative block w-full px-3 py-2 border {{ $errors->has('document') ? 'border-red-300' : 'border-gray-300' }} text-gray-500 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                                     @error('document')
                                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                     @enderror
@@ -109,7 +109,7 @@
                                                             <td class="px-6 py-4 whitespace-nowrap">
                                                                 <span
                                                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                                                                {{ $document->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
+                                                                                                                            {{ $document->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
                                     ($document->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                                                                     {{ ucfirst($document->verification_status) }}
                                                                 </span>
