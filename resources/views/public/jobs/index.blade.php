@@ -19,13 +19,17 @@
                         <span class="ml-3 text-xl font-bold text-gray-900">Coyzon</span>
                     </a>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('home') }}" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
-                    <a href="{{ route('public.jobs.index') }}" class="text-blue-600 font-medium">Find Job</a>
+                <div class="hidden md:flex flex-1 justify-center items-center space-x-8">
+                    <a href="{{ route('about') }}" class="text-blue-600 hover:text-blue-800 font-bold">About Us</a>
+                    <a href="{{ route('public.jobs.index') }}" class="text-blue-600 hover:text-blue-800 font-bold">Find
+                        Job</a>
                     <a href="{{ route('public.candidates.index') }}"
-                        class="text-gray-600 hover:text-blue-600 font-medium">Book Appointment</a>
-                    <a href="{{ route('contact') }}" class="text-gray-600 hover:text-blue-600 font-medium">Contact
-                        Us</a>
+                        class="text-blue-600 hover:text-blue-800 font-bold">Find Candidate</a>
+                    <a href="{{ route('candidate.consultations.create') }}"
+                        class="text-blue-600 hover:text-blue-800 font-bold">Book Appointment</a>
+                    <a href="{{ route('contact') }}" class="text-blue-600 hover:text-blue-800 font-bold">Contact Us</a>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
                     @guest
                         <a href="{{ route('login') }}"
                             class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">Login</a>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Candidate;
 use App\Http\Controllers\Controller;
 use App\Models\Document;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class DocumentController extends Controller
 {
@@ -20,8 +20,8 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'document_type' => 'required|in:cv,id,passport,certificate,other',
-            'document' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png|max:10240', // 10MB max
+            'document_type' => 'required|in:cv,id,passport,certificate,video_cv,other',
+            'document' => 'required|file|mimes:pdf,doc,docx,jpg,jpeg,png,mp4,mov,avi,wmv|max:20480', // 20MB max
         ]);
 
         $candidate = auth()->user();
@@ -69,7 +69,7 @@ class DocumentController extends Controller
             return back()->with('success', 'Document uploaded successfully. Waiting for admin verification.');
             
         } catch (\Exception $e) {
-            \Log::error('Document upload failed', [
+            Log::error('Document upload failed', [
                 'user_id' => $candidate->id,
                 'error' => $e->getMessage(),
                 'file_name' => $originalName,
@@ -96,9 +96,10 @@ class DocumentController extends Controller
             abort(403);
         }
 
-        // Delete file from storage
-        if (Storage::disk('private')->exists($document->file_path)) {
-            Storage::disk('private')->delete($document->file_path);
+        // Delete file from public storage
+        $absolutePath = public_path($document->file_path);
+        if (file_exists($absolutePath)) {
+            unlink($absolutePath);
         }
 
         $document->delete();

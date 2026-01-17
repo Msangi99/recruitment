@@ -202,8 +202,28 @@
                                     class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
                                     placeholder="List required skills, education, experience, and certifications...">{{ old('requirements') }}</textarea>
                             </div>
+
+                            <div>
+                                <label for="benefits" class="block text-sm font-bold text-gray-700 mb-2">Benefits &
+                                    Perks</label>
+                                <textarea id="benefits" name="benefits" rows="6"
+                                    class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-blue-500 focus:border-blue-500 shadow-sm"
+                                    placeholder="List benefits like health insurance, paid time off, etc...">{{ old('benefits') }}</textarea>
+                            </div>
                         </div>
                     </div>
+
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.2/tinymce.min.js"></script>
+                    <script>
+                        tinymce.init({
+                            selector: '#description, #requirements, #benefits',
+                            height: 300,
+                            menubar: false,
+                            plugins: 'lists link',
+                            toolbar: 'undo redo | bold italic underline | bullist numlist | link',
+                            statusbar: false
+                        });
+                    </script>
 
                     <!-- Salary & Status -->
                     <div class="space-y-4">

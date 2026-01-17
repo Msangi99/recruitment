@@ -27,6 +27,7 @@
                     @endif
                     <div class="ml-6">
                         <h2 class="text-2xl font-bold text-gray-900">{{ $candidate->name }}</h2>
+                        <p class="text-blue-600 font-bold">{{ $candidate->candidateProfile->title ?? 'Candidate' }}</p>
                         <div class="flex items-center text-gray-500 mt-1">
                             <i data-lucide="mail" class="w-4 h-4 mr-1"></i>
                             <span class="text-sm font-medium">{{ $candidate->email }}</span>
@@ -50,7 +51,7 @@
         <div class="bg-gray-50 px-6 py-3 border-t border-gray-100 flex items-center justify-between">
             <div class="flex space-x-6 text-sm">
                 <span class="flex items-center text-gray-600"><i data-lucide="calendar" class="w-4 h-4 mr-1.5 text-gray-400"></i> Joined {{ $candidate->created_at->format('M d, Y') }}</span>
-                <span class="flex items-center text-gray-600"><i data-lucide="map-pin" class="w-4 h-4 mr-1.5 text-gray-400"></i> {{ $candidate->country ?? 'No country' }}</span>
+                <span class="flex items-center text-gray-600"><i data-lucide="map-pin" class="w-4 h-4 mr-1.5 text-gray-400"></i> {{ $candidate->candidateProfile->location ?? ($candidate->country ?? 'No country') }}</span>
                 <span class="flex items-center text-gray-600"><i data-lucide="phone" class="w-4 h-4 mr-1.5 text-gray-400"></i> {{ $candidate->phone ?? 'No phone' }}</span>
             </div>
             <span class="px-3 py-1 rounded-full text-xs font-bold {{ $candidate->is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
@@ -71,6 +72,25 @@
                         </h3>
                     </div>
                     <div class="p-6">
+                        <div class="mb-8">
+                            <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Professional Summary</dt>
+                            <dd class="text-sm text-gray-900 leading-relaxed">{{ $candidate->candidateProfile->description ?? 'No description provided' }}</dd>
+                        </div>
+
+                        @if($candidate->candidateProfile->video_cv)
+                            <div class="mb-8">
+                                <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Video CV</dt>
+                                <dd>
+                                    <div class="w-full max-w-lg">
+                                        <video controls class="w-full rounded-lg shadow-sm border border-gray-200">
+                                            <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    </div>
+                                </dd>
+                            </div>
+                        @endif
+                        
                         <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8">
                             <div>
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Education Level</dt>
@@ -93,6 +113,10 @@
                                         <span class="text-gray-500">Not specified</span>
                                     @endif
                                 </dd>
+                            </div>
+                            <div class="md:col-span-2">
+                                <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Experience Description</dt>
+                                <dd class="text-sm text-gray-900 bg-gray-50 p-4 rounded-lg border border-gray-100 leading-relaxed">{{ $candidate->candidateProfile->experience_description ?? 'No detailed experience provided' }}</dd>
                             </div>
                             <div>
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Verification Status</dt>
@@ -163,17 +187,6 @@
                                     <a href="{{ asset($document->file_path) }}" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 transition-colors" title="View Document">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
                                     </a>
-                                    @if($document->verification_status === 'pending')
-                                        <form method="POST" action="{{ route('admin.verification.document.approve', $document) }}" class="inline">
-                                            @csrf
-                                            <button type="submit" class="text-green-600 hover:text-green-700 text-xs font-semibold" title="Approve Document">
-                                                Approve
-                                            </button>
-                                        </form>
-                                        <button type="button" onclick="showRejectDocModal({{ $document->id }})" class="text-red-600 hover:text-red-700 text-xs font-semibold" title="Reject Document">
-                                            Reject
-                                        </button>
-                                    @endif
                                 </div>
                             </li>
                         @empty

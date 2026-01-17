@@ -114,5 +114,85 @@
             </button>
         </div>
     </form>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+        <!-- Skills Management -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    Skills List
+                </h3>
+            </div>
+            <div class="p-6">
+                <form action="{{ route('admin.skills.store') }}" method="POST" class="mb-6 flex gap-2">
+                    @csrf
+                    <input type="text" name="name" required placeholder="Add new skill..." 
+                           class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Add</button>
+                </form>
+
+                <div class="space-y-2 max-h-64 overflow-y-auto pr-2">
+                    @forelse($skills as $skill)
+                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg group">
+                            <span class="text-sm font-medium text-gray-700">{{ $skill->name }}</span>
+                            <form action="{{ route('admin.skills.destroy', $skill) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-400 hover:text-red-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    @empty
+                        <p class="text-center text-gray-500 text-sm italic">No skills added yet</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
+        <!-- Languages Management -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5a18.022 18.022 0 01-3.827-5.802M10.5 13.5c-.2-.5-.4-1.15-.4-1.5H12M8.11 9c.703 2.052 1.758 3.871 2.968 5.356m1.11 1.644l-.445.891a1 1 0 01-1.789 0l-.445-.891m.948-2.614l-.445-.891a1 1 0 011.789 0l.445.891"></path>
+                    </svg>
+                    Languages List
+                </h3>
+            </div>
+            <div class="p-6">
+                <form action="{{ route('admin.languages.store') }}" method="POST" class="mb-6 flex gap-2">
+                    @csrf
+                    <input type="text" name="name" required placeholder="Add new language..." 
+                           class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500">
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">Add</button>
+                </form>
+
+                <div class="space-y-2 max-h-64 overflow-y-auto pr-2">
+                    @forelse($languages as $language)
+                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg group">
+                            <span class="text-sm font-medium text-gray-700">{{ $language->name }}</span>
+                            <form action="{{ route('admin.languages.destroy', $language) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-400 hover:text-red-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    @empty
+                        <p class="text-center text-gray-500 text-sm italic">No languages added yet</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection

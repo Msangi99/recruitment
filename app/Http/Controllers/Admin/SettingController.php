@@ -11,8 +11,10 @@ class SettingController extends Controller
     public function index()
     {
         $emailSettings = Setting::getByGroup('email');
+        $skills = \App\Models\Skill::orderBy('name')->get();
+        $languages = \App\Models\Language::orderBy('name')->get();
         
-        return view('admin.settings.index', compact('emailSettings'));
+        return view('admin.settings.index', compact('emailSettings', 'skills', 'languages'));
     }
 
     public function update(Request $request)
@@ -33,5 +35,31 @@ class SettingController extends Controller
         Setting::set('email_notifications_enabled', $request->has('email_notifications_enabled') ? '1' : '0');
 
         return back()->with('success', 'Settings updated successfully.');
+    }
+
+    public function addSkill(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:100|unique:skills,name']);
+        \App\Models\Skill::create($request->only('name'));
+        return back()->with('success', 'Skill added successfully.');
+    }
+
+    public function deleteSkill(\App\Models\Skill $skill)
+    {
+        $skill->delete();
+        return back()->with('success', 'Skill removed successfully.');
+    }
+
+    public function addLanguage(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:100|unique:languages,name']);
+        \App\Models\Language::create($request->only('name'));
+        return back()->with('success', 'Language added successfully.');
+    }
+
+    public function deleteLanguage(\App\Models\Language $language)
+    {
+        $language->delete();
+        return back()->with('success', 'Language removed successfully.');
     }
 }

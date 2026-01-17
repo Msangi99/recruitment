@@ -192,6 +192,10 @@ Route::middleware('auth')->group(function () {
         // Settings Management
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::put('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+        Route::post('/skills', [\App\Http\Controllers\Admin\SettingController::class, 'addSkill'])->name('skills.store');
+        Route::delete('/skills/{skill}', [\App\Http\Controllers\Admin\SettingController::class, 'deleteSkill'])->name('skills.destroy');
+        Route::post('/languages', [\App\Http\Controllers\Admin\SettingController::class, 'addLanguage'])->name('languages.store');
+        Route::delete('/languages/{language}', [\App\Http\Controllers\Admin\SettingController::class, 'deleteLanguage'])->name('languages.destroy');
     });
 
     // Employer routes removed - employers can now browse candidates and request interviews without an account

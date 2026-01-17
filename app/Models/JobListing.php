@@ -21,6 +21,7 @@ class JobListing extends Model
         'description',
         'requirements',
         'responsibilities',
+        'benefits',
         'company_name',
         'company_logo',
         'location',

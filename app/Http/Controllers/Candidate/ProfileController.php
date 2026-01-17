@@ -34,17 +34,18 @@ class ProfileController extends Controller
                 ->with('info', 'Profile already exists. You can edit it instead.');
         }
 
-        return view('candidate.profile.create');
+        $skills = Skill::orderBy('name')->get();
+        $languages = Language::orderBy('name')->get();
+
+        return view('candidate.profile.create', compact('skills', 'languages'));
     }
 
     public function storeStep1(Request $request)
     {
         $validated = $request->validate([
             'date_of_birth' => 'required|date|before:today',
-            'citizenship' => 'required|string|max:100',
-            'residency_status' => 'required|string|max:100',
+            'location' => 'required|string|max:255',
             'gender' => 'required|in:male,female,other',
-            'marital_status' => 'required|in:single,married,divorced,widowed',
         ]);
 
         $candidate = auth()->user();
@@ -80,9 +81,12 @@ class ProfileController extends Controller
         }
 
         $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
             'education_level' => 'required|string|max:100',
             'course_studied' => 'required|string|max:255',
             'years_of_experience' => 'required|integer|min:0|max:50',
+            'experience_description' => 'required|string',
             'experience_category_id' => 'required|exists:categories,id',
         ]);
 
@@ -175,7 +179,11 @@ class ProfileController extends Controller
         }
 
         $profile->load(['skills', 'languages', 'experienceCategory']);
-        return view('candidate.profile.edit', compact('profile'));
+        
+        $skills = Skill::orderBy('name')->get();
+        $languages = Language::orderBy('name')->get();
+
+        return view('candidate.profile.edit', compact('profile', 'skills', 'languages'));
     }
 
     public function update(Request $request)
@@ -238,20 +246,58 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'location' => 'required|string|max:255',
             'date_of_birth' => 'required|date|before:today',
-            'citizenship' => 'required|string|max:100',
-            'residency_status' => 'required|string|max:100',
             'gender' => 'required|in:male,female,other',
-            'marital_status' => 'required|in:single,married,divorced,widowed',
             'education_level' => 'required|string|max:100',
             'course_studied' => 'required|string|max:255',
             'years_of_experience' => 'required|integer|min:0|max:50',
+            'experience_description' => 'required|string',
             'experience_category_id' => 'required|exists:categories,id',
             'expected_salary' => 'nullable|numeric|min:0',
             'currency' => 'nullable|string|max:10',
             'target_destination' => 'nullable|string|max:255',
             'is_available' => 'boolean',
+            'video_cv' => 'nullable|mimes:mp4,mov,avi,wmv|max:20480',
         ]);
+
+        // Handle Video CV Upload
+        if ($request->hasFile('video_cv')) {
+            try {
+                $videoFile = $request->file('video_cv');
+                
+                // Ensure directory exists in public folder
+                $videoDirectory = public_path('video-cvs');
+                if (!file_exists($videoDirectory)) {
+                    mkdir($videoDirectory, 0755, true);
+                }
+                
+                // Delete old video if exists
+                if ($profile->video_cv) {
+                    $oldVideoPath = public_path($profile->video_cv);
+                    if (file_exists($oldVideoPath)) {
+                        unlink($oldVideoPath);
+                    }
+                }
+                
+                // Generate unique filename
+                $videoExtension = $videoFile->getClientOriginalExtension();
+                $videoFileName = 'video_cv_' . auth()->id() . '_' . time() . '.' . $videoExtension;
+                
+                // Move uploaded file to public directory
+                if ($videoFile->move($videoDirectory, $videoFileName)) {
+                    $validated['video_cv'] = 'video-cvs/' . $videoFileName;
+                } else {
+                    return back()->withErrors(['video_cv' => 'Failed to upload video. Please try again.'])->withInput();
+                }
+
+            } catch (\Exception $e) {
+                Log::error('Video CV upload error: ' . $e->getMessage());
+                return back()->withErrors(['video_cv' => 'An error occurred while uploading the video.'])->withInput();
+            }
+        }
 
         // Validate skills and languages
         if (!empty($skills)) {

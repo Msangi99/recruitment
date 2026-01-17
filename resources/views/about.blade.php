@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
+
 <body class="bg-gray-50">
     <!-- Header -->
     <nav class="bg-white shadow-sm border-b border-gray-200">
@@ -18,10 +20,25 @@
                         <span class="ml-3 text-xl font-bold text-gray-900">COYZON</span>
                     </a>
                 </div>
+                <div class="hidden md:flex flex-1 justify-center items-center space-x-8">
+                    <a href="{{ route('about') }}" class="text-blue-600 hover:text-blue-800 font-bold">About Us</a>
+                    <a href="{{ route('public.jobs.index') }}" class="text-blue-600 hover:text-blue-800 font-bold">Find
+                        Job</a>
+                    <a href="{{ route('public.candidates.index') }}"
+                        class="text-blue-600 hover:text-blue-800 font-bold">Find Candidate</a>
+                    <a href="{{ route('candidate.consultations.create') }}"
+                        class="text-blue-600 hover:text-blue-800 font-bold">Book Appointment</a>
+                    <a href="{{ route('contact') }}" class="text-blue-600 hover:text-blue-800 font-bold">Contact Us</a>
+                </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900">Home</a>
-                    <a href="{{ route('contact') }}" class="text-gray-600 hover:text-gray-900">Contact</a>
-                    <a href="{{ route('login') }}" class="text-indigo-600 hover:text-indigo-700">Login</a>
+                    @guest
+                        <a href="{{ route('login') }}" class="text-blue-600 hover:text-blue-700">Login</a>
+                        <a href="{{ route('register') }}"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Register</a>
+                    @else
+                        <a href="{{ route('dashboard') }}"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Dashboard</a>
+                    @endguest
                 </div>
             </div>
         </div>
@@ -42,10 +59,13 @@
             <div>
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Mission</h2>
                 <p class="text-gray-600 mb-4">
-                    COYZON is a professional recruitment platform dedicated to bridging the gap between talented African job seekers and international employers. We provide verified overseas job opportunities and comprehensive career development services.
+                    COYZON is a professional recruitment platform dedicated to bridging the gap between talented African
+                    job seekers and international employers. We provide verified overseas job opportunities and
+                    comprehensive career development services.
                 </p>
                 <p class="text-gray-600">
-                    Our platform ensures transparency, security, and professionalism throughout the entire recruitment process, from profile verification to job placement.
+                    Our platform ensures transparency, security, and professionalism throughout the entire recruitment
+                    process, from profile verification to job placement.
                 </p>
             </div>
 
@@ -54,23 +74,28 @@
                 <ul class="space-y-3">
                     <li class="flex items-start">
                         <i data-lucide="check-circle" class="h-6 w-6 text-green-500 mr-2 flex-shrink-0"></i>
-                        <span class="text-gray-600"><strong>Verified Job Listings</strong> - All jobs are verified for authenticity</span>
+                        <span class="text-gray-600"><strong>Verified Job Listings</strong> - All jobs are verified for
+                            authenticity</span>
                     </li>
                     <li class="flex items-start">
                         <i data-lucide="check-circle" class="h-6 w-6 text-green-500 mr-2 flex-shrink-0"></i>
-                        <span class="text-gray-600"><strong>Profile Verification</strong> - Professional vetting process</span>
+                        <span class="text-gray-600"><strong>Profile Verification</strong> - Professional vetting
+                            process</span>
                     </li>
                     <li class="flex items-start">
                         <i data-lucide="check-circle" class="h-6 w-6 text-green-500 mr-2 flex-shrink-0"></i>
-                        <span class="text-gray-600"><strong>Career Consultations</strong> - Expert guidance on overseas careers</span>
+                        <span class="text-gray-600"><strong>Career Consultations</strong> - Expert guidance on overseas
+                            careers</span>
                     </li>
                     <li class="flex items-start">
                         <i data-lucide="check-circle" class="h-6 w-6 text-green-500 mr-2 flex-shrink-0"></i>
-                        <span class="text-gray-600"><strong>Interview Coordination</strong> - Seamless interview scheduling</span>
+                        <span class="text-gray-600"><strong>Interview Coordination</strong> - Seamless interview
+                            scheduling</span>
                     </li>
                     <li class="flex items-start">
                         <i data-lucide="check-circle" class="h-6 w-6 text-green-500 mr-2 flex-shrink-0"></i>
-                        <span class="text-gray-600"><strong>Document Management</strong> - Secure storage and verification</span>
+                        <span class="text-gray-600"><strong>Document Management</strong> - Secure storage and
+                            verification</span>
                     </li>
                 </ul>
             </div>
@@ -114,10 +139,12 @@
             <h2 class="text-3xl font-bold mb-4">Ready to Get Started?</h2>
             <p class="text-xl mb-6 text-indigo-100">Join thousands of job seekers finding opportunities abroad</p>
             <div class="flex justify-center space-x-4">
-                <a href="{{ route('register') }}" class="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+                <a href="{{ route('register') }}"
+                    class="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
                     Register Now
                 </a>
-                <a href="{{ route('contact') }}" class="px-8 py-3 bg-indigo-700 text-white font-semibold rounded-lg hover:bg-indigo-800 transition-colors border-2 border-white">
+                <a href="{{ route('contact') }}"
+                    class="px-8 py-3 bg-indigo-700 text-white font-semibold rounded-lg hover:bg-indigo-800 transition-colors border-2 border-white">
                     Contact Us
                 </a>
             </div>
@@ -127,9 +154,10 @@
     @include('partials.footer')
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             lucide.createIcons();
         });
     </script>
 </body>
+
 </html>
