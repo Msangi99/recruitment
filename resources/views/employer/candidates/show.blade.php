@@ -238,7 +238,37 @@
                                 </div>
                             @endif
                         </dl>
-                    </div>
+                        
+                        <!-- Uploaded Documents (For Employer) -->
+                        <div class="bg-gray-50 px-6 py-4 mt-4 border-t border-gray-200">
+                            <h4 class="text-lg font-semibold text-gray-900">Uploaded Documents</h4>
+                        </div>
+                        <div class="bg-white px-4 py-5 sm:px-6">
+                            <ul class="divide-y divide-gray-200">
+                                @forelse($candidate->documents as $document)
+                                    @if($document->verification_status == 'approved')
+                                    <li class="py-4 flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <svg class="h-5 w-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-900">{{ $document->document_type == 'video_cv' ? 'Video CV' : ucfirst($document->document_type) }}</p>
+                                                <p class="text-sm text-gray-500">{{ $document->file_name }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <a href="{{ asset($document->file_path) }}" target="_blank" class="font-medium text-indigo-600 hover:text-indigo-500">
+                                                View <span class="sr-only">{{ $document->file_name }}</span>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    @endif
+                                @empty
+                                    <li class="py-4 text-center text-sm text-gray-500">No documents available</li>
+                                @endforelse
+                            </ul>
+                        </div>
                 </div>
             </div>
         </div>

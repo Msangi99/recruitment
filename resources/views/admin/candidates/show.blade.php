@@ -174,7 +174,7 @@
                                         <i data-lucide="file" class="w-5 h-5 text-gray-500"></i>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-bold text-gray-900">{{ ucfirst($document->document_type) }}</p>
+                                        <p class="text-sm font-bold text-gray-900">{{ $document->document_type == 'video_cv' ? 'Video CV' : ucfirst($document->document_type) }}</p>
                                         <p class="text-xs text-gray-500">{{ $document->file_name }}</p>
                                     </div>
                                 </div>
