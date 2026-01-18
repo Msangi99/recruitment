@@ -60,7 +60,7 @@
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ $consultation->payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                                    {{ $consultation->payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                     {{ ucfirst($consultation->payment_status) }}
                                 </span>
                                 @if($consultation->amount)
@@ -76,8 +76,27 @@
                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">Additional Data</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <pre
-                                class="bg-gray-100 p-3 rounded text-xs overflow-auto">{{ json_encode($consultation->meta_data, JSON_PRETTY_PRINT) }}</pre>
+                            @if(is_array($consultation->meta_data) && count($consultation->meta_data) > 0)
+                                <div class="border border-gray-200 rounded-md overflow-hidden">
+                                    <dl class="divide-y divide-gray-200">
+                                        @foreach($consultation->meta_data as $key => $value)
+                                            <div class="px-4 py-3 grid grid-cols-3 gap-4 bg-white hover:bg-gray-50">
+                                                <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                                    {{ str_replace('_', ' ', $key) }}</dt>
+                                                <dd class="text-sm text-gray-900 col-span-2 mt-0">
+                                                    @if(is_array($value))
+                                                        {{ json_encode($value) }}
+                                                    @else
+                                                        {{ $value }}
+                                                    @endif
+                                                </dd>
+                                            </div>
+                                        @endforeach
+                                    </dl>
+                                </div>
+                            @else
+                                <span class="text-gray-500 italic">No additional data provided.</span>
+                            @endif
                         </dd>
                     </div>
 

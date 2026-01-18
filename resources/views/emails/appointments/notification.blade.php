@@ -56,9 +56,30 @@
         </table>
 
         @if($data->meta_data)
-            <h4 style="margin-top: 20px; margin-bottom: 10px;">Additional Information:</h4>
-            <pre
-                style="background: #e5e7eb; padding: 10px; border-radius: 4px; overflow-x: auto;">{{ json_encode(json_decode($data->meta_data), JSON_PRETTY_PRINT) }}</pre>
+            @php
+                $metaData = json_decode($data->meta_data, true);
+            @endphp
+
+            @if(is_array($metaData) && count($metaData) > 0)
+                <h4 style="margin-top: 20px; margin-bottom: 10px;">Additional Information:</h4>
+                <table
+                    style="width: 100%; text-align: left; border-collapse: collapse; background: #ffffff; border: 1px solid #e5e7eb;">
+                    @foreach($metaData as $key => $value)
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td
+                                style="padding: 8px; font-weight: bold; width: 150px; background: #f9fafb; border-right: 1px solid #e5e7eb; text-transform: uppercase; font-size: 11px;">
+                                {{ str_replace('_', ' ', $key) }}</td>
+                            <td style="padding: 8px;">
+                                @if(is_array($value))
+                                    {{ json_encode($value) }}
+                                @else
+                                    {{ $value }}
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
+            @endif
         @endif
     </div>
 
