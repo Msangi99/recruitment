@@ -37,6 +37,28 @@ Route::get('/candidates/{candidate}', [PublicCandidateController::class, 'show']
 Route::get('/candidates/{candidate}/interview', [PublicCandidateController::class, 'interviewForm'])->name('public.candidates.interview');
 Route::post('/candidates/{candidate}/interview', [PublicCandidateController::class, 'submitInterview'])->name('public.candidates.interview.store');
 
+// Public Appointment Booking
+Route::prefix('book-appointment')->name('public.appointments.')->group(function () {
+    Route::get('/', [App\Http\Controllers\PublicAppointmentController::class, 'index'])->name('index');
+    
+    // Employer
+    Route::get('/employer', [App\Http\Controllers\PublicAppointmentController::class, 'employerForm'])->name('employer');
+    Route::post('/employer', [App\Http\Controllers\PublicAppointmentController::class, 'storeEmployer'])->name('storeEmployer');
+    
+    // Partnership
+    Route::get('/partnership', [App\Http\Controllers\PublicAppointmentController::class, 'partnershipForm'])->name('partnership');
+    Route::post('/partnership', [App\Http\Controllers\PublicAppointmentController::class, 'storePartnership'])->name('storePartnership');
+    
+    // Job Seeker (Paid)
+    Route::get('/job-seeker', [App\Http\Controllers\PublicAppointmentController::class, 'jobSeekerLanding'])->name('jobSeeker');
+    Route::get('/job-seeker/form', [App\Http\Controllers\PublicAppointmentController::class, 'jobSeekerForm'])->name('jobSeeker.form');
+    Route::post('/job-seeker/form', [App\Http\Controllers\PublicAppointmentController::class, 'storeJobSeeker'])->name('jobSeeker.store');
+    
+    // Scheduling (Mockup for flow)
+    Route::get('/calendar/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'calendar'])->name('calendar');
+    Route::post('/calendar/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'storeSchedule'])->name('storeSchedule');
+});
+
 // Serve static files from public folder (for php artisan serve compatibility)
 // Profile pictures
 Route::get('/profile-pictures/{filename}', function ($filename) {

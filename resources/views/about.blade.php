@@ -26,7 +26,7 @@
                         Job</a>
                     <a href="{{ route('public.candidates.index') }}"
                         class="text-blue-600 hover:text-blue-800 font-bold">Find Candidate</a>
-                    <a href="{{ route('candidate.consultations.create') }}"
+                    <a href="{{ route('public.appointments.index') }}"
                         class="text-blue-600 hover:text-blue-800 font-bold">Book Appointment</a>
                     <a href="{{ route('contact') }}" class="text-blue-600 hover:text-blue-800 font-bold">Contact Us</a>
                 </div>
