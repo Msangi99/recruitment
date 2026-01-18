@@ -223,117 +223,58 @@
 
 
 
-    <!-- About Us Section -->
-    <section id="about" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8">
-                    <div>
-                        <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">ABOUT US</h2>
-                    </div>
-                    
-                    <div class="space-y-6 text-lg text-slate-600 leading-relaxed">
-                        <p>
-                            At Coyzon, we believe in connecting people to the right opportunities. Built on professionalism, transparency, and trust, we specialize in delivering reliable recruitment solutions that bridge employers with skilled and verified talent locally and internationally.
-                        </p>
-                        <p>
-                            We understand that every organization has unique workforce needs. That's why our approach is tailored, strategic, and results-oriented. From sourcing top candidates to conducting thorough screenings and ensuring seamless placements, we streamline the entire recruitment process with precision and integrity.
-                        </p>
-                        <p>
-                            Beyond serving employers, Coyzon is equally committed to supporting job seekers. We guide candidates through credible career opportunities, ensure fair recruitment practices, and connect them with employers who value their skills and potential. Our goal is to create long-term success for both talent and organizations.
-                        </p>
-                        <p>
-                            Our team of HR and talent acquisition specialists is dedicated to delivering qualified professionals who bring real value to businesses, while helping individuals access meaningful employment opportunities worldwide.
-                        </p>
-                        <p class="text-slate-900 font-bold">
-                            Professional. Transparent. Reliable.<br>
-                            Coyzon — Your trusted partner in global recruitment excellence.
-                        </p>
-                    </div>
-                </div>
 
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="space-y-6">
-                        <div class="bg-blue-600 aspect-square rounded-3xl flex flex-col items-center justify-center text-white p-8 text-center shadow-2xl shadow-blue-500/20">
-                            <i data-lucide="eye" class="h-12 w-12 mb-4"></i>
-                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wider">OUR VISION</h3>
-                        </div>
-                        <div class="bg-slate-100 aspect-square rounded-3xl p-8 flex flex-col justify-center">
-                            <p class="text-slate-900 font-bold leading-tight">To become the leading global recruitment gateway connecting organizations with exceptional talent through professionalism, integrity, and an impactful workforce Solutions.</p>
-                        </div>
-                    </div>
-                    <div class="space-y-6 pt-12">
-                        <div class="bg-indigo-600 aspect-square rounded-3xl flex flex-col items-center justify-center text-white p-8 text-center shadow-2xl shadow-indigo-500/20">
-                            <i data-lucide="target" class="h-12 w-12 mb-4"></i>
-                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wider">OUR MISSION</h3>
-                        </div>
-                        <div class="bg-slate-100 aspect-square rounded-3xl p-8 flex flex-col justify-center">
-                            <p class="text-slate-900 font-bold leading-tight">To deliver trusted, efficient, and transparent recruitment services that empower employers to build strong teams and help candidates access real, life-changing career opportunities across the world.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+
+    <!-- Vision & Mission Section -->
+    <section class="py-16 bg-white relative overflow-hidden">
+        <!-- Background Decor -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50"></div>
+            <div class="absolute top-1/2 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-50"></div>
         </div>
-    </section>
 
-    <!-- Core Values Section -->
-    <section class="py-24 bg-slate-50 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">OUR CORE VALUES</h2>
-                <div class="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Professionalism -->
-                <div class="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-slate-100">
-                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-500">
-                        <i data-lucide="award" class="h-8 w-8 text-blue-600 group-hover:text-white transition-colors duration-500"></i>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                <!-- Vision Card -->
+                <div class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-10 lg:p-12 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div class="absolute top-0 right-0 -mt-20 -mr-20 h-80 w-80 rounded-full bg-blue-600/20 blur-[80px] group-hover:bg-blue-600/30 transition-colors duration-500"></div>
+                    
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="mb-8 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-white/10 backdrop-blur-md border border-white/10 shadow-inner">
+                            <i data-lucide="eye" class="h-10 w-10 text-blue-400"></i>
+                        </div>
+                        
+                        <h3 class="mb-6 text-3xl font-black uppercase tracking-tight">Our Vision</h3>
+                        
+                        <p class="text-lg leading-relaxed text-blue-100/80 font-medium">
+                            To become the leading global recruitment gateway connecting organizations with exceptional talent through professionalism, integrity, and an impactful workforce Solutions.
+                        </p>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">1. Professionalism</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        We maintain the highest standards in every step of the recruitment process.
-                    </p>
                 </div>
 
-                <!-- Integrity -->
-                <div class="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-slate-100">
-                    <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors duration-500">
-                        <i data-lucide="shield-check" class="h-8 w-8 text-emerald-600 group-hover:text-white transition-colors duration-500"></i>
+                <!-- Mission Card -->
+                <div class="group relative overflow-hidden rounded-[2.5rem] bg-indigo-600 p-10 lg:p-12 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-indigo-600/30">
+                    <div class="absolute bottom-0 left-0 -mb-20 -ml-20 h-80 w-80 rounded-full bg-white/10 blur-[80px] group-hover:bg-white/20 transition-colors duration-500"></div>
+                    
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="mb-8 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-white/20 backdrop-blur-md border border-white/20 shadow-inner">
+                            <i data-lucide="target" class="h-10 w-10 text-white"></i>
+                        </div>
+                        
+                        <h3 class="mb-6 text-3xl font-black uppercase tracking-tight">Our Mission</h3>
+                        
+                        <p class="text-lg leading-relaxed text-indigo-50 font-medium">
+                            To deliver trusted, efficient, and transparent recruitment services that empower employers to build strong teams and help candidates access real, life-changing career opportunities across the world.
+                        </p>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">2. Integrity</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        We operate with honesty, transparency, and accountability, ensuring trust for both employers and candidates.
-                    </p>
-                </div>
-
-                <!-- Reliability -->
-                <div class="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-slate-100">
-                    <div class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-600 transition-colors duration-500">
-                        <i data-lucide="clock" class="h-8 w-8 text-amber-600 group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">3. Reliability</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        We deliver consistent results, offering timely and dependable recruitment solutions.
-                    </p>
-                </div>
-
-                <!-- Partnership -->
-                <div class="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-slate-100">
-                    <div class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 transition-colors duration-500">
-                        <i data-lucide="handshake" class="h-8 w-8 text-indigo-600 group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">4. Partnership</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        We work closely with employers and agencies to understand their needs and provide tailored workforce solutions through matching organizations with verified, skilled, and committed candidates who add real value.
-                    </p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- What We Do (Short) Overview -->
-    <section class="py-24 bg-slate-50">
+    <section class="py-16 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border border-slate-100 flex flex-col lg:flex-row items-center gap-12">
                 <div class="flex-1 space-y-6">
@@ -372,7 +313,7 @@
     </section>
 
     <!-- Our Recruitment Process -->
-    <section class="py-24 bg-white relative overflow-hidden">
+    <section class="py-16 bg-white relative overflow-hidden">
         <!-- Premium Background Accents -->
         <div class="absolute top-0 left-0 w-[600px] h-[600px] bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"></div>
         <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-indigo-50 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000"></div>
@@ -521,7 +462,7 @@
     </section>
 
     <!-- Industries We Serve Section -->
-    <section class="py-24 bg-slate-50 relative overflow-hidden">
+    <section class="py-16 bg-slate-50 relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16 px-4">
                 <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight uppercase">Industries We Serve</h2>
@@ -535,7 +476,7 @@
                 <!-- 1. conatruction Industry -->
                 <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
                     <div class="h-64 relative overflow-hidden">
-                        <img src="{{ asset('hero_construction_workers_1768667395123.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Construction Industry">
+                        <img src="{{ asset('industry_construction.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Construction Industry">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
                         <div class="absolute bottom-6 left-8">
                             <h3 class="text-3xl font-black text-white uppercase tracking-tighter">1. conatruction Industry</h3>
@@ -557,7 +498,7 @@
                 <!-- 2. Hospitality Industry -->
                 <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
                     <div class="h-64 relative overflow-hidden">
-                        <img src="{{ asset('hero_hr_interviews_1768667429733.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Hospitality Industry" onerror="this.src='https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1000&auto=format&fit=crop'">
+                        <img src="{{ asset('industry_hospitality.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Hospitality Industry">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
                         <div class="absolute bottom-6 left-8">
                             <h3 class="text-3xl font-black text-white uppercase tracking-tighter">2. Hospitality Industry</h3>
@@ -579,7 +520,7 @@
                 <!-- 3. Logistics & Transport -->
                 <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
                     <div class="h-64 relative overflow-hidden">
-                        <img src="{{ asset('hero_logistics_warehouse_1768667413235.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Logistics & Transport">
+                        <img src="{{ asset('industry_logistics.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Logistics & Transport">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
                         <div class="absolute bottom-6 left-8">
                             <h3 class="text-3xl font-black text-white uppercase tracking-tighter">3. Logistics & Transport</h3>
@@ -601,7 +542,7 @@
                 <!-- 4. Agriculture Industry -->
                 <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
                     <div class="h-64 relative overflow-hidden">
-                        <img src="{{ asset('hero_agriculture_workers_1768667381546.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Agriculture Industry">
+                        <img src="{{ asset('industry_agriculture.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Agriculture Industry">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
                         <div class="absolute bottom-6 left-8">
                             <h3 class="text-3xl font-black text-white uppercase tracking-tighter">4. Agriculture Industry</h3>
@@ -624,7 +565,7 @@
     </section>
 
     <!-- Why Choose Us? (Verbatim & Premium) -->
-    <section class="py-24 bg-white">
+    <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight uppercase">Why Choose Us?</h2>
@@ -652,7 +593,7 @@
     </section>
 
     <!-- OUR TARGET CLIENTS (Verbatim & Premium) -->
-    <section class="py-24 bg-slate-50">
+    <section class="py-16 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight uppercase">OUR TARGET CLIENTS</h2>
@@ -681,7 +622,7 @@
 
 
     <!-- Global Reach & Industry Focus Summary -->
-    <section class="py-24 bg-white">
+    <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-8">
@@ -751,7 +692,7 @@
 
 
     <!-- Target Destinations (Premium Ely Design - Fluid) -->
-    <section class="py-24 bg-white relative overflow-hidden">
+    <section class="py-16 bg-white relative overflow-hidden">
         <!-- Artistic Background Accents -->
         <div class="absolute top-0 left-1/2 -translate-x-full w-[500px] h-[500px] bg-blue-50/40 rounded-full blur-[120px] pointer-events-none"></div>
         <div class="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[#A52A2A]/5 rounded-full blur-[100px] pointer-events-none"></div>
@@ -781,104 +722,16 @@
                 </div>
             </div>
 
-            <!-- Styled Map Visualization Area (Simplified/Removed Container) -->
-            <div class="relative w-full aspect-[21/9] mb-24 group overflow-hidden">
-                <!-- Base Map Image -->
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/World_map_blank_without_borders.svg" class="absolute inset-0 w-full h-full object-contain p-4 opacity-40 grayscale hover:opacity-50 transition-all duration-1000" alt="Global Reach Map">
+            <!-- Styled Map Visualization Area -->
+            <div class="relative w-full aspect-[21/9] mb-16 group overflow-hidden rounded-[2.5rem] shadow-2xl border border-slate-100">
+                <img src="{{ asset('global_reach_map.png') }}" 
+                     class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" 
+                     alt="Global Reach Map - Local, Europe, Middle East">
                 
-                <!-- SVG Overlay for Animated Paths From Tanzania Source -->
-                <svg viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full pointer-events-none">
-                    <defs>
-                        <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#A52A2A" stop-opacity="0" />
-                            <stop offset="50%" stop-color="#A52A2A" stop-opacity="0.6" />
-                            <stop offset="100%" stop-color="#A52A2A" stop-opacity="0" />
-                        </linearGradient>
-                        <filter id="glow">
-                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                            <feMerge>
-                                <feMergeNode in="coloredBlur"/>
-                                <feMergeNode in="SourceGraphic"/>
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    
-                    <!-- Dynamic Paths from Tanzania (Approx 580, 310) -->
-                    <g filter="url(#glow)">
-                        <path d="M580,310 Q450,200 350,150" fill="none" stroke="url(#pathGrad)" stroke-width="2.5" class="animate-travel-long" stroke-dasharray="1000" />
-                        <path d="M580,310 Q600,250 620,180" fill="none" stroke="url(#pathGrad)" stroke-width="2.5" class="animate-travel-short" stroke-dasharray="1000" />
-                        <path d="M580,310 Q350,250 150,130" fill="none" stroke="url(#pathGrad)" stroke-width="2.5" class="animate-travel-long" stroke-dasharray="1000" />
-                        <path d="M580,310 Q750,380 920,410" fill="none" stroke="url(#pathGrad)" stroke-width="2.5" class="animate-travel-med" stroke-dasharray="1000" />
-                    </g>
-                </svg>
-
-                <div class="relative w-full h-full pointer-events-none">
-                    <!-- Tanzania Source Pin -->
-                    <div class="absolute top-[62%] left-[58%]">
-                        <div class="w-6 h-6 bg-[#A52A2A] rounded-full animate-ping opacity-20 absolute"></div>
-                        <div class="w-4 h-4 bg-[#A52A2A] rounded-full border-2 border-white shadow-xl relative z-10"></div>
-                        <div class="absolute top-6 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur px-3 py-1 rounded-full shadow-lg border border-slate-100 whitespace-nowrap">
-                            <span class="text-[9px] font-black text-slate-800 uppercase tracking-widest">Base: Tanzania</span>
-                        </div>
-                    </div>
-
-                    <!-- Europe Region Marker -->
-                    <div class="absolute top-[32%] left-[48%] group/pin pointer-events-auto cursor-pointer">
-                        <div class="w-3.5 h-3.5 bg-slate-900 rounded-full border-2 border-white shadow-lg group-hover/pin:scale-150 transition-transform"></div>
-                        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-3 py-1.5 rounded-xl text-[10px] font-bold opacity-0 group-hover/pin:opacity-100 transition-opacity translate-y-2 group-hover/pin:translate-y-0 shadow-2xl">Europe</div>
-                    </div>
-
-                    <!-- Middle East Region Marker -->
-                    <div class="absolute top-[42%] left-[60%] group/pin pointer-events-auto cursor-pointer">
-                        <div class="w-3.5 h-3.5 bg-slate-900 rounded-full border-2 border-white shadow-lg group-hover/pin:scale-150 transition-transform"></div>
-                        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-3 py-1.5 rounded-xl text-[10px] font-bold opacity-0 group-hover/pin:opacity-100 transition-opacity translate-y-2 group-hover/pin:translate-y-0 shadow-2xl">Middle East</div>
-                    </div>
-                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent pointer-events-none"></div>
             </div>
 
-            <!-- Region Cards Section -->
-            <div class="max-w-7xl mx-auto">
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Tanzania -->
-                <div class="group bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-orange-600 transition-colors duration-500">
-                        <i data-lucide="map-pin" class="w-7 h-7 text-orange-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-slate-900 mb-4 tracking-tighter uppercase">Tanzania</h3>
-                    <p class="text-slate-600 text-sm font-medium leading-relaxed mb-6">Nationwide recruitment & local candidate placement services across all sectors.</p>
-                </div>
 
-                <!-- Middle East -->
-                <div class="group bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors duration-500">
-                        <i data-lucide="globe" class="w-7 h-7 text-emerald-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-slate-900 mb-4 tracking-tighter uppercase">Middle East</h3>
-                    <p class="text-slate-600 text-sm font-medium leading-relaxed mb-6">Expert placement in UAE, Saudi Arabia, Qatar, Oman, and Kuwait markets.</p>
-                </div>
-
-                <!-- Europe -->
-                <div class="group bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/50 flex flex-col hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-indigo-600 transition-colors duration-500">
-                        <i data-lucide="compass" class="w-7 h-7 text-indigo-600 group-hover:text-white transition-colors"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-slate-900 mb-4 tracking-tighter uppercase">Europe</h3>
-                    <p class="text-slate-600 text-[11px] font-medium leading-relaxed mb-6 italic opacity-80">Germany, Poland, Romania, Lithuania, Czech Republic, Malta, and UK.</p>
-                </div>
-
-                <!-- Global Expansion -->
-                <div class="group bg-slate-900 p-8 rounded-[2.5rem] shadow-2xl flex flex-col hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-[#A52A2A]/20 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2"></div>
-                    <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-white transition-colors duration-500">
-                        <i data-lucide="send" class="w-7 h-7 text-white group-hover:text-slate-900 transition-colors"></i>
-                    </div>
-                    <h3 class="text-xl font-black text-white mb-4 tracking-tighter uppercase">Global Expansion</h3>
-                    <div class="mt-auto">
-                        <span class="inline-flex items-center text-[10px] font-bold text-white uppercase tracking-widest bg-[#A52A2A] px-4 py-1.5 rounded-full">Canada & Australia</span>
-                    </div>
-                </div>
-                </div>
-            </div>
         </div>
 
         <style>
@@ -898,7 +751,7 @@
 
 
     <!-- FAQs - Frequently Asked Questions -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-16 bg-gray-50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-4xl font-bold text-gray-900 mb-4">FAQs – Frequently Asked Questions</h2>
@@ -1019,61 +872,7 @@
         </div>
     </section>
 
-    <!-- Our Team -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">Our Team</h2>
-                <p class="text-lg text-gray-600">Meet the dedicated professionals driving COYZON's success</p>
-            </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Team Member 1 -->
-                <div
-                    class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow border-2 border-blue-200">
-                    <div class="w-32 h-32 rounded-full mx-auto mb-4 overflow-hidden shadow-lg ring-4 ring-white">
-                        <img src="{{ asset('user1.jpg') }}" alt="Team Member" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-1">John Doe</h3>
-                    <p class="text-blue-600 font-semibold mb-2">CEO & Founder</p>
-                    <p class="text-sm text-gray-600">20+ years in recruitment industry</p>
-                </div>
-
-                <!-- Team Member 2 -->
-                <div
-                    class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow border-2 border-green-200">
-                    <div class="w-32 h-32 rounded-full mx-auto mb-4 overflow-hidden shadow-lg ring-4 ring-white">
-                        <img src="{{ asset('user2.jpg') }}" alt="Team Member" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-1">Jane Smith</h3>
-                    <p class="text-green-600 font-semibold mb-2">Head of Operations</p>
-                    <p class="text-sm text-gray-600">Expert in global talent placement</p>
-                </div>
-
-                <!-- Team Member 3 -->
-                <div
-                    class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow border-2 border-purple-200">
-                    <div class="w-32 h-32 rounded-full mx-auto mb-4 overflow-hidden shadow-lg ring-4 ring-white">
-                        <img src="{{ asset('user3.jpeg') }}" alt="Team Member" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-1">Michael Johnson</h3>
-                    <p class="text-purple-600 font-semibold mb-2">HR Director</p>
-                    <p class="text-sm text-gray-600">Compliance and ethical recruitment specialist</p>
-                </div>
-
-                <!-- Team Member 4 -->
-                <div
-                    class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-6 text-center shadow-lg hover:shadow-xl transition-shadow border-2 border-orange-200">
-                    <div class="w-32 h-32 rounded-full mx-auto mb-4 overflow-hidden shadow-lg ring-4 ring-white">
-                        <img src="{{ asset('user1.jpg') }}" alt="Team Member" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-1">Sarah Williams</h3>
-                    <p class="text-orange-600 font-semibold mb-2">Client Relations Manager</p>
-                    <p class="text-sm text-gray-600">Building lasting employer partnerships</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
 
 

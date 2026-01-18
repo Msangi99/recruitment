@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\ConsultationRequest; // We will create this model
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewAppointmentNotification;
 
 class PublicAppointmentController extends Controller
 {
@@ -55,7 +57,14 @@ class PublicAppointmentController extends Controller
             'updated_at' => now(),
         ]);
 
-        // TODO: Send Email Notification logic here
+        // Send Email Notification
+        try {
+            $hrEmail = \App\Models\Setting::getHrEmail() ?? 'hr@coyzon.com';
+            $appointmentData = DB::table('consultation_requests')->where('email', $validated['email'])->orderBy('id', 'desc')->first();
+            Mail::to($hrEmail)->send(new NewAppointmentNotification($appointmentData));
+        } catch (\Exception $e) {
+            // Log error or ignore for now to preventing blocking the flow
+        }
 
         return redirect()->route('public.appointments.index')->with('success', 'Your employer consultation request has been submitted. We will confirm your appointment shortly via email.');
     }
@@ -95,6 +104,15 @@ class PublicAppointmentController extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        // Send Email Notification
+        try {
+            $hrEmail = \App\Models\Setting::getHrEmail() ?? 'hr@coyzon.com';
+            $appointmentData = DB::table('consultation_requests')->where('email', $validated['email'])->orderBy('id', 'desc')->first();
+            Mail::to($hrEmail)->send(new NewAppointmentNotification($appointmentData));
+        } catch (\Exception $e) {
+            // Log error
+        }
 
         return redirect()->route('public.appointments.index')->with('success', 'Your partnership request has been submitted for review. We will contact you shortly.');
     }
@@ -171,6 +189,15 @@ class PublicAppointmentController extends Controller
             'payment_status' => 'paid', // Mockup
             'updated_at' => now(),
         ]);
+
+        // Send Email Notification
+        try {
+            $hrEmail = \App\Models\Setting::getHrEmail() ?? 'hr@coyzon.com';
+            $appointmentData = DB::table('consultation_requests')->where('id', $id)->first();
+            Mail::to($hrEmail)->send(new NewAppointmentNotification($appointmentData));
+        } catch (\Exception $e) {
+            // Log error
+        }
 
         return view('public.appointments.confirmation', ['request' => DB::table('consultation_requests')->where('id', $id)->first()]);
     }
