@@ -15,7 +15,7 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-10 w-auto">
+                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-14 w-auto">
                         <span class="ml-3 text-xl font-bold text-gray-900">Coyzon</span>
                     </a>
                 </div>
@@ -117,7 +117,8 @@
                             <div class="bg-gray-50 rounded-lg p-4">
                                 <h3 class="text-sm font-medium text-gray-500 mb-2">Education Level</h3>
                                 <p class="text-lg font-semibold text-gray-900">
-                                    {{ ucfirst(str_replace('-', ' ', $job->education_level)) }}</p>
+                                    {{ ucfirst(str_replace('-', ' ', $job->education_level)) }}
+                                </p>
                             </div>
                         @endif
 

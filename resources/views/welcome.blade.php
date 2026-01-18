@@ -24,7 +24,7 @@
             <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
                 <div class="flex items-center gap-3">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo.jpg') }}" alt="COYZON Logo" class="h-11 w-auto">
+                        <img src="{{ asset('logo-removed-background.png') }}" alt="COYZON Logo" class="h-16 w-auto">
                     </a>
                     <div>
                         <p class="text-xs uppercase tracking-[3px] text-slate-500 font-semibold">Coyzon</p>

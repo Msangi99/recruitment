@@ -5,7 +5,7 @@
             <!-- Company Info -->
             <div>
                 <div class="flex items-center mb-4">
-                    <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-20 w-auto">
+                    <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-24 w-auto">
                     <span class="ml-3 text-xl font-bold text-white">Coyzon</span>
                 </div>
                 <p class="text-sm text-gray-400 mb-4">

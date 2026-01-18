@@ -3,7 +3,7 @@
         <div class="flex justify-between items-center h-20">
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-12 w-auto">
+                    <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-16 w-auto">
                     <span class="ml-3 text-2xl font-bold text-gray-900">Coyzon</span>
                 </a>
             </div>

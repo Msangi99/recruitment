@@ -66,7 +66,7 @@
 
             <div class="hidden lg:flex items-center gap-3">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-10 w-auto">
+                    <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-14 w-auto">
                 </a>
                 <div>
                     <p class="text-xs uppercase tracking-[3px] text-slate-500 font-semibold">Admin</p>
@@ -137,7 +137,7 @@
         <div class="flex h-full flex-col">
             <div class="flex h-16 items-center gap-3 border-b border-white/10 px-6">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('logo.jpg') }}" alt="Coyzon Logo" class="h-10 w-auto">
+                    <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-14 w-auto">
                 </a>
                 <div>
                     <p class="text-[11px] font-semibold uppercase tracking-[3px] text-white/60">Coyzon</p>
@@ -256,7 +256,7 @@
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function  () {
+        document.addEventListener('DOMContentLoaded', function () {
             lucide.createIcons();
         });
 
