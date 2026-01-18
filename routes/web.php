@@ -164,6 +164,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/verification/document/{document}/view', [VerificationController::class, 'viewDocument'])->name('verification.document.view');
         Route::post('/verification/document/{document}/approve', [VerificationController::class, 'verifyDocument'])->name('verification.document.approve');
         Route::post('/verification/document/{document}/reject', [VerificationController::class, 'rejectDocument'])->name('verification.document.reject');
+        Route::patch('/verification/document/{document}/status', [VerificationController::class, 'updateDocumentStatus'])->name('verification.document.updateStatus');
 
         // Job Management
         Route::resource('jobs', JobManagementController::class);

@@ -179,11 +179,18 @@
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-4">
-                                    <span class="px-2.5 py-0.5 text-[10px] font-bold rounded-full 
-                                        {{ $document->verification_status == 'approved' ? 'bg-green-100 text-green-700' : 
-                                           ($document->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
-                                        {{ strtoupper($document->verification_status) }}
-                                    </span>
+                                    <form action="{{ route('admin.verification.document.updateStatus', $document) }}" method="POST" class="mr-2">
+                                        @csrf
+                                        @method('PATCH')
+                                        <select name="status" onchange="this.form.submit()" 
+                                            class="text-[10px] font-bold rounded-full border-none focus:ring-0 cursor-pointer py-0.5 pl-2 pr-6
+                                            {{ $document->verification_status == 'approved' ? 'bg-green-100 text-green-700' : 
+                                               ($document->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
+                                            <option value="pending" {{ $document->verification_status == 'pending' ? 'selected' : '' }}>PENDING</option>
+                                            <option value="approved" {{ $document->verification_status == 'approved' ? 'selected' : '' }}>APPROVED</option>
+                                            <option value="rejected" {{ $document->verification_status == 'rejected' ? 'selected' : '' }}>REJECTED</option>
+                                        </select>
+                                    </form>
                                     <a href="{{ asset($document->file_path) }}" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 transition-colors" title="View Document">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
                                     </a>

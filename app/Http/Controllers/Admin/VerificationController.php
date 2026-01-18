@@ -94,6 +94,38 @@ class VerificationController extends Controller
     }
 
     /**
+     * Update document status
+     */
+    public function updateDocumentStatus(Request $request, Document $document)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,approved,rejected',
+        ]);
+
+        $status = $request->status;
+        $data = ['verification_status' => $status];
+
+        if ($status === 'approved') {
+            $data['verified_at'] = now();
+            $data['verified_by'] = auth()->id();
+            $data['rejection_reason'] = null;
+        } elseif ($status === 'rejected') {
+            // If rejected, we might want a reason, but from a simple select, maybe not mandatory or needs a separate input.
+            // keeping it optional for now or clearing it if previously approved.
+             $data['verified_at'] = null;
+             $data['verified_by'] = null;
+        } else {
+             $data['verified_at'] = null;
+             $data['verified_by'] = null;
+             $data['rejection_reason'] = null;
+        }
+
+        $document->update($data);
+
+        return back()->with('success', 'Document status updated to ' . ucfirst($status) . '.');
+    }
+
+    /**
      * View document (for admins)
      */
     public function viewDocument(Document $document)
