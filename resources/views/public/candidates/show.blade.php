@@ -339,6 +339,8 @@
                                             CV
                                         @elseif($document->document_type == 'id')
                                             ID Identity
+                                        @elseif($document->document_type == 'video_cv')
+                                            Video CV
                                         @else
                                             {{ ucfirst($document->document_type) }}
                                         @endif
