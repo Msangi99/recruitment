@@ -198,6 +198,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/appointments/{appointment}', [AppointmentManagementController::class, 'show'])->name('appointments.show');
         Route::patch('/appointments/{appointment}/status', [AppointmentManagementController::class, 'updateStatus'])->name('appointments.updateStatus');
 
+        // Consultation Requests (Public Booking)
+        Route::get('/consultations', [\App\Http\Controllers\Admin\ConsultationRequestController::class, 'index'])->name('consultations.index');
+        Route::get('/consultations/{consultation}', [\App\Http\Controllers\Admin\ConsultationRequestController::class, 'show'])->name('consultations.show');
+        Route::patch('/consultations/{consultation}/status', [\App\Http\Controllers\Admin\ConsultationRequestController::class, 'updateStatus'])->name('consultations.updateStatus');
+
         // Payment Management
         Route::get('/payments', [PaymentManagementController::class, 'index'])->name('payments.index');
         Route::get('/payments/{appointment}', [PaymentManagementController::class, 'show'])->name('payments.show');
