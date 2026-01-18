@@ -257,6 +257,22 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <style>
+        .select2-container--default .select2-selection--multiple {
+            border-color: #d1d5db;
+            border-radius: 0.375rem;
+            padding: 0.25rem;
+        }
+
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 1px #6366f1;
+        }
+    </style>
+
     <script>
         let currentStep = 1;
         let totalSteps = 4;
@@ -338,20 +354,19 @@
 
         function submitStep2() {
             const form = document.getElementById('form-step2');
-            const skillsSelect = document.getElementById('skills-select');
-            const languagesSelect = document.getElementById('languages-select');
 
-            skills = [...skillsSelect.selectedOptions].map(option => option.value);
-            languages = [...languagesSelect.selectedOptions].map(option => option.value);
+            // Get values from Select2
+            skills = $('#skills-select').val() || [];
+            languages = $('#languages-select').val() || [];
 
             if (skills.length === 0) {
                 alert('Please select at least one skill');
-                skillsSelect.focus();
+                $('#skills-select').select2('open');
                 return;
             }
             if (languages.length === 0) {
                 alert('Please select at least one language');
-                languagesSelect.focus();
+                $('#languages-select').select2('open');
                 return;
             }
 
@@ -441,38 +456,38 @@
             const step3Form = new FormData(document.getElementById('form-step3'));
 
             let html = `
-                    <div class="border-b pb-4">
-                        <h4 class="font-bold text-gray-900 mb-2">Personal Information</h4>
-                        <div class="grid grid-cols-2 gap-2 text-sm">
-                            <span class="text-gray-500">Date of Birth:</span> <span class="font-medium">${step1Form.get('date_of_birth')}</span>
-                            <span class="text-gray-500">Gender:</span> <span class="font-medium">${step1Form.get('gender')}</span>
-                            <span class="text-gray-500">Location:</span> <span class="font-medium">${step1Form.get('location')}</span>
-                        </div>
-                    </div>
-                    <div class="border-b pb-4">
-                        <h4 class="font-bold text-gray-900 mb-2">Professional Details</h4>
-                        <div class="space-y-2 text-sm">
-                            <div><span class="text-gray-500">Title:</span> <span class="font-medium">${step2Form.get('title')}</span></div>
-                            <div><span class="text-gray-500">Summary:</span> <p class="mt-1">${step2Form.get('description')}</p></div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <span class="text-gray-500">Education:</span> <span class="font-medium">${step2Form.get('education_level')}</span>
-                                <span class="text-gray-500">Field:</span> <span class="font-medium">${step2Form.get('course_studied')}</span>
-                                <span class="text-gray-500">Experience:</span> <span class="font-medium">${step2Form.get('years_of_experience')} years</span>
+                        <div class="border-b pb-4">
+                            <h4 class="font-bold text-gray-900 mb-2">Personal Information</h4>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <span class="text-gray-500">Date of Birth:</span> <span class="font-medium">${step1Form.get('date_of_birth')}</span>
+                                <span class="text-gray-500">Gender:</span> <span class="font-medium">${step1Form.get('gender')}</span>
+                                <span class="text-gray-500">Location:</span> <span class="font-medium">${step1Form.get('location')}</span>
                             </div>
-                            <div><span class="text-gray-500">Experience Description:</span> <p class="mt-1">${step2Form.get('experience_description')}</p></div>
-                            <div><span class="text-gray-500">Skills:</span> <span class="font-medium">${skills.join(', ')}</span></div>
-                            <div><span class="text-gray-500">Languages:</span> <span class="font-medium">${languages.join(', ')}</span></div>
                         </div>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-gray-900 mb-2">Preferences</h4>
-                        <div class="grid grid-cols-2 gap-2 text-sm">
-                            <span class="text-gray-500">Expected Salary:</span> <span class="font-medium">${step3Form.get('expected_salary')} ${step3Form.get('currency')}</span>
-                            <span class="text-gray-500">Target Destination:</span> <span class="font-medium">${step3Form.get('target_destination') || 'Not specified'}</span>
-                            <span class="text-gray-500">Available:</span> <span class="font-medium">${step3Form.get('is_available') ? 'Yes' : 'No'}</span>
+                        <div class="border-b pb-4">
+                            <h4 class="font-bold text-gray-900 mb-2">Professional Details</h4>
+                            <div class="space-y-2 text-sm">
+                                <div><span class="text-gray-500">Title:</span> <span class="font-medium">${step2Form.get('title')}</span></div>
+                                <div><span class="text-gray-500">Summary:</span> <p class="mt-1">${step2Form.get('description')}</p></div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <span class="text-gray-500">Education:</span> <span class="font-medium">${step2Form.get('education_level')}</span>
+                                    <span class="text-gray-500">Field:</span> <span class="font-medium">${step2Form.get('course_studied')}</span>
+                                    <span class="text-gray-500">Experience:</span> <span class="font-medium">${step2Form.get('years_of_experience')} years</span>
+                                </div>
+                                <div><span class="text-gray-500">Experience Description:</span> <p class="mt-1">${step2Form.get('experience_description')}</p></div>
+                                <div><span class="text-gray-500">Skills:</span> <span class="font-medium">${skills.join(', ')}</span></div>
+                                <div><span class="text-gray-500">Languages:</span> <span class="font-medium">${languages.join(', ')}</span></div>
+                            </div>
                         </div>
-                    </div>
-                `;
+                        <div>
+                            <h4 class="font-bold text-gray-900 mb-2">Preferences</h4>
+                            <div class="grid grid-cols-2 gap-2 text-sm">
+                                <span class="text-gray-500">Expected Salary:</span> <span class="font-medium">${step3Form.get('expected_salary')} ${step3Form.get('currency')}</span>
+                                <span class="text-gray-500">Target Destination:</span> <span class="font-medium">${step3Form.get('target_destination') || 'Not specified'}</span>
+                                <span class="text-gray-500">Available:</span> <span class="font-medium">${step3Form.get('is_available') ? 'Yes' : 'No'}</span>
+                            </div>
+                        </div>
+                    `;
 
             document.getElementById('review-content').innerHTML = html;
         }
@@ -500,6 +515,21 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             updateProgressIndicator(1);
+
+            // Initialize Select2
+            $('#skills-select').select2({
+                placeholder: "Select or type skills",
+                tags: true,
+                width: '100%',
+                tokenSeparators: [',']
+            });
+
+            $('#languages-select').select2({
+                placeholder: "Select or type languages",
+                tags: true,
+                width: '100%',
+                tokenSeparators: [',']
+            });
         });
     </script>
 @endsection

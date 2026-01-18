@@ -261,7 +261,7 @@
                                     <label for="skills-select" class="block text-sm font-medium text-gray-700 mb-2">Skills
                                         *</label>
                                     <select id="skills-select" name="skills[]"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-32"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         multiple required>
                                         @foreach($skills as $skill)
                                             <option value="{{ $skill->name }}" {{ in_array($skill->name, old('skills', $existingSkills)) ? 'selected' : '' }}>
@@ -275,7 +275,7 @@
                                     <label for="languages-select"
                                         class="block text-sm font-medium text-gray-700 mb-2">Languages *</label>
                                     <select id="languages-select" name="languages[]"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 h-32"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                         multiple required>
                                         @foreach($languages as $language)
                                             <option value="{{ $language->name }}" {{ in_array($language->name, old('languages', $existingLanguages)) ? 'selected' : '' }}>
@@ -341,6 +341,22 @@
             </div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <style>
+            .select2-container--default .select2-selection--multiple {
+                border-color: #d1d5db;
+                border-radius: 0.375rem;
+                padding: 0.25rem;
+            }
+
+            .select2-container--default.select2-container--focus .select2-selection--multiple {
+                border-color: #6366f1;
+                box-shadow: 0 0 0 1px #6366f1;
+            }
+        </style>
+
         <script>
             function validateImageFile(input) {
                 const file = input.files[0];
@@ -359,5 +375,23 @@
                     input.value = '';
                 }
             }
+
+            $(document).ready(function () {
+                // Initialize Select2 for Skills
+                $('#skills-select').select2({
+                    placeholder: "Select or type skills",
+                    tags: true,
+                    width: '100%',
+                    tokenSeparators: [',']
+                });
+
+                // Initialize Select2 for Languages
+                $('#languages-select').select2({
+                    placeholder: "Select or type languages",
+                    tags: true,
+                    width: '100%',
+                    tokenSeparators: [',']
+                });
+            });
         </script>
 @endsection
