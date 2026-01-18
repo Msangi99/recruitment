@@ -44,381 +44,230 @@
         </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="px-4 py-6 sm:px-0">
-            <div class="mb-6">
-                <a href="{{ route('public.candidates.index') }}" class="text-blue-600 hover:text-blue-900">← Back to
-                    Candidates</a>
-            </div>
+    <div class="max-w-6xl mx-auto py-8 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- Left Sidebar (Profile Info) -->
+            <div class="w-full lg:w-1/4 flex-shrink-0">
+                <div class="bg-white shadow rounded-2xl overflow-hidden border border-gray-100 sticky top-24">
+                    <div class="p-6 text-center">
+                        <div class="relative inline-block mb-4">
+                            @if($candidate->candidateProfile->profile_picture)
+                                <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
+                                    alt="{{ $candidate->name }}"
+                                    class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg mx-auto">
+                            @else
+                                <div class="w-32 h-32 rounded-full bg-blue-600 flex items-center justify-center text-4xl font-bold text-white border-4 border-white shadow-lg mx-auto">
+                                    {{ strtoupper(substr($candidate->name, 0, 1)) }}
+                                </div>
+                            @endif
+                            <div class="absolute bottom-2 right-2 bg-green-500 w-5 h-5 rounded-full border-4 border-white" title="Online"></div>
+                        </div>
 
-            <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-                <!-- Profile Header -->
-                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-8 text-white">
-                    <div class="flex items-center">
-                        @if($candidate->candidateProfile->profile_picture)
-                            <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
-                                alt="{{ $candidate->name }}"
-                                class="w-24 h-24 rounded-full object-cover border-4 border-white/30">
-                        @else
-                            <div
-                                class="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center text-3xl font-bold">
-                                {{ strtoupper(substr($candidate->name, 0, 1)) }}
-                            </div>
-                        @endif
-                        <div class="ml-6">
+                        <h1 class="text-2xl font-bold text-gray-900 mb-1">
                             @php
                                 $nameParts = explode(' ', $candidate->name);
                                 $firstName = $nameParts[0];
                                 $lastNameInitial = isset($nameParts[1]) ? strtoupper(substr($nameParts[1], 0, 1)) . '.' : '';
                             @endphp
-                            <h1 class="text-3xl font-bold">{{ $firstName }} {{ $lastNameInitial }}</h1>
-                            @if($candidate->candidateProfile->title)
-                                <p class="text-xl text-blue-100 font-medium mt-1">{{ $candidate->candidateProfile->title }}
-                                </p>
-                            @endif
-                            <p class="text-blue-200 mt-1 flex items-center">
-                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                {{ $candidate->candidateProfile->location ?? ($candidate->country ?? 'N/A') }}
-                            </p>
-                            <div class="flex flex-wrap gap-3 mt-4">
-                                <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full bg-white/20 text-sm border border-white/30 backdrop-blur-sm">
-                                    ✓ Verified Candidate
-                                </span>
-                                @if($candidate->candidateProfile->is_available)
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-500/30 text-sm">
-                                        Available Now
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full bg-red-500/30 text-sm">
-                                        Not Available
-                                    </span>
-                                @endif
+                            {{ $firstName }} {{ $lastNameInitial }}
+                        </h1>
+                        
+                        <div class="flex items-center justify-center text-gray-500 text-sm mb-6">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            {{ $candidate->candidateProfile->location ?? ($candidate->country ?? 'N/A') }}
+                        </div>
+
+                        <a href="{{ route('public.candidates.interview', $candidate) }}"
+                            class="block w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-full transition-colors shadow-md mb-3">
+                            Request Interview
+                        </a>
+                        
+                        <div class="flex items-center justify-center gap-2 mb-6">
+                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                                Verified
+                             </span>
+                        </div>
+
+                        <!-- Sidebar Stats -->
+                        <div class="border-t border-gray-100 pt-6 text-left space-y-4">
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Education Level</h3>
+                                <p class="font-semibold text-gray-900">{{ ucfirst(str_replace('-', ' ', $candidate->candidateProfile->education_level ?? 'N/A')) }}</p>
                             </div>
+                            
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Experience</h3>
+                                <p class="font-semibold text-gray-900">{{ $candidate->candidateProfile->years_of_experience ?? 0 }} Years</p>
+                            </div>
+
+                             @if($candidate->candidateProfile->birth_date || $candidate->candidateProfile->age)
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Age</h3>
+                                <p class="font-semibold text-gray-900">
+                                    {{ $candidate->candidateProfile->date_of_birth ? $candidate->candidateProfile->date_of_birth->age . ' Years' : 'N/A' }}
+                                </p>
+                            </div>
+                            @endif
+
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Availability</h3>
+                                <p class="font-semibold {{ $candidate->candidateProfile->is_available ? 'text-green-600' : 'text-red-500' }}">
+                                    {{ $candidate->candidateProfile->is_available ? 'Available Now' : 'Currently Busy' }}
+                                </p>
+                            </div>
+
+                            @if($candidate->candidateProfile->languages && $candidate->candidateProfile->languages->count() > 0)
+                            <div>
+                                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Languages</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    @foreach($candidate->candidateProfile->languages as $language)
+                                        <span class="text-sm bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                                            {{ $language->name }}
+                                        </span>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="p-8 space-y-8">
-                    <!-- Professional Summary -->
-                    @if($candidate->candidateProfile->description)
+            <!-- Right Content (Details) -->
+            <div class="w-full lg:w-3/4 space-y-6">
+                
+                <!-- Main Card -->
+                <div class="bg-white shadow-sm rounded-2xl border border-gray-100 p-8">
+                    <div class="flex justify-between items-start mb-6">
                         <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                Professional Summary
+                            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                                {{ $candidate->candidateProfile->title ?? 'Candidate' }}
                             </h2>
-                            <div class="bg-blue-50/50 rounded-lg p-5 border border-blue-100">
-                                <p class="text-gray-700 leading-relaxed italic">
-                                    "{{ $candidate->candidateProfile->description }}"</p>
+                            <div class="flex items-center text-gray-500 gap-4 text-sm font-medium">
+                                @if($candidate->candidateProfile->expected_salary)
+                                <span class="flex items-center text-gray-900 font-bold text-lg">
+                                    {{ $candidate->candidateProfile->currency }} {{ number_format($candidate->candidateProfile->expected_salary) }}
+                                    <span class="text-xs font-normal text-gray-500 ml-1">/mo</span>
+                                </span>
+                                @endif
                             </div>
                         </div>
-                    @endif
-
-                    @if($candidate->candidateProfile->video_cv)
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-3 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                </svg>
-                                Video CV
-                            </h2>
-                            <div class="w-full max-w-2xl bg-black rounded-lg overflow-hidden shadow-lg">
-                                <video controls class="w-full aspect-video">
-                                    <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Personal Information -->
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            Personal Information
-                        </h2>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            @if($candidate->candidateProfile->date_of_birth)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Age</h3>
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        {{ $candidate->candidateProfile->date_of_birth->age }} years</p>
-                                </div>
-                            @endif
-
-                            @if($candidate->candidateProfile->gender)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Gender</h3>
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        {{ ucfirst($candidate->candidateProfile->gender) }}</p>
-                                </div>
-                            @endif
-
-                            @if($candidate->candidateProfile->citizenship)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Citizenship</h3>
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        {{ $candidate->candidateProfile->citizenship }}</p>
-                                </div>
-                            @endif
-
-                            @if($candidate->candidateProfile->marital_status)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Marital Status</h3>
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        {{ ucfirst($candidate->candidateProfile->marital_status) }}</p>
-                                </div>
-                            @endif
-
-                            @if($candidate->candidateProfile->residency_status)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Residency Status</h3>
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        {{ ucfirst(str_replace('-', ' ', $candidate->candidateProfile->residency_status)) }}
-                                    </p>
-                                </div>
-                            @endif
-
-                            @if($candidate->country)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Country</h3>
-                                    <p class="text-lg font-semibold text-gray-900">{{ $candidate->country }}</p>
-                                </div>
-                            @endif
-                        </div>
+                        <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-bold border border-blue-100">
+                            {{ $candidate->candidateProfile->experienceCategory->name ?? 'General' }}
+                        </span>
                     </div>
 
-                    <!-- Education & Professional Info -->
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                            <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                                <path
-                                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z">
-                                </path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222">
-                                </path>
-                            </svg>
-                            Education & Professional Background
-                        </h2>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            @if($candidate->candidateProfile->education_level)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Education Level</h3>
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        {{ ucfirst(str_replace('-', ' ', $candidate->candidateProfile->education_level)) }}
-                                    </p>
-                                </div>
-                            @endif
-
-                            @if($candidate->candidateProfile->course_studied)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Course/Field of Study</h3>
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        {{ $candidate->candidateProfile->course_studied }}</p>
-                                </div>
-                            @endif
-
-                            @if($candidate->candidateProfile->years_of_experience !== null)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Years of Experience</h3>
-                                    <p class="text-lg font-semibold text-gray-900">
-                                        {{ $candidate->candidateProfile->years_of_experience }} years</p>
-                                </div>
-                            @endif
-
-                            @if($candidate->candidateProfile->experienceCategory)
-                                <div class="bg-gray-50 rounded-lg p-4">
-                                    <h3 class="text-sm font-medium text-gray-500 mb-1">Experience Category</h3>
-                                    <p class="text-lg font-semibold text-blue-600">
-                                        {{ $candidate->candidateProfile->experienceCategory->name }}</p>
-                                </div>
-                            @endif
-                        </div>
+                    <div class="prose max-w-none text-gray-700 mb-8 leading-relaxed">
+                        {{ $candidate->candidateProfile->description }}
                     </div>
 
                     <!-- Skills -->
                     @if($candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
-                                    </path>
-                                </svg>
-                                Skills & Expertise
-                            </h2>
-                            <div class="flex flex-wrap gap-2">
-                                @foreach($candidate->candidateProfile->skills as $skill)
-                                    <span class="px-4 py-2 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium">
-                                        {{ $skill->name }}
-                                    </span>
-                                @endforeach
-                            </div>
+                    <div class="mb-8">
+                        <h3 class="text-lg font-bold text-gray-900 mb-3">Skills</h3>
+                        <div class="flex flex-wrap gap-2">
+                            @foreach($candidate->candidateProfile->skills as $skill)
+                                <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors cursor-default">
+                                    {{ $skill->name }}
+                                </span>
+                            @endforeach
                         </div>
+                    </div>
                     @endif
+                </div>
 
-                    <!-- Languages -->
-                    @if($candidate->candidateProfile->languages && $candidate->candidateProfile->languages->count() > 0)
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129">
-                                    </path>
-                                </svg>
-                                Languages
-                            </h2>
-                            <div class="flex flex-wrap gap-2">
-                                @foreach($candidate->candidateProfile->languages as $language)
-                                    <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                                        {{ $language->name }}
-                                    </span>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Salary Expectation -->
-                    @if($candidate->candidateProfile->expected_salary)
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                    </path>
-                                </svg>
-                                Salary Expectation
-                            </h2>
-                            <div class="bg-green-50 rounded-lg p-4 inline-block">
-                                <p class="text-2xl font-bold text-green-700">
-                                    {{ $candidate->candidateProfile->currency ?? 'TZS' }}
-                                    {{ number_format($candidate->candidateProfile->expected_salary) }}
-                                    <span class="text-sm font-normal text-green-600">/month</span>
-                                </p>
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Documents -->
-                    @if($candidate->documents && $candidate->documents->count() > 0)
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                    </path>
-                                </svg>
-                                Documents
-                            </h2>
-                            <div class="flex flex-wrap gap-2">
-                                @foreach($candidate->documents as $document)
-                                    <a href="{{ asset($document->file_path) }}" target="_blank"
-                                        class="inline-block bg-blue-50 text-blue-700 px-3 py-1 text-sm font-medium rounded-md border border-blue-100 hover:bg-blue-100 hover:text-blue-800 transition-colors"
-                                        title="{{ $document->file_name }}">
-                                        @if($document->document_type == 'cv')
-                                            CV
-                                        @elseif($document->document_type == 'id')
-                                            ID Identity
-                                        @elseif($document->document_type == 'video_cv')
-                                            Video CV
-                                        @else
-                                            {{ ucfirst($document->document_type) }}
-                                        @endif
-                                        <svg class="w-3 h-3 inline-block ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                                        </svg>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Target Destinations -->
-                    @if($candidate->candidateProfile->target_destination)
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                                <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                    </path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                Preferred Work Destinations
-                            </h2>
-                            <p class="text-gray-700 bg-gray-50 rounded-lg p-4">
-                                {{ $candidate->candidateProfile->target_destination }}</p>
-                        </div>
-                    @endif
-
-                    <!-- Privacy Notice -->
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <div class="flex">
-                            <svg class="h-5 w-5 text-yellow-400 mr-3 mt-0.5" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                                </path>
+                <!-- Video CV -->
+                @if($candidate->candidateProfile->video_cv)
+                <div class="bg-white shadow-sm rounded-2xl border border-gray-100 p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                        <div class="p-2 bg-red-50 rounded-lg mr-3">
+                            <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
-                            <div>
-                                <h3 class="text-sm font-medium text-yellow-800">Contact Information Protected</h3>
-                                <p class="mt-1 text-sm text-yellow-700">
-                                    Phone and email are hidden for privacy. To contact this candidate, please submit an
-                                    interview request below.
-                                </p>
-                            </div>
                         </div>
-                    </div>
-
-                    <!-- Request Interview CTA -->
-                    <div class="bg-green-50 border border-green-200 rounded-lg p-6 text-center">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Interested in This Candidate?</h3>
-                        <p class="text-gray-600 mb-4">Request an interview to discuss potential opportunities. No
-                            registration required!</p>
-                        <a href="{{ route('public.candidates.interview', $candidate) }}"
-                            class="inline-block px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors">
-                            Request Interview
-                        </a>
-                    </div>
-
-                    <!-- Contact Note -->
-                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
-                        <div class="flex">
-                            <div class="ml-3">
-                                <h3 class="text-sm font-medium text-blue-800">How It Works</h3>
-                                <div class="mt-2 text-sm text-blue-700">
-                                    <ul class="list-disc list-inside space-y-1">
-                                        <li>Submit an interview request with your company details</li>
-                                        <li>Our admin team will review your request</li>
-                                        <li>Once approved, the candidate will be notified</li>
-                                        <li>You'll receive a confirmation email with next steps</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        Video Introduction
+                    </h3>
+                    <div class="rounded-xl overflow-hidden bg-black shadow-lg">
+                        <video controls class="w-full aspect-video">
+                            <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                 </div>
+                @endif
+
+                <!-- Documents -->
+                @if($candidate->documents && $candidate->documents->count() > 0)
+                <div class="bg-white shadow-sm rounded-2xl border border-gray-100 p-8">
+                     <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                        <div class="p-2 bg-blue-50 rounded-lg mr-3">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        Verified Documents
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        @foreach($candidate->documents as $document)
+                            <a href="{{ asset($document->file_path) }}" target="_blank"
+                                class="group flex items-center p-4 rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all bg-gray-50 hover:bg-white">
+                                <div class="p-3 bg-white rounded-lg border border-gray-100 mr-4 group-hover:scale-110 transition-transform">
+                                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                    </svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
+                                        @if($document->document_type == 'cv') CV / Resume
+                                        @elseif($document->document_type == 'id') Identity Document
+                                        @elseif($document->document_type == 'video_cv') Video Profile
+                                        @else {{ ucfirst(str_replace('_', ' ', $document->document_type)) }}
+                                        @endif
+                                    </p>
+                                    <p class="text-xs text-gray-500 flex items-center">
+                                        View File
+                                        <svg class="w-3 h-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                        </svg>
+                                    </p>
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                <!-- Other Details (Education & Course) - Bottom Section -->
+                 <div class="bg-white shadow-sm rounded-2xl border border-gray-100 p-8">
+                    <h3 class="text-xl font-bold text-gray-900 mb-6">Education & Background</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                         @if($candidate->candidateProfile->course_studied)
+                         <div>
+                            <span class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Field of Study</span>
+                            <div class="text-gray-900 font-medium bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                {{ $candidate->candidateProfile->course_studied }}
+                            </div>
+                         </div>
+                         @endif
+                         
+                         @if($candidate->candidateProfile->target_destination)
+                         <div>
+                            <span class="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Preferred Destination</span>
+                            <div class="text-gray-900 font-medium bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                {{ $candidate->candidateProfile->target_destination }}
+                            </div>
+                         </div>
+                         @endif
+                    </div>
+                 </div>
+
             </div>
         </div>
     </div>
