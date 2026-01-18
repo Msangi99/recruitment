@@ -22,7 +22,8 @@
                     <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">Type</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            {{ ucfirst(str_replace('_', ' ', $consultation->type)) }}</dd>
+                            {{ ucfirst(str_replace('_', ' ', $consultation->type)) }}
+                        </dd>
                     </div>
                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">Email address</dt>
@@ -59,7 +60,7 @@
                             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    {{ $consultation->payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                            {{ $consultation->payment_status === 'paid' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                     {{ ucfirst($consultation->payment_status) }}
                                 </span>
                                 @if($consultation->amount)
@@ -76,7 +77,7 @@
                         <dt class="text-sm font-medium text-gray-500">Additional Data</dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                             <pre
-                                class="bg-gray-100 p-3 rounded text-xs overflow-auto">{{ json_encode(json_decode($consultation->meta_data), JSON_PRETTY_PRINT) }}</pre>
+                                class="bg-gray-100 p-3 rounded text-xs overflow-auto">{{ json_encode($consultation->meta_data, JSON_PRETTY_PRINT) }}</pre>
                         </dd>
                     </div>
 

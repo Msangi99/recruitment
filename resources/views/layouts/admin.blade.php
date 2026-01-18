@@ -177,9 +177,9 @@
                         <x-admin-sidebar-item href="{{ route('admin.jobs.index') }}" icon="briefcase" label="Jobs"
                             :active="request()->routeIs('admin.jobs.*')" />
                         <x-admin-sidebar-item href="{{ route('admin.appointments.index') }}" icon="calendar"
-                            label="Appointments" :active="request()->routeIs('admin.appointments.*')" />
+                            label="Interviews" :active="request()->routeIs('admin.appointments.*')" />
                         <x-admin-sidebar-item href="{{ route('admin.consultations.index') }}" icon="calendar-days"
-                            label="Consultations" :active="request()->routeIs('admin.consultations.*')" />
+                            label="Appointments" :active="request()->routeIs('admin.consultations.*')" />
                         <x-admin-sidebar-item href="{{ route('admin.payments.index') }}" icon="credit-card"
                             label="Payments" :active="request()->routeIs('admin.payments.*')" />
                         @php $unreadEmails = \App\Models\ContactMessage::unread()->count(); @endphp
@@ -256,7 +256,7 @@
     <!-- Alpine.js -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function  () {
             lucide.createIcons();
         });
 
