@@ -73,7 +73,6 @@ class SettingController extends Controller
         \App\Models\Language::create($request->only('name'));
         return back()->with('success', 'Language added successfully.');
     }
-
     public function deleteLanguage(\App\Models\Language $language)
     {
         $language->delete();
