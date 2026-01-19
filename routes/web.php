@@ -224,6 +224,13 @@ Route::middleware('auth')->group(function () {
         Route::delete('/skills/{skill}', [\App\Http\Controllers\Admin\SettingController::class, 'deleteSkill'])->name('skills.destroy');
         Route::post('/languages', [\App\Http\Controllers\Admin\SettingController::class, 'addLanguage'])->name('languages.store');
         Route::delete('/languages/{language}', [\App\Http\Controllers\Admin\SettingController::class, 'deleteLanguage'])->name('languages.destroy');
+
+        // Currency Management
+        Route::post('/settings/currencies', [\App\Http\Controllers\Admin\SettingController::class, 'addCurrency'])->name('settings.currencies.store');
+        Route::delete('/settings/currencies/{currency}', [\App\Http\Controllers\Admin\SettingController::class, 'deleteCurrency'])->name('settings.currencies.destroy');
+        Route::post('/settings/currencies/{currency}/default', [\App\Http\Controllers\Admin\SettingController::class, 'setDefaultCurrency'])->name('settings.currencies.default');
+        Route::put('/settings/currencies/{currency}/rate', [\App\Http\Controllers\Admin\SettingController::class, 'updateCurrencyRate'])->name('settings.currencies.rate');
+        Route::post('/settings/currencies/update-rates', [\App\Http\Controllers\Admin\SettingController::class, 'updateExchangeRates'])->name('settings.currencies.update-rates');
     });
 
     // Employer routes removed - employers can now browse candidates and request interviews without an account

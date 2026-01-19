@@ -13,8 +13,9 @@ class SettingController extends Controller
         $emailSettings = Setting::getByGroup('email');
         $skills = \App\Models\Skill::orderBy('name')->get();
         $languages = \App\Models\Language::orderBy('name')->get();
+        $currencies = \App\Models\Currency::orderBy('code')->get();
 
-        return view('admin.settings.index', compact('emailSettings', 'skills', 'languages'));
+        return view('admin.settings.index', compact('emailSettings', 'skills', 'languages', 'currencies'));
     }
 
     public function update(Request $request)
@@ -25,6 +26,7 @@ class SettingController extends Controller
             'email_notifications_enabled' => 'boolean',
             'package_basic_price' => 'nullable|numeric|min:0',
             'package_premium_price' => 'nullable|numeric|min:0',
+            'consultation_price' => 'nullable|numeric|min:0',
         ]);
 
         // Update HR Email
@@ -42,6 +44,11 @@ class SettingController extends Controller
         }
         if ($request->has('package_premium_price')) {
             Setting::set('package_premium_price', $request->package_premium_price);
+        }
+
+        // Update Consultation Price
+        if ($request->has('consultation_price')) {
+            Setting::set('consultation_price', $request->consultation_price);
         }
 
         return back()->with('success', 'Settings updated successfully.');
@@ -71,5 +78,105 @@ class SettingController extends Controller
     {
         $language->delete();
         return back()->with('success', 'Language removed successfully.');
+    }
+
+    // Currency Management Methods
+
+    public function addCurrency(Request $request)
+    {
+        $validated = $request->validate([
+            'code' => 'required|string|size:3|unique:currencies,code',
+            'name' => 'required|string|max:100',
+            'symbol' => 'nullable|string|max:10',
+            'exchange_rate' => 'required|numeric|min:0',
+        ]);
+
+        \App\Models\Currency::create([
+            'code' => strtoupper($validated['code']),
+            'name' => $validated['name'],
+            'symbol' => $validated['symbol'],
+            'exchange_rate' => $validated['exchange_rate'],
+            'is_default' => false, // New currencies are not default by default
+        ]);
+
+        return back()->with('success', 'Currency added successfully.');
+    }
+
+    public function deleteCurrency(\App\Models\Currency $currency)
+    {
+        if ($currency->is_default) {
+            return back()->with('error', 'Cannot delete the default currency.');
+        }
+
+        $currency->delete();
+        return back()->with('success', 'Currency removed successfully.');
+    }
+
+    public function setDefaultCurrency(\App\Models\Currency $currency)
+    {
+        // Unset current default
+        \App\Models\Currency::where('is_default', true)->update(['is_default' => false]);
+
+        // Set new default
+        $currency->update(['is_default' => true]);
+
+        return back()->with('success', 'Default currency updated successfully.');
+    }
+
+    public function updateCurrencyRate(Request $request, \App\Models\Currency $currency)
+    {
+        $request->validate(['exchange_rate' => 'required|numeric|min:0']);
+        $currency->update(['exchange_rate' => $request->exchange_rate]);
+        return back()->with('success', 'Exchange rate updated successfully.');
+    }
+
+    public function updateExchangeRates()
+    {
+        $defaultCurrency = \App\Models\Currency::where('is_default', true)->first();
+        if (!$defaultCurrency) {
+            return back()->with('error', 'No default currency set. Please set a default currency first.');
+        }
+
+        $code = strtolower($defaultCurrency->code);
+        $url = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/{$code}.json";
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::get($url);
+            
+            if ($response->successful()) {
+                $data = $response->json();
+                
+                if (!isset($data[$code])) {
+                     return back()->with('error', "Invalid API response. Could not find rates for {$code}.");
+                }
+
+                $rates = $data[$code];
+                $updatedCount = 0;
+
+                // Get all non-default currencies
+                $currencies = \App\Models\Currency::where('id', '!=', $defaultCurrency->id)->get();
+                
+                foreach ($currencies as $currency) {
+                    $currencyCodeLower = strtolower($currency->code);
+                    if (isset($rates[$currencyCodeLower])) {
+                        // The API returns "how much of target currency for 1 base currency"
+                        // My DB stores "exchange_rate" as value relative to base.
+                        // Example: Base TZS. Target USD.
+                        // API TZS->USD: 0.0004.
+                        // DB: TZS is default (1.0). USD row exchange_rate should be 0.0004.
+                        // So direct assignment is correct.
+                        $currency->update(['exchange_rate' => $rates[$currencyCodeLower]]);
+                        $updatedCount++;
+                    }
+                }
+
+                return back()->with('success', "Exchange rates updated successfully via API. ({$updatedCount} currencies updated)");
+            }
+            
+            return back()->with('error', 'Failed to fetch exchange rates from API. Status: ' . $response->status());
+            
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error updating exchange rates: ' . $e->getMessage());
+        }
     }
 }

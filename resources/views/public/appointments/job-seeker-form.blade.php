@@ -191,7 +191,7 @@
                 <!-- H. Payment -->
                 <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100">
                     <h2 class="text-xl font-bold text-blue-900 mb-4">Payment Selection</h2>
-                    <p class="mb-4 text-blue-800">Consultation Fee: <span class="font-bold">TZS 30,000 / $12</span></p>
+                    <p class="mb-4 text-blue-800">Consultation Fee: <span class="font-bold">TZS {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }} / $12</span></p>
                     
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Select Payment Gateway *</label>

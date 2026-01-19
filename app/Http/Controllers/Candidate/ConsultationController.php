@@ -82,7 +82,7 @@ class ConsultationController extends Controller
             'meeting_link' => $validated['meeting_link'] ?? null,
             'meeting_location' => $validated['meeting_location'] ?? null,
             'notes' => $validated['notes'] ?? null,
-            'amount' => 30000, // TZS 30,000 or $12
+            'amount' => \App\Models\Setting::get('consultation_price', 30000), // TZS
             'currency' => 'TZS',
             'payment_status' => 'pending',
             'status' => 'pending',
@@ -148,7 +148,7 @@ class ConsultationController extends Controller
                     'name' => $candidate->name,
                     'email' => $candidate->email,
                     'phone' => $candidate->phone ?? '255000000000',
-                    'amount' => 30000,
+                    'amount' => $appointment->amount,
                     'transaction_id' => $appointment->order_id,
                     'address' => $candidate->address ?? '',
                     'postcode' => $candidate->postcode ?? '',
@@ -161,7 +161,7 @@ class ConsultationController extends Controller
                     'name' => $candidate->name,
                     'email' => $candidate->email,
                     'phone' => $validated['account_number'] ?? $candidate->phone ?? '255000000000',
-                    'amount' => 30000,
+                    'amount' => $appointment->amount,
                     'transaction_id' => $appointment->order_id,
                     'no_redirection' => false,
                 ]);
@@ -194,7 +194,7 @@ class ConsultationController extends Controller
                         'name' => $candidate->name,
                         'email' => $candidate->email,
                         'phone' => $candidate->phone ?? '255000000000',
-                        'amount' => 30000,
+                        'amount' => $appointment->amount,
                         'transaction_id' => $appointment->order_id,
                         'address' => $candidate->address ?? '',
                         'postcode' => $candidate->postcode ?? '',
@@ -204,7 +204,7 @@ class ConsultationController extends Controller
                         'name' => $candidate->name,
                         'email' => $candidate->email,
                         'phone' => $validated['account_number'] ?? $candidate->phone ?? '255000000000',
-                        'amount' => 30000,
+                        'amount' => $appointment->amount,
                         'transaction_id' => $appointment->order_id,
                         'no_redirection' => false,
                     ]);
@@ -230,7 +230,7 @@ class ConsultationController extends Controller
         
         if ($paymentMethod === 'mobile') {
             $response = $this->azampayService->mobileCheckout([
-                'amount' => 30000,
+                'amount' => $appointment->amount,
                 'currency' => 'TZS',
                 'accountNumber' => $validated['account_number'],
                 'externalId' => $appointment->order_id,
@@ -255,7 +255,7 @@ class ConsultationController extends Controller
         } elseif ($paymentMethod === 'bank') {
             // Bank checkout implementation
             $response = $this->azampayService->bankCheckout([
-                'amount' => 30000,
+                'amount' => $appointment->amount,
                 'currency' => 'TZS',
                 'merchantAccountNumber' => config('azampay.merchant_account_number'),
                 'merchantMobileNumber' => $candidate->phone ?? '255000000000',

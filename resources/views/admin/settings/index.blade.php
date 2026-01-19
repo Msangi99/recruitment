@@ -125,6 +125,20 @@
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+                
+                <!-- Consultation Price -->
+                <div>
+                    <label for="consultation_price" class="block text-sm font-medium text-gray-700 mb-2">
+                        Consultation Price (TZS)
+                    </label>
+                    <input type="number" id="consultation_price" name="consultation_price" 
+                           value="{{ old('consultation_price', \App\Models\Setting::get('consultation_price', '30000')) }}"
+                           placeholder="30000"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('consultation_price') border-red-300 @enderror">
+                    @error('consultation_price')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
         </div>
 
@@ -232,6 +246,121 @@
                     @empty
                         <p class="text-center text-gray-500 text-sm italic">No languages added yet</p>
                     @endforelse
+                </div>
+            </div>
+        </div>
+        
+        <!-- Currencies Management -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden md:col-span-2">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Currency Management
+                </h3>
+                <form action="{{ route('admin.settings.currencies.update-rates') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="text-xs bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1 rounded-md shadow-sm transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Update Rates from API
+                    </button>
+                </form>
+            </div>
+            <div class="p-6">
+                <!-- Add Currency Form -->
+                <form action="{{ route('admin.settings.currencies.store') }}" method="POST" class="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    @csrf
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Code (e.g. USD)</label>
+                            <input type="text" name="code" required maxlength="3" placeholder="USD" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 uppercase">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Name</label>
+                            <input type="text" name="name" required placeholder="US Dollar" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Symbol</label>
+                            <input type="text" name="symbol" placeholder="$" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                        <div class="md:col-span-1">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Rate (vs Base)</label>
+                            <input type="number" step="0.00000001" name="exchange_rate" required placeholder="1.0" 
+                                   class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full px-4 py-2 bg-yellow-500 text-white font-bold rounded-lg hover:bg-yellow-600 transition-colors">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Currencies Table -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Symbol</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exchange Rate</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Default</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @forelse($currencies as $currency)
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-900">{{ $currency->code }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $currency->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $currency->symbol }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <form action="{{ route('admin.settings.currencies.rate', $currency) }}" method="POST" class="flex items-center space-x-2">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="number" step="0.00000001" name="exchange_rate" value="{{ $currency->exchange_rate }}" 
+                                                   class="w-24 px-2 py-1 text-xs border border-gray-300 rounded focus:ring-yellow-500 focus:border-yellow-500">
+                                            <button type="submit" class="text-blue-600 hover:text-blue-900 text-xs">Update</button>
+                                        </form>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                                        @if($currency->is_default)
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Default
+                                            </span>
+                                        @else
+                                            <form action="{{ route('admin.settings.currencies.default', $currency) }}" method="POST">
+                                                @csrf
+                                                <button type="submit" class="text-xs text-blue-600 hover:text-blue-900 underline">Set Default</button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        @if(!$currency->is_default)
+                                            <form action="{{ route('admin.settings.currencies.destroy', $currency) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this currency?')" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                                            </form>
+                                        @else
+                                            <span class="text-gray-400 cursor-not-allowed">Delete</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center text-sm text-gray-500">No currencies found</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

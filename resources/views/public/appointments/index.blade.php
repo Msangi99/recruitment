@@ -72,7 +72,9 @@
                     </div>
                     <h3 class="text-2xl font-bold text-white mb-4">Job Seeker Consultation</h3>
                     <p class="text-slate-300 mb-8 flex-grow">
-                        Paid career consultation (TZS 30,000 / $12). Get assessment, legal pathway advice, and CV
+                        Paid career consultation (TZS
+                        {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }} / $12). Get
+                        assessment, legal pathway advice, and CV
                         optimization for overseas work.
                     </p>
                     <a href="{{ route('public.appointments.jobSeeker') }}"

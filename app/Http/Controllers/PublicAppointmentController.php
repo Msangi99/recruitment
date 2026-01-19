@@ -150,7 +150,7 @@ class PublicAppointmentController extends Controller
             'email' => $validated['email'],
             'phone' => $validated['phone'],
             'country' => $validated['nationality'], // or residence
-            'amount' => 30000, // Fixed fee TZS 30,000
+            'amount' => \App\Models\Setting::get('consultation_price', 30000), // Dynamic fees
             'payment_status' => 'pending',
             'payment_gateway' => $validated['payment_gateway'],
             'meta_data' => json_encode($request->except(['_token', 'name', 'email', 'phone', 'payment_gateway'])),

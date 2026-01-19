@@ -33,6 +33,16 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'key' => 'consultation_price',
+                'value' => '30000',
+                'group' => 'payment',
+                'type' => 'number',
+                'label' => 'Consultation Price',
+                'description' => 'The price for a single career consultation session',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 
@@ -41,6 +51,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::table('settings')->whereIn('key', ['package_basic_price', 'package_premium_price'])->delete();
+        DB::table('settings')->whereIn('key', ['package_basic_price', 'package_premium_price', 'consultation_price'])->delete();
     }
 };

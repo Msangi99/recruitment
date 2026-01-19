@@ -12,7 +12,7 @@
             <div class="mb-6">
                 <a href="{{ route('candidate.consultations.index') }}" class="text-indigo-600 hover:text-indigo-900">← Back to Consultations</a>
                 <h2 class="mt-4 text-2xl font-bold text-gray-900">Book Career Consultation</h2>
-                <p class="mt-1 text-sm text-gray-500">Schedule a paid consultation with our career advisors (TZS 30,000 or $12)</p>
+                <p class="mt-1 text-sm text-gray-500">Schedule a paid consultation with our career advisors (TZS {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }} or $12)</p>
             </div>
 
             <form method="POST" action="{{ route('candidate.consultations.store') }}" class="bg-white shadow-lg rounded-lg p-8">
@@ -198,7 +198,7 @@
 
                     <div class="bg-indigo-50 border border-indigo-200 rounded-md p-4">
                         <p class="text-sm text-indigo-800">
-                            <strong>Payment Required:</strong> This consultation costs TZS 30,000 (or $12). You will be redirected to payment after submitting this form.
+                            <strong>Payment Required:</strong> This consultation costs TZS {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }} (or $12). You will be redirected to payment after submitting this form.
                         </p>
                     </div>
 

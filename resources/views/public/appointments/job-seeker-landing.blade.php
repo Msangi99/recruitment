@@ -29,7 +29,7 @@
                         Start Booking Consultation
                     </a>
                     <span class="flex items-center justify-center text-slate-400 text-sm font-medium">
-                        Fee: TZS 30,000 or $12
+                        Fee: TZS {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }} or $12
                     </span>
                 </div>
             </div>
