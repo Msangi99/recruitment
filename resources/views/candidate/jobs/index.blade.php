@@ -23,16 +23,15 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
                             <!-- Search -->
                             <div class="lg:col-span-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
                                 <input type="text" name="search" value="{{ request('search') }}"
                                     placeholder="Search jobs, companies..."
-                                    class="w-full rounded-md border-gray-300 shadow-sm">
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <!-- Category -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Category (Job Category)</label>
-                                <select name="category_id" class="w-full rounded-md border-gray-300 shadow-sm">
+                                <select name="category_id"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                     <option value="">All Categories</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
@@ -42,8 +41,8 @@
 
                             <!-- Country -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Location (Country)</label>
-                                <select name="country" class="w-full rounded-md border-gray-300 shadow-sm">
+                                <select name="country"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                     <option value="">All Countries</option>
                                     <option value="Canada" {{ request('country') == 'Canada' ? 'selected' : '' }}>Canada
                                     </option>
@@ -84,9 +83,9 @@
 
                             <!-- Job Type -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Job Type</label>
-                                <select name="employment_type" class="w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">All Types</option>
+                                <select name="employment_type"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">All Job Types</option>
                                     <option value="full-time" {{ request('employment_type') == 'full-time' ? 'selected' : '' }}>Full-time</option>
                                     <option value="contract" {{ request('employment_type') == 'contract' ? 'selected' : '' }}>
                                         Contract</option>
@@ -98,9 +97,9 @@
 
                             <!-- Experience Level -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Experience Level</label>
-                                <select name="experience_level" class="w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">Any Experience</option>
+                                <select name="experience_level"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">All Experience Levels</option>
                                     <option value="no-experience" {{ request('experience_level') == 'no-experience' ? 'selected' : '' }}>No experience</option>
                                     <option value="1-2" {{ request('experience_level') == '1-2' ? 'selected' : '' }}>1–2 years
                                     </option>
@@ -113,9 +112,9 @@
 
                             <!-- Education Level -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Education Level</label>
-                                <select name="education_level" class="w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">Any Education</option>
+                                <select name="education_level"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">All Education Levels</option>
                                     <option value="no-formal-education" {{ request('education_level') == 'no-formal-education' ? 'selected' : '' }}>No formal education</option>
                                     <option value="secondary-school" {{ request('education_level') == 'secondary-school' ? 'selected' : '' }}>Secondary School</option>
                                     <option value="certificate" {{ request('education_level') == 'certificate' ? 'selected' : '' }}>Certificate</option>
@@ -129,9 +128,9 @@
 
                             <!-- Language Requirement -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Language Requirement</label>
-                                <select name="language" class="w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">Any Language</option>
+                                <select name="language"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">All Languages</option>
                                     <option value="no-requirement" {{ request('language') == 'no-requirement' ? 'selected' : '' }}>No language requirement</option>
                                     <option value="Basic English" {{ request('language') == 'Basic English' ? 'selected' : '' }}>Basic English</option>
                                     <option value="Intermediate English" {{ request('language') == 'Intermediate English' ? 'selected' : '' }}>Intermediate English</option>
@@ -140,11 +139,11 @@
                                 </select>
                             </div>
 
-                            <!-- Salary -->
+                            <!-- Salary Period -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Salary</label>
-                                <select name="salary_period" class="w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">Any Salary</option>
+                                <select name="salary_period"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">Salary Period</option>
                                     <option value="monthly" {{ request('salary_period') == 'monthly' ? 'selected' : '' }}>
                                         Monthly</option>
                                     <option value="hourly" {{ request('salary_period') == 'hourly' ? 'selected' : '' }}>Hourly
@@ -154,23 +153,23 @@
 
                             <!-- Min Salary -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Min Salary</label>
-                                <input type="number" name="min_salary" value="{{ request('min_salary') }}" placeholder="0"
-                                    min="0" class="w-full rounded-md border-gray-300 shadow-sm">
+                                <input type="number" name="min_salary" value="{{ request('min_salary') }}"
+                                    placeholder="Min Salary" min="0"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <!-- Max Salary -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Max Salary</label>
                                 <input type="number" name="max_salary" value="{{ request('max_salary') }}"
-                                    placeholder="No limit" min="0" class="w-full rounded-md border-gray-300 shadow-sm">
+                                    placeholder="Max Salary" min="0"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                             </div>
 
                             <!-- Date Posted -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Date Posted</label>
-                                <select name="date_posted" class="w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">Anytime</option>
+                                <select name="date_posted"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">Date Posted</option>
                                     <option value="48-hours" {{ request('date_posted') == '48-hours' ? 'selected' : '' }}>Last
                                         48 HR</option>
                                     <option value="7-days" {{ request('date_posted') == '7-days' ? 'selected' : '' }}>Last 7
@@ -184,9 +183,9 @@
 
                             <!-- Hours of work -->
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Hours of Work</label>
-                                <select name="work_hours" class="w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">Any Hours</option>
+                                <select name="work_hours"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <option value="">Hours of Work</option>
                                     <option value="full-time" {{ request('work_hours') == 'full-time' ? 'selected' : '' }}>
                                         Full time</option>
                                     <option value="part-time" {{ request('work_hours') == 'part-time' ? 'selected' : '' }}>
@@ -197,10 +196,11 @@
 
                         <div class="flex justify-end gap-2">
                             <a href="{{ route('candidate.jobs.index') }}"
-                                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">Clear
+                                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">Clear
                                 Filters</a>
                             <button type="submit"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Apply Filters</button>
+                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Apply
+                                Filters</button>
                         </div>
                     </div>
                 </form>
