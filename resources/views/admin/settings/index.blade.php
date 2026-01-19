@@ -86,6 +86,48 @@
             </div>
         </div>
 
+        <!-- Package Settings -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Package Settings
+                </h3>
+                <p class="text-sm text-gray-500 mt-1">Manage subscription plan prices (TZS)</p>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- Basic Plan Price -->
+                <div>
+                    <label for="package_basic_price" class="block text-sm font-medium text-gray-700 mb-2">
+                        Basic Plan Price (TZS)
+                    </label>
+                    <input type="number" id="package_basic_price" name="package_basic_price" 
+                           value="{{ old('package_basic_price', \App\Models\Setting::get('package_basic_price', '50000')) }}"
+                           placeholder="50000"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('package_basic_price') border-red-300 @enderror">
+                    @error('package_basic_price')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Premium Plan Price -->
+                <div>
+                    <label for="package_premium_price" class="block text-sm font-medium text-gray-700 mb-2">
+                        Premium Plan Price (TZS)
+                    </label>
+                    <input type="number" id="package_premium_price" name="package_premium_price" 
+                           value="{{ old('package_premium_price', \App\Models\Setting::get('package_premium_price', '100000')) }}"
+                           placeholder="100000"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 @error('package_premium_price') border-red-300 @enderror">
+                    @error('package_premium_price')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
         <!-- Info Box -->
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div class="flex">

@@ -76,7 +76,7 @@ class BillingController extends Controller
             [
                 'id' => 'basic',
                 'name' => 'Basic Plan',
-                'price' => 50000, // TZS
+                'price' => \App\Models\Setting::get('package_basic_price', 50000), // TZS
                 'currency' => 'TZS',
                 'consultations' => 5,
                 'features' => ['5 consultations per month', 'Priority support', 'Profile boost'],
@@ -84,7 +84,7 @@ class BillingController extends Controller
             [
                 'id' => 'premium',
                 'name' => 'Premium Plan',
-                'price' => 100000, // TZS
+                'price' => \App\Models\Setting::get('package_premium_price', 100000), // TZS
                 'currency' => 'TZS',
                 'consultations' => 'Unlimited',
                 'features' => ['Unlimited consultations', 'Priority support', 'Profile boost', 'Job application tracking'],
@@ -130,12 +130,12 @@ class BillingController extends Controller
         // Get plan details
         $plans = [
             'basic' => [
-                'price' => 50000,
+                'price' => \App\Models\Setting::get('package_basic_price', 50000),
                 'name' => 'Basic Plan',
                 'consultations' => 5,
             ],
             'premium' => [
-                'price' => 100000,
+                'price' => \App\Models\Setting::get('package_premium_price', 100000),
                 'name' => 'Premium Plan',
                 'consultations' => 'Unlimited',
             ],
