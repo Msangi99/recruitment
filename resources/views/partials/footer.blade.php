@@ -55,7 +55,7 @@
                             class="text-gray-400 hover:text-white transition-colors">Find Job</a></li>
                     <li><a href="{{ route('public.candidates.index') }}"
                             class="text-gray-400 hover:text-white transition-colors">Find Candidate</a></li>
-                    <li><a href="{{ route('candidate.consultations.create') }}"
+                    <li><a href="{{ route('public.appointments.index') }}"
                             class="text-gray-400 hover:text-white transition-colors">Book Appointment</a></li>
                     <li><a href="{{ route('contact') }}"
                             class="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>

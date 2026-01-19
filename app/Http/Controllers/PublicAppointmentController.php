@@ -140,7 +140,7 @@ class PublicAppointmentController extends Controller
             'nationality' => 'required|string|max:255',
             'residence' => 'required|string|max:255',
             // ... more validations for all fields
-            'payment_gateway' => 'required|in:selcom,azampay',
+            // 'payment_gateway' => 'required|in:selcom,azampay', // Removed as per user request
         ]);
 
         // Store into DB with status 'pending_payment'
@@ -152,7 +152,8 @@ class PublicAppointmentController extends Controller
             'country' => $validated['nationality'], // or residence
             'amount' => \App\Models\Setting::get('consultation_price', 30000), // Dynamic fees
             'payment_status' => 'pending',
-            'payment_gateway' => $validated['payment_gateway'],
+            'payment_gateway' => 'azampay', // Default to azampay since selection is removed
+
             'meta_data' => json_encode($request->except(['_token', 'name', 'email', 'phone', 'payment_gateway'])),
             'created_at' => now(),
             'updated_at' => now(),

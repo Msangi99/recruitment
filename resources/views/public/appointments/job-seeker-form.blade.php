@@ -193,14 +193,7 @@
                     <h2 class="text-xl font-bold text-blue-900 mb-4">Payment Selection</h2>
                     <p class="mb-4 text-blue-800">Consultation Fee: <span class="font-bold">TZS {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }} / $12</span></p>
                     
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Select Payment Gateway *</label>
-                        <select name="payment_gateway" required class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-3 border">
-                            <option value="">Choose Payment Method</option>
-                            <option value="selcom">Selcom (M-Pesa, Tigo Pesa, Airtel, HaloPesa, Card)</option>
-                            <option value="azampay">AzamPay (M-Pesa, Tigo Pesa, Airtel, AzamPesa, Bank)</option>
-                        </select>
-                    </div>
+
 
                     <label class="flex items-start mt-4">
                         <input type="checkbox" required class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 mt-1">

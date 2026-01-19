@@ -61,15 +61,17 @@ class ConsultationController extends Controller
             'meeting_link' => 'required_if:meeting_mode,online|nullable|url',
             'meeting_location' => 'required_if:meeting_mode,in-person|nullable|string|max:255',
             'notes' => 'nullable|string|max:1000',
-            'payment_gateway' => 'required|in:selcom,azampay',
-            'payment_method' => 'required|in:mobile,card',
-            'mobile_provider' => 'required_if:payment_method,mobile|nullable|in:Mpesa,Tigo Pesa,Airtel Money,Halopesa,Azampay',
+            // 'payment_gateway' => 'required|in:selcom,azampay', // Removed
+            'payment_method' => 'required|in:mobile,card,bank',
+            'mobile_provider' => 'required_if:payment_method,mobile|nullable|string',
             'account_number' => 'required_if:payment_method,mobile|nullable|string|max:20',
         ], [
             'payment_method.required' => 'Please select a payment method.',
             'mobile_provider.required_if' => 'Please select a mobile money provider.',
             'account_number.required_if' => 'Please enter your mobile money number.',
         ]);
+
+        $paymentGateway = 'azampay'; // Default to AzamPay
 
         // Create appointment
         $appointment = Appointment::create([
@@ -91,7 +93,7 @@ class ConsultationController extends Controller
 
         // Initiate payment based on selected gateway
         try {
-            if ($validated['payment_gateway'] === 'azampay') {
+            if ($paymentGateway === 'azampay') {
                 // Validate AzamPay specific fields
                 if (empty($validated['payment_method'])) {
                     $appointment->delete();

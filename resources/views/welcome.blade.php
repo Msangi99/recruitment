@@ -36,7 +36,7 @@
                     <a href="{{ route('about') }}" class="hover:text-blue-800">About Us</a>
                     <a href="{{ route('public.jobs.index') }}" class="hover:text-blue-800">Find Job</a>
                     <a href="{{ route('public.candidates.index') }}" class="hover:text-blue-800">Find Candidate</a>
-                    <a href="{{ route('candidate.consultations.create') }}" class="hover:text-blue-800">Book
+                    <a href="{{ route('public.appointments.index') }}" class="hover:text-blue-800">Book
                         Appointment</a>
                     <a href="{{ route('contact') }}" class="hover:text-blue-800">Contact Us</a>
                 </div>
