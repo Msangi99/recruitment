@@ -53,14 +53,16 @@
                     </a>
                 </div>
                 <div class="hidden md:flex flex-1 justify-center items-center space-x-8">
-                    <a href="{{ route('about') }}" class="text-white hover:text-blue-400 font-medium transition-colors">About Us</a>
+                    <a href="{{ route('about') }}"
+                        class="text-white hover:text-blue-400 font-medium transition-colors">About Us</a>
                     <a href="{{ route('public.jobs.index') }}"
                         class="text-white hover:text-blue-400 font-medium transition-colors">Find Job</a>
                     <a href="{{ route('public.candidates.index') }}"
                         class="text-white hover:text-blue-400 font-medium transition-colors">Find Candidate</a>
                     <a href="{{ route('public.appointments.index') }}"
                         class="text-white hover:text-blue-400 font-medium transition-colors">Book Appointment</a>
-                    <a href="{{ route('contact') }}" class="text-white hover:text-blue-400 font-medium transition-colors">Contact Us</a>
+                    <a href="{{ route('contact') }}"
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Contact Us</a>
                 </div>
                 <div class="hidden md:flex items-center space-x-3">
                     @guest
@@ -78,33 +80,41 @@
     </nav>
 
     <!-- Dynamic Hero Carousel -->
-    <section class="relative h-[85vh] min-h-[600px] w-full overflow-hidden bg-slate-900" 
-             x-data="{ activeSlide: 0, slidesCount: 4 }"
-             x-init="setInterval(() => { activeSlide = (activeSlide + 1) % slidesCount }, 6000)">
-        
+    <section class="relative h-[85vh] min-h-[600px] w-full overflow-hidden bg-slate-900"
+        x-data="{ activeSlide: 0, slidesCount: 4 }"
+        x-init="setInterval(() => { activeSlide = (activeSlide + 1) % slidesCount }, 6000)">
+
         <!-- Background Slides -->
         <div class="absolute inset-0 z-0">
             <!-- Slide 0: Agriculture -->
-            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out" :class="activeSlide === 0 ? 'opacity-100' : 'opacity-0'">
-                <img src="{{ asset('hero_agriculture_workers_1768667381546.png') }}" class="h-full w-full object-cover" alt="Agriculture">
+            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                :class="activeSlide === 0 ? 'opacity-100' : 'opacity-0'">
+                <img src="{{ asset('hero_agriculture_workers_1768667381546.png') }}" class="h-full w-full object-cover"
+                    alt="Agriculture">
                 <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-transparent"></div>
             </div>
-            
+
             <!-- Slide 1: Construction -->
-            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out" :class="activeSlide === 1 ? 'opacity-100' : 'opacity-0'" x-cloak>
-                <img src="{{ asset('hero_construction_workers_1768667395123.png') }}" class="h-full w-full object-cover" alt="Construction">
+            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                :class="activeSlide === 1 ? 'opacity-100' : 'opacity-0'" x-cloak>
+                <img src="{{ asset('hero_construction_workers_1768667395123.png') }}" class="h-full w-full object-cover"
+                    alt="Construction">
                 <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-transparent"></div>
             </div>
 
             <!-- Slide 2: Logistics -->
-            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out" :class="activeSlide === 2 ? 'opacity-100' : 'opacity-0'" x-cloak>
-                <img src="{{ asset('hero_logistics_warehouse_1768667413235.png') }}" class="h-full w-full object-cover" alt="Logistics">
+            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                :class="activeSlide === 2 ? 'opacity-100' : 'opacity-0'" x-cloak>
+                <img src="{{ asset('hero_logistics_warehouse_1768667413235.png') }}" class="h-full w-full object-cover"
+                    alt="Logistics">
                 <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-transparent"></div>
             </div>
 
             <!-- Slide 3: HR & Recruitment -->
-            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out" :class="activeSlide === 3 ? 'opacity-100' : 'opacity-0'" x-cloak>
-                <img src="{{ asset('hero_hr_interviews_1768667429733.png') }}" class="h-full w-full object-cover" alt="HR & Recruitment">
+            <div class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+                :class="activeSlide === 3 ? 'opacity-100' : 'opacity-0'" x-cloak>
+                <img src="{{ asset('hero_hr_interviews_1768667429733.png') }}" class="h-full w-full object-cover"
+                    alt="HR & Recruitment">
                 <div class="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-transparent"></div>
             </div>
         </div>
@@ -115,7 +125,7 @@
                 <!-- Hero Headline -->
                 <div class="space-y-2">
                     <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
-                        We Connect Global Employers <br> 
+                        We Connect Global Employers <br>
                         <span class="text-blue-500">with Qualified Talent</span>
                     </h1>
                 </div>
@@ -123,58 +133,59 @@
                 <!-- Category Spotlight -->
                 <div class="relative h-24 flex items-center">
                     <!-- Agriculture Label -->
-                    <div x-show="activeSlide === 0" 
-                         x-transition:enter="transition ease-out duration-1000 transform"
-                         x-transition:enter-start="opacity-0 translate-y-4"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         x-transition:leave="transition ease-in duration-500 transform absolute"
-                         x-transition:leave-start="opacity-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 -translate-y-4"
-                         class="flex flex-col">
-                        <span class="text-6xl md:text-7xl font-serif italic text-white/90" style="font-family: 'Dancing Script', cursive;">Agriculture</span>
-                        <p class="text-blue-200/60 font-medium tracking-wide mt-1">Feeding the world with skilled hands.</p>
+                    <div x-show="activeSlide === 0" x-transition:enter="transition ease-out duration-1000 transform"
+                        x-transition:enter-start="opacity-0 translate-y-4"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="transition ease-in duration-500 transform absolute"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 -translate-y-4" class="flex flex-col">
+                        <span class="text-6xl md:text-7xl font-serif italic text-white/90"
+                            style="font-family: 'Dancing Script', cursive;">Agriculture</span>
+                        <p class="text-blue-200/60 font-medium tracking-wide mt-1">Feeding the world with skilled hands.
+                        </p>
                     </div>
                     <!-- Construction Label -->
-                    <div x-show="activeSlide === 1" 
-                         x-transition:enter="transition ease-out duration-1000 transform"
-                         x-transition:enter-start="opacity-0 translate-y-4"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         x-transition:leave="transition ease-in duration-500 transform absolute"
-                         x-transition:leave-start="opacity-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 -translate-y-4"
-                         class="flex flex-col" x-cloak>
-                        <span class="text-6xl md:text-7xl font-serif italic text-white/90" style="font-family: 'Dancing Script', cursive;">Construction</span>
-                        <p class="text-blue-200/60 font-medium tracking-wide mt-1">Building foundations for a better future.</p>
+                    <div x-show="activeSlide === 1" x-transition:enter="transition ease-out duration-1000 transform"
+                        x-transition:enter-start="opacity-0 translate-y-4"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="transition ease-in duration-500 transform absolute"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 -translate-y-4" class="flex flex-col" x-cloak>
+                        <span class="text-6xl md:text-7xl font-serif italic text-white/90"
+                            style="font-family: 'Dancing Script', cursive;">Construction</span>
+                        <p class="text-blue-200/60 font-medium tracking-wide mt-1">Building foundations for a better
+                            future.</p>
                     </div>
                     <!-- Logistics Label -->
-                    <div x-show="activeSlide === 2" 
-                         x-transition:enter="transition ease-out duration-1000 transform"
-                         x-transition:enter-start="opacity-0 translate-y-4"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         x-transition:leave="transition ease-in duration-500 transform absolute"
-                         x-transition:leave-start="opacity-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 -translate-y-4"
-                         class="flex flex-col" x-cloak>
-                        <span class="text-6xl md:text-7xl font-serif italic text-white/90" style="font-family: 'Dancing Script', cursive;">Logistics</span>
-                        <p class="text-blue-200/60 font-medium tracking-wide mt-1">Connecting markets with seamless flow.</p>
+                    <div x-show="activeSlide === 2" x-transition:enter="transition ease-out duration-1000 transform"
+                        x-transition:enter-start="opacity-0 translate-y-4"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="transition ease-in duration-500 transform absolute"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 -translate-y-4" class="flex flex-col" x-cloak>
+                        <span class="text-6xl md:text-7xl font-serif italic text-white/90"
+                            style="font-family: 'Dancing Script', cursive;">Logistics</span>
+                        <p class="text-blue-200/60 font-medium tracking-wide mt-1">Connecting markets with seamless
+                            flow.</p>
                     </div>
                     <!-- HR Label -->
-                    <div x-show="activeSlide === 3" 
-                         x-transition:enter="transition ease-out duration-1000 transform"
-                         x-transition:enter-start="opacity-0 translate-y-4"
-                         x-transition:enter-end="opacity-100 translate-y-0"
-                         x-transition:leave="transition ease-in duration-500 transform absolute"
-                         x-transition:leave-start="opacity-100 translate-y-0"
-                         x-transition:leave-end="opacity-0 -translate-y-4"
-                         class="flex flex-col" x-cloak>
-                        <span class="text-6xl md:text-7xl font-serif italic text-white/90" style="font-family: 'Dancing Script', cursive;">HR & Recruitment</span>
-                        <p class="text-blue-200/60 font-medium tracking-wide mt-1">Connecting global talent with opportunity.</p>
+                    <div x-show="activeSlide === 3" x-transition:enter="transition ease-out duration-1000 transform"
+                        x-transition:enter-start="opacity-0 translate-y-4"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        x-transition:leave="transition ease-in duration-500 transform absolute"
+                        x-transition:leave-start="opacity-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 -translate-y-4" class="flex flex-col" x-cloak>
+                        <span class="text-6xl md:text-7xl font-serif italic text-white/90"
+                            style="font-family: 'Dancing Script', cursive;">HR & Recruitment</span>
+                        <p class="text-blue-200/60 font-medium tracking-wide mt-1">Connecting global talent with
+                            opportunity.</p>
                     </div>
                 </div>
 
                 <!-- Sub-headline -->
                 <p class="text-lg md:text-xl text-slate-300 max-w-2xl leading-relaxed">
-                    Coyzon is a licensed recruitment agency specializing in sourcing, screening, and placing qualified candidates for employers across diverse sectors worldwide.
+                    Coyzon is a licensed recruitment agency specializing in sourcing, screening, and placing qualified
+                    candidates for employers across diverse sectors worldwide.
                 </p>
 
                 <!-- Primary CTA (Buttons) -->
@@ -210,9 +221,8 @@
         <!-- Slider Controls -->
         <div class="absolute bottom-10 right-10 flex gap-2 z-20">
             <template x-for="(slide, index) in slides" :key="index">
-                <button @click="activeSlide = index" 
-                        class="h-1.5 transition-all duration-300 rounded-full"
-                        :class="activeSlide === index ? 'w-12 bg-blue-500' : 'w-4 bg-white/30 hover:bg-white/50'">
+                <button @click="activeSlide = index" class="h-1.5 transition-all duration-300 rounded-full"
+                    :class="activeSlide === index ? 'w-12 bg-blue-500' : 'w-4 bg-white/30 hover:bg-white/50'">
                 </button>
             </template>
         </div>
@@ -234,27 +244,36 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
                 <!-- Vision Card -->
-                <div class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-6 lg:p-8 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div class="absolute top-0 right-0 -mt-20 -mr-20 h-80 w-80 rounded-full bg-blue-600/20 blur-[80px] group-hover:bg-blue-600/30 transition-colors duration-500"></div>
-                    
+                <div
+                    class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-6 lg:p-8 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div
+                        class="absolute top-0 right-0 -mt-20 -mr-20 h-80 w-80 rounded-full bg-blue-600/20 blur-[80px] group-hover:bg-blue-600/30 transition-colors duration-500">
+                    </div>
+
                     <div class="relative z-10 flex flex-col h-full">
                         <h3 class="mb-6 text-xl font-black uppercase tracking-tight">Our Vision</h3>
-                        
+
                         <p class="text-sm leading-relaxed text-blue-100/80 font-medium">
-                            To become the leading global recruitment gateway connecting organizations with exceptional talent through professionalism, integrity, and an impactful workforce Solutions.
+                            To become the leading global recruitment gateway connecting organizations with exceptional
+                            talent through professionalism, integrity, and an impactful workforce Solutions.
                         </p>
                     </div>
                 </div>
 
                 <!-- Mission Card -->
-                <div class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-6 lg:p-8 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div class="absolute bottom-0 left-0 -mb-20 -ml-20 h-80 w-80 rounded-full bg-white/10 blur-[80px] group-hover:bg-white/20 transition-colors duration-500"></div>
-                    
+                <div
+                    class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-6 lg:p-8 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div
+                        class="absolute bottom-0 left-0 -mb-20 -ml-20 h-80 w-80 rounded-full bg-white/10 blur-[80px] group-hover:bg-white/20 transition-colors duration-500">
+                    </div>
+
                     <div class="relative z-10 flex flex-col h-full">
                         <h3 class="mb-6 text-xl font-black uppercase tracking-tight">Our Mission</h3>
-                        
+
                         <p class="text-sm leading-relaxed text-blue-100/80 font-medium">
-                            To deliver trusted, efficient, and transparent recruitment services that empower employers to build strong teams and help candidates access real, life-changing career opportunities across the world.
+                            To deliver trusted, efficient, and transparent recruitment services that empower employers
+                            to build strong teams and help candidates access real, life-changing career opportunities
+                            across the world.
                         </p>
                     </div>
                 </div>
@@ -273,61 +292,82 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Section Header -->
             <div class="text-center mb-12">
-                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 tracking-tight uppercase">Our Core Values</h2>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 tracking-tight uppercase">Our Core
+                    Values</h2>
                 <div class="w-16 h-1 bg-cyan-500 mx-auto rounded-full"></div>
             </div>
 
             <!-- Values Grid - Step Card Layout -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
                 <!-- Value 1: Professionalism -->
-                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div class="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 rounded-full bg-cyan-600/20 blur-[40px] group-hover:bg-cyan-600/30 transition-colors duration-500"></div>
+                <div
+                    class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div
+                        class="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 rounded-full bg-cyan-600/20 blur-[40px] group-hover:bg-cyan-600/30 transition-colors duration-500">
+                    </div>
                     <div class="h-32 overflow-hidden">
-                        <img src="{{ asset('hero_hr_interviews_1768667429733.png') }}" alt="Professionalism" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="{{ asset('hero_hr_interviews_1768667429733.png') }}" alt="Professionalism"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="relative z-10 p-5">
                         <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 1</span>
                         <h3 class="text-base font-bold text-white mt-2 mb-2">Professionalism</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">We maintain the highest standards in every step of the recruitment process.</p>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">We maintain the highest standards in every
+                            step of the recruitment process.</p>
                     </div>
                 </div>
 
                 <!-- Value 2: Integrity -->
-                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div class="absolute bottom-0 left-0 -mb-10 -ml-10 h-32 w-32 rounded-full bg-blue-600/20 blur-[40px] group-hover:bg-blue-600/30 transition-colors duration-500"></div>
+                <div
+                    class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div
+                        class="absolute bottom-0 left-0 -mb-10 -ml-10 h-32 w-32 rounded-full bg-blue-600/20 blur-[40px] group-hover:bg-blue-600/30 transition-colors duration-500">
+                    </div>
                     <div class="h-32 overflow-hidden">
-                        <img src="{{ asset('hero_agriculture_workers_1768667381546.png') }}" alt="Integrity" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="{{ asset('hero_agriculture_workers_1768667381546.png') }}" alt="Integrity"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="relative z-10 p-5">
                         <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 2</span>
                         <h3 class="text-base font-bold text-white mt-2 mb-2">Integrity</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">We operate with honesty, transparency, and accountability.</p>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">We operate with honesty, transparency, and
+                            accountability.</p>
                     </div>
                 </div>
 
                 <!-- Value 3: Reliability -->
-                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div class="absolute top-0 left-0 -mt-10 -ml-10 h-32 w-32 rounded-full bg-cyan-600/20 blur-[40px] group-hover:bg-cyan-600/30 transition-colors duration-500"></div>
+                <div
+                    class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div
+                        class="absolute top-0 left-0 -mt-10 -ml-10 h-32 w-32 rounded-full bg-cyan-600/20 blur-[40px] group-hover:bg-cyan-600/30 transition-colors duration-500">
+                    </div>
                     <div class="h-32 overflow-hidden">
-                        <img src="{{ asset('hero_construction_workers_1768667395123.png') }}" alt="Reliability" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="{{ asset('hero_construction_workers_1768667395123.png') }}" alt="Reliability"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="relative z-10 p-5">
                         <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 3</span>
                         <h3 class="text-base font-bold text-white mt-2 mb-2">Reliability</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">We deliver consistent results with timely and dependable solutions.</p>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">We deliver consistent results with timely
+                            and dependable solutions.</p>
                     </div>
                 </div>
 
                 <!-- Value 4: Partnership -->
-                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div class="absolute bottom-0 right-0 -mb-10 -mr-10 h-32 w-32 rounded-full bg-blue-600/20 blur-[40px] group-hover:bg-blue-600/30 transition-colors duration-500"></div>
+                <div
+                    class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div
+                        class="absolute bottom-0 right-0 -mb-10 -mr-10 h-32 w-32 rounded-full bg-blue-600/20 blur-[40px] group-hover:bg-blue-600/30 transition-colors duration-500">
+                    </div>
                     <div class="h-32 overflow-hidden">
-                        <img src="{{ asset('hero_logistics_warehouse_1768667413235.png') }}" alt="Partnership" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="{{ asset('hero_logistics_warehouse_1768667413235.png') }}" alt="Partnership"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="relative z-10 p-5">
                         <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 4</span>
                         <h3 class="text-base font-bold text-white mt-2 mb-2">Partnership</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">We match organizations with verified, skilled candidates who add real value.</p>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">We match organizations with verified,
+                            skilled candidates who add real value.</p>
                     </div>
                 </div>
             </div>
@@ -335,275 +375,47 @@
     </section>
 
 
+
+
     <!-- Our Solution Section -->
-    <section class="py-20 bg-white relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Large Title -->
-            <div class="mb-16">
-                <h2 class="text-6xl md:text-7xl lg:text-2xl font-black text-slate-900 tracking-tight uppercase">SOLUTION</h2>
-            </div>
-
-            <!-- Top Section: Text Left + Image Right -->
-            <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
-                <!-- Text Content -->
-                <div class="space-y-6">
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 mt-1">
-                            <i data-lucide="lightbulb" class="w-8 h-8 text-blue-500"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm md:text-base text-slate-700 leading-relaxed">
-                                Many companies struggle to find skilled and qualified candidates for their key positions, leading to delays and increased costs. This is where <span class="text-blue-600 font-bold">Coyzon Company Limited</span> comes in. We help employers quickly and efficiently connect with the right talent, ensuring every candidate is thoroughly vetted, aligned with job requirements, and ready to contribute immediately. From job analysis to onboarding, we provide professional support at every step.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Image -->
-                <div class="relative max-w-xs">
-                    <div class="aspect-[5/4] rounded-xl overflow-hidden shadow-lg">
-                        <img src="{{ asset('solution_hero_image.png') }}" alt="Recruitment Team" class="w-full h-full object-cover">
-                    </div>
-                    <div class="absolute -bottom-2 -right-2 w-16 h-16 bg-blue-500 rounded-xl -z-10"></div>
-                </div>
-            </div>
-
-            <!-- Bottom Section: Image Left + Services List Right -->
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <!-- Image -->
-                <div class="relative order-2 lg:order-1 max-w-[200px]">
-                    <div class="aspect-[4/5] rounded-xl overflow-hidden shadow-lg">
-                        <img src="{{ asset('solution_services_image.png') }}" alt="Professional Services" class="w-full h-full object-cover">
-                    </div>
-                    <div class="absolute -top-2 -left-2 w-14 h-14 bg-cyan-400 rounded-xl -z-10"></div>
-                </div>
-
-                <!-- Services List -->
-                <div class="space-y-6 order-1 lg:order-2">
-                    <!-- Service 1 -->
-                    <div class="flex items-start gap-4 group">
-                        <div class="flex-shrink-0 mt-1">
-                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
-                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-900 mb-1">End-to-End Recruitment Solutions</h3>
-                            <p class="text-sm text-slate-600">From job requirement analysis, sourcing, screening, hiring, onboarding, to post-hire follow-up.</p>
-                        </div>
-                    </div>
-
-                    <!-- Service 2 -->
-                    <div class="flex items-start gap-4 group">
-                        <div class="flex-shrink-0 mt-1">
-                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
-                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-900 mb-1">Temporary & Contract Staffing</h3>
-                            <p class="text-sm text-slate-600">Conducting initial interviews, aptitude tests, and reference checks before presenting candidates.</p>
-                        </div>
-                    </div>
-
-                    <!-- Service 3 -->
-                    <div class="flex items-start gap-4 group">
-                        <div class="flex-shrink-0 mt-1">
-                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
-                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-900 mb-1">Payroll & HR Support</h3>
-                            <p class="text-sm text-slate-600">Managing salaries, benefits, and other HR matters for agency-deployed staff.</p>
-                        </div>
-                    </div>
-
-                    <!-- Service 4 -->
-                    <div class="flex items-start gap-4 group">
-                        <div class="flex-shrink-0 mt-1">
-                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
-                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-900 mb-1">Training & Upskilling</h3>
-                            <p class="text-sm text-slate-600">Preparing candidates with training to ensure immediate contribution to the company.</p>
-                        </div>
-                    </div>
-
-                    <!-- Service 5 -->
-                    <div class="flex items-start gap-4 group">
-                        <div class="flex-shrink-0 mt-1">
-                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
-                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-bold text-slate-900 mb-1">Market & Salary Benchmarking</h3>
-                            <p class="text-sm text-slate-600">Advising on labor market trends, salary ranges, and talent competition.</p>
-                        </div>
-                    </div>
-                </div>
+    <section class="py-16 bg-white relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center">
+                <img src="{{ asset('solution_section.png') }}" alt="Our Solution - Recruitment Services" class="w-full max-w-4xl rounded-2xl shadow-xl">
             </div>
         </div>
     </section>
 
     <!-- Our Recruitment Process -->
     <section class="py-16 bg-white relative overflow-hidden">
-        <!-- Premium Background Accents -->
-        <div class="absolute top-0 left-0 w-[600px] h-[600px] bg-blue-50 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"></div>
-        <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-indigo-50 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div class="text-center mb-20 px-4">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
                 <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">Our Recruitment Process</h2>
                 <p class="text-lg text-slate-600 font-medium">A complete, circular hiring journey designed for excellence.</p>
                 <div class="w-24 h-1.5 bg-blue-600 mx-auto rounded-full mt-6 shadow-sm"></div>
             </div>
-
-            <!-- Recruitment Process Container -->
-            <div class="relative max-w-3xl mx-auto h-[500px] flex items-center justify-center">
-                <!-- Desktop View (Circular Loop) -->
-                <div class="hidden lg:block relative w-full h-full">
-                    
-                    <!-- SVG Arrows connecting the steps (Professional curved arrows) -->
-                    <div class="absolute inset-0 z-0 pointer-events-none">
-                        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                            <defs>
-                                <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
-                                    <polygon points="0 0, 6 3, 0 6" fill="#3b82f6" />
-                                </marker>
-                                <linearGradient id="arrowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6" />
-                                    <stop offset="100%" stop-color="#3b82f6" stop-opacity="1" />
-                                </linearGradient>
-                            </defs>
-                            <!-- Arrow 1 -> 2 -->
-                            <path d="M 54 12 Q 65 15 72 25" fill="none" stroke="url(#arrowGradient)" stroke-width="0.5" marker-end="url(#arrowhead)" />
-                            <!-- Arrow 2 -> 3 -->
-                            <path d="M 82 38 Q 88 50 82 62" fill="none" stroke="url(#arrowGradient)" stroke-width="0.5" marker-end="url(#arrowhead)" />
-                            <!-- Arrow 3 -> 4 -->
-                            <path d="M 72 75 Q 60 85 46 88" fill="none" stroke="url(#arrowGradient)" stroke-width="0.5" marker-end="url(#arrowhead)" />
-                            <!-- Arrow 4 -> 5 -->
-                            <path d="M 46 88 Q 40 85 28 75" fill="none" stroke="url(#arrowGradient)" stroke-width="0.5" marker-end="url(#arrowhead)" />
-                            <!-- Arrow 5 -> 6 -->
-                            <path d="M 18 62 Q 12 50 18 38" fill="none" stroke="url(#arrowGradient)" stroke-width="0.5" marker-end="url(#arrowhead)" />
-                            <!-- Arrow 6 -> 1 -->
-                            <path d="M 28 25 Q 35 15 46 12" fill="none" stroke="url(#arrowGradient)" stroke-width="0.5" marker-end="url(#arrowhead)" />
-                        </svg>
-                    </div>
-
-                    <!-- Step 1: Top (12 o'clock) -->
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 text-center group z-10 transition-transform hover:scale-105 duration-300">
-                        <div class="w-36 h-36 mx-auto rounded-full border-[3px] border-blue-500 bg-white shadow-xl flex flex-col items-center justify-center p-3">
-                            <span class="font-extrabold text-slate-900 text-[10px] uppercase tracking-wide leading-tight mb-1.5">1. Needs Assessment</span>
-                            <p class="text-[9px] text-slate-500 font-medium leading-tight px-1 text-center line-clamp-3">
-                                Understanding our role requirements and company culture.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Top-Right (2 o'clock) -->
-                    <div class="absolute top-[15%] right-[15%] w-40 text-center group z-10 transition-transform hover:scale-105 duration-300">
-                        <div class="w-36 h-36 mx-auto rounded-full border-[3px] border-blue-500 bg-white shadow-xl flex flex-col items-center justify-center p-3">
-                            <span class="font-extrabold text-slate-900 text-[10px] uppercase tracking-wide leading-tight mb-1.5">2. Candidate Sourcing</span>
-                            <p class="text-[9px] text-slate-500 font-medium leading-tight px-1 text-center line-clamp-3">
-                                Leveraging networks, job boards, and headhunting for specialized roles.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Step 3: Bottom-Right (4 o'clock) -->
-                    <div class="absolute bottom-[15%] right-[15%] w-40 text-center group z-10 transition-transform hover:scale-105 duration-300">
-                        <div class="w-36 h-36 mx-auto rounded-full border-[3px] border-blue-500 bg-white shadow-xl flex flex-col items-center justify-center p-3">
-                            <span class="font-extrabold text-slate-900 text-[10px] uppercase tracking-wide leading-tight mb-1.5">3. Screening & Verification</span>
-                            <p class="text-[9px] text-slate-500 font-medium leading-tight px-1 text-center line-clamp-3">
-                                Checking qualifications, references, and skills assessments.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Bottom (6 o'clock) -->
-                    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-40 text-center group z-10 transition-transform hover:scale-105 duration-300">
-                        <div class="w-36 h-36 mx-auto rounded-full border-[3px] border-blue-500 bg-white shadow-xl flex flex-col items-center justify-center p-3">
-                            <span class="font-extrabold text-slate-900 text-[10px] uppercase tracking-wide leading-tight mb-1.5">4. Interviews</span>
-                            <p class="text-[9px] text-slate-500 font-medium leading-tight px-1 text-center line-clamp-3">
-                                Organizing structured interviews and evaluations.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Step 5: Bottom-Left (8 o'clock) -->
-                    <div class="absolute bottom-[15%] left-[15%] w-40 text-center group z-10 transition-transform hover:scale-105 duration-300">
-                        <div class="w-36 h-36 mx-auto rounded-full border-[3px] border-blue-500 bg-white shadow-xl flex flex-col items-center justify-center p-3">
-                            <span class="font-extrabold text-slate-900 text-[10px] uppercase tracking-wide leading-tight mb-1.5">5. Placement & Onboarding</span>
-                            <p class="text-[9px] text-slate-500 font-medium leading-tight px-1 text-center line-clamp-3">
-                                Presenting verified candidates, assisting in contract negotiations, and onboarding.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Step 6: Top-Left (10 o'clock) -->
-                    <div class="absolute top-[15%] left-[15%] w-40 text-center group z-10 transition-transform hover:scale-105 duration-300">
-                        <div class="w-36 h-36 mx-auto rounded-full border-[3px] border-blue-500 bg-white shadow-xl flex flex-col items-center justify-center p-3">
-                            <span class="font-extrabold text-slate-900 text-[10px] uppercase tracking-wide leading-tight mb-1.5">6. Post-Hire Follow-up</span>
-                            <p class="text-[9px] text-slate-500 font-medium leading-tight px-1 text-center line-clamp-3">
-                                Monitoring performance and ensuring a smooth transition.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mobile View -->
-                <div class="lg:hidden space-y-8">
-                    @foreach([
-                        ['t' => 'Needs Assessment', 'd' => 'Understanding our role requirements and company culture.'],
-                        ['t' => 'Candidate Sourcing', 'd' => 'Leveraging networks, job boards, and headhunting for specialized roles'],
-                        ['t' => 'Screening & Verification', 'd' => 'Checking qualifications, references, and skills assessments.'],
-                        ['t' => 'Interviews', 'd' => 'Organizing structured interviews and evaluations.'],
-                        ['t' => 'Placement & Onboarding', 'd' => 'Presenting verified candidates, assisting in contract negotiations, and onboarding'],
-                        ['t' => 'Post-Hire Follow-up', 'd' => 'Monitoring performance and ensuring a smooth transition.']
-                    ] as $index => $step)
-                    <div class="flex flex-col items-center text-center px-4 relative">
-                        @if($index < 5)
-                        <div class="absolute bottom-[-16px] left-1/2 -translate-x-1/2 text-blue-300">
-                            <i data-lucide="arrow-down" class="w-6 h-6"></i>
-                        </div>
-                        @endif
-                        <div class="w-40 h-40 rounded-full border-[3px] border-blue-500 bg-white shadow-xl flex flex-col items-center justify-center p-4 mb-4">
-                            <h3 class="font-extrabold text-slate-900 text-[10px] uppercase mb-1">{{$index + 1}}. {{$step['t']}}</h3>
-                            <p class="text-[9px] text-slate-500 leading-tight">{{$step['d']}}</p>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-
+            <div class="flex justify-center">
+                <img src="{{ asset('recruitment_process.jpg') }}" alt="Full Cycle Recruiting Process" class="w-full max-w-3xl rounded-2xl shadow-xl">
             </div>
-
-            <div class="mt-20 text-center">
+            <div class="mt-12 text-center">
                 <a href="{{ route('public.jobs.index') }}" class="inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-black rounded-full hover:scale-105 transition-all shadow-2xl hover:shadow-blue-200 group">
                     EXPLORE GLOBAL ROLES
                     <i data-lucide="sparkles" class="ml-3 w-6 h-6 animate-pulse"></i>
                 </a>
             </div>
         </div>
-
-        <style>
-            @keyframes blob {
-                0% { transform: translate(0px, 0px) scale(1); }
-                33% { transform: translate(30px, -50px) scale(1.1); }
-                66% { transform: translate(-20px, 20px) scale(0.9); }
-                100% { transform: translate(0px, 0px) scale(1); }
-            }
-            .animate-blob {
-                animation: blob 7s infinite;
-            }
-            .animation-delay-2000 {
-                animation-delay: 2s;
-            }
-        </style>
     </section>
+
+    <!-- Industries We Serve Section -->
+
+
+
+
+
+
+
+
+
 
     <!-- Industries We Serve Section -->
     <section class="py-16 bg-slate-50 relative overflow-hidden">
@@ -630,10 +442,10 @@
                         <p class="text-slate-600 font-bold mb-8 italic">"we connect qualified and hardworking professionals with trusted employers in the construction Industry."</p>
                         <div class="flex flex-wrap gap-2">
                             @foreach(['General Laborer', 'Construction Helper', 'Mason / Bricklayer', 'Plumber Assistant', 'Carpenter', 'Steel Fixer', 'Scaffolder', 'Painter', 'Tiler', 'Electrician Helper'] as $role)
-                            <span class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100">
-                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
-                                {{ $role }}
-                            </span>
+                                <span class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100">
+                                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                                    {{ $role }}
+                                </span>
                             @endforeach
                         </div>
                     </div>
@@ -652,10 +464,10 @@
                         <p class="text-slate-600 font-bold mb-8 italic">"we place professionals in top restaurants, resorts, and hospitality companies worldwide. In the following position"</p>
                         <div class="flex flex-wrap gap-2">
                             @foreach(['Housekeeping Attendant', 'Laundry Attendant', 'Waiter / Waitress', 'Cook / Assistant Cook', 'Kitchen Helper', 'Security Guard', 'Cleaner'] as $role)
-                            <span class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full border border-indigo-100">
-                                <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-2"></span>
-                                {{ $role }}
-                            </span>
+                                <span class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full border border-indigo-100">
+                                    <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-2"></span>
+                                    {{ $role }}
+                                </span>
                             @endforeach
                         </div>
                     </div>
@@ -674,10 +486,10 @@
                         <p class="text-slate-600 font-bold mb-8 italic uppercase tracking-widest text-xs opacity-50">"We are recruiting for"</p>
                         <div class="flex flex-wrap gap-2">
                             @foreach(['Drivers', 'Warehouse Worker / Assistant', 'Delivery Driver / Van Driver', 'Forklift Operator', 'Storekeeper', 'Packing & Sorting Staff', 'Loader / Unloader', 'Vehicle Mechanic'] as $role)
-                            <span class="inline-flex items-center px-3 py-1.5 bg-teal-50 text-teal-700 text-xs font-medium rounded-full border border-teal-100">
-                                <span class="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
-                                {{ $role }}
-                            </span>
+                                <span class="inline-flex items-center px-3 py-1.5 bg-teal-50 text-teal-700 text-xs font-medium rounded-full border border-teal-100">
+                                    <span class="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
+                                    {{ $role }}
+                                </span>
                             @endforeach
                         </div>
                     </div>
@@ -696,10 +508,10 @@
                         <p class="text-slate-600 font-bold mb-8 italic">"We recruits qualified and reliable agricultural workers across various levels, including:"</p>
                         <div class="flex flex-wrap gap-2">
                             @foreach(['Farm & Field Workers', 'Machinery & Technical Roles', 'Livestock & Animal Care', 'Skilled & Supervisory Roles', 'Post-Harvest & Agri-Processing'] as $role)
-                            <span class="inline-flex items-center px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-full border border-emerald-100">
-                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span>
-                                {{ $role }}
-                            </span>
+                                <span class="inline-flex items-center px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-full border border-emerald-100">
+                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span>
+                                    {{ $role }}
+                                </span>
                             @endforeach
                         </div>
                     </div>
@@ -719,18 +531,18 @@
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach([
-                    ['t' => 'Experienced HR professionals with industry knowledge', 'i' => 'award', 'c' => 'blue'],
-                    ['t' => 'International job placement (Including visa and relocation guidance)', 'i' => 'globe-2', 'c' => 'emerald'],
-                    ['t' => 'Tailored recruitment that matches talent with your business needs', 'i' => 'target', 'c' => 'amber'],
-                    ['t' => 'Full compliance with national and international labor laws', 'i' => 'shield-check', 'c' => 'indigo'],
-                    ['t' => 'Post-placement support to ensure successful integration', 'i' => 'heart-handshake', 'c' => 'rose']
-                ] as $item)
-                <div class="group p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500">
-                    <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                        <i data-lucide="{{$item['i']}}" class="w-7 h-7 text-{{$item['c']}}-600"></i>
+                        ['t' => 'Experienced HR professionals with industry knowledge', 'i' => 'award', 'c' => 'blue'],
+                        ['t' => 'International job placement (Including visa and relocation guidance)', 'i' => 'globe-2', 'c' => 'emerald'],
+                        ['t' => 'Tailored recruitment that matches talent with your business needs', 'i' => 'target', 'c' => 'amber'],
+                        ['t' => 'Full compliance with national and international labor laws', 'i' => 'shield-check', 'c' => 'indigo'],
+                        ['t' => 'Post-placement support to ensure successful integration', 'i' => 'heart-handshake', 'c' => 'rose']
+                    ] as $item)
+                    <div class="group p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500">
+                        <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <i data-lucide="{{$item['i']}}" class="w-7 h-7 text-{{$item['c']}}-600"></i>
+                        </div>
+                        <p class="text-lg font-bold text-slate-800 leading-tight">{{$item['t']}}</p>
                     </div>
-                    <p class="text-lg font-bold text-slate-800 leading-tight">{{$item['t']}}</p>
-                </div>
                 @endforeach
             </div>
         </div>
@@ -746,18 +558,18 @@
 
             <div class="grid lg:grid-cols-5 gap-6">
                 @foreach([
-                    ['t' => 'Employers & Companies seeking skilled and reliable candidates', 'i' => 'building-2', 'c' => 'blue'],
-                    ['t' => 'Recruitment & Placement Agencies (local & international)', 'i' => 'users-2', 'c' => 'indigo'],
-                    ['t' => 'SMEs & Corporate organizations', 'i' => 'briefcase', 'c' => 'emerald'],
-                    ['t' => 'Institutions requiring verified and compliant workforce solutions', 'i' => 'landmark', 'c' => 'amber'],
-                    ['t' => 'Companies with short-term and long-term staffing needs', 'i' => 'timer', 'c' => 'rose']
-                ] as $client)
-                <div class="bg-white p-8 rounded-[3rem] shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500">
-                    <div class="w-16 h-16 bg-{{$client['c']}}-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-{{$client['c']}}-600 transition-colors duration-500">
-                        <i data-lucide="{{$client['i']}}" class="w-8 h-8 text-{{$client['c']}}-600 group-hover:text-white transition-colors duration-500"></i>
+                        ['t' => 'Employers & Companies seeking skilled and reliable candidates', 'i' => 'building-2', 'c' => 'blue'],
+                        ['t' => 'Recruitment & Placement Agencies (local & international)', 'i' => 'users-2', 'c' => 'indigo'],
+                        ['t' => 'SMEs & Corporate organizations', 'i' => 'briefcase', 'c' => 'emerald'],
+                        ['t' => 'Institutions requiring verified and compliant workforce solutions', 'i' => 'landmark', 'c' => 'amber'],
+                        ['t' => 'Companies with short-term and long-term staffing needs', 'i' => 'timer', 'c' => 'rose']
+                    ] as $client)
+                    <div class="bg-white p-8 rounded-[3rem] shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500">
+                        <div class="w-16 h-16 bg-{{$client['c']}}-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-{{$client['c']}}-600 transition-colors duration-500">
+                            <i data-lucide="{{$client['i']}}" class="w-8 h-8 text-{{$client['c']}}-600 group-hover:text-white transition-colors duration-500"></i>
+                        </div>
+                        <p class="font-black text-slate-900 leading-tight text-sm uppercase tracking-tighter">{{$client['t']}}</p>
                     </div>
-                    <p class="font-black text-slate-900 leading-tight text-sm uppercase tracking-tighter">{{$client['t']}}</p>
-                </div>
                 @endforeach
             </div>
         </div>
