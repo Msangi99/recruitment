@@ -263,66 +263,77 @@
     </section>
 
     <!-- Our Core Values Section -->
-    <section class="py-12 bg-gradient-to-br from-cyan-50/50 to-white relative overflow-hidden">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="py-16 bg-white relative overflow-hidden">
+        <!-- Background Blur Effects -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50"></div>
+            <div class="absolute bottom-0 right-0 w-80 h-80 bg-indigo-50 rounded-full blur-3xl opacity-50"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <!-- Section Header -->
-            <div class="text-center mb-10">
-                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-2 tracking-tight uppercase">Our Core Values</h2>
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 tracking-tight uppercase">Our Core Values</h2>
                 <div class="w-16 h-1 bg-cyan-500 mx-auto rounded-full"></div>
             </div>
 
             <!-- Values Grid - Step Card Layout -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
                 <!-- Value 1: Professionalism -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100 group">
-                    <div class="h-32 overflow-hidden bg-slate-100">
-                        <img src="{{ asset('hero_hr_interviews_1768667429733.png') }}" alt="Professionalism" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 rounded-full bg-cyan-600/20 blur-[40px] group-hover:bg-cyan-600/30 transition-colors duration-500"></div>
+                    <div class="h-32 overflow-hidden">
+                        <img src="{{ asset('hero_hr_interviews_1768667429733.png') }}" alt="Professionalism" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="p-4">
-                        <span class="text-cyan-600 text-xs font-bold uppercase tracking-wider">Value 1</span>
-                        <h3 class="text-sm font-bold text-slate-900 mt-1 mb-1">Professionalism</h3>
-                        <p class="text-[11px] text-slate-600 leading-relaxed">We maintain the highest standards in every step of the recruitment process.</p>
+                    <div class="relative z-10 p-5">
+                        <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 1</span>
+                        <h3 class="text-base font-bold text-white mt-2 mb-2">Professionalism</h3>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">We maintain the highest standards in every step of the recruitment process.</p>
                     </div>
                 </div>
 
                 <!-- Value 2: Integrity -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100 group">
-                    <div class="h-32 overflow-hidden bg-slate-100">
-                        <img src="{{ asset('hero_agriculture_workers_1768667381546.png') }}" alt="Integrity" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div class="absolute bottom-0 left-0 -mb-10 -ml-10 h-32 w-32 rounded-full bg-blue-600/20 blur-[40px] group-hover:bg-blue-600/30 transition-colors duration-500"></div>
+                    <div class="h-32 overflow-hidden">
+                        <img src="{{ asset('hero_agriculture_workers_1768667381546.png') }}" alt="Integrity" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="p-4">
-                        <span class="text-cyan-600 text-xs font-bold uppercase tracking-wider">Value 2</span>
-                        <h3 class="text-sm font-bold text-slate-900 mt-1 mb-1">Integrity</h3>
-                        <p class="text-[11px] text-slate-600 leading-relaxed">We operate with honesty, transparency, and accountability.</p>
+                    <div class="relative z-10 p-5">
+                        <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 2</span>
+                        <h3 class="text-base font-bold text-white mt-2 mb-2">Integrity</h3>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">We operate with honesty, transparency, and accountability.</p>
                     </div>
                 </div>
 
                 <!-- Value 3: Reliability -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100 group">
-                    <div class="h-32 overflow-hidden bg-slate-100">
-                        <img src="{{ asset('hero_construction_workers_1768667395123.png') }}" alt="Reliability" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div class="absolute top-0 left-0 -mt-10 -ml-10 h-32 w-32 rounded-full bg-cyan-600/20 blur-[40px] group-hover:bg-cyan-600/30 transition-colors duration-500"></div>
+                    <div class="h-32 overflow-hidden">
+                        <img src="{{ asset('hero_construction_workers_1768667395123.png') }}" alt="Reliability" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="p-4">
-                        <span class="text-cyan-600 text-xs font-bold uppercase tracking-wider">Value 3</span>
-                        <h3 class="text-sm font-bold text-slate-900 mt-1 mb-1">Reliability</h3>
-                        <p class="text-[11px] text-slate-600 leading-relaxed">We deliver consistent results with timely and dependable solutions.</p>
+                    <div class="relative z-10 p-5">
+                        <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 3</span>
+                        <h3 class="text-base font-bold text-white mt-2 mb-2">Reliability</h3>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">We deliver consistent results with timely and dependable solutions.</p>
                     </div>
                 </div>
 
                 <!-- Value 4: Partnership -->
-                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-slate-100 group">
-                    <div class="h-32 overflow-hidden bg-slate-100">
-                        <img src="{{ asset('hero_logistics_warehouse_1768667413235.png') }}" alt="Partnership" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div class="absolute bottom-0 right-0 -mb-10 -mr-10 h-32 w-32 rounded-full bg-blue-600/20 blur-[40px] group-hover:bg-blue-600/30 transition-colors duration-500"></div>
+                    <div class="h-32 overflow-hidden">
+                        <img src="{{ asset('hero_logistics_warehouse_1768667413235.png') }}" alt="Partnership" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
-                    <div class="p-4">
-                        <span class="text-cyan-600 text-xs font-bold uppercase tracking-wider">Value 4</span>
-                        <h3 class="text-sm font-bold text-slate-900 mt-1 mb-1">Partnership</h3>
-                        <p class="text-[11px] text-slate-600 leading-relaxed">We match organizations with verified, skilled candidates who add real value.</p>
+                    <div class="relative z-10 p-5">
+                        <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 4</span>
+                        <h3 class="text-base font-bold text-white mt-2 mb-2">Partnership</h3>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">We match organizations with verified, skilled candidates who add real value.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- Our Solution Section -->
     <section class="py-20 bg-white relative overflow-hidden">
