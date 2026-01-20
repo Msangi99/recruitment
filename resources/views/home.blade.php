@@ -243,7 +243,7 @@
                     <div class="relative z-10 flex flex-col h-full">
                         <h3 class="mb-6 text-xl font-black uppercase tracking-tight">Our Vision</h3>
                         
-                        <p class="text-lg leading-relaxed text-blue-100/80 font-medium">
+                        <p class="text-sm leading-relaxed text-blue-100/80 font-medium">
                             To become the leading global recruitment gateway connecting organizations with exceptional talent through professionalism, integrity, and an impactful workforce Solutions.
                         </p>
                     </div>
@@ -256,7 +256,7 @@
                     <div class="relative z-10 flex flex-col h-full">
                         <h3 class="mb-6 text-xl font-black uppercase tracking-tight">Our Mission</h3>
                         
-                        <p class="text-lg leading-relaxed text-blue-100/80 font-medium">
+                        <p class="text-sm leading-relaxed text-blue-100/80 font-medium">
                             To deliver trusted, efficient, and transparent recruitment services that empower employers to build strong teams and help candidates access real, life-changing career opportunities across the world.
                         </p>
                     </div>
@@ -265,40 +265,57 @@
         </div>
     </section>
 
-    <!-- What We Do (Short) Overview -->
-    <section class="py-16 bg-slate-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border border-slate-100 flex flex-col lg:flex-row items-center gap-12">
-                <div class="flex-1 space-y-6">
-                    <h2 class="text-4xl font-extrabold text-slate-900">What We Do</h2>
-                    <p class="text-xl text-slate-600 leading-relaxed">
-                        <span class="text-blue-600 font-bold">Coyzon</span> is a licensed recruitment agency specializing in sourcing, screening, and placing qualified candidates for employers across diverse sectors worldwide. 
-                        We ensure every match drives professional growth and organizational success through compliant and ethical processes.
+    <!-- Our Core Values Section -->
+    <section class="py-16 bg-slate-50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight uppercase">Our Core Values</h2>
+                <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Professionalism -->
+                <div class="group relative overflow-hidden rounded-[2rem] bg-white p-6 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl border border-slate-100">
+                    <div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-500">
+                        <i data-lucide="briefcase" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">Professionalism</h3>
+                    <p class="text-sm leading-relaxed text-slate-600 font-medium">
+                        We maintain the highest standards in every step of the recruitment process.
                     </p>
-                    <div class="flex flex-wrap gap-8 pt-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                                <i data-lucide="globe" class="h-5 w-5 text-blue-600"></i>
-                            </div>
-                            <span class="font-bold text-slate-700">Global Reach</span>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
-                                <i data-lucide="shield-check" class="h-5 w-5 text-emerald-600"></i>
-                            </div>
-                            <span class="font-bold text-slate-700">Verified Talent</span>
-                        </div>
-                    </div>
                 </div>
-                <div class="flex-shrink-0 grid grid-cols-2 gap-6 w-full lg:w-auto">
-                    <div class="bg-blue-600 p-8 rounded-[2rem] text-center text-white shadow-xl shadow-blue-500/20">
-                        <p class="text-5xl font-black mb-1">500+</p>
-                        <p class="text-sm font-bold opacity-80 uppercase tracking-widest text-blue-100">Placements</p>
+
+                <!-- Integrity -->
+                <div class="group relative overflow-hidden rounded-[2rem] bg-white p-6 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl border border-slate-100">
+                    <div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-500">
+                        <i data-lucide="shield-check" class="w-6 h-6"></i>
                     </div>
-                    <div class="bg-slate-900 p-8 rounded-[2rem] text-center text-white shadow-xl">
-                        <p class="text-5xl font-black mb-1">15+</p>
-                        <p class="text-sm font-bold opacity-80 uppercase tracking-widest text-slate-400">Countries</p>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">Integrity</h3>
+                    <p class="text-sm leading-relaxed text-slate-600 font-medium">
+                        We operate with honesty, transparency, and accountability, ensuring trust for both employers and candidates.
+                    </p>
+                </div>
+
+                <!-- Reliability -->
+                <div class="group relative overflow-hidden rounded-[2rem] bg-white p-6 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl border border-slate-100">
+                    <div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-50 text-amber-600 group-hover:bg-amber-600 group-hover:text-white transition-colors duration-500">
+                        <i data-lucide="clock" class="w-6 h-6"></i>
                     </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">Reliability</h3>
+                    <p class="text-sm leading-relaxed text-slate-600 font-medium">
+                        We deliver consistent results, offering timely and dependable recruitment solutions.
+                    </p>
+                </div>
+
+                <!-- Partnership -->
+                <div class="group relative overflow-hidden rounded-[2rem] bg-white p-6 shadow-xl transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl border border-slate-100">
+                    <div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-500">
+                        <i data-lucide="handshake" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3">Partnership</h3>
+                    <p class="text-sm leading-relaxed text-slate-600 font-medium">
+                        We work closely with employers and agencies to understand their needs and provide tailored workforce solutions.
+                    </p>
                 </div>
             </div>
         </div>
