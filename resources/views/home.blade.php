@@ -117,8 +117,8 @@
                     <p class="text-blue-400 font-bold uppercase tracking-widest text-sm">
                         Section: Home / Hero Visuals
                     </p>
-                    <h1 class="text-5xl md:text-7xl font-extrabold text-white leading-tight">
-                        Connecting Global Employers <br> 
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
+                        We Connect Global Employers <br> 
                         <span class="text-blue-500">with Qualified Talent</span>
                     </h1>
                 </div>
@@ -237,15 +237,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
                 <!-- Vision Card -->
-                <div class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-10 lg:p-12 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                <div class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-6 lg:p-8 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
                     <div class="absolute top-0 right-0 -mt-20 -mr-20 h-80 w-80 rounded-full bg-blue-600/20 blur-[80px] group-hover:bg-blue-600/30 transition-colors duration-500"></div>
                     
                     <div class="relative z-10 flex flex-col h-full">
-                        <div class="mb-8 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-white/10 backdrop-blur-md border border-white/10 shadow-inner">
-                            <i data-lucide="eye" class="h-10 w-10 text-blue-400"></i>
-                        </div>
-                        
-                        <h3 class="mb-6 text-3xl font-black uppercase tracking-tight">Our Vision</h3>
+                        <h3 class="mb-6 text-xl font-black uppercase tracking-tight">Our Vision</h3>
                         
                         <p class="text-lg leading-relaxed text-blue-100/80 font-medium">
                             To become the leading global recruitment gateway connecting organizations with exceptional talent through professionalism, integrity, and an impactful workforce Solutions.
@@ -254,17 +250,13 @@
                 </div>
 
                 <!-- Mission Card -->
-                <div class="group relative overflow-hidden rounded-[2.5rem] bg-indigo-600 p-10 lg:p-12 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-indigo-600/30">
+                <div class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-6 lg:p-8 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
                     <div class="absolute bottom-0 left-0 -mb-20 -ml-20 h-80 w-80 rounded-full bg-white/10 blur-[80px] group-hover:bg-white/20 transition-colors duration-500"></div>
                     
                     <div class="relative z-10 flex flex-col h-full">
-                        <div class="mb-8 inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-white/20 backdrop-blur-md border border-white/20 shadow-inner">
-                            <i data-lucide="target" class="h-10 w-10 text-white"></i>
-                        </div>
+                        <h3 class="mb-6 text-xl font-black uppercase tracking-tight">Our Mission</h3>
                         
-                        <h3 class="mb-6 text-3xl font-black uppercase tracking-tight">Our Mission</h3>
-                        
-                        <p class="text-lg leading-relaxed text-indigo-50 font-medium">
+                        <p class="text-lg leading-relaxed text-blue-100/80 font-medium">
                             To deliver trusted, efficient, and transparent recruitment services that empower employers to build strong teams and help candidates access real, life-changing career opportunities across the world.
                         </p>
                     </div>
