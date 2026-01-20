@@ -262,12 +262,62 @@
         </div>
     </section>
 
+    <!-- Our Core Values Section -->
+    <section class="py-16 bg-gradient-to-br from-slate-50 to-blue-50 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3 tracking-tight uppercase">Our Core Values</h2>
+                <div class="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Values Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Value 1: Professionalism -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors duration-300">
+                        <i data-lucide="award" class="w-6 h-6 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 mb-2">1. Professionalism</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">We maintain the highest standards in every step of the recruitment process.</p>
+                </div>
+
+                <!-- Value 2: Integrity -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 transition-colors duration-300">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-emerald-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 mb-2">2. Integrity</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">We operate with honesty, transparency, and accountability, ensuring trust for both employers and candidates.</p>
+                </div>
+
+                <!-- Value 3: Reliability -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition-colors duration-300">
+                        <i data-lucide="clock-check" class="w-6 h-6 text-indigo-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 mb-2">3. Reliability</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">We deliver consistent results, offering timely and dependable recruitment solutions.</p>
+                </div>
+
+                <!-- Value 4: Partnership -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group hover:-translate-y-1">
+                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-600 transition-colors duration-300">
+                        <i data-lucide="handshake" class="w-6 h-6 text-amber-600 group-hover:text-white transition-colors duration-300"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900 mb-2">4. Partnership</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">We work closely with employers and agencies to understand their needs and provide tailored workforce solutions through matching organizations with verified, skilled, and committed candidates who add real value.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Our Solution Section -->
     <section class="py-20 bg-white relative overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Large Title -->
             <div class="mb-16">
-                <h2 class="text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 tracking-tight uppercase">SOLUTION</h2>
+                <h2 class="text-6xl md:text-7xl lg:text-2xl font-black text-slate-900 tracking-tight uppercase">SOLUTION</h2>
             </div>
 
             <!-- Top Section: Text Left + Image Right -->
