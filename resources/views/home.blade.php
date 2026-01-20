@@ -297,79 +297,48 @@
                 <div class="w-16 h-1 bg-cyan-500 mx-auto rounded-full"></div>
             </div>
 
-            <!-- Values Grid - Step Card Layout -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
-                <!-- Value 1: Professionalism -->
-                <div
-                    class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div
-                        class="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 rounded-full bg-cyan-600/20 blur-[40px] group-hover:bg-cyan-600/30 transition-colors duration-500">
-                    </div>
+                @foreach([
+                    [
+                        'title' => 'Professionalism',
+                        'desc' => 'We maintain the highest standards in every step of the recruitment process.',
+                        'img' => 'hero_hr_interviews_1768667429733.png',
+                        'bg' => 'bg-cyan-600/20 group-hover:bg-cyan-600/30',
+                        'pos' => 'top-0 right-0 -mt-10 -mr-10'
+                    ],
+                    [
+                        'title' => 'Integrity',
+                        'desc' => 'We operate with honesty, transparency, and accountability.',
+                        'img' => 'hero_agriculture_workers_1768667381546.png',
+                        'bg' => 'bg-blue-600/20 group-hover:bg-blue-600/30',
+                        'pos' => 'bottom-0 left-0 -mb-10 -ml-10'
+                    ],
+                    [
+                        'title' => 'Reliability',
+                        'desc' => 'We deliver consistent results with timely and dependable solutions.',
+                        'img' => 'hero_construction_workers_1768667395123.png',
+                        'bg' => 'bg-cyan-600/20 group-hover:bg-cyan-600/30',
+                        'pos' => 'top-0 left-0 -mt-10 -ml-10'
+                    ],
+                    [
+                        'title' => 'Partnership',
+                        'desc' => 'We match organizations with verified, skilled candidates who add real value.',
+                        'img' => 'hero_logistics_warehouse_1768667413235.png',
+                        'bg' => 'bg-blue-600/20 group-hover:bg-blue-600/30',
+                        'pos' => 'bottom-0 right-0 -mb-10 -mr-10'
+                    ]
+                ] as $value)
+                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div class="absolute {{ $value['pos'] }} h-32 w-32 rounded-full {{ $value['bg'] }} blur-[40px] transition-colors duration-500"></div>
                     <div class="h-32 overflow-hidden">
-                        <img src="{{ asset('hero_hr_interviews_1768667429733.png') }}" alt="Professionalism"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="{{ asset($value['img']) }}" alt="{{ $value['title'] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                     </div>
                     <div class="relative z-10 p-5">
-                        <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 1</span>
-                        <h3 class="text-base font-bold text-white mt-2 mb-2">Professionalism</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">We maintain the highest standards in every
-                            step of the recruitment process.</p>
+                        <h3 class="text-base font-bold text-white mt-2 mb-2">{{ $value['title'] }}</h3>
+                        <p class="text-xs text-blue-100/80 leading-relaxed">{{ $value['desc'] }}</p>
                     </div>
                 </div>
-
-                <!-- Value 2: Integrity -->
-                <div
-                    class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div
-                        class="absolute bottom-0 left-0 -mb-10 -ml-10 h-32 w-32 rounded-full bg-blue-600/20 blur-[40px] group-hover:bg-blue-600/30 transition-colors duration-500">
-                    </div>
-                    <div class="h-32 overflow-hidden">
-                        <img src="{{ asset('hero_agriculture_workers_1768667381546.png') }}" alt="Integrity"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="relative z-10 p-5">
-                        <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 2</span>
-                        <h3 class="text-base font-bold text-white mt-2 mb-2">Integrity</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">We operate with honesty, transparency, and
-                            accountability.</p>
-                    </div>
-                </div>
-
-                <!-- Value 3: Reliability -->
-                <div
-                    class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div
-                        class="absolute top-0 left-0 -mt-10 -ml-10 h-32 w-32 rounded-full bg-cyan-600/20 blur-[40px] group-hover:bg-cyan-600/30 transition-colors duration-500">
-                    </div>
-                    <div class="h-32 overflow-hidden">
-                        <img src="{{ asset('hero_construction_workers_1768667395123.png') }}" alt="Reliability"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="relative z-10 p-5">
-                        <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 3</span>
-                        <h3 class="text-base font-bold text-white mt-2 mb-2">Reliability</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">We deliver consistent results with timely
-                            and dependable solutions.</p>
-                    </div>
-                </div>
-
-                <!-- Value 4: Partnership -->
-                <div
-                    class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
-                    <div
-                        class="absolute bottom-0 right-0 -mb-10 -mr-10 h-32 w-32 rounded-full bg-blue-600/20 blur-[40px] group-hover:bg-blue-600/30 transition-colors duration-500">
-                    </div>
-                    <div class="h-32 overflow-hidden">
-                        <img src="{{ asset('hero_logistics_warehouse_1768667413235.png') }}" alt="Partnership"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="relative z-10 p-5">
-                        <span class="text-cyan-400 text-xs font-bold uppercase tracking-wider">Value 4</span>
-                        <h3 class="text-base font-bold text-white mt-2 mb-2">Partnership</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">We match organizations with verified,
-                            skilled candidates who add real value.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -395,7 +364,7 @@
                 <div class="w-24 h-1.5 bg-blue-600 mx-auto rounded-full mt-6 shadow-sm"></div>
             </div>
             <div class="flex justify-center">
-                <img src="{{ asset('recruitment_process.jpg') }}" alt="Full Cycle Recruiting Process" class="w-full max-w-3xl rounded-2xl shadow-xl">
+                <img src="{{ asset('pop.png') }}" alt="Full Cycle Recruiting Process" class="w-full max-w-3xl rounded-2xl shadow-xl">
             </div>
             <div class="mt-12 text-center">
                 <a href="{{ route('public.jobs.index') }}" class="inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-black rounded-full hover:scale-105 transition-all shadow-2xl hover:shadow-blue-200 group">
@@ -697,114 +666,25 @@
             </div>
 
             <div class="space-y-4">
-                <!-- FAQ 1 -->
+                @foreach([
+                    ['q' => 'What services do you offer to employers?', 'a' => 'We provide talent sourcing, screening, onboarding, temporary/contract staffing, and full-payroll HR support for both local and international placement.'],
+                    ['q' => 'How are you different from other agencies?', 'a' => "We're focused on ethical placement, cultural sensitivity, and end-to-end compliance. Our rigorous screening ensures you get candidates who match both skills and organizational fit."],
+                    ['q' => 'How do you vet qualified candidates?', 'a' => 'We evaluate by educational background, work experience, skill tests, references, and background checks to ensure both quality and safety.'],
+                    ['q' => 'Can you provide temporary staff for short-term needs?', 'a' => 'Yes, we offer temporary and contract staffing to meet immediate workforce gaps and project-based demands.'],
+                    ['q' => 'Can you provide payroll services for deployed staff?', 'a' => 'Yes, we manage payroll including workers & benefits, tax & documentation for a streamlined, beneficial administrative workload and HR compliance.'],
+                    ['q' => 'Do you offer candidate training?', 'a' => 'Yes, we are experts at preparing workers for training to enhance workforce competencies for their tasks.'],
+                    ['q' => 'How do you support overseas with cultural barriers?', 'a' => 'We have international partnership with locals and embassies & other who help maintain a stable cultural relationship/orientation on main destinations.']
+                ] as $index => $faq)
                 <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
-                    <button
-                        class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors"
-                        data-faq="1">
-                        <span class="font-bold text-gray-900 text-lg">What services do you offer to employers?</span>
-                        <i data-lucide="chevron-down"
-                            class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
+                    <button class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors" data-faq="{{ $index + 1 }}">
+                        <span class="font-bold text-gray-900 text-lg">{{ $faq['q'] }}</span>
+                        <i data-lucide="chevron-down" class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
                     </button>
                     <div class="faq-content hidden px-6 pb-5">
-                        <p class="text-gray-700">We provide talent sourcing, screening, onboarding, temporary/contract
-                            staffing, and full-payroll HR support for both local and international placement.</p>
+                        <p class="text-gray-700">{{ $faq['a'] }}</p>
                     </div>
                 </div>
-
-                <!-- FAQ 2 -->
-                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
-                    <button
-                        class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors"
-                        data-faq="2">
-                        <span class="font-bold text-gray-900 text-lg">How are you different from other agencies?</span>
-                        <i data-lucide="chevron-down"
-                            class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5">
-                        <p class="text-gray-700">We're focused on ethical placement, cultural sensitivity, and
-                            end-to-end compliance. Our rigorous screening ensures you get candidates who match both
-                            skills and organizational fit.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 3 -->
-                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
-                    <button
-                        class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors"
-                        data-faq="3">
-                        <span class="font-bold text-gray-900 text-lg">How do you vet qualified candidates?</span>
-                        <i data-lucide="chevron-down"
-                            class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5">
-                        <p class="text-gray-700">We evaluate by educational background, work experience, skill tests,
-                            references, and background checks to ensure both quality and safety.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 4 -->
-                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
-                    <button
-                        class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors"
-                        data-faq="4">
-                        <span class="font-bold text-gray-900 text-lg">Can you provide temporary staff for short-term
-                            needs?</span>
-                        <i data-lucide="chevron-down"
-                            class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5">
-                        <p class="text-gray-700">Yes, we offer temporary and contract staffing to meet immediate
-                            workforce gaps and project-based demands.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 5 -->
-                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
-                    <button
-                        class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors"
-                        data-faq="5">
-                        <span class="font-bold text-gray-900 text-lg">Can you provide payroll services for deployed
-                            staff?</span>
-                        <i data-lucide="chevron-down"
-                            class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5">
-                        <p class="text-gray-700">Yes, we manage payroll including workers & benefits, tax &
-                            documentation for a streamlined, beneficial administrative workload and HR compliance.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 6 -->
-                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
-                    <button
-                        class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors"
-                        data-faq="6">
-                        <span class="font-bold text-gray-900 text-lg">Do you offer candidate training?</span>
-                        <i data-lucide="chevron-down"
-                            class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5">
-                        <p class="text-gray-700">Yes, we are experts at preparing workers for training to enhance
-                            workforce competencies for their tasks.</p>
-                    </div>
-                </div>
-
-                <!-- FAQ 7 -->
-                <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
-                    <button
-                        class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors"
-                        data-faq="7">
-                        <span class="font-bold text-gray-900 text-lg">How do you support overseas with cultural
-                            barriers?</span>
-                        <i data-lucide="chevron-down"
-                            class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-5">
-                        <p class="text-gray-700">We have international partnership with locals and embassies & other who
-                            help maintain a stable cultural relationship/orientation on main destinations.</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
 
 
