@@ -10,23 +10,24 @@
 
 <body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
+    <nav class="sticky top-0 z-50 bg-gray-900 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-20">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-14 w-auto">
-                        <span class="ml-3 text-xl font-bold text-gray-900">Coyzon</span>
+                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-16 w-auto">
+                        <span class="ml-3 text-xl font-bold text-white">Coyzon</span>
                     </a>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="{{ route('home') }}" class="text-gray-600 hover:text-blue-600 font-medium">Home</a>
+                    <a href="{{ route('home') }}"
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Home</a>
                     <a href="{{ route('public.jobs.index') }}"
-                        class="text-gray-600 hover:text-blue-600 font-medium">Find Job</a>
-                    <a href="{{ route('public.candidates.index') }}" class="text-blue-600 font-medium">Book
-                        Appointment</a>
-                    <a href="{{ route('contact') }}" class="text-gray-600 hover:text-blue-600 font-medium">Contact
-                        Us</a>
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Find Job</a>
+                    <a href="{{ route('public.candidates.index') }}"
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Book Appointment</a>
+                    <a href="{{ route('contact') }}"
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Contact Us</a>
                 </div>
             </div>
         </div>

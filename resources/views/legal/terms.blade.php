@@ -10,18 +10,19 @@
 
 <body class="bg-gray-50">
     <!-- Header -->
-    <nav class="bg-white shadow-sm border-b border-gray-200">
+    <nav class="sticky top-0 z-50 bg-gray-900 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-20">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo-removed-background.png') }}" alt="COYZON Logo" class="h-14 w-auto">
-                        <span class="ml-3 text-xl font-bold text-gray-900">COYZON</span>
+                        <img src="{{ asset('logo-removed-background.png') }}" alt="COYZON Logo" class="h-16 w-auto">
+                        <span class="ml-3 text-xl font-bold text-white">COYZON</span>
                     </a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900">Home</a>
-                    <a href="{{ route('contact') }}" class="text-gray-600 hover:text-gray-900">Contact</a>
+                    <a href="{{ route('home') }}" class="text-white hover:text-blue-400 transition-colors">Home</a>
+                    <a href="{{ route('contact') }}"
+                        class="text-white hover:text-blue-400 transition-colors">Contact</a>
                 </div>
             </div>
         </div>

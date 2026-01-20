@@ -10,34 +10,36 @@
 
 <body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
+    <nav class="sticky top-0 z-50 bg-gray-900 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
+            <div class="flex justify-between items-center h-20">
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-14 w-auto">
-                        <span class="ml-3 text-xl font-bold text-gray-900">Coyzon</span>
+                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-16 w-auto">
+                        <span class="ml-3 text-xl font-bold text-white">Coyzon</span>
                     </a>
                 </div>
                 <div class="hidden md:flex flex-1 justify-center items-center space-x-8">
-                    <a href="{{ route('about') }}" class="text-blue-600 hover:text-blue-800 font-bold">About Us</a>
-                    <a href="{{ route('public.jobs.index') }}" class="text-blue-600 hover:text-blue-800 font-bold">Find
-                        Job</a>
+                    <a href="{{ route('about') }}"
+                        class="text-white hover:text-blue-400 font-medium transition-colors">About Us</a>
+                    <a href="{{ route('public.jobs.index') }}"
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Find Job</a>
                     <a href="{{ route('public.candidates.index') }}"
-                        class="text-blue-600 hover:text-blue-800 font-bold">Find Candidate</a>
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Find Candidate</a>
                     <a href="{{ route('public.appointments.index') }}"
-                        class="text-blue-600 hover:text-blue-800 font-bold">Book Appointment</a>
-                    <a href="{{ route('contact') }}" class="text-blue-600 hover:text-blue-800 font-bold">Contact Us</a>
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Book Appointment</a>
+                    <a href="{{ route('contact') }}"
+                        class="text-white hover:text-blue-400 font-medium transition-colors">Contact Us</a>
                 </div>
-                <div class="hidden md:flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-3">
                     @guest
                         <a href="{{ route('login') }}"
-                            class="px-4 py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50">Login</a>
+                            class="px-4 py-2 text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors">Login</a>
                         <a href="{{ route('register') }}"
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Register</a>
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Register</a>
                     @else
                         <a href="{{ route('dashboard') }}"
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Dashboard</a>
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
                     @endguest
                 </div>
             </div>
