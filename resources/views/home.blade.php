@@ -114,9 +114,6 @@
             <div class="max-w-3xl space-y-8">
                 <!-- Hero Headline -->
                 <div class="space-y-2">
-                    <p class="text-blue-400 font-bold uppercase tracking-widest text-sm">
-                        Section: Home / Hero Visuals
-                    </p>
                     <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight">
                         We Connect Global Employers <br> 
                         <span class="text-blue-500">with Qualified Talent</span>
@@ -265,7 +262,7 @@
         </div>
     </section>
 
-    <!-- What We Do (Short) Overview -->
+    {{-- <!-- What We Do (Short) Overview -->
     <section class="py-16 bg-slate-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border border-slate-100 flex flex-col lg:flex-row items-center gap-12">
@@ -302,7 +299,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- Our Recruitment Process -->
     <section class="py-16 bg-white relative overflow-hidden">
