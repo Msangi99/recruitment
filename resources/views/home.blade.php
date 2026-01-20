@@ -275,36 +275,24 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Value 1: Professionalism -->
                 <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors duration-300">
-                        <i data-lucide="award" class="w-6 h-6 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
-                    </div>
                     <h3 class="text-base font-bold text-slate-900 mb-2">1. Professionalism</h3>
                     <p class="text-xs text-slate-600 leading-relaxed">We maintain the highest standards in every step of the recruitment process.</p>
                 </div>
 
                 <!-- Value 2: Integrity -->
                 <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-emerald-600 transition-colors duration-300">
-                        <i data-lucide="shield-check" class="w-6 h-6 text-emerald-600 group-hover:text-white transition-colors duration-300"></i>
-                    </div>
                     <h3 class="text-base font-bold text-slate-900 mb-2">2. Integrity</h3>
                     <p class="text-xs text-slate-600 leading-relaxed">We operate with honesty, transparency, and accountability, ensuring trust for both employers and candidates.</p>
                 </div>
 
                 <!-- Value 3: Reliability -->
                 <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition-colors duration-300">
-                        <i data-lucide="clock-check" class="w-6 h-6 text-indigo-600 group-hover:text-white transition-colors duration-300"></i>
-                    </div>
                     <h3 class="text-base font-bold text-slate-900 mb-2">3. Reliability</h3>
                     <p class="text-xs text-slate-600 leading-relaxed">We deliver consistent results, offering timely and dependable recruitment solutions.</p>
                 </div>
 
                 <!-- Value 4: Partnership -->
                 <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-slate-100 group hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-600 transition-colors duration-300">
-                        <i data-lucide="handshake" class="w-6 h-6 text-amber-600 group-hover:text-white transition-colors duration-300"></i>
-                    </div>
                     <h3 class="text-base font-bold text-slate-900 mb-2">4. Partnership</h3>
                     <p class="text-xs text-slate-600 leading-relaxed">We work closely with employers and agencies to understand their needs and provide tailored workforce solutions through matching organizations with verified, skilled, and committed candidates who add real value.</p>
                 </div>
@@ -337,22 +325,22 @@
                 </div>
 
                 <!-- Image -->
-                <div class="relative">
-                    <div class="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
+                <div class="relative max-w-sm">
+                    <div class="aspect-[5/4] rounded-2xl overflow-hidden shadow-xl">
                         <img src="{{ asset('solution_hero_image.png') }}" alt="Recruitment Team" class="w-full h-full object-cover">
                     </div>
-                    <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-500 rounded-3xl -z-10"></div>
+                    <div class="absolute -bottom-3 -right-3 w-20 h-20 bg-blue-500 rounded-2xl -z-10"></div>
                 </div>
             </div>
 
             <!-- Bottom Section: Image Left + Services List Right -->
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 <!-- Image -->
-                <div class="relative order-2 lg:order-1">
-                    <div class="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
+                <div class="relative order-2 lg:order-1 max-w-xs">
+                    <div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-xl">
                         <img src="{{ asset('solution_services_image.png') }}" alt="Professional Services" class="w-full h-full object-cover">
                     </div>
-                    <div class="absolute -top-4 -left-4 w-32 h-32 bg-cyan-400 rounded-3xl -z-10"></div>
+                    <div class="absolute -top-3 -left-3 w-20 h-20 bg-cyan-400 rounded-2xl -z-10"></div>
                 </div>
 
                 <!-- Services List -->
@@ -600,7 +588,7 @@
                         <img src="{{ asset('industry_construction.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Construction Industry">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
                         <div class="absolute bottom-6 left-8">
-                            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">1. conatruction Industry</h3>
+                            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">1. construction Industry</h3>
                         </div>
                     </div>
                     <div class="p-10">
