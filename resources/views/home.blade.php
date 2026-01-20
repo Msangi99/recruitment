@@ -520,33 +520,6 @@
         </div>
     </section>
 
-    <!-- Why Choose Us? (Verbatim & Premium) -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight uppercase">Why Choose Us?</h2>
-                <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
-                <p class="mt-6 text-slate-500 max-w-2xl mx-auto">Discover the Coyzon advantage in global recruitment.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach([
-                        ['t' => 'Experienced HR professionals with industry knowledge', 'i' => 'award', 'c' => 'blue'],
-                        ['t' => 'International job placement (Including visa and relocation guidance)', 'i' => 'globe-2', 'c' => 'emerald'],
-                        ['t' => 'Tailored recruitment that matches talent with your business needs', 'i' => 'target', 'c' => 'amber'],
-                        ['t' => 'Full compliance with national and international labor laws', 'i' => 'shield-check', 'c' => 'indigo'],
-                        ['t' => 'Post-placement support to ensure successful integration', 'i' => 'heart-handshake', 'c' => 'rose']
-                    ] as $item)
-                    <div class="group p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500">
-                        <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                            <i data-lucide="{{$item['i']}}" class="w-7 h-7 text-{{$item['c']}}-600"></i>
-                        </div>
-                        <p class="text-lg font-bold text-slate-800 leading-tight">{{$item['t']}}</p>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
 
     <!-- OUR TARGET CLIENTS (Verbatim & Premium) -->
     <section class="py-16 bg-slate-50">
@@ -575,10 +548,8 @@
         </div>
     </section>
 
-
-
     <!-- Global Reach & Industry Focus Summary -->
-    <section class="py-16 bg-white">
+    {{-- <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div class="space-y-8">
@@ -629,13 +600,7 @@
                 </div>
             </div>
         </div>
-    </section>
-
-
-
-
-
-
+    </section> --}}
 
     <!-- Target Destinations (Premium Ely Design - Fluid) -->
     <section class="py-16 bg-white relative overflow-hidden">
@@ -689,6 +654,34 @@
             .animate-travel-med { animation: travel 6s linear infinite; }
             .animate-travel-short { animation: travel 4s linear infinite; }
         </style>
+    </section>
+
+    <!-- Why Choose Us? (Verbatim & Premium) -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight uppercase">Why Choose Us?</h2>
+                <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
+                <p class="mt-6 text-slate-500 max-w-2xl mx-auto">Discover the Coyzon advantage in global recruitment.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach([
+                        ['t' => 'Experienced HR professionals with industry knowledge', 'i' => 'award', 'c' => 'blue'],
+                        ['t' => 'International job placement (Including visa and relocation guidance)', 'i' => 'globe-2', 'c' => 'emerald'],
+                        ['t' => 'Tailored recruitment that matches talent with your business needs', 'i' => 'target', 'c' => 'amber'],
+                        ['t' => 'Full compliance with national and international labor laws', 'i' => 'shield-check', 'c' => 'indigo'],
+                        ['t' => 'Post-placement support to ensure successful integration', 'i' => 'heart-handshake', 'c' => 'rose']
+                    ] as $item)
+                    <div class="group p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500">
+                        <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <i data-lucide="{{$item['i']}}" class="w-7 h-7 text-{{$item['c']}}-600"></i>
+                        </div>
+                        <p class="text-lg font-bold text-slate-800 leading-tight">{{$item['t']}}</p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </section>
 
 
