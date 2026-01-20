@@ -620,9 +620,9 @@
 
     <!-- FAQs - Frequently Asked Questions -->
     <section class="py-16 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gray-900 mb-4">FAQs – Frequently Asked Questions</h2>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">FAQs – Frequently Asked Questions</h2>
             </div>
 
             <div class="space-y-4">
@@ -636,12 +636,12 @@
                     ['q' => 'How do you support overseas with cultural barriers?', 'a' => 'We have international partnership with locals and embassies & other who help maintain a stable cultural relationship/orientation on main destinations.']
                 ] as $index => $faq)
                 <div class="faq-item bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-200">
-                    <button class="faq-button w-full px-6 py-5 text-left flex items-center justify-between hover:bg-blue-50 transition-colors" data-faq="{{ $index + 1 }}">
-                        <span class="font-bold text-gray-900 text-lg">{{ $faq['q'] }}</span>
-                        <i data-lucide="chevron-down" class="h-6 w-6 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
+                    <button class="faq-button w-full px-6 py-4 text-left flex items-center justify-between hover:bg-blue-50 transition-colors" data-faq="{{ $index + 1 }}">
+                        <span class="font-bold text-gray-900 text-sm">{{ $faq['q'] }}</span>
+                        <i data-lucide="chevron-down" class="h-5 w-5 text-gray-400 faq-icon transition-transform flex-shrink-0"></i>
                     </button>
-                    <div class="faq-content hidden px-6 pb-5">
-                        <p class="text-gray-700">{{ $faq['a'] }}</p>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-gray-700 text-xs">{{ $faq['a'] }}</p>
                     </div>
                 </div>
                 @endforeach
