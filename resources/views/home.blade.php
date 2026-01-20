@@ -302,40 +302,33 @@
                     [
                         'title' => 'Professionalism',
                         'desc' => 'We maintain the highest standards in every step of the recruitment process.',
-                        'img' => 'hero_hr_interviews_1768667429733.png',
                         'bg' => 'bg-cyan-600/20 group-hover:bg-cyan-600/30',
                         'pos' => 'top-0 right-0 -mt-10 -mr-10'
                     ],
                     [
                         'title' => 'Integrity',
                         'desc' => 'We operate with honesty, transparency, and accountability.',
-                        'img' => 'hero_agriculture_workers_1768667381546.png',
                         'bg' => 'bg-blue-600/20 group-hover:bg-blue-600/30',
                         'pos' => 'bottom-0 left-0 -mb-10 -ml-10'
                     ],
                     [
                         'title' => 'Reliability',
                         'desc' => 'We deliver consistent results with timely and dependable solutions.',
-                        'img' => 'hero_construction_workers_1768667395123.png',
                         'bg' => 'bg-cyan-600/20 group-hover:bg-cyan-600/30',
                         'pos' => 'top-0 left-0 -mt-10 -ml-10'
                     ],
                     [
                         'title' => 'Partnership',
                         'desc' => 'We match organizations with verified, skilled candidates who add real value.',
-                        'img' => 'hero_logistics_warehouse_1768667413235.png',
                         'bg' => 'bg-blue-600/20 group-hover:bg-blue-600/30',
                         'pos' => 'bottom-0 right-0 -mb-10 -mr-10'
                     ]
                 ] as $value)
-                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30 min-h-[200px] flex flex-col justify-center">
                     <div class="absolute {{ $value['pos'] }} h-32 w-32 rounded-full {{ $value['bg'] }} blur-[40px] transition-colors duration-500"></div>
-                    <div class="h-32 overflow-hidden">
-                        <img src="{{ asset($value['img']) }}" alt="{{ $value['title'] }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                    </div>
-                    <div class="relative z-10 p-5">
-                        <h3 class="text-base font-bold text-white mt-2 mb-2">{{ $value['title'] }}</h3>
-                        <p class="text-xs text-blue-100/80 leading-relaxed">{{ $value['desc'] }}</p>
+                    <div class="relative z-10 p-6 text-center">
+                        <h3 class="text-lg font-bold text-white mb-2">{{ $value['title'] }}</h3>
+                        <p class="text-sm text-blue-100/80 leading-relaxed">{{ $value['desc'] }}</p>
                     </div>
                 </div>
                 @endforeach
@@ -397,94 +390,58 @@
                 <div class="w-24 h-1.5 bg-blue-600 mx-auto rounded-full mt-6"></div>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-10">
-                <!-- 1. conatruction Industry -->
-                <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
-                    <div class="h-64 relative overflow-hidden">
-                        <img src="{{ asset('industry_construction.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Construction Industry">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-6 left-8">
-                            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">construction Industry</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                @foreach([
+                    [
+                        'title' => 'Construction Industry',
+                        'img' => 'industry_construction.png',
+                        'desc' => '"we connect qualified and hardworking professionals with trusted employers in the construction Industry."',
+                        'roles' => ['General Laborer', 'Construction Helper', 'Mason / Bricklayer', 'Plumber Assistant', 'Carpenter', 'Steel Fixer', 'Scaffolder', 'Painter', 'Tiler', 'Electrician Helper'],
+                        'c' => 'blue'
+                    ],
+                    [
+                        'title' => 'Hospitality Industry',
+                        'img' => 'industry_hospitality.png',
+                        'desc' => '"we place professionals in top restaurants, resorts, and hospitality companies worldwide. In the following position"',
+                        'roles' => ['Housekeeping Attendant', 'Laundry Attendant', 'Waiter / Waitress', 'Cook / Assistant Cook', 'Kitchen Helper', 'Security Guard', 'Cleaner'],
+                        'c' => 'indigo'
+                    ],
+                    [
+                        'title' => 'Logistics & Transport',
+                        'img' => 'industry_logistics.png',
+                        'desc' => '"We are recruiting for"',
+                        'roles' => ['Drivers', 'Warehouse Worker / Assistant', 'Delivery Driver / Van Driver', 'Forklift Operator', 'Storekeeper', 'Packing & Sorting Staff', 'Loader / Unloader', 'Vehicle Mechanic'],
+                        'c' => 'teal'
+                    ],
+                    [
+                        'title' => 'Agriculture Industry',
+                        'img' => 'industry_agriculture.png',
+                        'desc' => '"We recruits qualified and reliable agricultural workers across various levels, including:"',
+                        'roles' => ['Farm & Field Workers', 'Machinery & Technical Roles', 'Livestock & Animal Care', 'Skilled & Supervisory Roles', 'Post-Harvest & Agri-Processing'],
+                        'c' => 'emerald'
+                    ]
+                ] as $ind)
+                <div class="bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-900/50 border border-slate-800 group transition-all duration-500 hover:-translate-y-2 flex flex-col">
+                    <div class="h-48 relative overflow-hidden">
+                        <img src="{{ asset($ind['img']) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="{{ $ind['title'] }}">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-6 right-6">
+                            <h3 class="text-xl font-black text-white uppercase tracking-tighter leading-tight">{{ $ind['title'] }}</h3>
                         </div>
                     </div>
-                    <div class="p-10">
-                        <p class="text-slate-600 font-bold mb-8 italic">"we connect qualified and hardworking professionals with trusted employers in the construction Industry."</p>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach(['General Laborer', 'Construction Helper', 'Mason / Bricklayer', 'Plumber Assistant', 'Carpenter', 'Steel Fixer', 'Scaffolder', 'Painter', 'Tiler', 'Electrician Helper'] as $role)
-                                <span class="inline-flex items-center px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-100">
-                                    <span class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <p class="text-blue-100/80 font-medium mb-6 italic text-sm">{{ $ind['desc'] }}</p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            @foreach($ind['roles'] as $role)
+                                <span class="inline-flex items-center px-2.5 py-1 bg-{{$ind['c']}}-900/30 text-{{$ind['c']}}-200 text-[10px] font-medium rounded-full border border-{{$ind['c']}}-700/50">
+                                    <span class="w-1 h-1 bg-{{$ind['c']}}-400 rounded-full mr-1.5"></span>
                                     {{ $role }}
                                 </span>
                             @endforeach
                         </div>
                     </div>
                 </div>
-
-                <!-- 2. Hospitality Industry -->
-                <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
-                    <div class="h-64 relative overflow-hidden">
-                        <img src="{{ asset('industry_hospitality.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Hospitality Industry">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-6 left-8">
-                            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Hospitality Industry</h3>
-                        </div>
-                    </div>
-                    <div class="p-10">
-                        <p class="text-slate-600 font-bold mb-8 italic">"we place professionals in top restaurants, resorts, and hospitality companies worldwide. In the following position"</p>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach(['Housekeeping Attendant', 'Laundry Attendant', 'Waiter / Waitress', 'Cook / Assistant Cook', 'Kitchen Helper', 'Security Guard', 'Cleaner'] as $role)
-                                <span class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full border border-indigo-100">
-                                    <span class="w-1.5 h-1.5 bg-indigo-500 rounded-full mr-2"></span>
-                                    {{ $role }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. Logistics & Transport -->
-                <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
-                    <div class="h-64 relative overflow-hidden">
-                        <img src="{{ asset('industry_logistics.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Logistics & Transport">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-6 left-8">
-                            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Logistics & Transport</h3>
-                        </div>
-                    </div>
-                    <div class="p-10">
-                        <p class="text-slate-600 font-bold mb-8 italic uppercase tracking-widest text-xs opacity-50">"We are recruiting for"</p>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach(['Drivers', 'Warehouse Worker / Assistant', 'Delivery Driver / Van Driver', 'Forklift Operator', 'Storekeeper', 'Packing & Sorting Staff', 'Loader / Unloader', 'Vehicle Mechanic'] as $role)
-                                <span class="inline-flex items-center px-3 py-1.5 bg-teal-50 text-teal-700 text-xs font-medium rounded-full border border-teal-100">
-                                    <span class="w-1.5 h-1.5 bg-teal-500 rounded-full mr-2"></span>
-                                    {{ $role }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. Agriculture Industry -->
-                <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-2xl shadow-slate-200/60 border border-slate-100 group transition-all duration-500 hover:-translate-y-2">
-                    <div class="h-64 relative overflow-hidden">
-                        <img src="{{ asset('industry_agriculture.png') }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Agriculture Industry">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
-                        <div class="absolute bottom-6 left-8">
-                            <h3 class="text-3xl font-black text-white uppercase tracking-tighter">Agriculture Industry</h3>
-                        </div>
-                    </div>
-                    <div class="p-10">
-                        <p class="text-slate-600 font-bold mb-8 italic">"We recruits qualified and reliable agricultural workers across various levels, including:"</p>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach(['Farm & Field Workers', 'Machinery & Technical Roles', 'Livestock & Animal Care', 'Skilled & Supervisory Roles', 'Post-Harvest & Agri-Processing'] as $role)
-                                <span class="inline-flex items-center px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-medium rounded-full border border-emerald-100">
-                                    <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full mr-2"></span>
-                                    {{ $role }}
-                                </span>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -506,11 +463,14 @@
                         ['t' => 'Institutions requiring verified and compliant workforce solutions', 'i' => 'landmark', 'c' => 'amber'],
                         ['t' => 'Companies with short-term and long-term staffing needs', 'i' => 'timer', 'c' => 'rose']
                     ] as $client)
-                    <div class="bg-white p-8 rounded-[3rem] shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500">
-                        <div class="w-16 h-16 bg-{{$client['c']}}-50 rounded-full flex items-center justify-center mb-6 group-hover:bg-{{$client['c']}}-600 transition-colors duration-500">
-                            <i data-lucide="{{$client['i']}}" class="w-8 h-8 text-{{$client['c']}}-600 group-hover:text-white transition-colors duration-500"></i>
+                    <div class="bg-slate-900 p-8 rounded-[3rem] shadow-xl shadow-slate-900/20 border border-slate-800 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
+                        <!-- Background Glow Effect for Hover -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-{{$client['c']}}-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                        
+                        <div class="relative z-10 w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm group-hover:scale-110 transition-transform duration-500 border border-white/10">
+                            <i data-lucide="{{$client['i']}}" class="w-6 h-6 text-{{$client['c']}}-400 group-hover:text-white transition-colors duration-500"></i>
                         </div>
-                        <p class="font-black text-slate-900 leading-tight text-sm uppercase tracking-tighter">{{$client['t']}}</p>
+                        <p class="relative z-10 font-medium text-blue-100/80 leading-relaxed text-xs tracking-wide">{{$client['t']}}</p>
                     </div>
                 @endforeach
             </div>
