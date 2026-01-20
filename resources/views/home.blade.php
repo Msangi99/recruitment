@@ -263,60 +263,114 @@
     </section>
 
     <!-- Our Solution Section -->
-    <section class="py-16 bg-slate-50 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight uppercase">Our Solution</h2>
-                <div class="w-16 h-1 bg-blue-600 mx-auto rounded-full mb-6"></div>
-                <p class="text-sm md:text-base text-slate-600 max-w-3xl mx-auto leading-relaxed font-medium">
-                    Many companies struggle to find skilled and qualified candidates for their key positions, leading to delays and increased costs. This is where <span class="text-blue-600 font-bold">Coyzon Company Limited</span> comes in. We help employers quickly and efficiently connect with the right talent, ensuring every candidate is thoroughly vetted, aligned with job requirements, and ready to contribute immediately. From job analysis to onboarding, we provide professional support at every step.
-                </p>
+    <section class="py-20 bg-white relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Large Title -->
+            <div class="mb-16">
+                <h2 class="text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 tracking-tight uppercase">SOLUTION</h2>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- 1. End-to-End Recruitment Solutions -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-slate-200/50 border border-slate-100 hover:-translate-y-1 transition-all duration-300 group">
-                    <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-blue-600 transition-colors duration-300">
-                        <i data-lucide="layers" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+            <!-- Top Section: Text Left + Image Right -->
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+                <!-- Text Content -->
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <i data-lucide="lightbulb" class="w-8 h-8 text-blue-500"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm md:text-base text-slate-700 leading-relaxed">
+                                Many companies struggle to find skilled and qualified candidates for their key positions, leading to delays and increased costs. This is where <span class="text-blue-600 font-bold">Coyzon Company Limited</span> comes in. We help employers quickly and efficiently connect with the right talent, ensuring every candidate is thoroughly vetted, aligned with job requirements, and ready to contribute immediately. From job analysis to onboarding, we provide professional support at every step.
+                            </p>
+                        </div>
                     </div>
-                    <h3 class="text-base font-bold text-slate-900 mb-2">1. End-to-End Recruitment Solutions</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">From job requirement analysis, sourcing, screening, hiring, onboarding, to post-hire follow-up.</p>
                 </div>
 
-                <!-- 2. Temporary & Contract Staffing -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-slate-200/50 border border-slate-100 hover:-translate-y-1 transition-all duration-300 group">
-                    <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-indigo-600 transition-colors duration-300">
-                        <i data-lucide="clock" class="w-5 h-5 text-indigo-600 group-hover:text-white transition-colors duration-300"></i>
+                <!-- Image -->
+                <div class="relative">
+                    <div class="aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl">
+                        <img src="{{ asset('solution_hero_image.png') }}" alt="Recruitment Team" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-base font-bold text-slate-900 mb-2">2. Temporary & Contract Staffing</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Conducting initial interviews, aptitude tests, and reference checks before presenting candidates.</p>
+                    <div class="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-500 rounded-3xl -z-10"></div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Image Left + Services List Right -->
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <!-- Image -->
+                <div class="relative order-2 lg:order-1">
+                    <div class="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
+                        <img src="{{ asset('solution_services_image.png') }}" alt="Professional Services" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute -top-4 -left-4 w-32 h-32 bg-cyan-400 rounded-3xl -z-10"></div>
                 </div>
 
-                <!-- 3. Payroll & HR Support -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-slate-200/50 border border-slate-100 hover:-translate-y-1 transition-all duration-300 group">
-                    <div class="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-emerald-600 transition-colors duration-300">
-                        <i data-lucide="banknote" class="w-5 h-5 text-emerald-600 group-hover:text-white transition-colors duration-300"></i>
+                <!-- Services List -->
+                <div class="space-y-6 order-1 lg:order-2">
+                    <!-- Service 1 -->
+                    <div class="flex items-start gap-4 group">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
+                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">End-to-End Recruitment Solutions</h3>
+                            <p class="text-sm text-slate-600">From job requirement analysis, sourcing, screening, hiring, onboarding, to post-hire follow-up.</p>
+                        </div>
                     </div>
-                    <h3 class="text-base font-bold text-slate-900 mb-2">3. Payroll & HR Support</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Managing salaries, benefits, and other HR matters for agency-deployed staff.</p>
-                </div>
 
-                <!-- 4. Training & Upskilling -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-slate-200/50 border border-slate-100 hover:-translate-y-1 transition-all duration-300 group">
-                    <div class="w-10 h-10 bg-amber-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-amber-600 transition-colors duration-300">
-                        <i data-lucide="graduation-cap" class="w-5 h-5 text-amber-600 group-hover:text-white transition-colors duration-300"></i>
+                    <!-- Service 2 -->
+                    <div class="flex items-start gap-4 group">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
+                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Temporary & Contract Staffing</h3>
+                            <p class="text-sm text-slate-600">Conducting initial interviews, aptitude tests, and reference checks before presenting candidates.</p>
+                        </div>
                     </div>
-                    <h3 class="text-base font-bold text-slate-900 mb-2">4. Training & Upskilling</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Preparing candidates with training to ensure immediate contribution to the company.</p>
-                </div>
 
-                <!-- 5. Market & Salary Benchmarking -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg shadow-slate-200/50 border border-slate-100 hover:-translate-y-1 transition-all duration-300 group md:col-span-2 lg:col-span-1">
-                    <div class="w-10 h-10 bg-rose-50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-rose-600 transition-colors duration-300">
-                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-rose-600 group-hover:text-white transition-colors duration-300"></i>
+                    <!-- Service 3 -->
+                    <div class="flex items-start gap-4 group">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
+                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Payroll & HR Support</h3>
+                            <p class="text-sm text-slate-600">Managing salaries, benefits, and other HR matters for agency-deployed staff.</p>
+                        </div>
                     </div>
-                    <h3 class="text-base font-bold text-slate-900 mb-2">5. Market & Salary Benchmarking</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed">Advising on labor market trends, salary ranges, and talent competition.</p>
+
+                    <!-- Service 4 -->
+                    <div class="flex items-start gap-4 group">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
+                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Training & Upskilling</h3>
+                            <p class="text-sm text-slate-600">Preparing candidates with training to ensure immediate contribution to the company.</p>
+                        </div>
+                    </div>
+
+                    <!-- Service 5 -->
+                    <div class="flex items-start gap-4 group">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-500 transition-colors duration-300">
+                                <i data-lucide="check" class="w-5 h-5 text-blue-600 group-hover:text-white transition-colors duration-300"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 mb-1">Market & Salary Benchmarking</h3>
+                            <p class="text-sm text-slate-600">Advising on labor market trends, salary ranges, and talent competition.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
