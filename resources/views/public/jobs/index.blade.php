@@ -82,14 +82,12 @@
                         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                             <div>
                                 <h2 class="text-xl md:text-2xl font-bold text-white mb-2 tracking-tight leading-tight">
-                                    Verified Overseas <span
-                                        class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Job
-                                        Opportunities</span>
+                                    Verified Overseas Job Opportunities
                                 </h2>
-                                <p class="text-sm text-slate-300 leading-relaxed font-light max-w-3xl">
+                                <p class="text-sm text-white leading-relaxed font-light max-w-3xl">
                                     Explore available overseas job opportunities and apply through our <span
-                                        class="text-white font-medium">licensed recruitment agency</span>.
-                                    All jobs listed on this platform are <span class="text-white font-medium">verified,
+                                        class="font-medium">licensed recruitment agency</span>.
+                                    All jobs listed on this platform are <span class="font-medium">verified,
                                         ethical, and processed through our agency</span> to ensure safety, transparency,
                                     and compliance.
                                 </p>
