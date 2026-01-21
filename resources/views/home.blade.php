@@ -548,26 +548,36 @@
                         Connecting Tanzanian talent to the world's leading economic hubs with end-to-end support and ethical placement.
                     </p>
                 </div>
-                <div class="hidden lg:flex flex-col items-end gap-3">
-                    <div class="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 shadow-sm">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">From Africa</span>
-                        <div class="flex -space-x-2">
+                <div class="hidden lg:flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50">
+                    <!-- Africa Group -->
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Africa</span>
+                        <div class="flex -space-x-2.5">
                             @foreach(['TZ', 'KE', 'UG', 'BI', 'CD', 'ZM', 'ZA'] as $flag)
-                                <div class="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-500 overflow-hidden shadow-sm">
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center overflow-hidden shadow-sm hover:z-10 transition-all hover:scale-110">
                                     <img src="https://flagcdn.com/w40/{{ strtolower($flag) }}.png" class="w-full h-full object-cover" alt="{{ $flag }}">
                                 </div>
                             @endforeach
                         </div>
                     </div>
-                    <div class="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 shadow-sm">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">To World</span>
-                        <div class="flex -space-x-2">
+                    
+                    <!-- Vector Arrow -->
+                    <div class="flex items-center px-2">
+                        <div class="w-10 h-px bg-gradient-to-r from-blue-400 to-indigo-600 relative">
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-2 h-2 border-t border-r border-indigo-600 rotate-45"></div>
+                        </div>
+                    </div>
+
+                    <!-- World Group -->
+                    <div class="flex items-center gap-3">
+                        <div class="flex -space-x-2.5">
                             @foreach(['AE', 'SA', 'OM', 'QA', 'KW', 'EU', 'CA', 'GB', 'AU'] as $flag)
-                                <div class="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-500 overflow-hidden shadow-sm">
+                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center overflow-hidden shadow-sm hover:z-10 transition-all hover:scale-110">
                                     <img src="https://flagcdn.com/w40/{{ strtolower($flag) }}.png" class="w-full h-full object-cover" alt="{{ $flag }}">
                                 </div>
                             @endforeach
                         </div>
+                        <span class="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em]">World</span>
                     </div>
                 </div>
             </div>
