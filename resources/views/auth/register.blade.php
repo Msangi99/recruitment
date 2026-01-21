@@ -3,136 +3,159 @@
 @section('title', 'Register - Coyzon Recruitment')
 
 @section('content')
-    <div
-        class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8">
-            <div>
-                <div class="mx-auto h-16 w-16 bg-green-600 rounded-full flex items-center justify-center">
-                    <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
-                    </svg>
-                </div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Join Coyzon
-                </h2>
-                <p class="mt-2 text-center text-sm text-gray-600">
-                    Create your job seeker account to find overseas opportunities
-                </p>
-            </div>
-
-            <!-- Info for Employers -->
-            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
-                <div class="flex">
-                    <div class="flex-shrink-0">
-                        <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </div>
-                    <div class="ml-3">
-                        <p class="text-sm text-blue-700">
-                            <strong>Looking to hire?</strong> Employers can browse candidates and request interviews without
-                            creating an account.
-                            <a href="{{ route('public.candidates.index') }}" class="underline font-medium">Browse candidates
-                                →</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <form class="mt-8 space-y-6" action="{{ route('register') }}" method="POST">
-                @csrf
-
-                <!-- Personal Information -->
-                <div class="rounded-md shadow-sm -space-y-px">
-                    <div>
-                        <label for="name" class="sr-only">Full Name</label>
-                        <input id="name" name="name" type="text" autocomplete="name" required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('name') border-red-300 @enderror"
-                            placeholder="Full Name" value="{{ old('name') }}">
-                        @error('name')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="email" class="sr-only">Email address</label>
-                        <input id="email" name="email" type="email" autocomplete="email" required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('email') border-red-300 @enderror"
-                            placeholder="Email address" value="{{ old('email') }}">
-                        @error('email')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="phone" class="sr-only">Phone Number</label>
-                        <input id="phone" name="phone" type="tel" autocomplete="tel" required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('phone') border-red-300 @enderror"
-                            placeholder="Phone Number" value="{{ old('phone') }}">
-                        @error('phone')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="country" class="sr-only">Country</label>
-                        <select id="country" name="country" required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                            <option value="">Select Country</option>
-                            <option value="Tanzania" {{ old('country') == 'Tanzania' ? 'selected' : '' }}>Tanzania</option>
-                            <option value="Kenya" {{ old('country') == 'Kenya' ? 'selected' : '' }}>Kenya</option>
-                            <option value="Uganda" {{ old('country') == 'Uganda' ? 'selected' : '' }}>Uganda</option>
-                            <option value="Rwanda" {{ old('country') == 'Rwanda' ? 'selected' : '' }}>Rwanda</option>
-                            <option value="Burundi" {{ old('country') == 'Burundi' ? 'selected' : '' }}>Burundi</option>
-                            <option value="Other" {{ old('country') == 'Other' ? 'selected' : '' }}>Other</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="password" class="sr-only">Password</label>
-                        <input id="password" name="password" type="password" autocomplete="new-password" required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('password') border-red-300 @enderror"
-                            placeholder="Password (min 8 characters)">
-                        @error('password')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="password_confirmation" class="sr-only">Confirm Password</label>
-                        <input id="password_confirmation" name="password_confirmation" type="password"
-                            autocomplete="new-password" required
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('password_confirmation') border-red-300 @enderror"
-                            placeholder="Confirm Password">
-                        @error('password_confirmation')
-                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div>
-                    <button type="submit"
-                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                        <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                            <svg class="h-5 w-5 text-green-500 group-hover:text-green-400"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </span>
-                        Create Account
-                    </button>
-                </div>
-
-                <div class="text-center">
-                    <p class="text-sm text-gray-600">
-                        Already have an account?
-                        <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                            Sign in here
-                        </a>
+    <div class="min-h-screen flex items-center justify-center bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-xl w-full">
+            <!-- Card Container -->
+            <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 sm:p-10 border border-gray-800">
+                <div class="mb-6 text-center">
+                    <a href="{{ route('home') }}" class="inline-block mb-4">
+                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-14 w-auto">
+                    </a>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">
+                        Create Your Account
+                    </h2>
+                    <p class="mt-2 text-slate-400 text-xs font-medium">
+                        Join Coyzon to find rewarding global opportunities
                     </p>
                 </div>
-            </form>
+
+                <form class="space-y-6" action="{{ route('register') }}" method="POST">
+                    @csrf
+
+                    <div class="space-y-4">
+                        <!-- Name Group -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="first_name" class="block text-xs font-semibold text-slate-300 mb-1">First
+                                    Name</label>
+                                <input id="first_name" name="first_name" type="text" autocomplete="given-name" required
+                                    class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 @error('name') border-red-500 @enderror"
+                                    placeholder="John" value="{{ old('first_name') }}">
+                            </div>
+                            <div>
+                                <label for="last_name" class="block text-xs font-semibold text-slate-300 mb-1">Last
+                                    Name</label>
+                                <input id="last_name" name="last_name" type="text" autocomplete="family-name" required
+                                    class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 @error('name') border-red-500 @enderror"
+                                    placeholder="Doe" value="{{ old('last_name') }}">
+                            </div>
+                            <input type="hidden" name="name" id="full_name_hidden">
+                        </div>
+                        @error('name')
+                            <p class="text-xs font-medium text-red-500">{{ $message }}</p>
+                        @enderror
+
+                        <!-- Contact Group -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="email" class="block text-xs font-semibold text-slate-300 mb-1">Email
+                                    Address</label>
+                                <input id="email" name="email" type="email" autocomplete="email" required
+                                    class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 @error('email') border-red-500 @enderror"
+                                    placeholder="john@example.com" value="{{ old('email') }}">
+                                @error('email')
+                                    <p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-xs font-semibold text-slate-300 mb-1">Phone
+                                    Number</label>
+                                <input id="phone" name="phone" type="tel" autocomplete="tel" required
+                                    class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 @error('phone') border-red-500 @enderror"
+                                    placeholder="+255 000 000 000" value="{{ old('phone') }}">
+                                @error('phone')
+                                    <p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- Location and Password Info -->
+                        <div>
+                            <label for="country" class="block text-xs font-semibold text-slate-300 mb-1">Country of
+                                Residence</label>
+                            <select id="country" name="country" required
+                                class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 @error('country') border-red-500 @enderror">
+                                <option value="" disabled selected>Select your country</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            @error('country')
+                                <p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="password"
+                                    class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                                <div class="relative">
+                                    <input id="password" name="password" type="password" autocomplete="new-password"
+                                        required
+                                        class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 @error('password') border-red-500 @enderror"
+                                        placeholder="••••••••">
+                                    <button type="button" onclick="togglePassword('password')"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">
+                                        <i data-lucide="eye" class="h-4 w-4"></i>
+                                    </button>
+                                </div>
+                                @error('password')
+                                    <p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="password_confirmation"
+                                    class="block text-xs font-semibold text-slate-300 mb-1">Confirm Password</label>
+                                <div class="relative">
+                                    <input id="password_confirmation" name="password_confirmation" type="password"
+                                        autocomplete="new-password" required
+                                        class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                                        placeholder="••••••••">
+                                    <button type="button" onclick="togglePassword('password_confirmation')"
+                                        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500">
+                                        <i data-lucide="eye" class="h-4 w-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" onclick="combineName()"
+                            class="w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 shadow-lg shadow-blue-500/20 transition-all duration-200">
+                            Create My Account
+                        </button>
+                        <p class="mt-3 text-center text-[10px] text-slate-500">
+                            By signing up, you agree to our Terms and Conditions.
+                        </p>
+                    </div>
+
+                    <div class="text-center pt-1">
+                        <p class="text-xs font-medium text-slate-500">
+                            Already have an account?
+                            <a href="{{ route('login') }}" class="font-bold text-blue-400 hover:text-blue-300 ml-1">
+                                Sign in here
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+
+    <script>
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function combineName() {
+            const firstName = document.getElementById('first_name').value;
+            const lastName = document.getElementById('last_name').value;
+            document.getElementById('full_name_hidden').value = (firstName + ' ' + lastName).trim();
+        }
+    </script>
 @endsection

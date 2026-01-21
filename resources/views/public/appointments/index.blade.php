@@ -8,8 +8,10 @@
             <div class="text-center mb-16">
                 <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Book an Appointment</h1>
                 <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full mb-6"></div>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    Choose the type of consultation that best suits your needs.
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Ready to take the next step?
+                    Book a one-on-one appointment with our team and get personalized guidance, clear solutions,
+                    and professional support tailored to your goals.
                 </p>
             </div>
 
@@ -47,12 +49,14 @@
                         </svg>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-4">Partnership Meeting</h3>
-                    <p class="text-gray-600 mb-8 flex-grow">
-                        Book a meeting to explore recruitment partnership and overseas collaboration opportunities.
+                    <p class="text-gray-600 mb-8 flex-grow text-sm leading-relaxed">
+                        Interested in collaborating, expanding opportunities, or building strategic partnerships?
+                        Book a partnership meeting to explore mutually beneficial opportunities and long-term collaboration
+                        with our organization.
                     </p>
                     <a href="{{ route('public.appointments.partnership') }}"
                         class="block w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white text-center font-bold rounded-xl transition-colors shadow-lg shadow-indigo-500/30">
-                        Request Partnership
+                        Schedule Partnership Call
                     </a>
                 </div>
 
@@ -70,16 +74,15 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-white mb-4">Job Seeker Consultation</h3>
-                    <p class="text-slate-300 mb-8 flex-grow">
-                        Paid career consultation (TZS
-                        {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }} / $12). Get
-                        assessment, legal pathway advice, and CV
-                        optimization for overseas work.
+                    <h3 class="text-2xl font-bold text-white mb-4">Job Seekers & Travel Abroad</h3>
+                    <p class="text-slate-300 mb-8 flex-grow text-sm leading-relaxed">
+                        Searching for job opportunities or planning to work or travel abroad?
+                        Book an appointment to receive professional guidance on job placement, recruitment processes, and
+                        international travel support.
                     </p>
                     <a href="{{ route('public.appointments.jobSeeker') }}"
                         class="block w-full py-4 bg-yellow-500 hover:bg-yellow-400 text-slate-900 text-center font-bold rounded-xl transition-colors shadow-lg shadow-yellow-500/30">
-                        Start Career Consultation
+                        Book Career Consultation
                     </a>
                 </div>
 

@@ -3,99 +3,98 @@
 @section('title', 'Login - Coyzon Recruitment')
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <div>
-            <div class="mx-auto h-16 w-16 bg-indigo-600 rounded-full flex items-center justify-center">
-                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                </svg>
-            </div>
-            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Sign in to Coyzon
-            </h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
-                Your gateway to global recruitment opportunities
-            </p>
-        </div>
-        
-        <!-- Info for Employers -->
-        <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm text-blue-700">
-                        <strong>Looking to hire?</strong> Employers can browse candidates and request interviews without logging in.
-                        <a href="{{ route('public.candidates.index') }}" class="underline font-medium">Browse candidates →</a>
+    <div class="min-h-screen flex items-center justify-center bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-sm w-full">
+            <!-- Card Container -->
+            <div class="bg-gray-900 rounded-2xl shadow-2xl p-6 sm:p-8 border border-gray-800">
+                <div class="mb-6 text-center">
+                    <a href="{{ route('home') }}" class="inline-block mb-4">
+                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-14 w-auto">
+                    </a>
+                    <h2 class="text-2xl font-bold text-white tracking-tight">
+                        Welcome Back
+                    </h2>
+                    <p class="mt-2 text-slate-400 text-xs font-medium">
+                        Log in to access your recruitment portal
                     </p>
                 </div>
+
+                <form class="space-y-4" action="{{ route('login') }}" method="POST">
+                    @csrf
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="email" class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                            <input id="email" name="email" type="email" autocomplete="email" required
+                                class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 @error('email') border-red-500 @enderror"
+                                placeholder="name@company.com" value="{{ old('email') }}">
+                            @error('email')
+                                <p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-1">
+                                <label for="password" class="block text-xs font-semibold text-slate-300">Password</label>
+                                <a href="{{ route('password.request') }}"
+                                    class="text-[10px] font-bold text-blue-400 hover:text-blue-300">
+                                    Forgot password?
+                                </a>
+                            </div>
+                            <div class="relative group">
+                                <input id="password" name="password" type="password" autocomplete="current-password"
+                                    required
+                                    class="appearance-none block w-full px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200 @error('password') border-red-500 @enderror"
+                                    placeholder="••••••••">
+                                <button type="button" onclick="togglePassword()"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors">
+                                    <i data-lucide="eye" id="eye-icon" class="h-4 w-4"></i>
+                                </button>
+                            </div>
+                            @error('password')
+                                <p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input id="remember-me" name="remember" type="checkbox"
+                            class="h-3.5 w-3.5 text-blue-600 focus:ring-blue-500/20 bg-gray-800 border-gray-700 rounded transition-all">
+                        <label for="remember-me" class="ml-2 block text-xs font-medium text-slate-400">
+                            Stay signed in
+                        </label>
+                    </div>
+
+                    <div>
+                        <button type="submit"
+                            class="w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-bold rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/20 shadow-lg shadow-blue-500/20 transition-all duration-200">
+                            Sign In to Account
+                        </button>
+                    </div>
+
+                    <div class="text-center pt-2">
+                        <p class="text-xs font-medium text-slate-500">
+                            New to Coyzon?
+                            <a href="{{ route('register') }}" class="font-bold text-blue-400 hover:text-blue-300 ml-1">
+                                Create an account
+                            </a>
+                        </p>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <form class="mt-8 space-y-6" action="{{ route('login') }}" method="POST">
-            @csrf
-
-            <div class="rounded-md shadow-sm -space-y-px">
-                <div>
-                    <label for="email" class="sr-only">Email address</label>
-                    <input id="email" name="email" type="email" autocomplete="email" required
-                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('email') border-red-300 @enderror"
-                           placeholder="Email address"
-                           value="{{ old('email') }}">
-                    @error('email')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-                <div>
-                    <label for="password" class="sr-only">Password</label>
-                    <input id="password" name="password" type="password" autocomplete="current-password" required
-                           class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('password') border-red-300 @enderror"
-                           placeholder="Password">
-                    @error('password')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center">
-                    <input id="remember-me" name="remember" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                    <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                        Remember me
-                    </label>
-                </div>
-
-                <div class="text-sm">
-                    <a href="{{ route('password.request') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        Forgot your password?
-                    </a>
-                </div>
-            </div>
-
-            <div>
-                <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                        </svg>
-                    </span>
-                    Sign in
-                </button>
-            </div>
-
-            <div class="text-center">
-                <p class="text-sm text-gray-600">
-                    Don't have an account?
-                    <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        Sign up here
-                    </a>
-                </p>
-            </div>
-        </form>
     </div>
-</div>
+
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eye-icon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        }
+    </script>
 @endsection
