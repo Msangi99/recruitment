@@ -4,9 +4,10 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Company Info -->
             <div>
-                <div class="flex items-center mb-4">
-                    <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-24 w-auto">
-                    <span class="ml-3 text-xl font-bold text-white">Coyzon</span>
+                <div class="flex flex-col mb-6">
+                    <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo"
+                        class="h-24 w-auto self-start mb-2">
+                    <span class="text-xl font-bold text-white uppercase tracking-tight">Coyzon Company Limited</span>
                 </div>
                 <p class="text-sm text-gray-400 mb-4">
                     Your trusted partner for overseas recruitment and career development.
