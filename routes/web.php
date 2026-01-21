@@ -40,20 +40,20 @@ Route::post('/candidates/{candidate}/interview', [PublicCandidateController::cla
 // Public Appointment Booking
 Route::prefix('book-appointment')->name('public.appointments.')->group(function () {
     Route::get('/', [App\Http\Controllers\PublicAppointmentController::class, 'index'])->name('index');
-    
+
     // Employer
     Route::get('/employer', [App\Http\Controllers\PublicAppointmentController::class, 'employerForm'])->name('employer');
     Route::post('/employer', [App\Http\Controllers\PublicAppointmentController::class, 'storeEmployer'])->name('storeEmployer');
-    
+
     // Partnership
     Route::get('/partnership', [App\Http\Controllers\PublicAppointmentController::class, 'partnershipForm'])->name('partnership');
     Route::post('/partnership', [App\Http\Controllers\PublicAppointmentController::class, 'storePartnership'])->name('storePartnership');
-    
+
     // Job Seeker (Paid)
     Route::get('/job-seeker', [App\Http\Controllers\PublicAppointmentController::class, 'jobSeekerLanding'])->name('jobSeeker');
     Route::get('/job-seeker/form', [App\Http\Controllers\PublicAppointmentController::class, 'jobSeekerForm'])->name('jobSeeker.form');
     Route::post('/job-seeker/form', [App\Http\Controllers\PublicAppointmentController::class, 'storeJobSeeker'])->name('jobSeeker.store');
-    
+
     // Scheduling (Mockup for flow)
     Route::get('/calendar/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'calendar'])->name('calendar');
     Route::post('/calendar/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'storeSchedule'])->name('storeSchedule');
@@ -63,30 +63,33 @@ Route::prefix('book-appointment')->name('public.appointments.')->group(function 
 // Profile pictures
 Route::get('/profile-pictures/{filename}', function ($filename) {
     $path = public_path("profile-pictures/{$filename}");
-    if (!file_exists($path)) abort(404);
+    if (!file_exists($path))
+        abort(404);
     return response()->file($path);
 });
 
 // Documents
 Route::get('/documents/{user_id}/{filename}', function ($user_id, $filename) {
     $path = public_path("documents/{$user_id}/{$filename}");
-    if (!file_exists($path)) abort(404);
+    if (!file_exists($path))
+        abort(404);
     return response()->file($path);
 })->where(['user_id' => '[0-9]+', 'filename' => '.*']);
 
 // Application videos with streaming support
 Route::get('/application-videos/{filename}', function ($filename, \Illuminate\Http\Request $request) {
     $path = public_path("application-videos/{$filename}");
-    if (!file_exists($path)) abort(404);
-    
+    if (!file_exists($path))
+        abort(404);
+
     $size = filesize($path);
     $mimeType = mime_content_type($path) ?: 'video/mp4';
-    
+
     // Handle byte-range requests for video streaming
     $start = 0;
     $end = $size - 1;
     $length = $size;
-    
+
     if ($request->hasHeader('Range')) {
         $range = $request->header('Range');
         if (preg_match('/bytes=(\d+)-(\d*)/', $range, $matches)) {
@@ -96,12 +99,12 @@ Route::get('/application-videos/{filename}', function ($filename, \Illuminate\Ht
             }
         }
         $length = $end - $start + 1;
-        
+
         $file = fopen($path, 'rb');
         fseek($file, $start);
         $data = fread($file, $length);
         fclose($file);
-        
+
         return response($data, 206)
             ->header('Content-Type', $mimeType)
             ->header('Content-Length', $length)
@@ -109,7 +112,7 @@ Route::get('/application-videos/{filename}', function ($filename, \Illuminate\Ht
             ->header('Accept-Ranges', 'bytes')
             ->header('Cache-Control', 'public, max-age=86400');
     }
-    
+
     // Full file request
     return response()->file($path, [
         'Content-Type' => $mimeType,
@@ -209,6 +212,9 @@ Route::middleware('auth')->group(function () {
 
         // Category Management
         Route::resource('categories', CategoryController::class);
+
+        // Sidebar Calendar
+        Route::get('/calendar', [AdminController::class, 'calendar'])->name('calendar');
 
         // Contact Messages Management
         Route::get('/contact-messages', [\App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact-messages.index');

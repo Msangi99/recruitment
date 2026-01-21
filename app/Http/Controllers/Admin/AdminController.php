@@ -60,4 +60,9 @@ class AdminController extends Controller
             'recentAppointments'
         ));
     }
+
+    public function calendar()
+    {
+        return view('admin.calendar');
+    }
 }

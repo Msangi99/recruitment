@@ -180,6 +180,8 @@
                             label="Interviews" :active="request()->routeIs('admin.appointments.*')" />
                         <x-admin-sidebar-item href="{{ route('admin.consultations.index') }}" icon="calendar-days"
                             label="Appointments" :active="request()->routeIs('admin.consultations.*')" />
+                        <x-admin-sidebar-item href="{{ route('admin.calendar') }}" icon="calendar-range"
+                            label="Calendar" :active="request()->routeIs('admin.calendar')" />
                         <x-admin-sidebar-item href="{{ route('admin.payments.index') }}" icon="credit-card"
                             label="Payments" :active="request()->routeIs('admin.payments.*')" />
                         @php $unreadEmails = \App\Models\ContactMessage::unread()->count(); @endphp

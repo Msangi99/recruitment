@@ -80,6 +80,7 @@ class PublicAppointmentController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:50',
             'company_name' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'website' => 'nullable|url|max:255',
@@ -92,6 +93,7 @@ class PublicAppointmentController extends Controller
             'type' => 'partnership',
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'phone' => $validated['phone'],
             'company' => $validated['company_name'],
             'country' => $validated['country'],
             'meta_data' => json_encode([
