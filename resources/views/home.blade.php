@@ -668,7 +668,7 @@
             <div class="text-center mb-16">
                 <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4 tracking-tight uppercase">Why Choose Us?</h2>
                 <div class="w-20 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
-                <p class="mt-6 text-slate-500 max-w-2xl mx-auto">Discover the Coyzon advantage in global recruitment.</p>
+                <p class="mt-6 text-slate-500 max-w-2xl mx-auto">Coyzon delivers structured and reliable global recruitment solutions built on professionalism, compliance, and trust. We partner with employers to provide qualified talent through transparent processes and consistent results</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
