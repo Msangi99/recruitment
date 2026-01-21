@@ -548,16 +548,26 @@
                         Connecting Tanzanian talent to the world's leading economic hubs with end-to-end support and ethical placement.
                     </p>
                 </div>
-                <div class="hidden lg:block text-right">
-                    <div class="inline-flex items-center gap-4 bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100 shadow-sm">
+                <div class="hidden lg:flex flex-col items-end gap-3">
+                    <div class="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 shadow-sm">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">From Africa</span>
                         <div class="flex -space-x-2">
-                            @foreach(['TZ', 'KE', 'UG', 'BI', 'CD', 'ZM', 'ZA', 'AE', 'SA', 'OM', 'QA', 'KW', 'EU', 'CA', 'GB', 'AU'] as $flag)
-                                <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-500 overflow-hidden shadow-sm">
+                            @foreach(['TZ', 'KE', 'UG', 'BI', 'CD', 'ZM', 'ZA'] as $flag)
+                                <div class="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-500 overflow-hidden shadow-sm">
                                     <img src="https://flagcdn.com/w40/{{ strtolower($flag) }}.png" class="w-full h-full object-cover" alt="{{ $flag }}">
                                 </div>
                             @endforeach
                         </div>
-                        <span class="text-sm font-bold text-slate-700">Expanding Globally</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100 shadow-sm">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">To World</span>
+                        <div class="flex -space-x-2">
+                            @foreach(['AE', 'SA', 'OM', 'QA', 'KW', 'EU', 'CA', 'GB', 'AU'] as $flag)
+                                <div class="w-7 h-7 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-500 overflow-hidden shadow-sm">
+                                    <img src="https://flagcdn.com/w40/{{ strtolower($flag) }}.png" class="w-full h-full object-cover" alt="{{ $flag }}">
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
