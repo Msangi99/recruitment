@@ -89,7 +89,8 @@
                     </p>
                     <p class="text-slate-900 font-bold text-center mt-8 text-xl">
                         Professional. Transparent. Reliable.<br>
-                        <span class="text-blue-600">Coyzon</span> — Your trusted partner in global recruitment
+                        <span class="text-black font-serif text-2xl">Coyzon</span> — Your trusted partner in global
+                        recruitment
                         excellence.
                     </p>
                 </div>
@@ -188,73 +189,92 @@
                             'pos' => 'bottom-0 right-0 -mb-10 -mr-10'
                         ]
                     ] as $value)
-                    <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30 min-h-[200px] flex flex-col justify-center">
-                        <div class="absolute {{ $value['pos'] }} h-32 w-32 rounded-full {{ $value['bg'] }} blur-[40px] transition-colors duration-500"></div>
-                        <div class="relative z-10 p-6 text-center">
-                            <h3 class="text-lg font-bold text-white mb-2">{{ $value['title'] }}</h3>
-                            <p class="text-sm text-blue-100/80 leading-relaxed">{{ $value['desc'] }}</p>
+                        <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30 min-h-[200px] flex flex-col justify-center">
+                            <div class="absolute {{ $value['pos'] }} h-32 w-32 rounded-full {{ $value['bg'] }} blur-[40px] transition-colors duration-500"></div>
+                            <div class="relative z-10 p-6 text-center">
+                                <h3 class="text-lg font-bold text-white mb-2">{{ $value['title'] }}</h3>
+                                <p class="text-sm text-blue-100/80 leading-relaxed">{{ $value['desc'] }}</p>
+                            </div>
                         </div>
-                    </div>
                 @endforeach
-            </div>
-        </div>
+
+                                </div>
+
+                               </div>
     </section>
 
     <!-- Our Team -->
-    <section class="py-24 bg-white">
+
+                           <section class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Our Team</h2>
                 <div class="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
-                <p class="mt-6 text-lg text-slate-600 max-w-4xl mx-auto">
-                    Our team consists of skilled, reliable, and well-coordinated recruitment professionals committed to
+                <p class
+=                       "mt-6 text-lg text-slate-600 max-w-4xl mx-auto">
+
+                                        Our 
+t                       eam consists of skilled, reliable, and well-coordinated recruitment professionals committed to
                     delivering high-quality recruitment and candidate placement services. We work closely with employers
                     and partners to ensure the right talent is sourced, screened, and placed efficiently for long-term success.
                     Beyond work, our team members enjoy reading, sports and fitness activities, travel, and continuous
-                    learning—strengthening teamwork, adaptability, and strong professional relationships with our clients and
+                    learning—strengthening teamwork, adaptability, and strong professional relationships with our c
+l                       ients and
                     partners.
                 </p>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Team Member 1 -->
-                <div
-                    class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-blue-100">
-                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white">
+                <!-- Tea
+m                        Member 1 -->
+
+                                    <div
+
+                                           class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
                         <img src="{{ asset('user1.jpg') }}" alt="John Doe" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-1">John Doe</h3>
-                    <p class="text-blue-600 font-bold text-sm uppercase tracking-wider mb-2">CEO & Founder</p>
+
+                                        </div>
+                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">John Doe</h3>
+                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">CEO & Founder</p>
                 </div>
 
-                <!-- Team Member 2 -->
-                <div
-                    class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-emerald-100">
-                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white">
+                <!-- Tea
+                       m Member 2 -->
+
+                                    <div
+
+                                           class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
                         <img src="{{ asset('user2.jpg') }}" alt="Jane Smith" class="w-full h-full object-cover">
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-1">Jane Smith</h3>
-                    <p class="text-emerald-600 font-bold text-sm uppercase tracking-wider mb-2">Head of Operations</p>
+
+                                           </div>
+                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">Jane Smith</h3>
+                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">Head of Operations</p>
                 </div>
 
                 <!-- Team Member 3 -->
                 <div
-                    class="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-indigo-100">
-                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white">
+                    class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
                         <img src="{{ asset('user3.jpeg') }}" alt="Michael Johnson" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-1">Michael Johnson</h3>
-                    <p class="text-indigo-600 font-bold text-sm uppercase tracking-wider mb-2">HR Director</p>
+                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">Michael Johnson</h3>
+                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">HR Director</p>
                 </div>
 
                 <!-- Team Member 4 -->
                 <div
-                    class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-amber-100">
-                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white">
+                    class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-amber-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
                         <img src="{{ asset('user1.jpg') }}" alt="Sarah Williams" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-1">Sarah Williams</h3>
-                    <p class="text-amber-600 font-bold text-sm uppercase tracking-wider mb-2">Client Relations</p>
+                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">Sarah Williams</h3>
+                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">Client Relations</p>
                 </div>
             </div>
         </div>
