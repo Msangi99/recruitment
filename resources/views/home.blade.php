@@ -417,10 +417,10 @@
                 <img src="{{ asset('pop.png') }}" alt="Full Cycle Recruiting Process" class="w-full max-w-3xl rounded-2xl shadow-xl">
             </div>
             <div class="mt-12 text-center">
-                <a href="{{ route('public.jobs.index') }}" class="inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-black rounded-full hover:scale-105 transition-all shadow-2xl hover:shadow-blue-200 group">
+                {{-- <a href="{{ route('public.jobs.index') }}" class="inline-flex items-center px-12 py-5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-black rounded-full hover:scale-105 transition-all shadow-2xl hover:shadow-blue-200 group">
                     EXPLORE GLOBAL ROLES
                     <i data-lucide="sparkles" class="ml-3 w-6 h-6 animate-pulse"></i>
-                </a>
+                </a> --}}
             </div>
         </div>
     </section>
@@ -597,7 +597,7 @@
         <div class="px-4 sm:px-6 lg:px-12 relative z-10 w-full">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 text-center md:text-left max-w-7xl mx-auto">
                 <div class="max-w-2xl">
-                    <h2 class="text-slate-900 tracking-[0.2em] uppercase text-sm mb-4">Global Network</h2>
+                    {{-- <h2 class="text-slate-900 tracking-[0.2em] uppercase text-sm mb-4">Global Network</h2> --}}
                     <h1 class="text-4xl md:text-5xl font-black text-slate-900 leading-tight uppercase tracking-tighter">
                         Target <span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-[#A52A2A] to-slate-900">Destinations</span>
                     </h1>
