@@ -551,7 +551,7 @@
                 <div class="hidden lg:block text-right">
                     <div class="inline-flex items-center gap-4 bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100 shadow-sm">
                         <div class="flex -space-x-2">
-                            @foreach(['TZ', 'DE', 'QA', 'AU'] as $flag)
+                            @foreach(['TZ', 'KE', 'UG', 'BI', 'CD', 'ZM', 'ZA', 'AE', 'SA', 'OM', 'QA', 'KW', 'EU', 'CA', 'GB', 'AU'] as $flag)
                                 <div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-500 overflow-hidden shadow-sm">
                                     <img src="https://flagcdn.com/w40/{{ strtolower($flag) }}.png" class="w-full h-full object-cover" alt="{{ $flag }}">
                                 </div>
@@ -564,7 +564,7 @@
 
             <!-- Styled Map Visualization Area -->
             <div class="relative w-full aspect-[21/9] mb-16 group overflow-hidden rounded-[2.5rem] shadow-2xl border border-slate-100">
-                <img src="{{ asset('global_reach_map.png') }}" 
+                <img src="{{ asset('what.jpeg') }}" 
                      class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-1000" 
                      alt="Global Reach Map - Local, Europe, Middle East">
                 
