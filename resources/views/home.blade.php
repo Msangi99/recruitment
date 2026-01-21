@@ -671,19 +671,19 @@
                 <p class="mt-6 text-slate-500 max-w-2xl mx-auto">Discover the Coyzon advantage in global recruitment.</p>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
                 @foreach([
-                        ['t' => 'Experienced HR professionals with industry knowledge', 'i' => 'award', 'c' => 'blue'],
-                        ['t' => 'International job placement (Including visa and relocation guidance)', 'i' => 'globe-2', 'c' => 'emerald'],
-                        ['t' => 'Tailored recruitment that matches talent with your business needs', 'i' => 'target', 'c' => 'amber'],
-                        ['t' => 'Full compliance with national and international labor laws', 'i' => 'shield-check', 'c' => 'indigo'],
-                        ['t' => 'Post-placement support to ensure successful integration', 'i' => 'heart-handshake', 'c' => 'rose']
+                        'Experienced HR professionals with industry knowledge',
+                        'International job placement (Including visa and relocation guidance)',
+                        'Tailored recruitment that matches talent with your business needs',
+                        'Full compliance with national and international labor laws',
+                        'Post-placement support to ensure successful integration'
                     ] as $item)
-                    <div class="group p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500">
-                        <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
-                            <i data-lucide="{{$item['i']}}" class="w-7 h-7 text-{{$item['c']}}-600"></i>
-                        </div>
-                        <p class="text-lg font-bold text-slate-800 leading-tight">{{$item['t']}}</p>
+                    <div class="group relative overflow-hidden rounded-2xl bg-slate-900 p-5 text-center shadow-lg border border-slate-800 hover:-translate-y-1 transition-all duration-300 flex items-center justify-center">
+                        <!-- Hover Effect -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        
+                        <p class="relative z-10 text-xs font-medium text-blue-100/80 leading-relaxed">{{$item}}</p>
                     </div>
                 @endforeach
             </div>
