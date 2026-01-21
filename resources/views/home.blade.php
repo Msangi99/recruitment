@@ -340,10 +340,67 @@
 
 
     <!-- Our Solution Section -->
-    <section class="py-16 bg-white relative overflow-hidden">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-center">
-                <img src="{{ asset('solution_section.png') }}" alt="Our Solution - Recruitment Services" class="w-full max-w-4xl rounded-2xl shadow-xl">
+    <section class="py-16 bg-gray-50 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tight text-slate-900 mb-8 text-center">SOLUTION</h1>
+
+            <div class="bg-white rounded-3xl overflow-hidden shadow-2xl">
+                <!-- TOP AREA -->
+                <div class="grid md:grid-cols-[1fr_420px] gap-6 p-7 items-center">
+                    <div class="flex gap-4 items-start max-w-xl">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                            <!-- Bulb/Idea icon -->
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" class="text-blue-600">
+                                <path d="M9 21h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M10 17h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M12 2a7 7 0 0 0-4 12c.6.5 1 1.2 1.2 2h5.6c.2-.8.6-1.5 1.2-2A7 7 0 0 0 12 2Z"
+                                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+
+                        <p class="text-slate-600 leading-relaxed text-sm">
+                            Many companies struggle to find skilled and qualified candidates for their key positions,
+                            leading to delays and increased costs. This is where Coyzon Company Limited comes in.
+                            We help employers quickly and efficiently connect with the right talent, ensuring every
+                            candidate is thoroughly vetted, aligned with job requirements, and ready to contribute
+                            immediately. From job analysis to onboarding, we provide professional support at every step.
+                        </p>
+                    </div>
+
+                    <div class="relative rounded-2xl overflow-hidden h-36 bg-slate-100">
+                        <img src="{{ asset('solution_top_image.jpg') }}" alt="Top office scene" class="w-full h-full object-cover">
+                        {{-- <div class="absolute right-0 top-0 w-16 h-full bg-blue-600"></div> --}}
+                    </div>
+                </div>
+
+                <!-- BOTTOM AREA -->
+                <div class="bg-gradient-to-br from-teal-50 to-cyan-50 grid md:grid-cols-[420px_1fr] gap-8 p-7">
+                    <div class="rounded-2xl overflow-hidden h-80 bg-slate-200">
+                        <img src="{{ asset('solution_bottom_image.jpg') }}" alt="Office workspace" class="w-full h-full object-cover">
+                    </div>
+
+                    <div class="space-y-3 pr-2">
+                        @foreach([
+                            ['title' => 'End-to-End Recruitment Solutions', 'desc' => 'From job requirement analysis, sourcing, screening, hiring, onboarding, to post-hire follow-up.'],
+                            ['title' => 'Temporary & Contract Staffing', 'desc' => 'Conducting initial interviews, aptitude tests, and reference checks before presenting candidates.'],
+                            ['title' => 'Payroll & HR Support', 'desc' => 'Managing salaries, benefits, and other HR matters for agency-deployed staff.'],
+                            ['title' => 'Training & Upskilling', 'desc' => 'Preparing candidates with training to ensure immediate contribution to the company.'],
+                            ['title' => 'Market & Salary Benchmarking', 'desc' => 'Advising on labor market trends, salary ranges, and talent competition.']
+                        ] as $item)
+                        <div class="grid grid-cols-[auto_1fr] gap-3 py-2">
+                            <div class="w-7 h-7 rounded-lg bg-blue-500/15 flex items-center justify-center mt-0.5">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-blue-600">
+                                    <path d="M20 6 9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900 mb-1">{{ $item['title'] }}</h3>
+                                <p class="text-xs text-slate-600 leading-relaxed">{{ $item['desc'] }}</p>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -540,12 +597,12 @@
         <div class="px-4 sm:px-6 lg:px-12 relative z-10 w-full">
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 text-center md:text-left max-w-7xl mx-auto">
                 <div class="max-w-2xl">
-                    <h2 class="text-indigo-600 font-bold tracking-[0.2em] uppercase text-sm mb-4">Global Network</h2>
+                    <h2 class="text-slate-900 tracking-[0.2em] uppercase text-sm mb-4">Global Network</h2>
                     <h1 class="text-4xl md:text-5xl font-black text-slate-900 leading-tight uppercase tracking-tighter">
                         Target <span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-[#A52A2A] to-slate-900">Destinations</span>
                     </h1>
                     <p class="mt-6 text-lg text-slate-600 leading-relaxed font-medium">
-                        Connecting Tanzanian talent to the world's leading economic hubs with end-to-end support and ethical placement.
+                        Connecting African to the world's leading economic hubs with end-to-end support and ethical placement.
                     </p>
                 </div>
                 <div class="hidden lg:flex items-center gap-4 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50">

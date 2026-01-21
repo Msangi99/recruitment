@@ -55,142 +55,147 @@
     </nav>
 
     <!-- About Us Section -->
-    <section id="about" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8">
-                    <div>
-                        <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight">ABOUT US</h2>
+    <section id="about" class="pt-24 pb-12 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="space-y-8 text-center">
+                <div>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-6">ABOUT US</h2>
+                    <div class="w-24 h-1.5 bg-blue-600 mx-auto rounded-full mb-8"></div>
+                </div>
+
+                <div class="space-y-6 text-lg text-slate-600 leading-relaxed text-justify">
+                    <p>
+                        At Coyzon, we believe in connecting people to the right opportunities. Built on
+                        professionalism, transparency, and trust, we specialize in delivering reliable recruitment
+                        solutions that bridge employers with skilled and verified talent locally and
+                        internationally.
+                    </p>
+                    <p>
+                        We understand that every organization has unique workforce needs. That's why our approach is
+                        tailored, strategic, and results-oriented. From sourcing top candidates to conducting
+                        thorough screenings and ensuring seamless placements, we streamline the entire recruitment
+                        process with precision and integrity.
+                    </p>
+                    <p>
+                        Beyond serving employers, Coyzon is equally committed to supporting job seekers. We guide
+                        candidates through credible career opportunities, ensure fair recruitment practices, and
+                        connect them with employers who value their skills and potential. Our goal is to create
+                        long-term success for both talent and organizations.
+                    </p>
+                    <p>
+                        Our team of HR and talent acquisition specialists is dedicated to delivering qualified
+                        professionals who bring real value to businesses, while helping individuals access
+                        meaningful employment opportunities worldwide.
+                    </p>
+                    <p class="text-slate-900 font-bold text-center mt-8 text-xl">
+                        Professional. Transparent. Reliable.<br>
+                        <span class="text-blue-600">Coyzon</span> — Your trusted partner in global recruitment
+                        excellence.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & Mission Section (Copied from Home) -->
+    <section class="py-16 bg-white relative overflow-hidden">
+        <!-- Background Decor -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50"></div>
+            <div class="absolute top-1/2 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-50"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                <!-- Vision Card -->
+                <div
+                    class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-6 lg:p-8 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div
+                        class="absolute top-0 right-0 -mt-20 -mr-20 h-80 w-80 rounded-full bg-blue-600/20 blur-[80px] group-hover:bg-blue-600/30 transition-colors duration-500">
                     </div>
 
-                    <div class="space-y-6 text-lg text-slate-600 leading-relaxed">
-                        <p>
-                            At Coyzon, we believe in connecting people to the right opportunities. Built on
-                            professionalism, transparency, and trust, we specialize in delivering reliable recruitment
-                            solutions that bridge employers with skilled and verified talent locally and
-                            internationally.
-                        </p>
-                        <p>
-                            We understand that every organization has unique workforce needs. That's why our approach is
-                            tailored, strategic, and results-oriented. From sourcing top candidates to conducting
-                            thorough screenings and ensuring seamless placements, we streamline the entire recruitment
-                            process with precision and integrity.
-                        </p>
-                        <p>
-                            Beyond serving employers, Coyzon is equally committed to supporting job seekers. We guide
-                            candidates through credible career opportunities, ensure fair recruitment practices, and
-                            connect them with employers who value their skills and potential. Our goal is to create
-                            long-term success for both talent and organizations.
-                        </p>
-                        <p>
-                            Our team of HR and talent acquisition specialists is dedicated to delivering qualified
-                            professionals who bring real value to businesses, while helping individuals access
-                            meaningful employment opportunities worldwide.
-                        </p>
-                        <p class="text-slate-900 font-bold">
-                            Professional. Transparent. Reliable.<br>
-                            Coyzon — Your trusted partner in global recruitment excellence.
+                    <div class="relative z-10 flex flex-col h-full">
+                        <h3 class="mb-6 text-xl font-black uppercase tracking-tight">Our Vision</h3>
+
+                        <p class="text-sm leading-relaxed text-blue-100/80 font-medium">
+                            To become the leading global recruitment gateway connecting organizations with exceptional
+                            talent through professionalism, integrity, and an impactful workforce Solutions.
                         </p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="space-y-6">
-                        <div
-                            class="bg-blue-600 aspect-square rounded-3xl flex flex-col items-center justify-center text-white p-8 text-center shadow-2xl shadow-blue-500/20">
-                            <i data-lucide="eye" class="h-12 w-12 mb-4"></i>
-                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wider">OUR VISION</h3>
-                        </div>
-                        <div class="bg-slate-100 aspect-square rounded-3xl p-8 flex flex-col justify-center">
-                            <p class="text-slate-900 font-bold leading-tight">To become the leading global recruitment
-                                gateway connecting organizations with exceptional talent through professionalism,
-                                integrity, and an impactful workforce Solutions.</p>
-                        </div>
+                <!-- Mission Card -->
+                <div
+                    class="group relative overflow-hidden rounded-[2.5rem] bg-slate-900 p-6 lg:p-8 text-white shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30">
+                    <div
+                        class="absolute bottom-0 left-0 -mb-20 -ml-20 h-80 w-80 rounded-full bg-white/10 blur-[80px] group-hover:bg-white/20 transition-colors duration-500">
                     </div>
-                    <div class="space-y-6 pt-12">
-                        <div
-                            class="bg-indigo-600 aspect-square rounded-3xl flex flex-col items-center justify-center text-white p-8 text-center shadow-2xl shadow-indigo-500/20">
-                            <i data-lucide="target" class="h-12 w-12 mb-4"></i>
-                            <h3 class="text-xl font-bold mb-2 uppercase tracking-wider">OUR MISSION</h3>
-                        </div>
-                        <div class="bg-slate-100 aspect-square rounded-3xl p-8 flex flex-col justify-center">
-                            <p class="text-slate-900 font-bold leading-tight">To deliver trusted, efficient, and
-                                transparent recruitment services that empower employers to build strong teams and help
-                                candidates access real, life-changing career opportunities across the world.</p>
-                        </div>
+
+                    <div class="relative z-10 flex flex-col h-full">
+                        <h3 class="mb-6 text-xl font-black uppercase tracking-tight">Our Mission</h3>
+
+                        <p class="text-sm leading-relaxed text-blue-100/80 font-medium">
+                            To deliver trusted, efficient, and transparent recruitment services that empower employers
+                            to build strong teams and help candidates access real, life-changing career opportunities
+                            across the world.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Core Values Section -->
-    <section class="py-24 bg-slate-50 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-extrabold text-slate-900 mb-4">OUR CORE VALUES</h2>
-                <div class="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
+    <!-- Our Core Values Section -->
+    <section class="py-16 bg-white relative overflow-hidden">
+        <!-- Background Blur Effects -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-50 rounded-full blur-3xl opacity-50"></div>
+            <div class="absolute bottom-0 right-0 w-80 h-80 bg-indigo-50 rounded-full blur-3xl opacity-50"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Section Header -->
+            <div class="text-center mb-12">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 tracking-tight uppercase">Our Core
+                    Values</h2>
+                <div class="w-16 h-1 bg-cyan-500 mx-auto rounded-full"></div>
             </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Professionalism -->
-                <div
-                    class="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-slate-100">
-                    <div
-                        class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors duration-500">
-                        <i data-lucide="award"
-                            class="h-8 w-8 text-blue-600 group-hover:text-white transition-colors duration-500"></i>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+                @foreach([
+                        [
+                            'title' => 'Professionalism',
+                            'desc' => 'We maintain the highest standards in every step of the recruitment process.',
+                            'bg' => 'bg-cyan-600/20 group-hover:bg-cyan-600/30',
+                            'pos' => 'top-0 right-0 -mt-10 -mr-10'
+                        ],
+                        [
+                            'title' => 'Integrity',
+                            'desc' => 'We operate with honesty, transparency, and accountability.',
+                            'bg' => 'bg-blue-600/20 group-hover:bg-blue-600/30',
+                            'pos' => 'bottom-0 left-0 -mb-10 -ml-10'
+                        ],
+                        [
+                            'title' => 'Reliability',
+                            'desc' => 'We deliver consistent results with timely and dependable solutions.',
+                            'bg' => 'bg-cyan-600/20 group-hover:bg-cyan-600/30',
+                            'pos' => 'top-0 left-0 -mt-10 -ml-10'
+                        ],
+                        [
+                            'title' => 'Partnership',
+                            'desc' => 'We match organizations with verified, skilled candidates who add real value.',
+                            'bg' => 'bg-blue-600/20 group-hover:bg-blue-600/30',
+                            'pos' => 'bottom-0 right-0 -mb-10 -mr-10'
+                        ]
+                    ] as $value)
+                    <div class="group relative overflow-hidden rounded-2xl bg-slate-900 shadow-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-slate-900/30 min-h-[200px] flex flex-col justify-center">
+                        <div class="absolute {{ $value['pos'] }} h-32 w-32 rounded-full {{ $value['bg'] }} blur-[40px] transition-colors duration-500"></div>
+                        <div class="relative z-10 p-6 text-center">
+                            <h3 class="text-lg font-bold text-white mb-2">{{ $value['title'] }}</h3>
+                            <p class="text-sm text-blue-100/80 leading-relaxed">{{ $value['desc'] }}</p>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">1. Professionalism</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        We maintain the highest standards in every step of the recruitment process.
-                    </p>
-                </div>
-
-                <!-- Integrity -->
-                <div
-                    class="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-slate-100">
-                    <div
-                        class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 transition-colors duration-500">
-                        <i data-lucide="shield-check"
-                            class="h-8 w-8 text-emerald-600 group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">2. Integrity</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        We operate with honesty, transparency, and accountability, ensuring trust for both employers and
-                        candidates.
-                    </p>
-                </div>
-
-                <!-- Reliability -->
-                <div
-                    class="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-slate-100">
-                    <div
-                        class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-600 transition-colors duration-500">
-                        <i data-lucide="clock"
-                            class="h-8 w-8 text-amber-600 group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">3. Reliability</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        We deliver consistent results, offering timely and dependable recruitment solutions.
-                    </p>
-                </div>
-
-                <!-- Partnership -->
-                <div
-                    class="group bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-2 border border-slate-100">
-                    <div
-                        class="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-600 transition-colors duration-500">
-                        <i data-lucide="handshake"
-                            class="h-8 w-8 text-indigo-600 group-hover:text-white transition-colors duration-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-4">4. Partnership</h3>
-                    <p class="text-slate-600 leading-relaxed">
-                        We work closely with employers and agencies to understand their needs and provide tailored
-                        workforce solutions through matching organizations with verified, skilled, and committed
-                        candidates who add real value.
-                    </p>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -201,7 +206,14 @@
             <div class="text-center mb-16">
                 <h2 class="text-4xl font-extrabold text-slate-900 mb-4">Our Team</h2>
                 <div class="w-20 h-1 bg-blue-600 mx-auto rounded-full"></div>
-                <p class="mt-6 text-lg text-slate-600">Meet the dedicated professionals driving COYZON's success</p>
+                <p class="mt-6 text-lg text-slate-600 max-w-4xl mx-auto">
+                    Our team consists of skilled, reliable, and well-coordinated recruitment professionals committed to
+                    delivering high-quality recruitment and candidate placement services. We work closely with employers
+                    and partners to ensure the right talent is sourced, screened, and placed efficiently for long-term success.
+                    Beyond work, our team members enjoy reading, sports and fitness activities, travel, and continuous
+                    learning—strengthening teamwork, adaptability, and strong professional relationships with our clients and
+                    partners.
+                </p>
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">

@@ -18,189 +18,232 @@
                     </div>
                 @endif
 
-                <form method="GET" action="{{ route('candidate.jobs.index') }}" class="mb-6">
+                <form method="GET" action="{{ route('candidate.jobs.index') }}" id="filterForm" class="mb-6">
                     <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                            <!-- Search -->
-                            <div class="lg:col-span-3">
+                        <!-- Search Bar -->
+                        <div class="mb-4">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
                                 <input type="text" name="search" value="{{ request('search') }}"
-                                    placeholder="Search jobs, companies..."
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            </div>
-
-                            <!-- Category -->
-                            <div>
-                                <select name="category_id"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">All Categories</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Country -->
-                            <div>
-                                <select name="country"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">All Countries</option>
-                                    <option value="Canada" {{ request('country') == 'Canada' ? 'selected' : '' }}>Canada
-                                    </option>
-                                    <option value="Poland" {{ request('country') == 'Poland' ? 'selected' : '' }}>Poland
-                                    </option>
-                                    <option value="Germany" {{ request('country') == 'Germany' ? 'selected' : '' }}>Germany
-                                    </option>
-                                    <option value="Romania" {{ request('country') == 'Romania' ? 'selected' : '' }}>Romania
-                                    </option>
-                                    <option value="Croatia" {{ request('country') == 'Croatia' ? 'selected' : '' }}>Croatia
-                                    </option>
-                                    <option value="OMAN" {{ request('country') == 'OMAN' ? 'selected' : '' }}>OMAN</option>
-                                    <option value="Australia" {{ request('country') == 'Australia' ? 'selected' : '' }}>
-                                        Australia</option>
-                                    <option value="QUATAR" {{ request('country') == 'QUATAR' ? 'selected' : '' }}>QUATAR
-                                    </option>
-                                    <option value="Kuwait" {{ request('country') == 'Kuwait' ? 'selected' : '' }}>Kuwait
-                                    </option>
-                                    <option value="United Arab Emirates" {{ request('country') == 'United Arab Emirates' ? 'selected' : '' }}>United Arab Emirates</option>
-                                    <option value="Saudi Arabia" {{ request('country') == 'Saudi Arabia' ? 'selected' : '' }}>
-                                        Saudi Arabia</option>
-                                    <option value="Serbia" {{ request('country') == 'Serbia' ? 'selected' : '' }}>Serbia
-                                    </option>
-                                    <option value="Bulgaria" {{ request('country') == 'Bulgaria' ? 'selected' : '' }}>Bulgaria
-                                    </option>
-                                    <option value="Ukraine" {{ request('country') == 'Ukraine' ? 'selected' : '' }}>Ukraine
-                                    </option>
-                                    <option value="Czech republic" {{ request('country') == 'Czech republic' ? 'selected' : '' }}>Czech republic</option>
-                                    <option value="Latvia" {{ request('country') == 'Latvia' ? 'selected' : '' }}>Latvia
-                                    </option>
-                                    <option value="Slovakia" {{ request('country') == 'Slovakia' ? 'selected' : '' }}>Slovakia
-                                    </option>
-                                    <option value="Lithuania" {{ request('country') == 'Lithuania' ? 'selected' : '' }}>
-                                        Lithuania</option>
-                                    <option value="Other Countries" {{ request('country') == 'Other Countries' ? 'selected' : '' }}>Other Countries</option>
-                                </select>
-                            </div>
-
-                            <!-- Job Type -->
-                            <div>
-                                <select name="employment_type"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">All Job Types</option>
-                                    <option value="full-time" {{ request('employment_type') == 'full-time' ? 'selected' : '' }}>Full-time</option>
-                                    <option value="contract" {{ request('employment_type') == 'contract' ? 'selected' : '' }}>
-                                        Contract</option>
-                                    <option value="seasonal" {{ request('employment_type') == 'seasonal' ? 'selected' : '' }}>
-                                        Seasonal</option>
-                                    <option value="temporary" {{ request('employment_type') == 'temporary' ? 'selected' : '' }}>Temporary</option>
-                                </select>
-                            </div>
-
-                            <!-- Experience Level -->
-                            <div>
-                                <select name="experience_level"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">All Experience Levels</option>
-                                    <option value="no-experience" {{ request('experience_level') == 'no-experience' ? 'selected' : '' }}>No experience</option>
-                                    <option value="1-2" {{ request('experience_level') == '1-2' ? 'selected' : '' }}>1–2 years
-                                    </option>
-                                    <option value="3-5" {{ request('experience_level') == '3-5' ? 'selected' : '' }}>3–5 years
-                                    </option>
-                                    <option value="5+" {{ request('experience_level') == '5+' ? 'selected' : '' }}>5+ years
-                                    </option>
-                                </select>
-                            </div>
-
-                            <!-- Education Level -->
-                            <div>
-                                <select name="education_level"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">All Education Levels</option>
-                                    <option value="no-formal-education" {{ request('education_level') == 'no-formal-education' ? 'selected' : '' }}>No formal education</option>
-                                    <option value="secondary-school" {{ request('education_level') == 'secondary-school' ? 'selected' : '' }}>Secondary School</option>
-                                    <option value="certificate" {{ request('education_level') == 'certificate' ? 'selected' : '' }}>Certificate</option>
-                                    <option value="diploma" {{ request('education_level') == 'diploma' ? 'selected' : '' }}>
-                                        Diploma</option>
-                                    <option value="bachelor" {{ request('education_level') == 'bachelor' ? 'selected' : '' }}>
-                                        Bachelor's Degree</option>
-                                    <option value="master-plus" {{ request('education_level') == 'master-plus' ? 'selected' : '' }}>Master's Degree+</option>
-                                </select>
-                            </div>
-
-                            <!-- Language Requirement -->
-                            <div>
-                                <select name="language"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">All Languages</option>
-                                    <option value="no-requirement" {{ request('language') == 'no-requirement' ? 'selected' : '' }}>No language requirement</option>
-                                    <option value="Basic English" {{ request('language') == 'Basic English' ? 'selected' : '' }}>Basic English</option>
-                                    <option value="Intermediate English" {{ request('language') == 'Intermediate English' ? 'selected' : '' }}>Intermediate English</option>
-                                    <option value="Advanced English" {{ request('language') == 'Advanced English' ? 'selected' : '' }}>Advanced English</option>
-                                    <option value="Other language required" {{ request('language') == 'Other language required' ? 'selected' : '' }}>Other language required</option>
-                                </select>
-                            </div>
-
-                            <!-- Salary Period -->
-                            <div>
-                                <select name="salary_period"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">Salary Period</option>
-                                    <option value="monthly" {{ request('salary_period') == 'monthly' ? 'selected' : '' }}>
-                                        Monthly</option>
-                                    <option value="hourly" {{ request('salary_period') == 'hourly' ? 'selected' : '' }}>Hourly
-                                    </option>
-                                </select>
-                            </div>
-
-                            <!-- Min Salary -->
-                            <div>
-                                <input type="number" name="min_salary" value="{{ request('min_salary') }}"
-                                    placeholder="Min Salary" min="0"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            </div>
-
-                            <!-- Max Salary -->
-                            <div>
-                                <input type="number" name="max_salary" value="{{ request('max_salary') }}"
-                                    placeholder="Max Salary" min="0"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            </div>
-
-                            <!-- Date Posted -->
-                            <div>
-                                <select name="date_posted"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">Date Posted</option>
-                                    <option value="48-hours" {{ request('date_posted') == '48-hours' ? 'selected' : '' }}>Last
-                                        48 HR</option>
-                                    <option value="7-days" {{ request('date_posted') == '7-days' ? 'selected' : '' }}>Last 7
-                                        days</option>
-                                    <option value="30-days" {{ request('date_posted') == '30-days' ? 'selected' : '' }}>Last
-                                        30 days</option>
-                                    <option value="30-plus" {{ request('date_posted') == '30-plus' ? 'selected' : '' }}>More
-                                        than 30 days</option>
-                                </select>
-                            </div>
-
-                            <!-- Hours of work -->
-                            <div>
-                                <select name="work_hours"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                                    <option value="">Hours of Work</option>
-                                    <option value="full-time" {{ request('work_hours') == 'full-time' ? 'selected' : '' }}>
-                                        Full time</option>
-                                    <option value="part-time" {{ request('work_hours') == 'part-time' ? 'selected' : '' }}>
-                                        Part time</option>
-                                </select>
+                                    placeholder="Search jobs, companies, or keywords..."
+                                    class="block w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base transition-all duration-200">
                             </div>
                         </div>
 
-                        <div class="flex justify-end gap-2">
-                            <a href="{{ route('candidate.jobs.index') }}"
-                                class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors">Clear
-                                Filters</a>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <!-- Job Category Filter -->
+                            <select name="job_category" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Category</option>
+                                <option value="Agriculture" {{ request('job_category') == 'Agriculture' ? 'selected' : '' }}>
+                                    Agriculture</option>
+                                <option value="Hospitality" {{ request('job_category') == 'Hospitality' ? 'selected' : '' }}>
+                                    Hospitality</option>
+                                <option value="Healthcare" {{ request('job_category') == 'Healthcare' ? 'selected' : '' }}>
+                                    Healthcare</option>
+                                <option value="Logistics & Transport" {{ request('job_category') == 'Logistics & Transport' ? 'selected' : '' }}>Logistics & Transport</option>
+                                <option value="Construction" {{ request('job_category') == 'Construction' ? 'selected' : '' }}>Construction</option>
+                            </select>
+
+                            <!-- Location (Country) Filter -->
+                            <select name="country" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Location</option>
+                                <option value="Canada" {{ request('country') == 'Canada' ? 'selected' : '' }}>Canada</option>
+                                <option value="Poland" {{ request('country') == 'Poland' ? 'selected' : '' }}>Poland</option>
+                                <option value="Germany" {{ request('country') == 'Germany' ? 'selected' : '' }}>Germany
+                                </option>
+                                <option value="Romania" {{ request('country') == 'Romania' ? 'selected' : '' }}>Romania
+                                </option>
+                                <option value="Croatia" {{ request('country') == 'Croatia' ? 'selected' : '' }}>Croatia
+                                </option>
+                                <option value="Spain" {{ request('country') == 'Spain' ? 'selected' : '' }}>Spain</option>
+                                <option value="Italy" {{ request('country') == 'Italy' ? 'selected' : '' }}>Italy</option>
+                                <option value="France" {{ request('country') == 'France' ? 'selected' : '' }}>France</option>
+                                <option value="United Kingdom" {{ request('country') == 'United Kingdom' ? 'selected' : '' }}>
+                                    United Kingdom</option>
+                                <option value="Netherlands" {{ request('country') == 'Netherlands' ? 'selected' : '' }}>
+                                    Netherlands</option>
+                                <option value="Belgium" {{ request('country') == 'Belgium' ? 'selected' : '' }}>Belgium
+                                </option>
+                                <option value="Switzerland" {{ request('country') == 'Switzerland' ? 'selected' : '' }}>
+                                    Switzerland</option>
+                                <option value="Austria" {{ request('country') == 'Austria' ? 'selected' : '' }}>Austria
+                                </option>
+                                <option value="Oman" {{ request('country') == 'Oman' ? 'selected' : '' }}>Oman</option>
+                                <option value="Australia" {{ request('country') == 'Australia' ? 'selected' : '' }}>Australia
+                                </option>
+                                <option value="Qatar" {{ request('country') == 'Qatar' ? 'selected' : '' }}>Qatar</option>
+                                <option value="Kuwait" {{ request('country') == 'Kuwait' ? 'selected' : '' }}>Kuwait</option>
+                                <option value="United Arab Emirates" {{ request('country') == 'United Arab Emirates' ? 'selected' : '' }}>United Arab Emirates</option>
+                                <option value="Saudi Arabia" {{ request('country') == 'Saudi Arabia' ? 'selected' : '' }}>
+                                    Saudi Arabia</option>
+                                <option value="Bahrain" {{ request('country') == 'Bahrain' ? 'selected' : '' }}>Bahrain
+                                </option>
+                                <option value="Jordan" {{ request('country') == 'Jordan' ? 'selected' : '' }}>Jordan</option>
+                                <option value="Lebanon" {{ request('country') == 'Lebanon' ? 'selected' : '' }}>Lebanon
+                                </option>
+                                <option value="Egypt" {{ request('country') == 'Egypt' ? 'selected' : '' }}>Egypt</option>
+                                <option value="South Africa" {{ request('country') == 'South Africa' ? 'selected' : '' }}>
+                                    South Africa</option>
+                                <option value="Kenya" {{ request('country') == 'Kenya' ? 'selected' : '' }}>Kenya</option>
+                                <option value="Tanzania" {{ request('country') == 'Tanzania' ? 'selected' : '' }}>Tanzania
+                                </option>
+                                <option value="Uganda" {{ request('country') == 'Uganda' ? 'selected' : '' }}>Uganda</option>
+                                <option value="Rwanda" {{ request('country') == 'Rwanda' ? 'selected' : '' }}>Rwanda</option>
+                                <option value="United States" {{ request('country') == 'United States' ? 'selected' : '' }}>
+                                    United States</option>
+                                <option value="Singapore" {{ request('country') == 'Singapore' ? 'selected' : '' }}>Singapore
+                                </option>
+                                <option value="Malaysia" {{ request('country') == 'Malaysia' ? 'selected' : '' }}>Malaysia
+                                </option>
+                                <option value="Japan" {{ request('country') == 'Japan' ? 'selected' : '' }}>Japan</option>
+                                <option value="South Korea" {{ request('country') == 'South Korea' ? 'selected' : '' }}>South
+                                    Korea</option>
+                                <option value="China" {{ request('country') == 'China' ? 'selected' : '' }}>China</option>
+                                <option value="India" {{ request('country') == 'India' ? 'selected' : '' }}>India</option>
+                            </select>
+
+                            <!-- Employment Type -->
+                            <select name="employment_type" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Employment Type</option>
+                                <option value="full-time" {{ request('employment_type') == 'full-time' ? 'selected' : '' }}>
+                                    Full-time</option>
+                                <option value="part-time" {{ request('employment_type') == 'part-time' ? 'selected' : '' }}>
+                                    Part-time</option>
+                                <option value="contract" {{ request('employment_type') == 'contract' ? 'selected' : '' }}>
+                                    Contract</option>
+                                <option value="temporary" {{ request('employment_type') == 'temporary' ? 'selected' : '' }}>
+                                    Temporary</option>
+                                <option value="seasonal" {{ request('employment_type') == 'seasonal' ? 'selected' : '' }}>
+                                    Seasonal</option>
+                            </select>
+
+                            <!-- Working Mode -->
+                            <select name="working_mode" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Working Mode</option>
+                                <option value="on-site" {{ request('working_mode') == 'on-site' ? 'selected' : '' }}>On-site
+                                </option>
+                                <option value="remote" {{ request('working_mode') == 'remote' ? 'selected' : '' }}>Remote
+                                </option>
+                                <option value="hybrid" {{ request('working_mode') == 'hybrid' ? 'selected' : '' }}>Hybrid
+                                </option>
+                            </select>
+
+                            <!-- Date Posted -->
+                            <select name="date_posted" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Date Posted</option>
+                                <option value="3-days" {{ request('date_posted') == '3-days' ? 'selected' : '' }}>Last 3 days
+                                </option>
+                                <option value="7-days" {{ request('date_posted') == '7-days' ? 'selected' : '' }}>Last 7 days
+                                </option>
+                                <option value="30-days" {{ request('date_posted') == '30-days' ? 'selected' : '' }}>Last 30
+                                    days</option>
+                            </select>
+
+                            <!-- Experience Level -->
+                            <select name="experience_level" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Experience Level</option>
+                                <option value="no-experience" {{ request('experience_level') == 'no-experience' ? 'selected' : '' }}>No Experience</option>
+                                <option value="mid-level" {{ request('experience_level') == 'mid-level' ? 'selected' : '' }}>
+                                    Mid-level</option>
+                                <option value="senior" {{ request('experience_level') == 'senior' ? 'selected' : '' }}>Senior
+                                </option>
+                            </select>
+
+                            <!-- Salary Frequency -->
+                            <select name="salary_period" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Salary Frequency</option>
+                                <option value="monthly" {{ request('salary_period') == 'monthly' ? 'selected' : '' }}>
+                                    Monthly</option>
+                                <option value="hourly" {{ request('salary_period') == 'hourly' ? 'selected' : '' }}>Hourly
+                                </option>
+                            </select>
+
+                            <!-- Education Level -->
+                            <select name="education_level" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Education Level</option>
+                                <option value="no-education" {{ request('education_level') == 'no-education' ? 'selected' : '' }}>No Education</option>
+                                <option value="certificate" {{ request('education_level') == 'certificate' ? 'selected' : '' }}>Certificate</option>
+                                <option value="diploma" {{ request('education_level') == 'diploma' ? 'selected' : '' }}>
+                                    Diploma</option>
+                                <option value="degree" {{ request('education_level') == 'degree' ? 'selected' : '' }}>Degree
+                                </option>
+                            </select>
+
+                            <!-- Industry -->
+                            <select name="industry" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Industry</option>
+                                <option value="Construction" {{ request('industry') == 'Construction' ? 'selected' : '' }}>
+                                    Construction</option>
+                                <option value="Healthcare" {{ request('industry') == 'Healthcare' ? 'selected' : '' }}>
+                                    Healthcare</option>
+                                <option value="Manufacturing" {{ request('industry') == 'Manufacturing' ? 'selected' : '' }}>
+                                    Manufacturing</option>
+                                <option value="Agriculture" {{ request('industry') == 'Agriculture' ? 'selected' : '' }}>
+                                    Agriculture</option>
+                                <option value="Transport & Logistics" {{ request('industry') == 'Transport & Logistics' ? 'selected' : '' }}>Transport & Logistics</option>
+                                <option value="Hospitality" {{ request('industry') == 'Hospitality' ? 'selected' : '' }}>
+                                    Hospitality</option>
+                            </select>
+
+                            <!-- Visa Sponsorship -->
+                            <select name="visa_sponsorship" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Visa Sponsorship</option>
+                                <option value="yes" {{ request('visa_sponsorship') == 'yes' ? 'selected' : '' }}>Yes</option>
+                                <option value="no" {{ request('visa_sponsorship') == 'no' ? 'selected' : '' }}>No</option>
+                            </select>
+
+                            <!-- Language -->
+                            <select name="language" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Language</option>
+                                <option value="English" {{ request('language') == 'English' ? 'selected' : '' }}>English
+                                </option>
+                                <option value="Arabic" {{ request('language') == 'Arabic' ? 'selected' : '' }}>Arabic</option>
+                                <option value="French" {{ request('language') == 'French' ? 'selected' : '' }}>French</option>
+                                <option value="Swahili" {{ request('language') == 'Swahili' ? 'selected' : '' }}>Swahili
+                                </option>
+                            </select>
+
+                            <!-- Salary Range -->
+                            <div class="lg:col-span-2">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <input type="number" name="salary_min" value="{{ request('salary_min') }}"
+                                        placeholder="Min Salary"
+                                        class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                    <input type="number" name="salary_max" value="{{ request('salary_max') }}"
+                                        placeholder="Max Salary"
+                                        class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 flex justify-between items-center">
+                            @if(request()->anyFilled(['job_category', 'country', 'employment_type', 'working_mode', 'experience_level', 'education_level', 'salary_period', 'industry', 'visa_sponsorship', 'language', 'date_posted', 'salary_min', 'salary_max', 'search']))
+                                <a href="{{ route('candidate.jobs.index') }}"
+                                    class="text-sm text-blue-600 hover:underline">Clear all filters</a>
+                            @else
+                                <span></span>
+                            @endif
                             <button type="submit"
-                                class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">Apply
-                                Filters</button>
+                                class="bg-gray-900 text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium">
+                                Update Results
+                            </button>
                         </div>
                     </div>
                 </form>

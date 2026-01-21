@@ -30,7 +30,14 @@ class JobApplicationController extends Controller
             });
         }
 
-        // Category filter
+        // Job Category filter (by name)
+        if ($request->filled('job_category')) {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('name', $request->job_category);
+            });
+        }
+
+        // Category filter (by ID - backward compatibility)
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
@@ -50,6 +57,11 @@ class JobApplicationController extends Controller
             $query->where('employment_type', $request->employment_type);
         }
 
+        // Working Mode filter (on-site, remote, hybrid)
+        if ($request->filled('working_mode')) {
+            $query->where('working_mode', $request->working_mode);
+        }
+
         // Hours of work (Full time/Part time) filter
         if ($request->filled('work_hours')) {
             $query->where('work_hours', $request->work_hours);
@@ -60,6 +72,12 @@ class JobApplicationController extends Controller
             switch ($request->experience_level) {
                 case 'no-experience':
                     $query->where('experience_required', 0);
+                    break;
+                case 'mid-level':
+                    $query->whereBetween('experience_required', [2, 5]);
+                    break;
+                case 'senior':
+                    $query->where('experience_required', '>=', 5);
                     break;
                 case '1-2':
                     $query->whereBetween('experience_required', [1, 2]);
@@ -76,6 +94,22 @@ class JobApplicationController extends Controller
         // Education level filter
         if ($request->filled('education_level')) {
             $query->where('education_level', $request->education_level);
+        }
+
+        // Industry filter
+        if ($request->filled('industry')) {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('name', $request->industry);
+            })->orWhere('industry', $request->industry);
+        }
+
+        // Visa Sponsorship filter
+        if ($request->filled('visa_sponsorship')) {
+            if ($request->visa_sponsorship === 'yes') {
+                $query->where('visa_sponsorship', true);
+            } elseif ($request->visa_sponsorship === 'no') {
+                $query->where('visa_sponsorship', false);
+            }
         }
 
         // Language filter
@@ -95,23 +129,29 @@ class JobApplicationController extends Controller
             $query->where('salary_period', $request->salary_period);
         }
 
-        // Salary range filter
-        if ($request->filled('min_salary')) {
-            $query->where(function($q) use ($request) {
-                $q->where('salary_min', '>=', $request->min_salary)
-                  ->orWhere('salary_max', '>=', $request->min_salary);
+        // Salary range filter (support both naming conventions)
+        $salaryMin = $request->filled('salary_min') ? $request->salary_min : $request->min_salary;
+        $salaryMax = $request->filled('salary_max') ? $request->salary_max : $request->max_salary;
+        
+        if ($salaryMin) {
+            $query->where(function($q) use ($salaryMin) {
+                $q->where('salary_min', '>=', $salaryMin)
+                  ->orWhere('salary_max', '>=', $salaryMin);
             });
         }
-        if ($request->filled('max_salary')) {
-            $query->where(function($q) use ($request) {
-                $q->where('salary_min', '<=', $request->max_salary)
-                  ->orWhere('salary_max', '<=', $request->max_salary);
+        if ($salaryMax) {
+            $query->where(function($q) use ($salaryMax) {
+                $q->where('salary_min', '<=', $salaryMax)
+                  ->orWhere('salary_max', '<=', $salaryMax);
             });
         }
 
         // Date posted filter
         if ($request->filled('date_posted')) {
             switch ($request->date_posted) {
+                case '3-days':
+                    $query->where('created_at', '>=', now()->subDays(3));
+                    break;
                 case '48-hours':
                     $query->where('created_at', '>=', now()->subHours(48));
                     break;
@@ -127,7 +167,7 @@ class JobApplicationController extends Controller
             }
         }
 
-        $jobs = $query->latest()->paginate(20);
+        $jobs = $query->latest()->paginate(20)->withQueryString();
         $categories = Category::where('is_active', true)->get();
         $myApplications = JobApplication::where('candidate_id', $candidate->id)
             ->pluck('job_id')

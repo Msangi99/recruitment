@@ -27,11 +27,15 @@ class JobListing extends Model
         'location',
         'country',
         'employment_type',
+        'working_mode',
+        'industry',
         'work_hours',
         'education_level',
         'experience_required',
+        'experience_level',
         'required_skills',
         'languages',
+        'visa_sponsorship',
         'salary_min',
         'salary_max',
         'salary_currency',
@@ -50,6 +54,7 @@ class JobListing extends Model
         'salary_max' => 'decimal:2',
         'is_active' => 'boolean',
         'requires_video' => 'boolean',
+        'visa_sponsorship' => 'boolean',
         'application_deadline' => 'date',
     ];
 

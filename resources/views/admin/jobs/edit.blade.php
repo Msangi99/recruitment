@@ -103,12 +103,11 @@
                                     Requirement</label>
                                 <select id="languages" name="languages"
                                     class="w-full border border-gray-300 rounded-xl px-4 py-2.5 focus:ring-blue-500 focus:border-blue-500 shadow-sm bg-white">
-                                    <option value="">Any Language</option>
-                                    <option value="no-requirement" {{ old('languages', $job->languages) == 'no-requirement' ? 'selected' : '' }}>No language requirement</option>
-                                    <option value="Basic English" {{ old('languages', $job->languages) == 'Basic English' ? 'selected' : '' }}>Basic English</option>
-                                    <option value="Intermediate English" {{ old('languages', $job->languages) == 'Intermediate English' ? 'selected' : '' }}>Intermediate English</option>
-                                    <option value="Advanced English" {{ old('languages', $job->languages) == 'Advanced English' ? 'selected' : '' }}>Advanced English</option>
-                                    <option value="Other language required" {{ old('languages', $job->languages) == 'Other language required' ? 'selected' : '' }}>Other language required</option>
+                                    <option value="">Select Language</option>
+                                    <option value="English" {{ old('languages', $job->languages) == 'English' ? 'selected' : '' }}>English</option>
+                                    <option value="Arabic" {{ old('languages', $job->languages) == 'Arabic' ? 'selected' : '' }}>Arabic</option>
+                                    <option value="French" {{ old('languages', $job->languages) == 'French' ? 'selected' : '' }}>French</option>
+                                    <option value="Swahili" {{ old('languages', $job->languages) == 'Swahili' ? 'selected' : '' }}>Swahili</option>
                                 </select>
                             </div>
                         </div>
