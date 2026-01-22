@@ -137,7 +137,7 @@
                         <p class="text-xs font-medium text-slate-500">
                             Already have an account?
                             <a href="{{ route('login') }}" class="font-bold text-blue-400 hover:text-blue-300 ml-1">
-                                Sign in here
+                                Sign in 
                             </a>
                         </p>
                     </div>
