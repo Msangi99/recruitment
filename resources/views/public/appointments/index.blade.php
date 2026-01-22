@@ -9,7 +9,7 @@
                 <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">Book an Appointment</h1>
                 <div class="w-20 h-1.5 bg-green-600 mx-auto rounded-full mb-6"></div>
                 <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                    Ready to take the next step?
+                    Ready to take the next step?<br>
                     Book a one-on-one appointment with our team and get personalized guidance, clear solutions,
                     and professional support tailored to your goals.
                 </p>
@@ -27,14 +27,15 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Employer / Client Consultation</h3>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-4">Employer or Client</h3>
                     <p class="text-gray-600 mb-8 flex-grow">
-                        Schedule a <span class="font-bold text-green-600">free consultation</span> to discuss your workforce
-                        needs, recruitment options, and overseas candidate availability.
+                        Looking to hire qualified candidates or outsource recruitment support?<br>
+                        Schedule a consultation with us to discuss your staffing needs, hiring plans, and how we can
+                        deliver reliable, results-driven solutions for your business.
                     </p>
                     <a href="{{ route('public.appointments.employer') }}"
                         class="block w-full py-4 bg-green-600 hover:bg-green-700 text-white text-center font-bold rounded-xl transition-colors shadow-lg shadow-green-500/30">
-                        Book Free Consultation
+                        Book Employer Meeting
                     </a>
                 </div>
 
@@ -50,7 +51,7 @@
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-4">Partnership Meeting</h3>
                     <p class="text-gray-600 mb-8 flex-grow text-sm leading-relaxed">
-                        Interested in collaborating, expanding opportunities, or building strategic partnerships?
+                        Interested in collaborating, expanding opportunities, or building strategic partnerships?<br>
                         Book a partnership meeting to explore mutually beneficial opportunities and long-term collaboration
                         with our organization.
                     </p>
@@ -63,6 +64,7 @@
                 <!-- 3. Job Seeker (Paid) -->
                 <div
                     class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-xl border border-slate-700 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col relative overflow-hidden">
+
                     <div
                         class="absolute top-0 right-0 bg-yellow-500 text-xs font-bold px-3 py-1 rounded-bl-lg text-slate-900 uppercase tracking-wide">
                         Premium
@@ -76,7 +78,7 @@
                     </div>
                     <h3 class="text-2xl font-bold text-white mb-4">Job Seekers & Travel Abroad</h3>
                     <p class="text-slate-300 mb-8 flex-grow text-sm leading-relaxed">
-                        Searching for job opportunities or planning to work or travel abroad?
+                        Searching for job opportunities or planning to work or travel abroad?<br>
                         Book an appointment to receive professional guidance on job placement, recruitment processes, and
                         international travel support.
                     </p>
