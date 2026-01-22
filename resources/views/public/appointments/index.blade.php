@@ -64,11 +64,7 @@
                 <!-- 3. Job Seeker (Paid) -->
                 <div
                     class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl shadow-xl border border-slate-700 p-8 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 flex flex-col relative overflow-hidden">
-
-                    <div
-                        class="absolute top-0 right-0 bg-yellow-500 text-xs font-bold px-3 py-1 rounded-bl-lg text-slate-900 uppercase tracking-wide">
-                        Premium
-                    </div>
+ 
                     <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm">
                         <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
