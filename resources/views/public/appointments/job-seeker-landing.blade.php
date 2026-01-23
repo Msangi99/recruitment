@@ -61,7 +61,7 @@
                             <div class="p-2 bg-emerald-500/20 rounded-lg">
                                 <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             </div>
-                            <h3 class="text-lg font-bold text-white">Ethical & Structured</h3>
+                            <h3 class="text-lg font-bold text-white">Professional Assurance</h3>
                         </div>
                         <p class="text-slate-300 text-lg leading-relaxed italic">
                             "Our approach is structured, ethical, and focused on aligning your profile with genuine opportunities. Every consultation is handled with care, clarity, and professionalism."
@@ -83,7 +83,7 @@
                             Get clear guidance on career, work abroad, study abroad, or visa matters.
                             Every session is designed to deliver actionable insights with the highest level of
                             professionalism and privacy.
-                            For <span class="text-gray-600 font-bold">TZS
+                            For <span class="text-gray-600 font-bold">$12 or TZS
                                 {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }}</span>
                         </p>
                     </div>
