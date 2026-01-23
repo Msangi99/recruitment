@@ -8,11 +8,11 @@
             <!-- Back Button -->
             <div class="mb-4">
                 <a href="{{ route('public.appointments.jobSeeker') }}"
-                    class="text-blue-600 hover:text-blue-800 font-bold flex items-center shadow-sm w-fit px-3 py-1.5 bg-white rounded-lg transition-all hover:bg-gray-50 text-sm">
+                    class="text-gray-950 font-bold flex items-center shadow-sm w-fit px-3 py-1.5 bg-white rounded-lg transition-all hover:bg-gray-50 text-sm">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                     </svg>
-                    Back to Details
+                    Back
                 </a>
             </div>
 
