@@ -93,7 +93,7 @@
                     @foreach([
                         [
                             'title' => 'WORK ABROAD GUIDANCE',
-                            'img' => 'work_abroad_consultation.png',
+                            'img' => 'work_abroad_guidance.png',
                             'desc' => 'Looking for meaningful work opportunities abroad? Navigating international employment can be challenging, from understanding job requirements to securing the right visa. We provide professional guidance, step-by-step support, and personalized advice to help you take your career or labor journey abroad with confidence.',
                             'features' => [
                                 ['title' => 'Personalized Career Consultation', 'desc' => 'Assess your skills, experience, and career goals to identify suitable overseas job opportunities.'],
