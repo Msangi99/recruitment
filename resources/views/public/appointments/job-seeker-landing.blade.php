@@ -13,6 +13,18 @@
                 <div class="absolute bottom-[-10%] left-[20%] w-[30%] h-[30%] bg-emerald-500/10 rounded-full blur-[100px]"></div>
             </div>
 
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="mb-8 pt-4">
+                    <a href="{{ route('public.appointments.index') }}"
+                        class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Back
+                    </a>
+                </div>
+            </div>
+
             <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <!-- Badge -->
                 
