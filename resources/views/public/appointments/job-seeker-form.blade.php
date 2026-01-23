@@ -62,7 +62,7 @@
 
                             <!-- Email Address -->
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Email <span
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Email Address<span
                                         class="text-red-500">*</span></label>
                                 <input type="email" name="email" required placeholder="Email Address"
                                     class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
@@ -70,7 +70,7 @@
 
                             <!-- Phone Number -->
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Phone <span
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number<span
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="phone" required placeholder="+255..."
                                     class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">

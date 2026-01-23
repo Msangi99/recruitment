@@ -188,41 +188,47 @@
         <div class="py-24 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-16">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
-                    <p class="text-lg text-slate-600">Your 90-minute expert consultation in 4 simple steps.</p>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works – 90-Minute Expert Consultation</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
                     <!-- Step 1 -->
                     <div class="relative p-6 pt-12 bg-slate-50 rounded-2xl border border-slate-100 h-full group hover:bg-emerald-50/50 hover:border-emerald-100 transition-colors duration-300">
                         <div class="absolute -top-6 left-6 w-12 h-12 bg-slate-950 text-white text-xl font-bold rounded-xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">1</div>
                         <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Fill the Form</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">Complete our consultation request form with your details so we can understand your goals.</p>
+                        <p class="text-sm text-slate-600 leading-relaxed">Complete our consultation request form with your details and the type of session you need (Career, Work Abroad, Study Abroad, or Visa Guidance). This helps us tailor the session to your goals.</p>
                     </div>
 
                      <!-- Step 2 -->
                     <div class="relative p-6 pt-12 bg-slate-50 rounded-2xl border border-slate-100 h-full group hover:bg-emerald-50/50 hover:border-emerald-100 transition-colors duration-300">
                         <div class="absolute -top-6 left-6 w-12 h-12 bg-slate-950 text-white text-xl font-bold rounded-xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">2</div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Choose & Pay</h3>
-                         <p class="text-sm text-slate-600 leading-relaxed mb-3">Secure your session with <span class="font-bold text-emerald-700">TZS 30,000</span>.</p>
-                         <div class="flex flex-wrap gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
-                            <span class="bg-white px-2 py-1 rounded border border-slate-200">Visa/MC</span>
-                            <span class="bg-white px-2 py-1 rounded border border-slate-200">Mobile Money</span>
-                         </div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Make Your Payments</h3>
+                         <p class="text-sm text-slate-600 leading-relaxed mb-3">Secure your 90-minute consultation by paying <span class="font-bold text-slate-900">$12 or 30,000 TZS</span>. We accept:</p>
+                         <ul class="text-sm text-slate-600 list-disc list-inside space-y-1">
+                            <li>Visa & MasterCard</li>
+                            <li>Mobile Money: M-Pesa, Airtel Money, HaloPesa, AzamPay</li>
+                         </ul>
                     </div>
 
                     <!-- Step 3 -->
                     <div class="relative p-6 pt-12 bg-slate-50 rounded-2xl border border-slate-100 h-full group hover:bg-emerald-50/50 hover:border-emerald-100 transition-colors duration-300">
                         <div class="absolute -top-6 left-6 w-12 h-12 bg-slate-950 text-white text-xl font-bold rounded-xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">3</div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Expert Review</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">Our team reviews your details to prepare for a strategic, high-value discussion.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Choose Your Slot</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Select a date and time that works best for you from the available slots.</p>
                     </div>
 
                     <!-- Step 4 -->
                     <div class="relative p-6 pt-12 bg-slate-50 rounded-2xl border border-slate-100 h-full group hover:bg-emerald-50/50 hover:border-emerald-100 transition-colors duration-300">
                         <div class="absolute -top-6 left-6 w-12 h-12 bg-slate-950 text-white text-xl font-bold rounded-xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">4</div>
-                        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Consultation</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">We verify your appointment and you join the professional session for actionable insights.</p>
+                        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Receive Confirmation</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Once payment is complete and your slot is chosen, you will receive a confirmation email or SMS with your consultation details.</p>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="relative p-6 pt-12 bg-slate-50 rounded-2xl border border-slate-100 h-full group hover:bg-emerald-50/50 hover:border-emerald-100 transition-colors duration-300">
+                        <div class="absolute -top-6 left-6 w-12 h-12 bg-slate-950 text-white text-xl font-bold rounded-xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">5</div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Attend Your Session</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">Join your 90-minute professional consultation. Get personalized guidance, actionable insights, and confidentiality guaranteed.</p>
                     </div>
                 </div>
 
