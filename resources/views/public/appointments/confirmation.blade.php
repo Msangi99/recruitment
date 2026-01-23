@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="flex gap-4">
-                        <a href="{{ route('public.appointments.jobSeeker.form') }}" 
+                        <a href="{{ route('public.appointments.jobSeeker.payment', ['id' => $request->id]) }}" 
                             class="flex-1 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition-all text-center inline-flex items-center justify-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>

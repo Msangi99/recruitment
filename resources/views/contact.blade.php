@@ -57,15 +57,14 @@
                 class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-12 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-60 -z-10">
             </div>
             <h1
-                class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 mb-6 tracking-tight">
+                class="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-800 to-emerald-600 mb-6 tracking-tight">
                 Contact Us
             </h1>
-            <div class="w-24 h-1.5 bg-gradient-to-r from-indigo-500 to-blue-400 mx-auto rounded-full mb-8"></div>
+            <div class="w-24 h-1.5 bg-gradient-to-r from-green-700 to-emerald-500 mx-auto rounded-full mb-8"></div>
             <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                We’re here to support your recruitment and workforce needs. Whether you are an
-                <span class="font-semibold text-gray-900">employer seeking qualified talent</span> or a
-                <span class="font-semibold text-gray-900">job seeker looking for opportunities</span>,
-                our team is ready to assist you with professional, reliable, and timely support.
+                We’re here to support your recruitment and workforce needs. Whether you are an employer seeking
+                qualified talent or a job seeker looking for opportunities, our team is ready to assist you with
+                professional, reliable, and timely support.
             </p>
         </div>
 
@@ -97,7 +96,7 @@
                 <!-- Get in Touch Card -->
                 <div
                     class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 transition-all hover:shadow-2xl duration-300">
-                    <div class="bg-gradient-to-r from-gray-900 to-gray-800 px-5 py-3">
+                    <div class="bg-gradient-to-r from-green-900 to-green-800 px-5 py-3">
                         <h2 class="text-base font-bold text-white flex items-center gap-2 tracking-wide">
                             Get in Touch
                         </h2>
@@ -107,13 +106,14 @@
                         <!-- Email -->
                         <div class="flex items-start space-x-3 group">
                             <div
-                                class="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors duration-200">
-                                <i data-lucide="mail" class="h-4 w-4 text-indigo-600"></i>
+                                class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center group-hover:bg-green-100 transition-colors duration-200">
+                                <i data-lucide="mail" class="h-4 w-4 text-green-600"></i>
                             </div>
                             <div class="flex-1">
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Email</p>
+                                <p class="text-[10px] font-bold text-green-700 uppercase tracking-wider mb-0.5">Email
+                                </p>
                                 <a href="mailto:info@coyzon.co.tz"
-                                    class="text-gray-900 text-sm font-semibold hover:text-indigo-600 transition-colors block">
+                                    class="text-gray-900 text-sm font-semibold hover:text-green-600 transition-colors block">
                                     info@coyzon.co.tz
                                 </a>
                             </div>
@@ -122,26 +122,27 @@
                         <!-- Phone -->
                         <div class="flex items-start space-x-3 group">
                             <div
-                                class="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors duration-200">
-                                <i data-lucide="phone" class="h-4 w-4 text-indigo-600"></i>
+                                class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center group-hover:bg-green-100 transition-colors duration-200">
+                                <i data-lucide="phone" class="h-4 w-4 text-green-600"></i>
                             </div>
                             <div class="flex-1">
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Phone</p>
+                                <p class="text-[10px] font-bold text-green-700 uppercase tracking-wider mb-0.5">Phone
+                                </p>
                                 <div class="space-y-2">
                                     <a href="tel:+255712321513" class="block group/link">
                                         <span
-                                            class="text-gray-900 text-sm font-semibold group-hover/link:text-indigo-600 transition-colors block">+255
+                                            class="text-gray-900 text-sm font-semibold group-hover/link:text-green-600 transition-colors block">+255
                                             712 321 513</span>
-                                        <span class="text-[10px] text-gray-500 font-medium block">Job Seekers & Travel
+                                        <span class="text-[10px] text-green-700 font-bold block">Job Seekers & Travel
                                             Support</span>
                                     </a>
                                     <div class="h-px bg-gray-100 w-full"></div>
                                     <a href="tel:+255746014808" class="block group/link">
                                         <span
-                                            class="text-gray-900 text-sm font-semibold group-hover/link:text-indigo-600 transition-colors block">+255
+                                            class="text-gray-900 text-sm font-semibold group-hover/link:text-green-600 transition-colors block">+255
                                             746 014 808</span>
-                                        <span class="text-[10px] text-gray-500 font-medium block">Employer / Partnership
-                                            / Recruitment</span>
+                                        <span class="text-[10px] text-green-700 font-bold block">Employer / Partnership
+                                            / Recruitment Agencies</span>
                                     </a>
                                 </div>
                             </div>
@@ -150,14 +151,14 @@
                         <!-- Website -->
                         <div class="flex items-start space-x-3 group">
                             <div
-                                class="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors duration-200">
-                                <i data-lucide="globe" class="h-4 w-4 text-indigo-600"></i>
+                                class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center group-hover:bg-green-100 transition-colors duration-200">
+                                <i data-lucide="globe" class="h-4 w-4 text-green-600"></i>
                             </div>
                             <div class="flex-1">
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Website
+                                <p class="text-[10px] font-bold text-green-700 uppercase tracking-wider mb-0.5">Website
                                 </p>
                                 <a href="https://www.coyzon.co.tz"
-                                    class="text-gray-900 text-sm font-semibold hover:text-indigo-600 transition-colors block">
+                                    class="text-gray-600 text-xs font-normal hover:text-green-600 transition-colors block">
                                     www.coyzon.co.tz
                                 </a>
                             </div>
@@ -166,13 +167,13 @@
                         <!-- Address -->
                         <div class="flex items-start space-x-3 group">
                             <div
-                                class="flex-shrink-0 w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center group-hover:bg-indigo-100 transition-colors duration-200">
-                                <i data-lucide="map-pin" class="h-4 w-4 text-indigo-600"></i>
+                                class="flex-shrink-0 w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center group-hover:bg-green-100 transition-colors duration-200">
+                                <i data-lucide="map-pin" class="h-4 w-4 text-green-600"></i>
                             </div>
                             <div class="flex-1">
-                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Office
+                                <p class="text-[10px] font-bold text-green-700 uppercase tracking-wider mb-0.5">Office
                                     Address</p>
-                                <p class="text-gray-900 text-sm font-medium leading-relaxed">
+                                <p class="text-gray-600 text-xs font-normal leading-relaxed">
                                     16103 Ubungo Riverside,<br>Dar es Salaam, Tanzania
                                 </p>
                             </div>
@@ -229,82 +230,71 @@
             </div>
 
             <!-- Contact Form -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-lg shadow-md p-6">
-                    <h2 class="text-2xl font-semibold text-gray-900 mb-6">Send us a Message</h2>
+            <div class="lg:col-span-2 flex justify-start items-start">
+                <div class="bg-white rounded-lg shadow-md p-4 w-full lg:w-[70%]">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-2">Send us a Message</h2>
 
-                    <form method="POST" action="{{ route('contact.store') }}" class="space-y-4">
+                    <form method="POST" action="{{ route('contact.store') }}" class="space-y-2">
                         @csrf
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <!-- Name -->
                             <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Full Name
-                                    *</label>
-                                <input type="text" id="name" name="name" value="{{ old('name') }}" required @class([
-                                    'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                                    'border-red-300' => $errors->has('name'),
-                                    'border-gray-300' => !$errors->has('name'),
-                                ])>
+                                <label for="name" class="block text-xs font-bold text-gray-700 mb-1">Full Name *</label>
+                                <input type="text" id="name" name="name" value="{{ old('name') }}" required
+                                    class="w-full px-3 py-1.5 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm">
                                 @error('name')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
 
                             <!-- Email -->
                             <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address
+                                <label for="email" class="block text-xs font-bold text-gray-700 mb-1">Email Address
                                     *</label>
-                                <input type="email" id="email" name="email" value="{{ old('email') }}" required @class([
-                                    'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                                    'border-red-300' => $errors->has('email'),
-                                    'border-gray-300' => !$errors->has('email'),
-                                ])>
+                                <input type="email" id="email" name="email" value="{{ old('email') }}" required
+                                    class="w-full px-3 py-1.5 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm">
                                 @error('email')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
 
-                        <!-- Phone -->
-                        <div>
-                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number
-                                </label>
-                            <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <!-- Phone -->
+                            <div>
+                                <label for="phone" class="block text-xs font-bold text-gray-700 mb-1">Phone
+                                    Number</label>
+                                <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
+                                    class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm">
+                            </div>
 
-                        <!-- Subject -->
-                        <div>
-                            <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">Subject *</label>
-                            <input type="text" id="subject" name="subject" value="{{ old('subject') }}" required
-                                @class([
-                                    'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                                    'border-red-300' => $errors->has('subject'),
-                                    'border-gray-300' => !$errors->has('subject'),
-                                ])>
-                            @error('subject')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
+                            <!-- Subject -->
+                            <div>
+                                <label for="subject" class="block text-xs font-bold text-gray-700 mb-1">Subject
+                                    *</label>
+                                <input type="text" id="subject" name="subject" value="{{ old('subject') }}" required
+                                    class="w-full px-3 py-1.5 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm">
+                                @error('subject')
+                                    <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
                         <!-- Message -->
                         <div>
-                            <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message *</label>
-                            <textarea id="message" name="message" rows="4" required @class([
-                                'w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500',
-                                'border-red-300' => $errors->has('message'),
-                                'border-gray-300' => !$errors->has('message'),
-                            ])>{{ old('message') }}</textarea>
+                            <label for="message" class="block text-xs font-bold text-gray-700 mb-1">Message *</label>
+                            <textarea id="message" name="message" rows="2" required
+                                class="w-full px-3 py-1.5 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm">{{ old('message') }}</textarea>
                             @error('message')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
                         <!-- Submit Button -->
                         <div>
                             <button type="submit"
-                                class="w-full md:w-auto px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
+                                class="px-6 py-2 bg-green-600 text-white text-sm font-bold rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors shadow-md">
                                 Submit
                             </button>
                         </div>

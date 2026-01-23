@@ -179,19 +179,25 @@ class PublicAppointmentController extends Controller
             'updated_at' => now(),
         ]);
 
-        // Redirect to Step 2: Payment Gateway Selection
-        return redirect()->route('public.appointments.jobSeeker.payment', ['id' => $id]);
+        // Redirect to Step 2: Calendar (Scheduling)
+        return redirect()->route('public.appointments.calendar', ['id' => $id]);
     }
 
     public function paymentForm($id)
     {
         $request = DB::table('consultation_requests')->where('id', $id)->first();
-        if (!$request || $request->status !== 'pending_payment') {
-            // If already paid or invalid, redirect appropriately
-             if ($request && $request->payment_status === 'paid') {
-                 return redirect()->route('public.appointments.calendar', ['id' => $id]);
-             }
-             abort(404);
+        if (!$request) abort(404);
+
+        // Allow access if pending_payment. 
+        // Note: In new flow, we might have a date set, but payment is still pending.
+
+        if ($request->payment_status === 'paid' || $request->status === 'confirmed') {
+             // If already paid, show confirmation
+             return view('public.appointments.confirmation', [
+                'request' => $request,
+                'message' => 'Payment already completed.',
+                'status' => 'confirmed'
+            ]);
         }
 
         return view('public.appointments.payment', compact('request'));
@@ -308,7 +314,12 @@ class PublicAppointmentController extends Controller
             ]);
         }
 
-        return redirect()->route('public.appointments.calendar', ['id' => $id])->with('success', 'Payment initiated successfully.');
+        // Default fallback (though usually covered by returns above)
+        return view('public.appointments.confirmation', [
+            'request' => $consultationRequest,
+            'message' => 'Payment processing...',
+            'status' => 'pending_payment'
+        ]);
     }
 
     public function calendar($id)
@@ -335,37 +346,13 @@ class PublicAppointmentController extends Controller
         }
 
         // Update with scheduled date/time
+        // Do NOT set status to confirmed yet, as payment is next.
         DB::table('consultation_requests')->where('id', $id)->update([
             'requested_date' => $requestedAt,
             'updated_at' => now(),
         ]);
 
-        // Update with scheduled date/time and valid status
-        DB::table('consultation_requests')->where('id', $id)->update([
-            'requested_date' => $requestedAt,
-            'status' => 'pending_confirmation', // Or whatever final status is preferred
-            'updated_at' => now(),
-        ]);
-
-        // Send Email Notification (Re-implemented here if it was missing or moved)
-        try {
-            $hrEmail = \App\Models\Setting::getHrEmail() ?? 'hr@coyzon.com';
-            Mail::to($hrEmail)->send(new NewAppointmentNotification((object) $consultationRequest));
-        } catch (\Exception $e) {
-            // Log error
-        }
-
-        return view('public.appointments.confirmation', [
-            'request' => $consultationRequest,
-            'message' => 'Appointment scheduled successfully!',
-            'status' => 'success'
-        ]);
-
-        // Fallback
-        return view('public.appointments.confirmation', [
-            'request' => DB::table('consultation_requests')->where('id', $id)->first(),
-            'message' => 'Booking created. Payment processing.',
-            'status' => 'processing'
-        ]);
+        // Redirect to Step 3: Payment
+        return redirect()->route('public.appointments.jobSeeker.payment', ['id' => $id])->with('info', 'Slot reserved! Please complete payment to confirm.');
     }
 }

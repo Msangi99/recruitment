@@ -14,9 +14,9 @@
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h1 class="text-2xl font-bold relative z-10">Payment Successful!</h1>
-                    <p class="text-blue-100 mt-2 relative z-10">Now, please select a date and time to finalize your
-                        appointment.</p>
+                    <h1 class="text-2xl font-bold relative z-10">Select Date & Time</h1>
+                    <p class="text-blue-100 mt-2 relative z-10">Choose a convenient slot for your consultation. Payment will
+                        be required in the next step.</p>
                 </div>
 
                 @if(session('info'))
@@ -130,7 +130,7 @@
                             <div class="pt-6">
                                 <button type="submit" id="submitBtn" disabled
                                     class="w-full py-5 bg-blue-600 opacity-50 cursor-not-allowed text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 text-xl transition-all hover:bg-blue-700">
-                                    Confirm Appointment
+                                    Proceed to Payment
                                 </button>
                             </div>
                         </form>
