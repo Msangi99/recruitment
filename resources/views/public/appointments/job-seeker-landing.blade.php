@@ -16,7 +16,7 @@
             <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="mb-8 pt-4">
                     <a href="{{ route('public.appointments.index') }}"
-                        class="text-emerald-400 hover:text-emerald-300 font-bold flex items-center">
+                        class="text-gray-50 font-bold flex items-center">
                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
