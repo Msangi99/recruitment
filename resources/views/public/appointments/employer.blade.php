@@ -21,9 +21,7 @@
                     <div class="absolute top-0 right-0 -mt-10 -mr-10 h-40 w-40 bg-green-500/20 rounded-full blur-3xl"></div>
 
                     <div class="relative z-10">
-                        <h1 class="text-3xl font-black text-white uppercase tracking-tight mb-4">
-                            Business Consultation
-                        </h1>
+                        
                         <div class="space-y-4">
                             <p class="text-emerald-100 text-lg font-bold leading-tight">
                                 You’re just one step away from a professional business consultation.
