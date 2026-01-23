@@ -49,12 +49,17 @@ Route::prefix('book-appointment')->name('public.appointments.')->group(function 
     Route::get('/partnership', [App\Http\Controllers\PublicAppointmentController::class, 'partnershipForm'])->name('partnership');
     Route::post('/partnership', [App\Http\Controllers\PublicAppointmentController::class, 'storePartnership'])->name('storePartnership');
 
-    // Job Seeker (Paid)
+    // Job Seeker (Multi-step Flow)
+    // Step 1: Form
     Route::get('/job-seeker', [App\Http\Controllers\PublicAppointmentController::class, 'jobSeekerLanding'])->name('jobSeeker');
     Route::get('/job-seeker/form', [App\Http\Controllers\PublicAppointmentController::class, 'jobSeekerForm'])->name('jobSeeker.form');
     Route::post('/job-seeker/form', [App\Http\Controllers\PublicAppointmentController::class, 'storeJobSeeker'])->name('jobSeeker.store');
 
-    // Scheduling (Mockup for flow)
+    // Step 2: Payment
+    Route::get('/job-seeker/payment/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'paymentForm'])->name('jobSeeker.payment');
+    Route::post('/job-seeker/payment/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'processPayment'])->name('jobSeeker.payment.process');
+
+    // Step 3: Scheduling (Calendar)
     Route::get('/calendar/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'calendar'])->name('calendar');
     Route::post('/calendar/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'storeSchedule'])->name('storeSchedule');
 });

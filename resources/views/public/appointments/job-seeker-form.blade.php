@@ -3,7 +3,7 @@
 @section('title', 'Consultation Request Form - Coyzon')
 
 @section('content')
-    <div class="bg-gray-50 min-h-screen py-12">
+    <div class="bg-gray-50 min-h-screen py-8">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Back Button -->
             <div class="mb-4">
@@ -18,7 +18,7 @@
 
             <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                 <!-- Form Header -->
-                <div class="bg-gradient-to-br from-emerald-950 to-emerald-900 px-6 py-10 relative overflow-hidden">
+                <div class="bg-gradient-to-br from-emerald-950 to-emerald-900 px-6 py-6 relative overflow-hidden">
                     <!-- Decorative element -->
                     <div class="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 rounded-full bg-green-500/20 blur-3xl"></div>
 
@@ -41,8 +41,8 @@
                     </div>
                 </div>
 
-                <form action="{{ route('public.appointments.jobSeeker.store') }}" method="POST" class="p-6 md:p-8 space-y-6"
-                    x-data="{ consultation_type: '', payment_gateway: '', payment_method: '' }">
+                <form action="{{ route('public.appointments.jobSeeker.store') }}" method="POST" class="p-5 md:p-6 space-y-5"
+                    x-data="{ consultation_type: '' }">
                     @csrf
 
                     <!-- Personal Information Section -->
@@ -57,7 +57,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Full Name <span
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="name" required placeholder="Full Name"
-                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border">
                             </div>
 
                             <!-- Email Address -->
@@ -65,7 +65,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Email Address<span
                                         class="text-red-500">*</span></label>
                                 <input type="email" name="email" required placeholder="Email Address"
-                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border">
                             </div>
 
                             <!-- Phone Number -->
@@ -73,7 +73,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Phone Number<span
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="phone" required placeholder="+255..."
-                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border">
                                 <p class="text-xs text-slate-500 mt-1">Hint: Include country code if outside Tanzania</p>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Nationality <span
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="nationality" required placeholder="Nationality"
-                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border">
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Type of Consultation <span
                                         class="text-red-500">*</span></label>
                                 <select name="consultation_type" required x-model="consultation_type"
-                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border bg-white">
                                     <option value="">Select Consultation Type</option>
                                     <option value="Career / Job Seeking">Career / Job Seeking</option>
                                     <option value="Work Abroad">Work Abroad</option>
@@ -114,7 +114,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Destination / Target Country
                                     <span class="text-slate-500 font-normal">(optional / conditional)</span></label>
                                 <input type="text" name="destination" placeholder="Which country are you targeting?"
-                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border">
                                 <p class="text-xs text-slate-500 mt-1">Show only if consultation involves Work Abroad, Study
                                     Abroad, or Visa</p>
                             </div>
@@ -124,7 +124,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Preferred Consultation Mode <span
                                         class="text-red-500">*</span></label>
                                 <select name="consultation_mode" required
-                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border bg-white">
                                     <option value="">Select Mode</option>
                                     <option value="In-person">In-person</option>
                                     <option value="Online">Online</option>
@@ -138,69 +138,23 @@
                                     class="text-slate-500 font-normal">(optional)</span></label>
                             <textarea name="message" rows="3"
                                 placeholder="Let us know if you'd like to be prioritized or have specific questions for the consultation"
-                                class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border"></textarea>
+                                class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border"></textarea>
                             <p class="text-xs text-slate-500 mt-1">Hint: Providing details helps us prepare a personalized
                                 session</p>
                         </div>
                     </div>
 
-                    <!-- Payment Section (Compact) -->
-                    <div class="bg-gray-50/80 p-5 rounded-2xl border border-gray-200 space-y-4">
-                        <div class="flex items-center justify-between pb-2 border-b border-gray-200">
-                            <div>
-                                <h2 class="text-sm font-bold text-slate-900">Payment Selection</h2>
-                            </div>
-                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Fee: TZS
-                                {{ number_format(\App\Models\Setting::get('consultation_price', 30000)) }}</span>
-                        </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <!-- 1st Select: Gateway -->
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Gateway <span
-                                        class="text-red-500">*</span></label>
-                                <select name="payment_gateway" required x-model="payment_gateway"
-                                    class="w-full rounded-lg border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
-                                    <option value="">Select Gateway</option>
-                                    <option value="selcom">Selcom</option>
-                                    <option value="azampay">Azampay</option>
-                                </select>
-                            </div>
-
-                            <!-- 2nd Select: Payment Method -->
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Method <span
-                                        class="text-red-500">*</span></label>
-                                <select name="payment_method" required x-model="payment_method"
-                                    class="w-full rounded-lg border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
-                                    <option value="">Select Method</option>
-                                    <option value="mobile_money">Mobile Money</option>
-                                    <option value="card">Card (Visa/MasterCard)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- 3rd Field: Mobile Number (Conditional) -->
-                        <div x-show="payment_method === 'mobile_money'" x-transition>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Payment Number <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" name="payment_phone" :required="payment_method === 'mobile_money'"
-                                placeholder="Enter mobile number for payment"
-                                class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
-                        </div>
-
-                        <label class="flex items-start text-xs text-slate-500 cursor-pointer">
-                            <input type="checkbox" required
-                                class="form-checkbox h-4 w-4 text-emerald-600 rounded border-gray-300 mt-0.5 mr-2">
-                            <span>I confirm details are correct. Payment is non-refundable.</span>
-                        </label>
-                    </div>
 
                     <!-- Submit Button -->
-                    <div class="pt-2">
+                    <div class="pt-2 flex flex-col items-center">
                         <button type="submit"
-                            class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all text-lg tracking-wide uppercase">
-                            Pay & Book Now
+                            class="w-auto px-8 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all text-sm tracking-wide uppercase flex items-center gap-2">
+                            <span>Next: Payment</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
                         </button>
                         <div class="mt-4 px-1 text-left">
                             <p class="text-xs text-gray-500 leading-relaxed italic">
