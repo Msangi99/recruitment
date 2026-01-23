@@ -74,6 +74,7 @@
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="phone" required placeholder="+255..."
                                     class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
+                                <p class="text-xs text-slate-500 mt-1">Hint: Include country code if outside Tanzania</p>
                             </div>
                         </div>
 
@@ -90,18 +91,16 @@
 
                     <!-- Consultation Details Section -->
                     <div class="space-y-4">
-                        <div class="pb-2 border-b border-gray-100">
-                            <h2 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Consultation Details</h2>
-                        </div>
+
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <!-- Type of Consultation -->
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Type <span
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Type of Consultation <span
                                         class="text-red-500">*</span></label>
                                 <select name="consultation_type" required x-model="consultation_type"
                                     class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
-                                    <option value="">Select Option</option>
+                                    <option value="">Select Consultation Type</option>
                                     <option value="Career / Job Seeking">Career / Job Seeking</option>
                                     <option value="Work Abroad">Work Abroad</option>
                                     <option value="Study Abroad">Study Abroad</option>
@@ -109,32 +108,39 @@
                                 </select>
                             </div>
 
+                            <!-- Destination (Conditional) -->
+                            <div x-show="['Work Abroad', 'Study Abroad', 'Visa Guidance'].includes(consultation_type)"
+                                x-transition>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Destination / Target Country
+                                    <span class="text-slate-500 font-normal">(optional / conditional)</span></label>
+                                <input type="text" name="destination" placeholder="Which country are you targeting?"
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
+                                <p class="text-xs text-slate-500 mt-1">Show only if consultation involves Work Abroad, Study
+                                    Abroad, or Visa</p>
+                            </div>
+
                             <!-- Preferred Mode -->
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Mode <span
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Preferred Consultation Mode <span
                                         class="text-red-500">*</span></label>
                                 <select name="consultation_mode" required
                                     class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
                                     <option value="">Select Mode</option>
-                                    <option value="Online">Online (Zoom/Google Meet)</option>
                                     <option value="In-person">In-person</option>
+                                    <option value="Online">Online</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- Destination (Conditional) -->
-                        <div x-show="['Work Abroad', 'Study Abroad', 'Visa Guidance'].includes(consultation_type)"
-                            x-transition>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Target Country</label>
-                            <input type="text" name="destination" placeholder="Target Country"
-                                class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
-                        </div>
-
                         <!-- Special Requests -->
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Message (Optional)</label>
-                            <textarea name="message" rows="2" placeholder="Briefly explain your needs..."
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Message / Special Requests <span
+                                    class="text-slate-500 font-normal">(optional)</span></label>
+                            <textarea name="message" rows="3"
+                                placeholder="Let us know if you'd like to be prioritized or have specific questions for the consultation"
                                 class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border"></textarea>
+                            <p class="text-xs text-slate-500 mt-1">Hint: Providing details helps us prepare a personalized
+                                session</p>
                         </div>
                     </div>
 
