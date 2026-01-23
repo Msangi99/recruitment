@@ -83,7 +83,7 @@
                             Get clear guidance on career, work abroad, study abroad, or visa matters.
                             Every session is designed to deliver actionable insights with the highest level of
                             professionalism and privacy.
-                            For <span class="text-blue-600 font-bold">TZS
+                            For <span class="text-gray-600 font-bold">TZS
                                 {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }}</span>
                         </p>
                     </div>
