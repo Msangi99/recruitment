@@ -11,6 +11,10 @@ export default {
     ],
     theme: {
         extend: {
+            colors: {
+                'deep-green': '#105e46',
+                'deep-blue': '#0a2540',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },

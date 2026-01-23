@@ -18,11 +18,27 @@
 
             <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
                 <!-- Form Header -->
-                <div class="bg-slate-900 px-6 py-6 border-b border-slate-800 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 rounded-full bg-blue-600/20 blur-3xl"></div>
-                    <h1 class="text-xl font-bold text-white relative z-10">Book Career Consultation</h1>
-                    <p class="text-slate-400 mt-1 relative z-10 text-sm">90-Minute Expert Consultation – Professional &
-                        Confidential</p>
+                <div class="bg-gradient-to-br from-emerald-950 to-emerald-900 px-6 py-10 relative overflow-hidden">
+                    <!-- Decorative element -->
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 rounded-full bg-green-500/20 blur-3xl"></div>
+
+                    <div class="relative z-10">
+                        <h1 class="text-2xl font-black text-white uppercase tracking-tight mb-4">
+                            Career Consultation
+                        </h1>
+                        <div class="space-y-4">
+                            <p class="text-emerald-100 text-lg font-bold leading-tight">
+                                Take the first step toward your career or international opportunity.
+                            </p>
+                            <p class="text-emerald-50/70 text-sm leading-relaxed">
+                                Please fill in the form below to help us understand your job interests, career background,
+                                or travel plans. This enables us to provide personalized guidance during your appointment.
+                            </p>
+                            <div class="text-emerald-400 text-xs font-bold uppercase tracking-wider pt-2">
+                                All information shared is handled with professionalism and confidentiality.
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <form action="{{ route('public.appointments.jobSeeker.store') }}" method="POST" class="p-6 md:p-8 space-y-6"
@@ -31,8 +47,7 @@
 
                     <!-- Personal Information Section -->
                     <div class="space-y-4">
-                        <div class="flex items-center gap-2 pb-2 border-b border-gray-100">
-                            <i data-lucide="user" class="w-4 h-4 text-blue-600"></i>
+                        <div class="pb-2 border-b border-gray-100">
                             <h2 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Personal Information</h2>
                         </div>
 
@@ -42,7 +57,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Full Name <span
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="name" required placeholder="Full Name"
-                                    class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
                             </div>
 
                             <!-- Email Address -->
@@ -50,7 +65,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Email <span
                                         class="text-red-500">*</span></label>
                                 <input type="email" name="email" required placeholder="Email Address"
-                                    class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
                             </div>
 
                             <!-- Phone Number -->
@@ -58,7 +73,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Phone <span
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="phone" required placeholder="+255..."
-                                    class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
                             </div>
                         </div>
 
@@ -68,15 +83,14 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Nationality <span
                                         class="text-red-500">*</span></label>
                                 <input type="text" name="nationality" required placeholder="Nationality"
-                                    class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
                             </div>
                         </div>
                     </div>
 
                     <!-- Consultation Details Section -->
                     <div class="space-y-4">
-                        <div class="flex items-center gap-2 pb-2 border-b border-gray-100">
-                            <i data-lucide="briefcase" class="w-4 h-4 text-blue-600"></i>
+                        <div class="pb-2 border-b border-gray-100">
                             <h2 class="text-sm font-bold text-slate-800 uppercase tracking-tight">Consultation Details</h2>
                         </div>
 
@@ -86,7 +100,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Type <span
                                         class="text-red-500">*</span></label>
                                 <select name="consultation_type" required x-model="consultation_type"
-                                    class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border bg-white">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
                                     <option value="">Select Option</option>
                                     <option value="Career / Job Seeking">Career / Job Seeking</option>
                                     <option value="Work Abroad">Work Abroad</option>
@@ -100,7 +114,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Mode <span
                                         class="text-red-500">*</span></label>
                                 <select name="consultation_mode" required
-                                    class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border bg-white">
+                                    class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
                                     <option value="">Select Mode</option>
                                     <option value="Online">Online (Zoom/Google Meet)</option>
                                     <option value="In-person">In-person</option>
@@ -113,25 +127,24 @@
                             x-transition>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Target Country</label>
                             <input type="text" name="destination" placeholder="Target Country"
-                                class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border">
+                                class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
                         </div>
 
                         <!-- Special Requests -->
                         <div>
                             <label class="block text-xs font-bold text-slate-700 mb-1">Message (Optional)</label>
                             <textarea name="message" rows="2" placeholder="Briefly explain your needs..."
-                                class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border"></textarea>
+                                class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border"></textarea>
                         </div>
                     </div>
 
                     <!-- Payment Section (Compact) -->
                     <div class="bg-gray-50/80 p-5 rounded-2xl border border-gray-200 space-y-4">
                         <div class="flex items-center justify-between pb-2 border-b border-gray-200">
-                            <div class="flex items-center gap-2">
-                                <i data-lucide="credit-card" class="w-4 h-4 text-slate-700"></i>
+                            <div>
                                 <h2 class="text-sm font-bold text-slate-900">Payment Selection</h2>
                             </div>
-                            <span class="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">Fee: TZS
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">Fee: TZS
                                 {{ number_format(\App\Models\Setting::get('consultation_price', 30000)) }}</span>
                         </div>
 
@@ -141,7 +154,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Gateway <span
                                         class="text-red-500">*</span></label>
                                 <select name="payment_gateway" required x-model="payment_gateway"
-                                    class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border bg-white">
+                                    class="w-full rounded-lg border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
                                     <option value="">Select Gateway</option>
                                     <option value="selcom">Selcom</option>
                                     <option value="azampay">Azampay</option>
@@ -153,7 +166,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Method <span
                                         class="text-red-500">*</span></label>
                                 <select name="payment_method" required x-model="payment_method"
-                                    class="w-full rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border bg-white">
+                                    class="w-full rounded-lg border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border bg-white">
                                     <option value="">Select Method</option>
                                     <option value="mobile_money">Mobile Money</option>
                                     <option value="card">Card (Visa/MasterCard)</option>
@@ -167,22 +180,27 @@
                                     class="text-red-500">*</span></label>
                             <input type="text" name="payment_phone" :required="payment_method === 'mobile_money'"
                                 placeholder="Enter mobile number for payment"
-                                class="w-full rounded-lg border-gray-200 focus:border-blue-500 focus:ring-blue-500 shadow-sm p-2.5 text-sm border">
+                                class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2.5 text-sm border">
                         </div>
 
                         <label class="flex items-start text-xs text-slate-500 cursor-pointer">
                             <input type="checkbox" required
-                                class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-300 mt-0.5 mr-2">
+                                class="form-checkbox h-4 w-4 text-emerald-600 rounded border-gray-300 mt-0.5 mr-2">
                             <span>I confirm details are correct. Payment is non-refundable.</span>
                         </label>
                     </div>
 
                     <!-- Submit Button -->
-                    <div class="pt-2 text-center">
+                    <div class="pt-2">
                         <button type="submit"
-                            class="w-full md:w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all text-lg tracking-wide uppercase">
+                            class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all text-lg tracking-wide uppercase">
                             Pay & Book Now
                         </button>
+                        <div class="mt-4 px-1 text-left">
+                            <p class="text-xs text-gray-500 leading-relaxed italic">
+                                Our team will review your request and confirm the appointment via email or phone.
+                            </p>
+                        </div>
                     </div>
                 </form>
             </div>

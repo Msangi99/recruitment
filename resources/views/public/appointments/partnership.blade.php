@@ -16,9 +16,27 @@
             </div>
 
             <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-                <div class="bg-green-600 px-8 py-6">
-                    <h1 class="text-2xl font-bold text-white">Partnership / Agency Collaboration</h1>
-                    <p class="text-green-100 mt-2">Explore recruitment partnership opportunities with us.</p>
+                <div class="bg-gradient-to-br from-emerald-950 to-emerald-900 px-8 py-10 relative overflow-hidden">
+                    <!-- Decorative element -->
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 h-40 w-40 bg-green-500/20 rounded-full blur-3xl"></div>
+
+                    <div class="relative z-10">
+                        <h1 class="text-3xl font-black text-white uppercase tracking-tight mb-4">
+                            Partnership Collaboration
+                        </h1>
+                        <div class="space-y-4">
+                            <p class="text-emerald-100 text-lg font-bold leading-tight">
+                                Let’s explore opportunities to work together.
+                            </p>
+                            <p class="text-emerald-50/70 text-sm leading-relaxed max-w-2xl">
+                                Kindly complete the form below to share details about your organization and partnership
+                                interests. This will help us prepare for a meaningful and strategic discussion.
+                            </p>
+                            <div class="text-emerald-400 text-xs font-bold uppercase tracking-wider pt-2">
+                                All information shared is handled with professionalism and confidentiality.
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <form action="{{ route('public.appointments.storePartnership') }}" method="POST" class="p-8 space-y-6">
@@ -99,10 +117,11 @@
                             class="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-sm text-lg font-bold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">
                             Request Schedule Partnership Call
                         </button>
-                        <p class="mt-4 text-center text-sm text-gray-500 max-w-lg mx-auto">
-                            <strong>Note:</strong> All partnership meeting requests are subject to review. Approved partners
-                            will receive a calendar link to schedule a 30–45 minute meeting.
-                        </p>
+                        <div class="mt-4 px-1 text-left">
+                            <p class="text-xs text-gray-500 leading-relaxed italic">
+                                Our team will review your request and confirm the appointment via email or phone.
+                            </p>
+                        </div>
                     </div>
                 </form>
             </div>

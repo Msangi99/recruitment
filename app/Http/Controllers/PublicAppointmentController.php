@@ -184,9 +184,97 @@ class PublicAppointmentController extends Controller
             'updated_at' => now(),
         ]);
 
-        // Redirect to calendar for slot selection
-        return redirect()->route('public.appointments.calendar', ['id' => $id])
-            ->with('info', 'Please select your preferred date and time. Payment will be processed after confirmation.');
+        // Initiate Payment Directly (Bypassing calendar as requested)
+        $consultationRequest = DB::table('consultation_requests')->where('id', $id)->first();
+        $paymentGateway = $validated['payment_gateway'];
+        $paymentMethod = $validated['payment_method'];
+        $paymentPhone = $validated['payment_phone'] ?? $validated['phone'];
+        
+        $paymentError = null;
+        $paymentErrorDetails = null;
+
+        try {
+            if ($paymentGateway === 'azampay') {
+                if ($paymentMethod === 'mobile_money') {
+                    $response = $this->azampayService->mobileCheckout([
+                        'amount' => $amount,
+                        'accountNumber' => $paymentPhone,
+                        'externalId' => $orderId,
+                        'provider' => 'Mpesa',
+                    ]);
+
+                    if (isset($response['success']) && $response['success'] === true) {
+                        DB::table('consultation_requests')->where('id', $id)->update([
+                            'payment_status' => 'processing',
+                            'status' => 'pending_payment',
+                        ]);
+
+                        return view('public.appointments.confirmation', [
+                            'request' => DB::table('consultation_requests')->where('id', $id)->first(),
+                            'message' => 'Payment initiated! Please check your phone and enter your PIN to complete the payment.',
+                            'status' => 'pending_payment'
+                        ]);
+                    } else {
+                        $paymentError = 'AzamPay checkout failed';
+                        $paymentErrorDetails = $response['message'] ?? 'Unknown error';
+                    }
+                }
+            } else {
+                // Selcom
+                if ($paymentMethod === 'card') {
+                    $checkout = $this->selcomService->cardCheckout([
+                        'name' => $validated['name'],
+                        'email' => $validated['email'],
+                        'phone' => $validated['phone'],
+                        'amount' => $amount,
+                        'transaction_id' => $orderId,
+                    ]);
+                } else {
+                    $checkout = $this->selcomService->checkout([
+                        'name' => $validated['name'],
+                        'email' => $validated['email'],
+                        'phone' => $paymentPhone,
+                        'amount' => $amount,
+                        'transaction_id' => $orderId,
+                    ]);
+                }
+
+                if (isset($checkout['data'][0]['payment_gateway_url'])) {
+                    $paymentUrl = base64_decode($checkout['data'][0]['payment_gateway_url']);
+                    DB::table('consultation_requests')->where('id', $id)->update([
+                        'payment_status' => 'processing',
+                        'status' => 'pending_payment',
+                    ]);
+                    return redirect($paymentUrl);
+                } else {
+                    $paymentError = 'Selcom payment URL not found';
+                    $paymentErrorDetails = json_encode($checkout);
+                }
+            }
+        } catch (\Exception $e) {
+            $paymentError = 'Payment gateway error';
+            $paymentErrorDetails = $e->getMessage();
+        }
+
+        if ($paymentError) {
+            DB::table('consultation_requests')->where('id', $id)->update([
+                'payment_status' => 'failed',
+                'status' => 'payment_failed',
+                'meta_data' => json_encode(array_merge(json_decode($consultationRequest->meta_data, true), [
+                    'payment_error' => $paymentError,
+                    'payment_error_details' => $paymentErrorDetails,
+                ])),
+            ]);
+
+            return view('public.appointments.confirmation', [
+                'request' => DB::table('consultation_requests')->where('id', $id)->first(),
+                'message' => $paymentError,
+                'error_details' => $paymentErrorDetails,
+                'status' => 'payment_failed'
+            ]);
+        }
+
+        return redirect()->route('public.appointments.index')->with('success', 'Your request has been received. We will contact you shortly.');
     }
 
     public function calendar($id)
