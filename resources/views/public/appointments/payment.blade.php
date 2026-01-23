@@ -20,8 +20,16 @@
                         class="mb-6 bg-emerald-50 rounded-xl p-4 border border-emerald-100 flex justify-between items-center">
                         <div>
                             <p class="text-xs text-emerald-800 font-bold uppercase">Amount Due</p>
-                            <p class="text-2xl font-black text-emerald-600">TZS
-                                {{ number_format(\App\Models\Setting::get('consultation_price', 30000)) }}</p>
+                            <p class="text-2xl font-black text-emerald-600">
+                                @php
+                                    $priceTsh = \App\Models\Setting::get('consultation_price', 30000);
+                                    $priceUsd = \App\Helpers\CurrencyHelper::convertTshToUsd($priceTsh);
+                                @endphp
+                                @if($priceUsd)
+                                    {{ \App\Helpers\CurrencyHelper::formatUsd($priceUsd) }} ≈
+                                @endif
+                                TZS {{ number_format($priceTsh) }}
+                            </p>
                         </div>
                         <div class="bg-white p-2 rounded-lg shadow-sm">
                             <svg class="w-6 h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +49,7 @@
                             <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Payment
                                 Gateway</label>
                             <div class="grid grid-cols-2 gap-3">
-                                <label class="cursor-pointer relative">
+                                {{-- <label class="cursor-pointer relative">
                                     <input type="radio" name="payment_gateway" value="selcom" x-model="payment_gateway"
                                         class="peer sr-only" required>
                                     <div
@@ -57,7 +65,7 @@
                                                 clip-rule="evenodd"></path>
                                         </svg>
                                     </div>
-                                </label>
+                                </label> --}}
 
                                 <label class="cursor-pointer relative">
                                     <input type="radio" name="payment_gateway" value="azampay" x-model="payment_gateway"
@@ -65,7 +73,8 @@
                                     <div
                                         class="p-4 rounded-xl border-2 border-gray-100 hover:border-emerald-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/50 transition-all text-center h-full flex flex-col items-center justify-center gap-2">
                                         <div class="font-bold text-slate-700">AzamPay</div>
-                                        <span class="text-[10px] text-slate-400 font-medium">M-Pesa / Tigo / Airtel</span>
+                                        <span class="text-[10px] text-slate-400 font-medium">Card / M-Pesa / Tigo /
+                                            Airtel</span>
                                     </div>
                                     <div
                                         class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 transition-opacity">
@@ -88,7 +97,7 @@
                                     class="w-full rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-3 text-sm border bg-white font-medium text-slate-700">
                                     <option value="">Select Method</option>
                                     <option value="mobile_money">Mobile Money</option>
-                                    <template x-if="payment_gateway === 'selcom'">
+                                    <template x-if="payment_gateway === 'selcom' || payment_gateway === 'azampay'">
                                         <option value="card">Card (Visa/MasterCard)</option>
                                     </template>
                                 </select>

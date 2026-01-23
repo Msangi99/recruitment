@@ -83,8 +83,16 @@
                             Get clear guidance on career, work abroad, study abroad, or visa matters.
                             Every session is designed to deliver actionable insights with the highest level of
                             professionalism and privacy.
-                            For <span class="text-gray-600 font-bold">$12 or TZS
-                                {{ number_format(\App\Models\Setting::get('consultation_price', 30000), 0) }}</span>
+                            For <span class="text-gray-600 font-bold">
+                                @php
+                                    $priceTsh = \App\Models\Setting::get('consultation_price', 30000);
+                                    $priceUsd = \App\Helpers\CurrencyHelper::convertTshToUsd($priceTsh);
+                                @endphp
+                                @if($priceUsd)
+                                    {{ \App\Helpers\CurrencyHelper::formatUsd($priceUsd) }} ≈ 
+                                @endif
+                                TZS {{ number_format($priceTsh, 0) }}
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -203,7 +211,17 @@
                     <div class="relative p-6 pt-12 bg-slate-50 rounded-2xl border border-slate-100 h-full group hover:bg-emerald-50/50 hover:border-emerald-100 transition-colors duration-300">
                         <div class="absolute -top-6 left-6 w-12 h-12 bg-slate-950 text-white text-xl font-bold rounded-xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">2</div>
                         <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Make Your Payments</h3>
-                         <p class="text-sm text-slate-600 leading-relaxed mb-3">Secure your 90-minute consultation by paying <span class="font-bold text-slate-900">$12 or 30,000 TZS</span>. We accept:</p>
+                         <p class="text-sm text-slate-600 leading-relaxed mb-3">Secure your 90-minute consultation by paying 
+                            <span class="font-bold text-slate-900">
+                                @php
+                                    $priceTsh = \App\Models\Setting::get('consultation_price', 30000);
+                                    $priceUsd = \App\Helpers\CurrencyHelper::convertTshToUsd($priceTsh);
+                                @endphp
+                                @if($priceUsd)
+                                    {{ \App\Helpers\CurrencyHelper::formatUsd($priceUsd) }} ≈ 
+                                @endif
+                                {{ number_format($priceTsh, 0) }} TZS
+                            </span>. We accept:</p>
                          <ul class="text-sm text-slate-600 list-disc list-inside space-y-1">
                             <li>Visa & MasterCard</li>
                             <li>Mobile Money: M-Pesa, Airtel Money, HaloPesa, AzamPay</li>
