@@ -112,11 +112,10 @@
                             <div x-show="['Work Abroad', 'Study Abroad', 'Visa Guidance'].includes(consultation_type)"
                                 x-transition>
                                 <label class="block text-xs font-bold text-slate-700 mb-1">Destination / Target Country
-                                    <span class="text-slate-500 font-normal">(optional / conditional)</span></label>
+                                    <span class="text-slate-500 font-normal">(optional)</span></label>
                                 <input type="text" name="destination" placeholder="Which country are you targeting?"
                                     class="w-full rounded-lg border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-2 text-sm border">
-                                <p class="text-xs text-slate-500 mt-1">Show only if consultation involves Work Abroad, Study
-                                    Abroad, or Visa</p>
+                                 
                             </div>
 
                             <!-- Preferred Mode -->
