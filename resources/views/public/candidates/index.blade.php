@@ -409,7 +409,7 @@
 
                                     <div
                                         class="absolute bottom-3 right-3 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded">
-                                        WATCH VIDEO CV
+                                        ...
                                     </div>
                                 </div>
                             @endif
