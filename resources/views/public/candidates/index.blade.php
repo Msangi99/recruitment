@@ -117,8 +117,9 @@
                     </div>
 
                     <!-- Skills -->
-                    <div>
+                    <div class="relative">
                         <input type="text" name="skills" value="{{ request('skills') }}" placeholder="Skills"
+                            autocomplete="off"
                             class="w-full rounded border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs py-2">
                     </div>
 
@@ -143,11 +144,200 @@
                             list="countries"
                             class="w-full rounded border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs py-2">
                         <datalist id="countries">
-                            <option value="Tanzania">
+                            <option value="Afghanistan">
+                            <option value="Albania">
+                            <option value="Algeria">
+                            <option value="Andorra">
+                            <option value="Angola">
+                            <option value="Antigua and Barbuda">
+                            <option value="Argentina">
+                            <option value="Armenia">
+                            <option value="Australia">
+                            <option value="Austria">
+                            <option value="Azerbaijan">
+                            <option value="Bahamas">
+                            <option value="Bahrain">
+                            <option value="Bangladesh">
+                            <option value="Barbados">
+                            <option value="Belarus">
+                            <option value="Belgium">
+                            <option value="Belize">
+                            <option value="Benin">
+                            <option value="Bhutan">
+                            <option value="Bolivia">
+                            <option value="Bosnia and Herzegovina">
+                            <option value="Botswana">
+                            <option value="Brazil">
+                            <option value="Brunei">
+                            <option value="Bulgaria">
+                            <option value="Burkina Faso">
+                            <option value="Burundi">
+                            <option value="Cabo Verde">
+                            <option value="Cambodia">
+                            <option value="Cameroon">
+                            <option value="Canada">
+                            <option value="Central African Republic">
+                            <option value="Chad">
+                            <option value="Chile">
+                            <option value="China">
+                            <option value="Colombia">
+                            <option value="Comoros">
+                            <option value="Congo (Congo-Brazzaville)">
+                            <option value="Costa Rica">
+                            <option value="Croatia">
+                            <option value="Cuba">
+                            <option value="Cyprus">
+                            <option value="Czechia (Czech Republic)">
+                            <option value="Democratic Republic of the Congo">
+                            <option value="Denmark">
+                            <option value="Djibouti">
+                            <option value="Dominica">
+                            <option value="Dominican Republic">
+                            <option value="Ecuador">
+                            <option value="Egypt">
+                            <option value="El Salvador">
+                            <option value="Equatorial Guinea">
+                            <option value="Eritrea">
+                            <option value="Estonia">
+                            <option value="Eswatini">
+                            <option value="Ethiopia">
+                            <option value="Fiji">
+                            <option value="Finland">
+                            <option value="France">
+                            <option value="Gabon">
+                            <option value="Gambia">
+                            <option value="Georgia">
+                            <option value="Germany">
+                            <option value="Ghana">
+                            <option value="Greece">
+                            <option value="Grenada">
+                            <option value="Guatemala">
+                            <option value="Guinea">
+                            <option value="Guinea-Bissau">
+                            <option value="Guyana">
+                            <option value="Haiti">
+                            <option value="Holy See">
+                            <option value="Honduras">
+                            <option value="Hungary">
+                            <option value="Iceland">
+                            <option value="India">
+                            <option value="Indonesia">
+                            <option value="Iran">
+                            <option value="Iraq">
+                            <option value="Ireland">
+                            <option value="Israel">
+                            <option value="Italy">
+                            <option value="Jamaica">
+                            <option value="Japan">
+                            <option value="Jordan">
+                            <option value="Kazakhstan">
                             <option value="Kenya">
-                            <option value="Uganda">
-                            <option value="UAE">
+                            <option value="Kiribati">
+                            <option value="Kuwait">
+                            <option value="Kyrgyzstan">
+                            <option value="Laos">
+                            <option value="Latvia">
+                            <option value="Lebanon">
+                            <option value="Lesotho">
+                            <option value="Liberia">
+                            <option value="Libya">
+                            <option value="Liechtenstein">
+                            <option value="Lithuania">
+                            <option value="Luxembourg">
+                            <option value="Madagascar">
+                            <option value="Malawi">
+                            <option value="Malaysia">
+                            <option value="Maldives">
+                            <option value="Mali">
+                            <option value="Malta">
+                            <option value="Marshall Islands">
+                            <option value="Mauritania">
+                            <option value="Mauritius">
+                            <option value="Mexico">
+                            <option value="Micronesia">
+                            <option value="Moldova">
+                            <option value="Monaco">
+                            <option value="Mongolia">
+                            <option value="Montenegro">
+                            <option value="Morocco">
+                            <option value="Mozambique">
+                            <option value="Myanmar (formerly Burma)">
+                            <option value="Namibia">
+                            <option value="Nauru">
+                            <option value="Nepal">
+                            <option value="Netherlands">
+                            <option value="New Zealand">
+                            <option value="Nicaragua">
+                            <option value="Niger">
+                            <option value="Nigeria">
+                            <option value="North Korea">
+                            <option value="North Macedonia">
+                            <option value="Norway">
+                            <option value="Oman">
+                            <option value="Pakistan">
+                            <option value="Palau">
+                            <option value="Palestine State">
+                            <option value="Panama">
+                            <option value="Papua New Guinea">
+                            <option value="Paraguay">
+                            <option value="Peru">
+                            <option value="Philippines">
+                            <option value="Poland">
+                            <option value="Portugal">
+                            <option value="Qatar">
+                            <option value="Romania">
+                            <option value="Russia">
+                            <option value="Rwanda">
+                            <option value="Saint Kitts and Nevis">
+                            <option value="Saint Lucia">
+                            <option value="Saint Vincent and the Grenadines">
+                            <option value="Samoa">
+                            <option value="San Marino">
+                            <option value="Sao Tome and Principe">
                             <option value="Saudi Arabia">
+                            <option value="Senegal">
+                            <option value="Serbia">
+                            <option value="Seychelles">
+                            <option value="Sierra Leone">
+                            <option value="Singapore">
+                            <option value="Slovakia">
+                            <option value="Slovenia">
+                            <option value="Solomon Islands">
+                            <option value="Somalia">
+                            <option value="South Africa">
+                            <option value="South Korea">
+                            <option value="South Sudan">
+                            <option value="Spain">
+                            <option value="Sri Lanka">
+                            <option value="Sudan">
+                            <option value="Suriname">
+                            <option value="Sweden">
+                            <option value="Switzerland">
+                            <option value="Syria">
+                            <option value="Tajikistan">
+                            <option value="Tanzania">
+                            <option value="Thailand">
+                            <option value="Timor-Leste">
+                            <option value="Togo">
+                            <option value="Tonga">
+                            <option value="Trinidad and Tobago">
+                            <option value="Tunisia">
+                            <option value="Turkey">
+                            <option value="Turkmenistan">
+                            <option value="Tuvalu">
+                            <option value="Uganda">
+                            <option value="Ukraine">
+                            <option value="United Arab Emirates">
+                            <option value="United Kingdom">
+                            <option value="United States of America">
+                            <option value="Uruguay">
+                            <option value="Uzbekistan">
+                            <option value="Vanuatu">
+                            <option value="Venezuela">
+                            <option value="Vietnam">
+                            <option value="Yemen">
+                            <option value="Zambia">
+                            <option value="Zimbabwe">
                         </datalist>
                     </div>
 
@@ -239,14 +429,14 @@
                     <h2 class="text-xl font-bold text-gray-900">
                         {{ $candidates->total() }} Candidates Found
                     </h2>
-                    <div class="flex items-center gap-2">
+                    {{-- <div class="flex items-center gap-2">
                         <span class="text-sm text-gray-500">Sort by:</span>
                         <select
                             class="text-sm border-none bg-transparent font-medium text-gray-900 focus:ring-0 cursor-pointer">
                             <option>Newest</option>
                             <option>Experience</option>
                         </select>
-                    </div>
+                    </div> --}}
                 </div>
 
                 @if(session('success'))
@@ -442,6 +632,72 @@
     </div>
 
     @include('partials.footer')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Skills Live Search
+            const skillsInput = document.querySelector('input[name="skills"]');
+            if (skillsInput) {
+                const skillsContainer = skillsInput.parentElement;
+
+                // Create suggestions container
+                const suggestionsBox = document.createElement('div');
+                suggestionsBox.className = 'absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1 hidden max-h-60 overflow-y-auto';
+                skillsContainer.appendChild(suggestionsBox);
+
+                let debounceTimer;
+
+                skillsInput.addEventListener('input', function (e) {
+                    const query = e.target.value;
+                    clearTimeout(debounceTimer);
+
+                    if (query.length < 2) {
+                        suggestionsBox.classList.add('hidden');
+                        return;
+                    }
+
+                    debounceTimer = setTimeout(() => {
+                        fetch(`{{ route('public.candidates.skills.search') }}?q=${encodeURIComponent(query)}`)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Network response was not ok');
+                                return response.json();
+                            })
+                            .then(data => {
+                                suggestionsBox.innerHTML = '';
+                                if (data.length > 0) {
+                                    data.forEach(skill => {
+                                        const div = document.createElement('div');
+                                        div.className = 'px-4 py-2 hover:bg-gray-100 cursor-pointer text-xs text-gray-700 font-medium';
+                                        div.textContent = skill;
+                                        div.onclick = function () {
+                                            skillsInput.value = skill;
+                                            suggestionsBox.classList.add('hidden');
+                                            // Optional: Submit form automatically
+                                            // skillsInput.closest('form').submit();
+                                        };
+                                        suggestionsBox.appendChild(div);
+                                    });
+                                    suggestionsBox.classList.remove('hidden');
+                                } else {
+                                    suggestionsBox.classList.add('hidden');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching skills:', error);
+                                suggestionsBox.classList.add('hidden');
+                            });
+                    }, 300);
+                });
+
+                // Close suggestions when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!skillsContainer.contains(e.target)) {
+                        suggestionsBox.classList.add('hidden');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

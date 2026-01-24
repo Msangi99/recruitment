@@ -32,6 +32,7 @@ Route::get('/jobs', [PublicJobController::class, 'index'])->name('public.jobs.in
 Route::get('/jobs/{job}', [PublicJobController::class, 'show'])->name('public.jobs.show');
 
 // Public Candidate Browsing for Employers (no login required)
+Route::get('/candidates/skills/search', [PublicCandidateController::class, 'searchSkills'])->name('public.candidates.skills.search');
 Route::get('/candidates', [PublicCandidateController::class, 'index'])->name('public.candidates.index');
 Route::get('/candidates/{candidate}', [PublicCandidateController::class, 'show'])->name('public.candidates.show');
 Route::get('/candidates/{candidate}/interview', [PublicCandidateController::class, 'interviewForm'])->name('public.candidates.interview');

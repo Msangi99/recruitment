@@ -114,6 +114,23 @@ class PublicCandidateController extends Controller
         return view('public.candidates.index', compact('candidates'));
     }
 
+    public function searchSkills(Request $request)
+    {
+        $search = $request->get('q');
+        if (strlen($search) < 2) {
+            return response()->json([]);
+        }
+        
+        $skills = \App\Models\Skill::where('name', 'like', "%{$search}%")
+            ->select('name')
+            ->distinct()
+            ->limit(10)
+            ->get()
+            ->pluck('name');
+            
+        return response()->json($skills);
+    }
+
     public function show(User $candidate)
     {
         // Only show verified candidates
