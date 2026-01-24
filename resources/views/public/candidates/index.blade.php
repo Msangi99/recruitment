@@ -61,31 +61,42 @@
     </nav>
 
     <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <!-- Search Header -->
-        <div class="mb-8">
-            <form method="GET" action="{{ route('public.candidates.index') }}" class="relative max-w-4xl">
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <!-- Hero Section -->
+        <div class="mb-10 text-center max-w-4xl mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-heading tracking-tight">
+                Find Your Perfect Candidate
+            </h1>
+            <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+                From talent sourcing to shortlisting, we help you find candidates who fit your role, culture, and
+                expectations
+            </p>
+
+            <form method="GET" action="{{ route('public.candidates.index') }}" class="relative max-w-3xl mx-auto">
+                <div class="relative group">
+                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                        <svg class="h-6 w-6 text-gray-400 group-focus-within:text-deep-green transition-colors"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </div>
                     <input type="text" name="search" value="{{ request('search') }}"
                         placeholder="Search by name, skills, or destination..."
-                        class="block w-full pl-11 pr-24 py-4 bg-white border border-gray-200 rounded-full shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition-all duration-200">
+                        class="block w-full pl-14 pr-32 py-5 bg-white border border-gray-200 rounded-full shadow-lg shadow-gray-100/50 focus:ring-4 focus:ring-deep-green/10 focus:border-deep-green text-lg transition-all duration-300 placeholder-gray-400">
                     <div class="absolute inset-y-0 right-2 flex items-center">
                         <button type="submit"
-                            class="bg-blue-600 text-white px-6 py-2.5 rounded-full hover:bg-blue-700 transition-colors font-medium">
+                            class="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-opacity-90 transition-all shadow-md hover:shadow-lg font-bold text-sm uppercase tracking-wide transform hover:-translate-y-0.5">
                             Search
                         </button>
                     </div>
                 </div>
 
                 @if(request()->anyFilled(['target_destination', 'education_level', 'min_experience', 'max_experience', 'availability', 'gender', 'language']))
-                    <div class="mt-2 flex items-center gap-2 text-sm">
-                        <span class="text-gray-500">Active filters:</span>
-                        <a href="{{ route('public.candidates.index') }}" class="text-blue-600 hover:underline">Clear all</a>
+                    <div class="mt-4 flex items-center justify-center gap-2 text-sm animate-fade-in-up">
+                        <span class="text-gray-500 bg-gray-100 px-3 py-1 rounded-full">Active filters applied</span>
+                        <a href="{{ route('public.candidates.index') }}"
+                            class="text-deep-green hover:text-deep-blue font-medium hover:underline transition-colors">Clear
+                            all</a>
                     </div>
                 @endif
             </form>
@@ -250,74 +261,65 @@
                     </div>
                 @endif
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 gap-6">
                     @forelse($candidates as $candidate)
                         @if(!$candidate->candidateProfile)
                             @continue
                         @endif
-                        <div
-                            class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col h-full group">
-                            <div class="p-3 flex-1 flex flex-col relative">
 
-                                <!-- Top Bar: ID & Badges -->
-                                <div class="flex justify-between items-start mb-2">
+                        @php
+                            $videoPath = $candidate->candidateProfile->video_cv ?? ($candidate->documents->where('document_type', 'video_cv')->first()?->file_path);
+                            $hasVideo = !empty($videoPath);
+                        @endphp
+
+                        <div
+                            class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300 group flex flex-col md:flex-row">
+                            <!-- Left Side: Candidate Details -->
+                            <div class="flex-1 flex flex-col p-5 {{ $hasVideo ? 'md:border-r border-gray-100' : '' }}">
+
+                                <!-- Top: ID & Badges -->
+                                <div class="flex justify-between items-start mb-4">
                                     <span
-                                        class="text-[10px] font-mono text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded border border-gray-100">ID:
-                                        #{{ $candidate->id }}{{ rand(100, 999) }}</span>
-                                    <div class="flex gap-1">
+                                        class="text-[10px] font-mono text-gray-400 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+                                        ID: #{{ $candidate->id }}{{ rand(100, 999) }}
+                                    </span>
+                                    <div class="flex gap-2">
                                         @if($candidate->candidateProfile->is_available)
                                             <span
-                                                class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-green-50 text-green-700 border border-green-100">Available</span>
+                                                class="inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-green-50 text-green-700 border border-green-100">
+                                                Available
+                                            </span>
                                         @endif
                                         <span
-                                            class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-50 text-blue-600 border border-blue-100">Verified</span>
+                                            class="inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-100">
+                                            Verified
+                                        </span>
                                     </div>
                                 </div>
 
-                                <!-- Introduction Video (Moved Up prominent) -->
-                                {{-- @if($candidate->candidateProfile->video_cv)
-                                    <div class="mb-3 rounded-md overflow-hidden bg-black h-32 relative group/video">
-                                        <video class="w-full h-full object-cover">
-                                            <source
-                                                src="{{ asset('uploads/video_cvs/' . $candidate->candidateProfile->video_cv) }}"
-                                                type="video/mp4">
-                                        </video>
-                                        <div
-                                            class="absolute inset-0 flex items-center justify-center bg-black/10 group-hover/video:bg-black/20 transition-all">
-                                            <div
-                                                class="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center pl-1 border border-white/40 cursor-pointer shadow-lg hover:scale-110 transition-transform">
-                                                <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M8 5v14l11-7z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-                                        <div class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 rounded">
-                                            30-60s</div>
-                                    </div>
-                                @endif --}}
-
-                                <!-- Profile Details Grid -->
-                                <div class="flex gap-3 mb-2">
+                                <!-- Profile Info -->
+                                <div class="flex gap-4 mb-4">
                                     <div class="flex-shrink-0 text-center">
                                         @if($candidate->candidateProfile->profile_picture)
                                             <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
                                                 alt="{{ $candidate->name }}"
-                                                class="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm mx-auto">
+                                                class="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md mx-auto ring-2 ring-gray-100">
                                         @else
                                             <div
-                                                class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-sm font-bold mx-auto">
+                                                class="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold mx-auto ring-4 ring-blue-50">
                                                 {{ strtoupper(substr($candidate->name, 0, 1)) }}
                                             </div>
                                         @endif
-                                        <div class="mt-1">
+                                        <div class="mt-2">
                                             <span
-                                                class="text-[9px] font-bold text-gray-600 bg-gray-100 px-1.5 py-0.5 rounded-full whitespace-nowrap border border-gray-200">{{ $candidate->candidateProfile->years_of_experience ?? 0 }}
-                                                Yrs</span>
+                                                class="text-[10px] font-bold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-full whitespace-nowrap border border-gray-200">
+                                                {{ $candidate->candidateProfile->years_of_experience ?? 0 }} Yrs Exp
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="flex-1 min-w-0">
-                                        <h3 class="text-sm font-bold text-gray-900 leading-tight truncate">
+                                        <h3 class="text-lg font-bold text-gray-900 leading-tight">
                                             @php
                                                 $nameParts = explode(' ', $candidate->name);
                                                 $firstName = $nameParts[0];
@@ -325,88 +327,109 @@
                                             @endphp
                                             {{ $firstName }} {{ $lastNameInitial }}
                                         </h3>
+
                                         @if($candidate->candidateProfile->categories->count() > 0)
-                                            <p class="text-[10px] font-bold text-emerald-600 truncate uppercase mt-0.5">
+                                            <p class="text-xs font-bold text-emerald-600 uppercase mt-1 tracking-wide">
                                                 {{ $candidate->candidateProfile->categories->first()->name }}
                                             </p>
                                         @elseif($candidate->candidateProfile->title)
-                                            <p class="text-xs font-bold text-blue-600 truncate uppercase mt-0.5">
+                                            <p class="text-xs font-bold text-blue-600 uppercase mt-1 tracking-wide">
                                                 {{ $candidate->candidateProfile->title }}
                                             </p>
                                         @endif
 
                                         @if($candidate->candidateProfile->headline)
                                             <p
-                                                class="text-[10px] text-gray-500 font-bold leading-snug line-clamp-2 mt-1 border-l-2 border-gray-100 pl-2">
+                                                class="text-sm text-gray-500 font-medium leading-snug line-clamp-2 mt-2 border-l-2 border-deep-green pl-3">
                                                 {{ $candidate->candidateProfile->headline }}
                                             </p>
                                         @endif
 
                                         @if($candidate->candidateProfile->description)
-                                            <p
-                                                class="text-[10px] text-gray-500 leading-snug line-clamp-3 mt-1 border-l-2 border-gray-100 pl-2">
-                                                {{ Str::limit(strip_tags($candidate->candidateProfile->description), 250) }}
+                                            <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mt-2">
+                                                {{ Str::limit(strip_tags($candidate->candidateProfile->description), 200) }}
                                             </p>
-                                        @elseif(!$candidate->candidateProfile->headline)
-                                            <p class="text-[10px] text-gray-400 italic mb-1 border-l-2 border-gray-100 pl-2">
-                                                Professional Summary</p>
                                         @endif
                                     </div>
                                 </div>
 
-                                <!-- Skills -->
-                                @if($candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
-                                    <div class="flex flex-wrap gap-1 mt-auto pt-2 border-t border-gray-50">
-                                        @foreach($candidate->candidateProfile->skills->take(3) as $skill)
-                                            <span
-                                                class="inline-block bg-white text-gray-600 px-1.5 py-0.5 text-[9px] rounded border border-gray-200 shadow-sm">
-                                                {{ $skill->name }}
-                                            </span>
-                                        @endforeach
-                                        @if($candidate->candidateProfile->skills->count() > 3)
-                                            <span
-                                                class="text-[9px] text-gray-400 self-center">+{{ $candidate->candidateProfile->skills->count() - 3 }}</span>
-                                        @endif
+                                <!-- Skills & Actions -->
+                                <div
+                                    class="mt-auto pt-4 border-t border-gray-50 flex flex-wrap items-center justify-between gap-4">
+                                    @if($candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
+                                        <div class="flex flex-wrap gap-1.5">
+                                            @foreach($candidate->candidateProfile->skills->take(4) as $skill)
+                                                <span
+                                                    class="inline-block bg-white text-gray-600 px-2 py-1 text-[10px] rounded border border-gray-200 shadow-sm font-medium">
+                                                    {{ $skill->name }}
+                                                </span>
+                                            @endforeach
+                                            @if($candidate->candidateProfile->skills->count() > 4)
+                                                <span class="text-[10px] text-gray-400 self-center font-medium pl-1">
+                                                    +{{ $candidate->candidateProfile->skills->count() - 4 }} more
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <div></div>
+                                    @endif
+
+                                    <div class="flex gap-2">
+                                        <a href="{{ route('public.candidates.show', $candidate) }}"
+                                            class="px-4 py-2 text-xs font-bold text-gray-700 bg-gray-50 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors border border-gray-200">
+                                            View Profile
+                                        </a>
+                                        <a href="{{ route('public.candidates.interview', $candidate) }}"
+                                            class="px-4 py-2 text-xs font-bold text-white bg-deep-green rounded-lg hover:bg-opacity-90 transition-colors shadow-sm hover:shadow">
+                                            Request This Candidate
+                                        </a>
                                     </div>
-                                @endif
-
+                                </div>
                             </div>
 
-                            <!-- Action Buttons -->
-                            @php
-                                $videoPath = $candidate->candidateProfile->video_cv ?? ($candidate->documents->where('document_type', 'video_cv')->first()?->file_path);
-                                $hasVideo = !empty($videoPath);
-                                $gridCols = $hasVideo ? 'grid-cols-3' : 'grid-cols-2';
-                            @endphp
-                            <div class="grid {{ $gridCols }} border-t border-gray-100 divide-x divide-gray-100 bg-gray-50">
-                                <a href="{{ route('public.candidates.show', $candidate) }}"
-                                    class="py-2.5 text-center text-[10px] font-bold text-gray-600 hover:text-blue-600 hover:bg-white transition-colors tracking-tight">
-                                    View Profile
-                                </a>
-                                @if($hasVideo)
-                                    <a href="{{ asset($videoPath) }}" target="_blank"
-                                        class="py-2.5 text-center text-[10px] font-bold text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors tracking-tight">
-                                        View Video CV
-                                    </a>
-                                @endif
-                                <a href="{{ route('public.candidates.interview', $candidate) }}"
-                                    class="py-2.5 text-center text-[10px] font-bold text-green-700 hover:text-green-800 hover:bg-green-50 transition-colors tracking-tight">
-                                    Request This Candidate
-                                </a>
-                            </div>
+                            <!-- Right Side: Video CV (if available) -->
+                            @if($hasVideo)
+                                <div
+                                    class="w-full md:w-80 bg-black relative group/video flex-shrink-0 min-h-[250px] md:min-h-full">
+                                    <video class="w-full h-full object-cover">
+                                        <source src="{{ asset($videoPath) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                    <div
+                                        class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/video:bg-black/40 transition-all">
+                                        <a href="{{ asset($videoPath) }}" target="_blank"
+                                            class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center pl-1 border border-white/50 cursor-pointer shadow-xl hover:scale-110 hover:bg-white/30 transition-all duration-300">
+                                            <svg class="w-6 h-6 text-white drop-shadow-md" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                        </a>
+                                    </div>
+
+                                    <div
+                                        class="absolute bottom-3 right-3 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded">
+                                        WATCH VIDEO CV
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     @empty
                         <div
                             class="col-span-full text-center py-20 bg-white rounded-2xl border border-dashed border-gray-200">
-                            <div class="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                                <svg class="h-10 w-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                                     </path>
                                 </svg>
                             </div>
-                            <h3 class="text-lg font-bold text-gray-900 italic">No matches found</h3>
-                            <p class="text-gray-500 mt-1">Try broadening your search criteria.</p>
+                            <h3 class="text-xl font-bold text-gray-900 italic mb-2">No candidates matches found</h3>
+                            <p class="text-gray-500 max-w-md mx-auto">We couldn't find any candidates matching your
+                                criteria. Try adjusting your filters or search terms.</p>
+                            <a href="{{ route('public.candidates.index') }}"
+                                class="inline-block mt-6 text-deep-green font-bold hover:underline">Clear Validation
+                                Filters</a>
                         </div>
                     @endforelse
                 </div>
