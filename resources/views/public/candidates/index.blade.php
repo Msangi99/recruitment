@@ -430,7 +430,7 @@
                             <!-- Left Side: Video CV (if available) -->
                             @if($hasVideo)
                                 <div
-                                    class="w-full md:w-80 bg-black relative group/video flex-shrink-0 min-h-[250px] md:min-h-full md:border-r border-gray-100">
+                                    class="w-full md:w-72 h-48 bg-black relative group/video flex-shrink-0 md:border-r border-gray-100 overflow-hidden self-start">
                                     <video class="w-full h-full object-cover" preload="metadata">
                                         <source src="{{ asset($videoPath) }}" type="video/mp4">
                                         Your browser does not support the video tag.

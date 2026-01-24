@@ -28,7 +28,7 @@
                 <div class="flex items-center space-x-3">
                     <span
                         class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full 
-                                                                                {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
+                                                                                        {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
                 ($profile->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                         <i data-lucide="{{ $profile->verification_status == 'approved' ? 'shield-check' : 'clock' }}"
                             class="w-3 h-3 mr-1"></i>
@@ -357,7 +357,7 @@
                                 <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Video CV</dt>
                                 <dd>
                                     @if($profile->video_cv)
-                                        <div class="aspect-video bg-black rounded-lg overflow-hidden">
+                                        <div class="w-full h-48 bg-black rounded-lg overflow-hidden">
                                             <video controls class="w-full h-full">
                                                 <source src="{{ asset($profile->video_cv) }}" type="video/mp4">
                                                 Your browser does not support the video tag.

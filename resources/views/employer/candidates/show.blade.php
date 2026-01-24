@@ -78,7 +78,7 @@
                         <div class="bg-white px-6 py-6 border-b border-gray-200">
                             <h4 class="text-lg font-semibold text-gray-900 mb-4">Video CV</h4>
                             <div class="w-full max-w-2xl">
-                                <video controls class="w-full rounded-lg shadow-lg border border-gray-200">
+                                <video controls class="w-full h-48 rounded-lg shadow-lg border border-gray-200 object-cover">
                                     <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
@@ -266,7 +266,7 @@
                                         </div>
                                         @if($document->document_type == 'video_cv')
                                             <div class="mt-4 w-full max-w-lg mx-auto">
-                                                <video controls class="w-full rounded-lg shadow-sm border border-gray-200">
+                                                <video controls class="w-full h-48 rounded-lg shadow-sm border border-gray-200 object-cover">
                                                     <source src="{{ asset($document->file_path) }}" type="video/mp4">
                                                     Your browser does not support the video tag.
                                                 </video>

@@ -117,7 +117,7 @@
                         <div class="mb-6">
                             <h3 class="text-xs font-bold text-gray-900 mb-2">Introduction video</h3>
                             <div
-                                class="rounded-xl overflow-hidden bg-black aspect-video shadow-sm relative group border border-gray-100">
+                                class="rounded-xl overflow-hidden bg-black w-full h-48 shadow-sm relative group border border-gray-100">
                                 <video controls class="w-full h-full object-cover">
                                     <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
                                     Your browser does not support the video tag.
@@ -199,13 +199,13 @@
 
                     <!-- 1. Professional summary -->
                     <div id="summary" class="mb-6">
-                        <h2 class="text-lg font-bold text-gray-900 mb-3">Professional Summary</h2>
+                        {{-- <h2 class="text-lg font-bold text-gray-900 mb-3">Professional Summary</h2> --}}
                         @if($candidate->candidateProfile->title || $candidate->candidateProfile->headline)
                             <div class="mb-4">
                                 <h3 class="text-base font-bold text-deep-green">
                                     {{ $candidate->candidateProfile->title ?? 'Candidate' }}
                                 </h3>
-                                <p class="text-gray-500 text-sm italic">{{ $candidate->candidateProfile->headline }}</p>
+                                <p class="text-gray-500 text-sm ">{{ $candidate->candidateProfile->headline }}</p>
                             </div>
                         @endif
                         <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed font-normal">
@@ -268,26 +268,26 @@
                     <!-- 4. Education -->
                     <div id="education" class="mb-6">
                         <h2 class="text-lg font-bold text-gray-900 mb-4">Education</h2>
-                        <div class="grid grid-cols-1 gap-4">
+                        <div class="space-y-5">
                             @forelse($candidate->candidateProfile->educations->whereNotIn('level', ['Certificate']) as $education)
-                                <div class="p-4 rounded-xl bg-gray-50 border border-gray-100">
-                                    <div class="flex justify-between items-start">
-                                        <div>
-                                            <h3 class="font-bold text-gray-900 text-sm">{{ $education->level }} -
-                                                {{ $education->field_of_study }}
-                                            </h3>
-                                            <p class="text-xs text-emerald-600 font-bold mt-1 uppercase tracking-wide">
-                                                {{ $education->institution }}
-                                            </p>
-                                            <p class="text-[11px] text-gray-400 mt-1 uppercase tracking-wider font-medium">
-                                                {{ $education->city }}, {{ $education->country }}
-                                            </p>
-                                        </div>
-                                        <span
-                                            class="text-[10px] font-bold text-gray-400 bg-white px-2 py-1 rounded shadow-sm border border-gray-100">
-                                            {{ $education->start_date->format('Y') }} -
-                                            {{ $education->is_current ? 'Present' : ($education->end_date ? $education->end_date->format('Y') : '') }}
-                                        </span>
+                                <div class="relative pl-6">
+                                    <div class="absolute left-0 top-1.5 w-2 h-2 bg-deep-green rounded-full"></div>
+                                    <div class="space-y-2">
+                                        <p class="text-sm font-bold text-gray-900">Education level: <span
+                                                class="font-medium text-gray-700">{{ $education->level }}</span></p>
+                                        <p class="text-sm font-bold text-gray-900">Course: <span
+                                                class="font-medium text-gray-700">{{ $education->field_of_study }}</span>
+                                        </p>
+                                        <p class="text-sm font-bold text-gray-900">Institute: <span
+                                                class="font-medium text-gray-700">{{ $education->institution }}</span></p>
+                                        <p class="text-sm font-bold text-gray-900">Location: <span
+                                                class="font-medium text-gray-700">{{ $education->city }},
+                                                {{ $education->country }}</span></p>
+                                        <p class="text-sm font-bold text-gray-900">Year: <span
+                                                class="font-medium text-gray-700">
+                                                {{ $education->start_date->format('Y') }} -
+                                                {{ $education->is_current ? 'Present' : ($education->end_date ? $education->end_date->format('Y') : '') }}
+                                            </span></p>
                                     </div>
                                 </div>
                             @empty

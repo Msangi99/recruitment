@@ -24,12 +24,12 @@
                             <form id="photo-form" enctype="multipart/form-data">
                                 @csrf
                                 <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="block w-full text-sm text-slate-500
-                                                                file:mr-4 file:py-2 file:px-4
-                                                                file:rounded-full file:border-0
-                                                                file:text-sm file:font-semibold
-                                                                file:bg-emerald-50 file:text-emerald-700
-                                                                hover:file:bg-emerald-100
-                                                            " />
+                                                                            file:mr-4 file:py-2 file:px-4
+                                                                            file:rounded-full file:border-0
+                                                                            file:text-sm file:font-semibold
+                                                                            file:bg-emerald-50 file:text-emerald-700
+                                                                            hover:file:bg-emerald-100
+                                                                        " />
                                 <p class="mt-1 text-xs text-slate-500">JPG or PNG, max 3MB. Clear face, plain background.
                                 </p>
                                 <button type="button" id="upload-photo-btn"
@@ -58,7 +58,7 @@
                     @if($profile->video_cv)
                         <div class="mb-4">
                             <p class="text-sm text-emerald-600 font-medium mb-2">✓ Video Uploaded</p>
-                            <video controls class="w-full max-h-64 rounded-lg bg-black">
+                            <video controls class="w-full h-48 rounded-lg bg-black object-cover">
                                 <source src="{{ asset($profile->video_cv) }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
@@ -132,209 +132,206 @@
         </div>
     </div>
 
-    // Photo Upload Logic
-    const photoInput = document.getElementById('profile_picture');
-    const photoBtn = document.getElementById('upload-photo-btn');
-    const photoForm = document.getElementById('photo-form');
-    const photoProgress = document.getElementById('photo-progress');
+    <script>
+        // Photo Upload Logic
+        const photoInput = document.getElementById('profile_picture');
+        const photoBtn = document.getElementById('upload-photo-btn');
+        const photoForm = document.getElementById('photo-form');
+        const photoProgress = document.getElementById('photo-progress');
 
-    let photoUploaded = {{ $profile->profile_picture ? 'true' : 'false' }};
+        let photoUploaded = {{ $profile->profile_picture ? 'true' : 'false' }};
 
-    photoInput.addEventListener('change', () => {
-    if (photoInput.files.length > 0) {
-    photoBtn.style.display = 'inline-flex';
-    photoUploaded = false; // Reset if new file selected
-    }
-    });
+        photoInput.addEventListener('change', () => {
+            if (photoInput.files.length > 0) {
+                photoBtn.style.display = 'inline-flex';
+                photoUploaded = false; // Reset if new file selected
+            }
+        });
 
-    const uploadPhoto = () => {
-    return new Promise((resolve, reject) => {
-    if(photoInput.files.length === 0) {
-    resolve(true); // No file to upload
-    return;
-    }
+        const uploadPhoto = () => {
+            return new Promise((resolve, reject) => {
+                if (photoInput.files.length === 0) {
+                    resolve(true); // No file to upload
+                    return;
+                }
 
-    const formData = new FormData(photoForm);
-    const btn = photoBtn;
-    const originalText = btn.innerText;
+                const formData = new FormData(photoForm);
+                const btn = photoBtn;
+                const originalText = btn.innerText;
 
-    btn.disabled = true;
-    btn.innerText = 'Uploading...';
-    photoProgress.classList.remove('hidden');
+                btn.disabled = true;
+                btn.innerText = 'Uploading...';
+                photoProgress.classList.remove('hidden');
 
-    fetch('{{ route("candidate.wizard.upload.photo") }}', {
-    method: 'POST',
-    body: formData,
-    headers: {
-    'X-Requested-With': 'XMLHttpRequest'
-    }
-    })
-    .then(response => response.json())
-    .then(data => {
-    if (data.success) {
-    document.getElementById('profile-preview').src = data.path;
-    btn.innerText = 'Uploaded!';
-    btn.classList.add('bg-gray-400');
-    photoUploaded = true;
-    setTimeout(() => {
-    btn.style.display = 'none';
-    btn.disabled = false;
-    btn.innerText = originalText;
-    btn.classList.remove('bg-gray-400');
-    photoProgress.classList.add('hidden');
-    }, 2000);
-    resolve(true);
-    } else {
-    alert('Photo upload failed: ' + (data.message || 'Unknown error'));
-    btn.disabled = false;
-    btn.innerText = originalText;
-    photoProgress.classList.add('hidden');
-    resolve(false);
-    }
-    })
-    .catch(error => {
-    console.error(error);
-    alert('Photo upload error');
-    btn.disabled = false;
-    btn.innerText = originalText;
-    photoProgress.classList.add('hidden');
-    resolve(false);
-    });
-    });
-    };
+                fetch('{{ route("candidate.wizard.upload.photo") }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('profile-preview').src = data.path;
+                            btn.innerText = 'Uploaded!';
+                            btn.classList.add('bg-gray-400');
+                            photoUploaded = true;
+                            setTimeout(() => {
+                                btn.style.display = 'none';
+                                btn.disabled = false;
+                                btn.innerText = originalText;
+                                btn.classList.remove('bg-gray-400');
+                                photoProgress.classList.add('hidden');
+                            }, 2000);
+                            resolve(true);
+                        } else {
+                            alert('Photo upload failed: ' + (data.message || 'Unknown error'));
+                            btn.disabled = false;
+                            btn.innerText = originalText;
+                            photoProgress.classList.add('hidden');
+                            resolve(false);
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        alert('Photo upload error');
+                        btn.disabled = false;
+                        btn.innerText = originalText;
+                        photoProgress.classList.add('hidden');
+                        resolve(false);
+                    });
+            });
+        };
 
-    photoBtn.addEventListener('click', () => {
-    uploadPhoto();
-    });
+        photoBtn.addEventListener('click', () => {
+            uploadPhoto();
+        });
 
-    // Video Upload Logic
-    const videoInput = document.getElementById('video_cv');
-    const videoBtn = document.getElementById('upload-video-btn');
-    const videoForm = document.getElementById('video-form');
-    const videoProgress = document.getElementById('video-progress');
-    const videoProgressBar = document.getElementById('video-progress-bar');
+        // Video Upload Logic
+        const videoInput = document.getElementById('video_cv');
+        const videoBtn = document.getElementById('upload-video-btn');
+        const videoForm = document.getElementById('video-form');
+        const videoProgress = document.getElementById('video-progress');
+        const videoProgressBar = document.getElementById('video-progress-bar');
 
-    let videoUploaded = {{ $profile->video_cv ? 'true' : 'false' }};
+        let videoUploaded = {{ $profile->video_cv ? 'true' : 'false' }};
 
-    videoInput.addEventListener('change', () => {
-    if (videoInput.files.length > 0) {
-    videoBtn.style.display = 'inline-flex';
-    videoBtn.innerText = 'Upload ' + videoInput.files[0].name;
-    videoUploaded = false;
-    }
-    });
+        videoInput.addEventListener('change', () => {
+            if (videoInput.files.length > 0) {
+                videoBtn.style.display = 'inline-flex';
+                videoBtn.innerText = 'Upload ' + videoInput.files[0].name;
+                videoUploaded = false;
+            }
+        });
 
-    const uploadVideo = () => {
-    return new Promise((resolve, reject) => {
-    if(videoInput.files.length === 0) {
-    resolve(true);
-    return;
-    }
+        const uploadVideo = () => {
+            return new Promise((resolve, reject) => {
+                if (videoInput.files.length === 0) {
+                    resolve(true);
+                    return;
+                }
 
-    const formData = new FormData(videoForm);
-    videoBtn.style.display = 'none';
-    videoProgress.classList.remove('hidden');
-    document.getElementById('video-status').innerText = 'Starting upload...';
+                const formData = new FormData(videoForm);
+                videoBtn.style.display = 'none';
+                videoProgress.classList.remove('hidden');
+                document.getElementById('video-status').innerText = 'Starting upload...';
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '{{ route("candidate.wizard.upload.video") }}', true);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '{{ route("candidate.wizard.upload.video") }}', true);
+                xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
-    xhr.upload.onprogress = function (e) {
-    if (e.lengthComputable) {
-    const percentComplete = (e.loaded / e.total) * 100;
-    videoProgressBar.style.width = percentComplete + '%';
-    document.getElementById('video-status').innerText = Math.round(percentComplete) + '% Uploaded';
-    }
-    };
+                xhr.upload.onprogress = function (e) {
+                    if (e.lengthComputable) {
+                        const percentComplete = (e.loaded / e.total) * 100;
+                        videoProgressBar.style.width = percentComplete + '%';
+                        document.getElementById('video-status').innerText = Math.round(percentComplete) + '% Uploaded';
+                    }
+                };
 
-    xhr.onload = function () {
-    if (xhr.status === 200) {
-    try {
-    const data = JSON.parse(xhr.responseText);
-    if (data.success) {
-    document.getElementById('video-status').innerText = 'Upload Complete!';
-    videoUploaded = true;
-    setTimeout(() => {
-    // location.reload(); // Don't reload, just resolve
-    }, 1000);
-    resolve(true);
-    } else {
-    alert('Video upload failed: ' + (data.message || 'Unknown error'));
-    videoProgress.classList.add('hidden');
-    videoBtn.style.display = 'inline-flex';
-    resolve(false);
-    }
-    } catch(e) {
-    alert('Video upload error: Invalid response');
-    resolve(false);
-    }
-    } else {
-    alert('Video upload error: ' + xhr.statusText);
-    videoProgress.classList.add('hidden');
-    videoBtn.style.display = 'inline-flex';
-    resolve(false);
-    }
-    };
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            if (data.success) {
+                                document.getElementById('video-status').innerText = 'Upload Complete!';
+                                videoUploaded = true;
+                                setTimeout(() => {
+                                    // location.reload(); // Don't reload, just resolve
+                                }, 1000);
+                                resolve(true);
+                            } else {
+                                alert('Video upload failed: ' + (data.message || 'Unknown error'));
+                                videoProgress.classList.add('hidden');
+                                videoBtn.style.display = 'inline-flex';
+                                resolve(false);
+                            }
+                        } catch (e) {
+                            alert('Video upload error: Invalid response');
+                            resolve(false);
+                        }
+                    } else {
+                        alert('Video upload error: ' + xhr.statusText);
+                        videoProgress.classList.add('hidden');
+                        videoBtn.style.display = 'inline-flex';
+                        resolve(false);
+                    }
+                };
 
-    xhr.onerror = function() {
-    alert('Video upload network error');
-    resolve(false);
-    };
+                xhr.onerror = function () {
+                    alert('Video upload network error');
+                    resolve(false);
+                };
 
-    xhr.send(formData);
-    });
-    };
+                xhr.send(formData);
+            });
+        };
 
-    videoBtn.addEventListener('click', () => {
-    uploadVideo().then(success => {
-    if(success) location.reload();
-    });
-    });
+        videoBtn.addEventListener('click', () => {
+            uploadVideo().then(success => {
+                if (success) location.reload();
+            });
+        });
 
-    // Main Form Submission Intercept
-    const mainForm = document.querySelector('form[action*="wizard/process"]');
-    const submitBtn = mainForm.querySelector('button[type="submit"]');
+        // Main Form Submission Intercept
+        const mainForm = document.querySelector('form[action*="wizard/process"]');
+        const submitBtn = mainForm.querySelector('button[type="submit"]');
 
-    mainForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
+        mainForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-    // Check if files are selected but not uploaded
-    const photoPending = photoInput.files.length > 0 && !photoUploaded;
-    const videoPending = videoInput.files.length > 0 && !videoUploaded;
+            // Check if files are selected but not uploaded
+            const photoPending = photoInput.files.length > 0 && !photoUploaded;
+            const videoPending = videoInput.files.length > 0 && !videoUploaded;
 
-    if (photoPending || videoPending) {
-    const originalBtnText = submitBtn.innerText;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg"
-        fill="none" viewBox="0 0 24 24">
-        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-        </path>
-    </svg> Uploading media...';
+            if (photoPending || videoPending) {
+                const originalBtnText = submitBtn.innerText;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Uploading media...';
 
-    if (photoPending) {
-    const pSuccess = await uploadPhoto();
-    if (!pSuccess) {
-    submitBtn.disabled = false;
-    submitBtn.innerText = originalBtnText;
-    return;
-    }
-    }
+                if (photoPending) {
+                    const pSuccess = await uploadPhoto();
+                    if (!pSuccess) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = originalBtnText;
+                        return;
+                    }
+                }
 
-    if (videoPending) {
-    const vSuccess = await uploadVideo();
-    if (!vSuccess) {
-    submitBtn.disabled = false;
-    submitBtn.innerText = originalBtnText;
-    return;
-    }
-    }
-    }
+                if (videoPending) {
+                    const vSuccess = await uploadVideo();
+                    if (!vSuccess) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = originalBtnText;
+                        return;
+                    }
+                }
+            }
 
-    // Allow form submission to proceed
-    mainForm.submit();
-    });
+            // Allow form submission to proceed
+            mainForm.submit();
+        });
     </script>
 @endsection

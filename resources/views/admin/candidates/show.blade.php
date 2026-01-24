@@ -88,7 +88,7 @@
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Video CV</dt>
                                 <dd>
                                     <div class="w-full max-w-lg">
-                                        <video controls class="w-full rounded-lg shadow-sm border border-gray-200 bg-black">
+                                        <video controls class="w-full h-48 rounded-lg shadow-lg border border-gray-200 bg-black object-cover">
                                             <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
