@@ -101,6 +101,12 @@
                                     placeholder="e.g., Senior Software Engineer">
                             </div>
                             <div>
+                                <label class="block text-sm font-medium text-gray-700">Headline</label>
+                                <input type="text" name="headline"
+                                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="e.g., Experienced Developer | Full Stack Expert">
+                            </div>
+                            <div>
                                 <label class="block text-sm font-medium text-gray-700">Professional Summary *</label>
                                 <textarea name="description" required rows="3"
                                     class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -126,7 +132,7 @@
                                         placeholder="e.g., Computer Science, Business Administration">
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Years of Experience *</label>
                                     <input type="number" name="years_of_experience" required min="0" max="50"
@@ -141,6 +147,19 @@
                                         @foreach(\App\Models\Category::where('is_active', true)->orderBy('name')->get() as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Experience Level</label>
+                                    <select name="experience_level" required
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                        <option value="">Select Level</option>
+                                        <option value="Internship">Internship</option>
+                                        <option value="Entry Level">Entry Level</option>
+                                        <option value="Mid Level">Mid Level</option>
+                                        <option value="Senior Level">Senior Level</option>
+                                        <option value="Director">Director</option>
+                                        <option value="Executive">Executive</option>
                                     </select>
                                 </div>
                             </div>
@@ -210,6 +229,60 @@
                                 <input type="text" name="target_destination" placeholder="e.g., Tanzania, Kenya, Remote"
                                     class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                             </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Passport Status</label>
+                                    <select name="passport_status"
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                        <option value="">Select</option>
+                                        <option value="Valid">Valid</option>
+                                        <option value="Expired">Expired</option>
+                                        <option value="No Passport">No Passport</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Availability Status</label>
+                                    <select name="availability_status"
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                        <option value="">Select</option>
+                                        <option value="Immediate">Immediate</option>
+                                        <option value="2 Weeks Notice">2 Weeks Notice</option>
+                                        <option value="1 Month Notice">1 Month Notice</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Medical Clearance</label>
+                                    <select name="medical_clearance"
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                        <option value="">Select</option>
+                                        <option value="Cleared">Cleared</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Not Cleared">Not Cleared</option>
+                                        <option value="Not Applicable">Not Applicable</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Police Clearance</label>
+                                    <select name="police_clearance"
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                        <option value="">Select</option>
+                                        <option value="Cleared">Cleared</option>
+                                        <option value="Pending">Pending</option>
+                                        <option value="Not Cleared">Not Cleared</option>
+                                        <option value="Not Applicable">Not Applicable</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" name="willing_to_relocate" value="1"
+                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                    <span class="text-sm text-gray-700">Willing to relocate</span>
+                                </label>
+                            </div>
                             <div>
                                 <label class="flex items-center">
                                     <input type="checkbox" name="is_available" value="1" checked
@@ -277,7 +350,11 @@
         let currentStep = 1;
         let totalSteps = 4;
         let skills = [];
+        let currentStep = 1;
+        let totalSteps = 4;
+        let skills = [];
         let languages = [];
+        let preferredTitles = [];
 
         function showStep(step) {
             for (let i = 1; i <= totalSteps; i++) {
@@ -358,6 +435,7 @@
             // Get values from Select2
             skills = $('#skills-select').val() || [];
             languages = $('#languages-select').val() || [];
+            preferredTitles = $('#preferred-titles-select').val() || [];
 
             if (skills.length === 0) {
                 alert('Please select at least one skill');
@@ -378,6 +456,7 @@
             const formData = new FormData(form);
             formData.set('skills', JSON.stringify(skills));
             formData.set('languages', JSON.stringify(languages));
+            formData.set('preferred_job_titles', JSON.stringify(preferredTitles));
             const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
 
             const submitBtn = form.querySelector('button[type="button"]');
@@ -456,38 +535,42 @@
             const step3Form = new FormData(document.getElementById('form-step3'));
 
             let html = `
-                        <div class="border-b pb-4">
-                            <h4 class="font-bold text-gray-900 mb-2">Personal Information</h4>
-                            <div class="grid grid-cols-2 gap-2 text-sm">
-                                <span class="text-gray-500">Date of Birth:</span> <span class="font-medium">${step1Form.get('date_of_birth')}</span>
-                                <span class="text-gray-500">Gender:</span> <span class="font-medium">${step1Form.get('gender')}</span>
-                                <span class="text-gray-500">Location:</span> <span class="font-medium">${step1Form.get('location')}</span>
-                            </div>
-                        </div>
-                        <div class="border-b pb-4">
-                            <h4 class="font-bold text-gray-900 mb-2">Professional Details</h4>
-                            <div class="space-y-2 text-sm">
-                                <div><span class="text-gray-500">Title:</span> <span class="font-medium">${step2Form.get('title')}</span></div>
-                                <div><span class="text-gray-500">Summary:</span> <p class="mt-1">${step2Form.get('description')}</p></div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <span class="text-gray-500">Education:</span> <span class="font-medium">${step2Form.get('education_level')}</span>
-                                    <span class="text-gray-500">Field:</span> <span class="font-medium">${step2Form.get('course_studied')}</span>
-                                    <span class="text-gray-500">Experience:</span> <span class="font-medium">${step2Form.get('years_of_experience')} years</span>
+                                <div class="border-b pb-4">
+                                    <h4 class="font-bold text-gray-900 mb-2">Personal Information</h4>
+                                    <div class="grid grid-cols-2 gap-2 text-sm">
+                                        <span class="text-gray-500">Date of Birth:</span> <span class="font-medium">${step1Form.get('date_of_birth')}</span>
+                                        <span class="text-gray-500">Gender:</span> <span class="font-medium">${step1Form.get('gender')}</span>
+                                        <span class="text-gray-500">Location:</span> <span class="font-medium">${step1Form.get('location')}</span>
+                                    </div>
                                 </div>
-                                <div><span class="text-gray-500">Experience Description:</span> <p class="mt-1">${step2Form.get('experience_description')}</p></div>
-                                <div><span class="text-gray-500">Skills:</span> <span class="font-medium">${skills.join(', ')}</span></div>
-                                <div><span class="text-gray-500">Languages:</span> <span class="font-medium">${languages.join(', ')}</span></div>
-                            </div>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900 mb-2">Preferences</h4>
-                            <div class="grid grid-cols-2 gap-2 text-sm">
-                                <span class="text-gray-500">Expected Salary:</span> <span class="font-medium">${step3Form.get('expected_salary')} ${step3Form.get('currency')}</span>
-                                <span class="text-gray-500">Target Destination:</span> <span class="font-medium">${step3Form.get('target_destination') || 'Not specified'}</span>
-                                <span class="text-gray-500">Available:</span> <span class="font-medium">${step3Form.get('is_available') ? 'Yes' : 'No'}</span>
-                            </div>
-                        </div>
-                    `;
+                                <div class="border-b pb-4">
+                                    <h4 class="font-bold text-gray-900 mb-2">Professional Details</h4>
+                                    <div class="space-y-2 text-sm">
+                                        <div><span class="text-gray-500">Title:</span> <span class="font-medium">${step2Form.get('title')}</span></div>
+                                        <div><span class="text-gray-500">Summary:</span> <p class="mt-1">${step2Form.get('description')}</p></div>
+                                        <div class="grid grid-cols-2 gap-2">
+                                            <span class="text-gray-500">Education:</span> <span class="font-medium">${step2Form.get('education_level')}</span>
+                                            <span class="text-gray-500">Field:</span> <span class="font-medium">${step2Form.get('course_studied')}</span>
+                                            <span class="text-gray-500">Experience:</span> <span class="font-medium">${step2Form.get('years_of_experience')} years</span>
+                                        </div>
+                                        <div><span class="text-gray-500">Experience Description:</span> <p class="mt-1">${step2Form.get('experience_description')}</p></div>
+                                        <div><span class="text-gray-500">Skills:</span> <span class="font-medium">${skills.join(', ')}</span></div>
+                                        <div><span class="text-gray-500">Languages:</span> <span class="font-medium">${languages.join(', ')}</span></div>
+                                        <div><span class="text-gray-500">Preferred Titles:</span> <span class="font-medium">${preferredTitles.join(', ')}</span></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 mb-2">Preferences</h4>
+                                    <div class="grid grid-cols-2 gap-2 text-sm">
+                                        <span class="text-gray-500">Expected Salary:</span> <span class="font-medium">${step3Form.get('expected_salary')} ${step3Form.get('currency')}</span>
+                                        <span class="text-gray-500">Target Destination:</span> <span class="font-medium">${step3Form.get('target_destination') || 'Not specified'}</span>
+                                        <span class="text-gray-500">Available:</span> <span class="font-medium">${step3Form.get('is_available') ? 'Yes' : 'No'}</span>
+                                        <span class="text-gray-500">Passport Status:</span> <span class="font-medium">${step3Form.get('passport_status') || 'Not specified'}</span>
+                                        <span class="text-gray-500">Relocation:</span> <span class="font-medium">${step3Form.get('willing_to_relocate') ? 'Yes' : 'No'}</span>
+                                        <span class="text-gray-500">Availability:</span> <span class="font-medium">${step3Form.get('availability_status') || 'Not specified'}</span>
+                                    </div>
+                                </div>
+                            `;
 
             document.getElementById('review-content').innerHTML = html;
         }
@@ -526,6 +609,13 @@
 
             $('#languages-select').select2({
                 placeholder: "Select or type languages",
+                tags: true,
+                width: '100%',
+                tokenSeparators: [',']
+            });
+
+            $('#preferred-titles-select').select2({
+                placeholder: "Select or type preferred Job Titles",
                 tags: true,
                 width: '100%',
                 tokenSeparators: [',']

@@ -72,6 +72,14 @@ class ProfileController extends Controller
             $languages = json_decode($languages, true);
         }
 
+        $preferredTitles = $request->input('preferred_job_titles');
+        if (is_string($preferredTitles)) {
+            $preferredTitles = json_decode($preferredTitles, true);
+        }
+        if (!is_array($preferredTitles)) {
+            $preferredTitles = [];
+        }
+
         // Ensure they are arrays
         if (!is_array($skills)) {
             $skills = [];
@@ -82,8 +90,10 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
+            'headline' => 'nullable|string|max:255',
             'description' => 'required|string',
             'education_level' => 'required|string|max:100',
+            'experience_level' => 'nullable|string|max:100',
             'course_studied' => 'required|string|max:255',
             'years_of_experience' => 'required|integer|min:0|max:50',
             'experience_description' => 'required|string',
@@ -106,7 +116,7 @@ class ProfileController extends Controller
         }
 
         // Update profile basic info
-        $profile->update($validated);
+        $profile->update(array_merge($validated, ['preferred_job_titles' => $preferredTitles]));
 
         // Log what we're syncing
         Log::info('StoreStep2 - syncing skills and languages', [
@@ -154,6 +164,11 @@ class ProfileController extends Controller
             'currency' => 'nullable|string|max:10',
             'target_destination' => 'nullable|string|max:255',
             'is_available' => 'boolean',
+            'passport_status' => 'nullable|string|max:50',
+            'willing_to_relocate' => 'nullable|boolean',
+            'availability_status' => 'nullable|string|max:50',
+            'medical_clearance' => 'nullable|string|max:50',
+            'police_clearance' => 'nullable|string|max:50',
         ]);
 
         $candidate = auth()->user();
@@ -164,6 +179,7 @@ class ProfileController extends Controller
         }
 
         $validated['is_available'] = $request->has('is_available');
+        $validated['willing_to_relocate'] = $request->has('willing_to_relocate');
         $profile->update($validated);
         return response()->json(['success' => true, 'step' => 4]);
     }
@@ -235,6 +251,20 @@ class ProfileController extends Controller
             $decoded = json_decode($languages, true);
             $languages = is_array($decoded) ? $decoded : [];
         }
+
+        // Handle preferred_job_titles - similar logic
+        $preferredTitles = $request->input('preferred_job_titles', []);
+        $preferredTitlesText = $request->input('preferred_job_titles_text', '');
+        if (!empty($preferredTitlesText)) {
+            $preferredTitles = array_values(array_filter(array_map('trim', explode(',', $preferredTitlesText))));
+        }
+        if (is_string($preferredTitles) && !empty($preferredTitles)) {
+            $decoded = json_decode($preferredTitles, true);
+            $preferredTitles = is_array($decoded) ? $decoded : [];
+        }
+        if (!is_array($preferredTitles)) {
+            $preferredTitles = [];
+        }
         
         // Ensure they are arrays
         if (!is_array($skills)) {
@@ -247,11 +277,13 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'title' => 'required|string|max:255',
+            'headline' => 'nullable|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
             'date_of_birth' => 'required|date|before:today',
             'gender' => 'required|in:male,female,other',
             'education_level' => 'required|string|max:100',
+            'experience_level' => 'nullable|string|max:100',
             'course_studied' => 'required|string|max:255',
             'years_of_experience' => 'required|integer|min:0|max:50',
             'experience_description' => 'required|string',
@@ -260,6 +292,11 @@ class ProfileController extends Controller
             'currency' => 'nullable|string|max:10',
             'target_destination' => 'nullable|string|max:255',
             'is_available' => 'boolean',
+            'passport_status' => 'nullable|string|max:50',
+            'willing_to_relocate' => 'nullable|boolean',
+            'availability_status' => 'nullable|string|max:50',
+            'medical_clearance' => 'nullable|string|max:50',
+            'police_clearance' => 'nullable|string|max:50',
             'video_cv' => 'nullable|mimes:mp4,mov,avi,wmv|max:20480',
         ]);
 
@@ -327,6 +364,8 @@ class ProfileController extends Controller
         }
 
         $validated['is_available'] = $request->has('is_available');
+        $validated['willing_to_relocate'] = $request->has('willing_to_relocate');
+        $validated['preferred_job_titles'] = $preferredTitles;
 
         // Handle profile picture upload with error handling
         if ($request->hasFile('profile_picture')) {

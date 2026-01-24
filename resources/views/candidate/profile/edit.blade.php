@@ -170,6 +170,17 @@
                                     @enderror
                                 </div>
                                 <div>
+                                    <label for="headline"
+                                        class="block text-sm font-medium text-gray-700 mb-2">Headline</label>
+                                    <input type="text" id="headline" name="headline"
+                                        value="{{ old('headline', $profile->headline) }}"
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('headline') border-red-300 @enderror"
+                                        placeholder="e.g., Experienced Developer | Full Stack Expert">
+                                    @error('headline')
+                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <div>
                                     <label for="description"
                                         class="block text-sm font-medium text-gray-700 mb-2">Professional Summary *</label>
                                     <textarea id="description" name="description" required rows="3"
@@ -179,7 +190,7 @@
                                     @enderror
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
+                                    <div class="md:col-span-1">
                                         <label for="education_level"
                                             class="block text-sm font-medium text-gray-700 mb-2">Education Level *</label>
                                         <select id="education_level" name="education_level" required
@@ -209,6 +220,26 @@
                                         @error('course_studied')
                                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                         @enderror
+                                    </div>
+                                    <div class="col-span-1 md:col-span-2">
+                                        <label for="experience_level"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Experience Level</label>
+                                        <select id="experience_level" name="experience_level"
+                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('experience_level') border-red-300 @enderror">
+                                            <option value="">Select Level</option>
+                                            <option value="Internship" {{ old('experience_level', $profile->experience_level) == 'Internship' ? 'selected' : '' }}>Internship
+                                            </option>
+                                            <option value="Entry Level" {{ old('experience_level', $profile->experience_level) == 'Entry Level' ? 'selected' : '' }}>Entry Level
+                                            </option>
+                                            <option value="Mid Level" {{ old('experience_level', $profile->experience_level) == 'Mid Level' ? 'selected' : '' }}>Mid Level
+                                            </option>
+                                            <option value="Senior Level" {{ old('experience_level', $profile->experience_level) == 'Senior Level' ? 'selected' : '' }}>Senior
+                                                Level</option>
+                                            <option value="Director" {{ old('experience_level', $profile->experience_level) == 'Director' ? 'selected' : '' }}>Director
+                                            </option>
+                                            <option value="Executive" {{ old('experience_level', $profile->experience_level) == 'Executive' ? 'selected' : '' }}>Executive
+                                            </option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -285,6 +316,21 @@
                                     </select>
                                     <p class="mt-1 text-xs text-gray-500">Hold Ctrl (Cmd) to select multiple</p>
                                 </div>
+                                @php
+                                    $existingPreferredTitles = $profile->preferred_job_titles ?? [];
+                                @endphp
+                                <div>
+                                    <label for="preferred-titles-select"
+                                        class="block text-sm font-medium text-gray-700 mb-2">Preferred Job Titles</label>
+                                    <select id="preferred-titles-select" name="preferred_job_titles[]"
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        multiple>
+                                        @foreach($existingPreferredTitles as $title)
+                                            <option value="{{ $title }}" selected>{{ $title }}</option>
+                                        @endforeach
+                                    </select>
+                                    <p class="mt-1 text-xs text-gray-500">Type and press enter to add/create titles</p>
+                                </div>
                             </div>
                         </div>
 
@@ -319,6 +365,74 @@
                                         value="{{ old('target_destination', $profile->target_destination) }}"
                                         placeholder="e.g., Tanzania, Kenya, Remote"
                                         class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="passport_status"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Passport Status</label>
+                                        <select id="passport_status" name="passport_status"
+                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                            <option value="">Select</option>
+                                            <option value="Valid" {{ old('passport_status', $profile->passport_status) == 'Valid' ? 'selected' : '' }}>Valid</option>
+                                            <option value="Expired" {{ old('passport_status', $profile->passport_status) == 'Expired' ? 'selected' : '' }}>Expired</option>
+                                            <option value="No Passport" {{ old('passport_status', $profile->passport_status) == 'No Passport' ? 'selected' : '' }}>No Passport
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="availability_status"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Availability Status</label>
+                                        <select id="availability_status" name="availability_status"
+                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                            <option value="">Select</option>
+                                            <option value="Immediate" {{ old('availability_status', $profile->availability_status) == 'Immediate' ? 'selected' : '' }}>Immediate
+                                            </option>
+                                            <option value="2 Weeks Notice" {{ old('availability_status', $profile->availability_status) == '2 Weeks Notice' ? 'selected' : '' }}>2
+                                                Weeks Notice</option>
+                                            <option value="1 Month Notice" {{ old('availability_status', $profile->availability_status) == '1 Month Notice' ? 'selected' : '' }}>1
+                                                Month Notice</option>
+                                            <option value="Other" {{ old('availability_status', $profile->availability_status) == 'Other' ? 'selected' : '' }}>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="medical_clearance"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Medical Clearance</label>
+                                        <select id="medical_clearance" name="medical_clearance"
+                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                            <option value="">Select</option>
+                                            <option value="Cleared" {{ old('medical_clearance', $profile->medical_clearance) == 'Cleared' ? 'selected' : '' }}>Cleared
+                                            </option>
+                                            <option value="Pending" {{ old('medical_clearance', $profile->medical_clearance) == 'Pending' ? 'selected' : '' }}>Pending
+                                            </option>
+                                            <option value="Not Cleared" {{ old('medical_clearance', $profile->medical_clearance) == 'Not Cleared' ? 'selected' : '' }}>Not Cleared
+                                            </option>
+                                            <option value="Not Applicable" {{ old('medical_clearance', $profile->medical_clearance) == 'Not Applicable' ? 'selected' : '' }}>Not
+                                                Applicable</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="police_clearance"
+                                            class="block text-sm font-medium text-gray-700 mb-2">Police Clearance</label>
+                                        <select id="police_clearance" name="police_clearance"
+                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                            <option value="">Select</option>
+                                            <option value="Cleared" {{ old('police_clearance', $profile->police_clearance) == 'Cleared' ? 'selected' : '' }}>Cleared</option>
+                                            <option value="Pending" {{ old('police_clearance', $profile->police_clearance) == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                            <option value="Not Cleared" {{ old('police_clearance', $profile->police_clearance) == 'Not Cleared' ? 'selected' : '' }}>Not Cleared
+                                            </option>
+                                            <option value="Not Applicable" {{ old('police_clearance', $profile->police_clearance) == 'Not Applicable' ? 'selected' : '' }}>Not
+                                                Applicable</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="flex items-center space-x-3">
+                                        <input type="checkbox" name="willing_to_relocate" value="1" {{ old('willing_to_relocate', $profile->willing_to_relocate) ? 'checked' : '' }}
+                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                        <span class="text-sm text-gray-700">Willing to relocate</span>
+                                    </label>
                                 </div>
                                 <div class="flex items-center">
                                     <input id="is_available" name="is_available" type="checkbox" value="1" {{ old('is_available', $profile->is_available) ? 'checked' : '' }}
@@ -388,6 +502,13 @@
                 // Initialize Select2 for Languages
                 $('#languages-select').select2({
                     placeholder: "Select or type languages",
+                    tags: true,
+                    width: '100%',
+                    tokenSeparators: [',']
+                });
+
+                $('#preferred-titles-select').select2({
+                    placeholder: "Select or type preferred Job Titles",
                     tags: true,
                     width: '100%',
                     tokenSeparators: [',']

@@ -35,6 +35,14 @@ class CandidateProfile extends Model
         'verified_by',
         'is_public',
         'is_available',
+        'headline',
+        'passport_status',
+        'willing_to_relocate',
+        'availability_status',
+        'medical_clearance',
+        'police_clearance',
+        'preferred_job_titles',
+        'experience_level',
     ];
 
     protected $casts = [
@@ -43,6 +51,8 @@ class CandidateProfile extends Model
         'verified_at' => 'datetime',
         'is_public' => 'boolean',
         'is_available' => 'boolean',
+        'willing_to_relocate' => 'boolean',
+        'preferred_job_titles' => 'array',
     ];
 
     /**

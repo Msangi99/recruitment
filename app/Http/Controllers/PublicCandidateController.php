@@ -35,72 +35,77 @@ class PublicCandidateController extends Controller
             });
         }
 
-        // Country filter
-        if ($request->filled('country')) {
-            $query->where('country', $request->country);
+        // Job Title filter (matches title or preferred titles)
+        if ($request->filled('job_title')) {
+            $query->whereHas('candidateProfile', function ($q) use ($request) {
+                $q->where('title', 'like', "%{$request->job_title}%")
+                  ->orWhere('headline', 'like', "%{$request->job_title}%")
+                  ->orWhereJsonContains('preferred_job_titles', $request->job_title);
+            });
         }
 
-        // Target destination filter (where they want to work)
+        // Skills filter (comma separated)
+        if ($request->filled('skills')) {
+            $skills = array_map('trim', explode(',', $request->skills));
+            $query->whereHas('candidateProfile.skills', function ($q) use ($skills) {
+                $q->whereIn('name', $skills);
+            });
+        }
+
+        // Experience Level filter
+        if ($request->filled('experience_level')) {
+            $query->whereHas('candidateProfile', function ($q) use ($request) {
+                $q->where('experience_level', $request->experience_level);
+            });
+        }
+
+        // Current Location filter
+        if ($request->filled('country')) {
+            $query->whereHas('candidateProfile', function($q) use ($request) {
+                $q->where('location', 'like', "%{$request->country}%");
+            })->orWhere('country', 'like', "%{$request->country}%");
+        }
+
+        // Target Destination filter
         if ($request->filled('target_destination')) {
             $query->whereHas('candidateProfile', function ($q) use ($request) {
                 $q->where('target_destination', 'like', "%{$request->target_destination}%");
             });
         }
 
-        // Education level filter
-        if ($request->filled('education_level')) {
+        // Availability Status filter
+        if ($request->filled('availability_status')) {
             $query->whereHas('candidateProfile', function ($q) use ($request) {
-                $q->where('education_level', $request->education_level);
+                $q->where('availability_status', $request->availability_status);
             });
         }
 
-        // Language spoken filter
+        // Passport Status filter
+        if ($request->filled('passport_status')) {
+            $query->whereHas('candidateProfile', function ($q) use ($request) {
+                $q->where('passport_status', $request->passport_status);
+            });
+        }
+
+        // Willing to Relocate filter
+        if ($request->filled('willing_to_relocate')) {
+            $query->whereHas('candidateProfile', function ($q) use ($request) {
+                $q->where('willing_to_relocate', (bool)$request->willing_to_relocate);
+            });
+        }
+
+        // Language filter
         if ($request->filled('language')) {
             $query->whereHas('candidateProfile.languages', function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->language . '%');
             });
         }
 
-        // Years of experience filter (min)
-        if ($request->filled('min_experience')) {
+        // Medical & Police Clearance filter
+        if ($request->filled('clearance_status')) {
             $query->whereHas('candidateProfile', function ($q) use ($request) {
-                $q->where('years_of_experience', '>=', $request->min_experience);
-            });
-        }
-
-        // Years of experience filter (max)
-        if ($request->filled('max_experience')) {
-            $query->whereHas('candidateProfile', function ($q) use ($request) {
-                $q->where('years_of_experience', '<=', $request->max_experience);
-            });
-        }
-
-        // Availability status filter
-        if ($request->filled('availability')) {
-            $isAvailable = $request->availability === 'available';
-            $query->whereHas('candidateProfile', function ($q) use ($isAvailable) {
-                $q->where('is_available', $isAvailable);
-            });
-        }
-
-        // Gender filter
-        if ($request->filled('gender')) {
-            $query->whereHas('candidateProfile', function ($q) use ($request) {
-                $q->where('gender', $request->gender);
-            });
-        }
-
-        // Age range filter
-        if ($request->filled('min_age') || $request->filled('max_age')) {
-            $query->whereHas('candidateProfile', function ($q) use ($request) {
-                if ($request->filled('min_age')) {
-                    $maxDate = now()->subYears($request->min_age)->format('Y-m-d');
-                    $q->where('date_of_birth', '<=', $maxDate);
-                }
-                if ($request->filled('max_age')) {
-                    $minDate = now()->subYears($request->max_age + 1)->addDay()->format('Y-m-d');
-                    $q->where('date_of_birth', '>=', $minDate);
-                }
+                $q->where('medical_clearance', $request->clearance_status)
+                  ->orWhere('police_clearance', $request->clearance_status);
             });
         }
 
