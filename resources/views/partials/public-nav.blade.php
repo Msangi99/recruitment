@@ -22,9 +22,11 @@
             <div class="hidden md:flex items-center space-x-3">
                 @guest
                     <a href="{{ route('login') }}"
-                        class="px-4 py-2 text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors font-semibold">Login</a>
+                        class="px-4 py-2 text-white bg-deep-green rounded-lg hover:bg-opacity-90 transition-colors">Log
+                        in</a>
                     <a href="{{ route('register') }}"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">Register</a>
+                        class="px-4 py-2 bg-deep-green text-white rounded-lg hover:bg-opacity-90 transition-colors">Sign
+                        up</a>
                 @else
                     <a href="{{ route('dashboard') }}"
                         class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">Dashboard</a>
@@ -61,7 +63,8 @@
                 Us</a>
             @guest
                 <a href="{{ route('login') }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Login</a>
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Log
+                    in</a>
                 <a href="{{ route('register') }}"
                     class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Register</a>
             @else

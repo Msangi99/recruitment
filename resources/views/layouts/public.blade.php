@@ -10,6 +10,18 @@
 
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-green': '#105e46',
+                        'deep-blue': '#0a2540',
+                    }
+                }
+            }
+        }
+    </script>
 
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>

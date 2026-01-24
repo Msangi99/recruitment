@@ -7,6 +7,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Contact Us - Coyzon Recruitment</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-green': '#105e46',
+                        'deep-blue': '#0a2540',
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
@@ -36,9 +48,11 @@
                 <div class="hidden md:flex items-center space-x-3">
                     @guest
                         <a href="{{ route('login') }}"
-                            class="px-4 py-2 text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors">Login</a>
+                            class="px-4 py-2 text-white bg-deep-green rounded-lg hover:bg-opacity-90 transition-colors">Log
+                            in</a>
                         <a href="{{ route('register') }}"
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Register</a>
+                            class="px-4 py-2 bg-deep-green text-white rounded-lg hover:bg-opacity-90 transition-colors">Sign
+                            up</a>
                     @else
                         <a href="{{ route('dashboard') }}"
                             class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>

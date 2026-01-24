@@ -1,518 +1,304 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Profile - Candidate')
+@section('title', 'Manage Profile - Candidate')
+
+@include('candidate.partials.nav')
 
 @section('content')
-    <div class="min-h-screen bg-gray-50">
-        @include('candidate.partials.nav')
-
-        <div class="lg:ml-64 pt-16 lg:pt-6">
-            <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <div class="px-4 py-6 sm:px-0">
-                    <div class="mb-6">
-                        <a href="{{ route('candidate.profile.show') }}" class="text-indigo-600 hover:text-indigo-900">← Back
-                            to Profile</a>
-                        <h2 class="mt-4 text-2xl font-bold text-gray-900">Edit Profile</h2>
-                        @if($profile->verification_status === 'approved')
-                            <p class="mt-1 text-sm text-yellow-600">
-                                <strong>Note:</strong> Editing your verified profile will reset it to pending status for admin
-                                review.
-                            </p>
-                        @endif
+    <div class="max-w-4xl mx-auto py-6">
+        <div class="mb-10 flex items-center justify-between">
+                    <div>
+                        <a href="{{ route('candidate.profile.show') }}"
+                            class="text-sm font-medium text-slate-500 hover:text-emerald-600 flex items-center transition-colors">
+                            <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i>
+                            Back to Profile
+                        </a>
+                        <h2 class="mt-2 text-3xl font-bold text-slate-900">Manage Your Profile</h2>
                     </div>
-
-                    @if(session('success'))
-                        <div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded">
-                            {{ session('success') }}
+                    @if($profile->verification_status === 'approved')
+                        <div
+                            class="flex items-center px-4 py-2 bg-amber-50 border border-amber-200 rounded-lg text-amber-800 text-sm font-medium">
+                            <i data-lucide="alert-circle" class="w-5 h-5 mr-3 text-amber-500"></i>
+                            Editing will reset your verification status
                         </div>
                     @endif
+                </div>
 
-                    <form method="POST" action="{{ route('candidate.profile.update') }}" enctype="multipart/form-data"
-                        class="bg-white shadow-lg rounded-lg p-8">
-                        @csrf
-                        @method('PUT')
-
-                        <!-- Profile Picture -->
-                        <div class="mb-8">
-                            <h3 class="text-lg font-medium text-gray-900 mb-6 pb-2 border-b border-gray-200">Profile Picture
+                <div class="space-y-8">
+                    <!-- Step 1 & 2: Account & Basic Info -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">1-2</span>
+                                Basic Information
                             </h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center space-x-6">
-                                    @if($profile->profile_picture)
-                                        @php
-                                            $imageUrl = asset($profile->profile_picture);
-                                            $fileExists = file_exists(public_path($profile->profile_picture));
-                                        @endphp
-                                        @if($fileExists)
-                                            <img src="{{ $imageUrl }}?v={{ time() }}" alt="Profile Picture"
-                                                class="h-24 w-24 rounded-full object-cover border-2 border-gray-300"
-                                                onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                        @endif
-                                        <div class="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-300"
-                                            style="{{ $fileExists ? 'display:none;' : 'display:flex;' }}">
-                                            <span
-                                                class="text-gray-500 text-2xl font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                        </div>
-                                    @else
-                                        <div
-                                            class="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-300">
-                                            <span
-                                                class="text-gray-500 text-2xl font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                        </div>
-                                    @endif
-                                    <div class="flex-1">
-                                        <label for="profile_picture"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Upload Profile
-                                            Picture</label>
-                                        <input type="file" id="profile_picture" name="profile_picture"
-                                            accept="image/jpeg,image/jpg,image/png,image/gif"
-                                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('profile_picture') border-red-300 @enderror"
-                                            onchange="validateImageFile(this);">
-                                        <p class="mt-1 text-xs text-gray-500">JPEG, JPG, PNG or GIF. Max 2MB</p>
-                                        @error('profile_picture')
-                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 2]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
                         </div>
-
-                        <!-- Video CV -->
-                        <div class="mb-8 border-t pt-8">
-                            <h3 class="text-lg font-medium text-gray-900 mb-6 pb-2 border-b border-gray-200">Video CV</h3>
-                            <div class="space-y-4">
-                                <div class="flex flex-col space-y-4">
-                                    @if($profile->video_cv)
-                                        <div class="w-full max-w-md">
-                                            <video controls class="w-full rounded-lg border border-gray-300">
-                                                <source src="{{ asset($profile->video_cv) }}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                            <p class="mt-2 text-sm text-gray-500">Current Video CV</p>
-                                        </div>
-                                    @endif
-                                    <div class="flex-1">
-                                        <label for="video_cv" class="block text-sm font-medium text-gray-700 mb-2">Upload
-                                            Video CV</label>
-                                        <input type="file" id="video_cv" name="video_cv"
-                                            accept="video/mp4,video/quicktime,video/x-msvideo"
-                                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('video_cv') border-red-300 @enderror"
-                                            onchange="validateVideoFile(this);">
-                                        <p class="mt-1 text-xs text-gray-500">MP4, MOV, or AVI. Max 20MB</p>
-                                        @error('video_cv')
-                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+                        <div class="p-6">
+                            <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                                <div>
+                                    <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Nationality
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-slate-900">{{ $profile->citizenship ?? '-' }}</dd>
                                 </div>
-                            </div>
+                                <div>
+                                    <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date of Birth
+                                    </dt>
+                                    <dd class="mt-1 text-sm text-slate-900">
+                                        {{ $profile->date_of_birth ? $profile->date_of_birth->format('M d, Y') : '-' }}</dd>
+                                </div>
+                                <div class="sm:col-span-2">
+                                    <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Current
+                                        Location</dt>
+                                    <dd class="mt-1 text-sm text-slate-900">{{ $profile->location }}</dd>
+                                </div>
+                            </dl>
                         </div>
+                    </div>
 
-                        <!-- Personal Information -->
-                        <div class="mb-8 border-t pt-8">
-                            <h3 class="text-lg font-medium text-gray-900 mb-6 pb-2 border-b border-gray-200">Personal
-                                Information</h3>
-                            <div class="space-y-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label for="date_of_birth" class="block text-sm font-medium text-gray-700 mb-2">Date
-                                            of Birth *</label>
-                                        <input type="date" id="date_of_birth" name="date_of_birth"
-                                            value="{{ old('date_of_birth', $profile->date_of_birth ? $profile->date_of_birth->format('Y-m-d') : '') }}"
-                                            required max="{{ date('Y-m-d', strtotime('-18 years')) }}"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('date_of_birth') border-red-300 @enderror">
-                                        @error('date_of_birth')
-                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div>
-                                        <label for="gender" class="block text-sm font-medium text-gray-700 mb-2">Gender
-                                            *</label>
-                                        <select id="gender" name="gender" required
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('gender') border-red-300 @enderror">
-                                            <option value="">Select</option>
-                                            <option value="male" {{ old('gender', $profile->gender) == 'male' ? 'selected' : '' }}>Male</option>
-                                            <option value="female" {{ old('gender', $profile->gender) == 'female' ? 'selected' : '' }}>Female</option>
-                                            <option value="other" {{ old('gender', $profile->gender) == 'other' ? 'selected' : '' }}>Other</option>
-                                        </select>
-                                        @error('gender')
-                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="location" class="block text-sm font-medium text-gray-700 mb-2">Current
-                                        Location *</label>
-                                    <input type="text" id="location" name="location"
-                                        value="{{ old('location', $profile->location) }}" required
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('location') border-red-300 @enderror"
-                                        placeholder="e.g., Dar es Salaam, Tanzania">
-                                    @error('location')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Professional Details -->
-                        <div class="mb-8 border-t pt-8">
-                            <h3 class="text-lg font-medium text-gray-900 mb-6 pb-2 border-b border-gray-200">Professional
-                                Details</h3>
-                            <div class="space-y-6">
-                                <div>
-                                    <label for="title" class="block text-sm font-medium text-gray-700 mb-2">User Title
-                                        *</label>
-                                    <input type="text" id="title" name="title" value="{{ old('title', $profile->title) }}"
-                                        required
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('title') border-red-300 @enderror"
-                                        placeholder="e.g., Senior Software Engineer">
-                                    @error('title')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div>
-                                    <label for="headline"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Headline</label>
-                                    <input type="text" id="headline" name="headline"
-                                        value="{{ old('headline', $profile->headline) }}"
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('headline') border-red-300 @enderror"
-                                        placeholder="e.g., Experienced Developer | Full Stack Expert">
-                                    @error('headline')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div>
-                                    <label for="description"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Professional Summary *</label>
-                                    <textarea id="description" name="description" required rows="3"
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('description') border-red-300 @enderror">{{ old('description', $profile->description) }}</textarea>
-                                    @error('description')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="md:col-span-1">
-                                        <label for="education_level"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Education Level *</label>
-                                        <select id="education_level" name="education_level" required
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('education_level') border-red-300 @enderror">
-                                            <option value="">Select</option>
-                                            <option value="high-school" {{ old('education_level', $profile->education_level) == 'high-school' ? 'selected' : '' }}>High School
-                                            </option>
-                                            <option value="diploma" {{ old('education_level', $profile->education_level) == 'diploma' ? 'selected' : '' }}>Diploma</option>
-                                            <option value="bachelor" {{ old('education_level', $profile->education_level) == 'bachelor' ? 'selected' : '' }}>Bachelor's
-                                                Degree</option>
-                                            <option value="master" {{ old('education_level', $profile->education_level) == 'master' ? 'selected' : '' }}>Master's Degree
-                                            </option>
-                                            <option value="phd" {{ old('education_level', $profile->education_level) == 'phd' ? 'selected' : '' }}>PhD</option>
-                                        </select>
-                                        @error('education_level')
-                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div>
-                                        <label for="course_studied"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Course/Field of Study
-                                            *</label>
-                                        <input type="text" id="course_studied" name="course_studied"
-                                            value="{{ old('course_studied', $profile->course_studied) }}" required
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('course_studied') border-red-300 @enderror"
-                                            placeholder="e.g., Computer Science, Business Administration">
-                                        @error('course_studied')
-                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="col-span-1 md:col-span-2">
-                                        <label for="experience_level"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Experience Level</label>
-                                        <select id="experience_level" name="experience_level"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('experience_level') border-red-300 @enderror">
-                                            <option value="">Select Level</option>
-                                            <option value="Internship" {{ old('experience_level', $profile->experience_level) == 'Internship' ? 'selected' : '' }}>Internship
-                                            </option>
-                                            <option value="Entry Level" {{ old('experience_level', $profile->experience_level) == 'Entry Level' ? 'selected' : '' }}>Entry Level
-                                            </option>
-                                            <option value="Mid Level" {{ old('experience_level', $profile->experience_level) == 'Mid Level' ? 'selected' : '' }}>Mid Level
-                                            </option>
-                                            <option value="Senior Level" {{ old('experience_level', $profile->experience_level) == 'Senior Level' ? 'selected' : '' }}>Senior
-                                                Level</option>
-                                            <option value="Director" {{ old('experience_level', $profile->experience_level) == 'Director' ? 'selected' : '' }}>Director
-                                            </option>
-                                            <option value="Executive" {{ old('experience_level', $profile->experience_level) == 'Executive' ? 'selected' : '' }}>Executive
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label for="years_of_experience"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Years of Experience
-                                            *</label>
-                                        <input type="number" id="years_of_experience" name="years_of_experience"
-                                            value="{{ old('years_of_experience', $profile->years_of_experience) }}" required
-                                            min="0" max="50"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('years_of_experience') border-red-300 @enderror"
-                                            placeholder="0">
-                                        @error('years_of_experience')
-                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div>
-                                        <label for="experience_category_id"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Experience Category
-                                            *</label>
-                                        <select id="experience_category_id" name="experience_category_id" required
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('experience_category_id') border-red-300 @enderror">
-                                            <option value="">Select Category</option>
-                                            @foreach(\App\Models\Category::where('is_active', true)->orderBy('name')->get() as $category)
-                                                <option value="{{ $category->id }}" {{ old('experience_category_id', $profile->experience_category_id) == $category->id ? 'selected' : '' }}>
-                                                    {{ $category->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('experience_category_id')
-                                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="experience_description"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Experience Description
-                                        *</label>
-                                    <textarea id="experience_description" name="experience_description" required rows="4"
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('experience_description') border-red-300 @enderror">{{ old('experience_description', $profile->experience_description) }}</textarea>
-                                    @error('experience_description')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                                @php
-                                    $existingSkills = $profile->skills->pluck('name')->toArray();
-                                    $existingLanguages = $profile->languages->pluck('name')->toArray();
-                                @endphp
-                                <div>
-                                    <label for="skills-select" class="block text-sm font-medium text-gray-700 mb-2">Skills
-                                        *</label>
-                                    <select id="skills-select" name="skills[]"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                        multiple required>
-                                        @foreach($skills as $skill)
-                                            <option value="{{ $skill->name }}" {{ in_array($skill->name, old('skills', $existingSkills)) ? 'selected' : '' }}>
-                                                {{ $skill->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <p class="mt-1 text-xs text-gray-500">Hold Ctrl (Cmd) to select multiple</p>
-                                </div>
-                                <div>
-                                    <label for="languages-select"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Languages *</label>
-                                    <select id="languages-select" name="languages[]"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                        multiple required>
-                                        @foreach($languages as $language)
-                                            <option value="{{ $language->name }}" {{ in_array($language->name, old('languages', $existingLanguages)) ? 'selected' : '' }}>
-                                                {{ $language->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    <p class="mt-1 text-xs text-gray-500">Hold Ctrl (Cmd) to select multiple</p>
-                                </div>
-                                @php
-                                    $existingPreferredTitles = $profile->preferred_job_titles ?? [];
-                                @endphp
-                                <div>
-                                    <label for="preferred-titles-select"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Preferred Job Titles</label>
-                                    <select id="preferred-titles-select" name="preferred_job_titles[]"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                                        multiple>
-                                        @foreach($existingPreferredTitles as $title)
-                                            <option value="{{ $title }}" selected>{{ $title }}</option>
-                                        @endforeach
-                                    </select>
-                                    <p class="mt-1 text-xs text-gray-500">Type and press enter to add/create titles</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Preferences -->
-                        <div class="mb-8 border-t pt-8">
-                            <h3 class="text-lg font-medium text-gray-900 mb-6 pb-2 border-b border-gray-200">Preferences
+                    <!-- Step 3: Job Preferences -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">3</span>
+                                Job Preferences
                             </h3>
-                            <div class="space-y-6">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label for="expected_salary"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Expected Salary</label>
-                                        <input type="number" id="expected_salary" name="expected_salary"
-                                            value="{{ old('expected_salary', $profile->expected_salary) }}" min="0"
-                                            step="0.01"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('expected_salary') border-red-300 @enderror">
-                                    </div>
-                                    <div>
-                                        <label for="currency"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Currency</label>
-                                        <select id="currency" name="currency"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                                            <option value="TZS" {{ old('currency', $profile->currency) == 'TZS' ? 'selected' : '' }}>TZS</option>
-                                            <option value="USD" {{ old('currency', $profile->currency) == 'USD' ? 'selected' : '' }}>USD</option>
-                                        </select>
-                                    </div>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 3]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
+                        </div>
+                        <div class="p-6">
+                            <dl class="space-y-4">
+                                <div>
+                                    <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Job Categories
+                                    </dt>
+                                    <dd class="mt-1 flex flex-wrap gap-2">
+                                        @forelse($profile->categories as $category)
+                                            <span
+                                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                                                {{ $category->name }}
+                                            </span>
+                                        @empty
+                                            <span class="text-sm text-slate-400">Not specified</span>
+                                        @endforelse
+                                    </dd>
                                 </div>
                                 <div>
-                                    <label for="target_destination"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Target Destination</label>
-                                    <input type="text" id="target_destination" name="target_destination"
-                                        value="{{ old('target_destination', $profile->target_destination) }}"
-                                        placeholder="e.g., Tanzania, Kenya, Remote"
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
+                                    <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Preferred Job
+                                        Titles</dt>
+                                    <dd class="mt-1 text-sm text-slate-900">
+                                        {{ is_array($profile->preferred_job_titles) ? implode(', ', $profile->preferred_job_titles) : ($profile->preferred_job_titles ?? 'Open to suggestions') }}
+                                    </dd>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label for="passport_status"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Passport Status</label>
-                                        <select id="passport_status" name="passport_status"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                                            <option value="">Select</option>
-                                            <option value="Valid" {{ old('passport_status', $profile->passport_status) == 'Valid' ? 'selected' : '' }}>Valid</option>
-                                            <option value="Expired" {{ old('passport_status', $profile->passport_status) == 'Expired' ? 'selected' : '' }}>Expired</option>
-                                            <option value="No Passport" {{ old('passport_status', $profile->passport_status) == 'No Passport' ? 'selected' : '' }}>No Passport
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="availability_status"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Availability Status</label>
-                                        <select id="availability_status" name="availability_status"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                                            <option value="">Select</option>
-                                            <option value="Immediate" {{ old('availability_status', $profile->availability_status) == 'Immediate' ? 'selected' : '' }}>Immediate
-                                            </option>
-                                            <option value="2 Weeks Notice" {{ old('availability_status', $profile->availability_status) == '2 Weeks Notice' ? 'selected' : '' }}>2
-                                                Weeks Notice</option>
-                                            <option value="1 Month Notice" {{ old('availability_status', $profile->availability_status) == '1 Month Notice' ? 'selected' : '' }}>1
-                                                Month Notice</option>
-                                            <option value="Other" {{ old('availability_status', $profile->availability_status) == 'Other' ? 'selected' : '' }}>Other</option>
-                                        </select>
-                                    </div>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Skills -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">4</span>
+                                Skills & Competencies
+                            </h3>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 4]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-2 text-sm text-slate-600">
+                                @forelse($profile->skills as $skill)
+                                    <span
+                                        class="px-3 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-medium border border-emerald-100">
+                                        {{ $skill->name }}
+                                    </span>
+                                @empty
+                                    <span class="italic text-slate-400">No skills added.</span>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Work Experience -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">5</span>
+                                Work Experience
+                            </h3>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 5]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
+                        </div>
+                        <div class="p-6">
+                            @forelse($profile->workExperiences as $experience)
+                                <div class="mb-4 last:mb-0 pb-4 last:pb-0 border-b border-slate-100 last:border-0">
+                                    <p class="text-sm font-bold text-slate-900">{{ $experience->job_title }} at
+                                        {{ $experience->employer }}</p>
+                                    <p class="text-xs text-slate-500">{{ $experience->start_date->format('M Y') }} -
+                                        {{ $experience->is_current ? 'Present' : optional($experience->end_date)->format('M Y') }}
+                                    </p>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label for="medical_clearance"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Medical Clearance</label>
-                                        <select id="medical_clearance" name="medical_clearance"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                                            <option value="">Select</option>
-                                            <option value="Cleared" {{ old('medical_clearance', $profile->medical_clearance) == 'Cleared' ? 'selected' : '' }}>Cleared
-                                            </option>
-                                            <option value="Pending" {{ old('medical_clearance', $profile->medical_clearance) == 'Pending' ? 'selected' : '' }}>Pending
-                                            </option>
-                                            <option value="Not Cleared" {{ old('medical_clearance', $profile->medical_clearance) == 'Not Cleared' ? 'selected' : '' }}>Not Cleared
-                                            </option>
-                                            <option value="Not Applicable" {{ old('medical_clearance', $profile->medical_clearance) == 'Not Applicable' ? 'selected' : '' }}>Not
-                                                Applicable</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label for="police_clearance"
-                                            class="block text-sm font-medium text-gray-700 mb-2">Police Clearance</label>
-                                        <select id="police_clearance" name="police_clearance"
-                                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                                            <option value="">Select</option>
-                                            <option value="Cleared" {{ old('police_clearance', $profile->police_clearance) == 'Cleared' ? 'selected' : '' }}>Cleared</option>
-                                            <option value="Pending" {{ old('police_clearance', $profile->police_clearance) == 'Pending' ? 'selected' : '' }}>Pending</option>
-                                            <option value="Not Cleared" {{ old('police_clearance', $profile->police_clearance) == 'Not Cleared' ? 'selected' : '' }}>Not Cleared
-                                            </option>
-                                            <option value="Not Applicable" {{ old('police_clearance', $profile->police_clearance) == 'Not Applicable' ? 'selected' : '' }}>Not
-                                                Applicable</option>
-                                        </select>
-                                    </div>
+                            @empty
+                                <p class="text-sm text-slate-400 italic">No history added.</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Education -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">6</span>
+                                Education
+                            </h3>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 6]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
+                        </div>
+                        <div class="p-6">
+                            @forelse($profile->educations as $education)
+                                <div class="mb-4 last:mb-0 pb-4 last:pb-0 border-b border-slate-100 last:border-0">
+                                    <p class="text-sm font-bold text-slate-900">{{ $education->level }} -
+                                        {{ $education->field_of_study }}</p>
+                                    <p class="text-xs text-slate-500">{{ $education->institution }}</p>
+                                </div>
+                            @empty
+                                <p class="text-sm text-slate-400 italic">No history added.</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <!-- Step 7: International Readiness -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">7</span>
+                                International Readiness
+                            </h3>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 7]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Passport
+                                        Status</dt>
+                                    <dd class="mt-1 text-sm text-slate-900 font-medium">
+                                        {{ $profile->passport_status ?? 'Not specified' }}</dd>
                                 </div>
                                 <div>
-                                    <label class="flex items-center space-x-3">
-                                        <input type="checkbox" name="willing_to_relocate" value="1" {{ old('willing_to_relocate', $profile->willing_to_relocate) ? 'checked' : '' }}
-                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                        <span class="text-sm text-gray-700">Willing to relocate</span>
-                                    </label>
-                                </div>
-                                <div class="flex items-center">
-                                    <input id="is_available" name="is_available" type="checkbox" value="1" {{ old('is_available', $profile->is_available) ? 'checked' : '' }}
-                                        class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                                    <label for="is_available" class="ml-3 block text-sm text-gray-700">Available for
-                                        work</label>
+                                    <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Willing to
+                                        Relocate</dt>
+                                    <dd class="mt-1 text-sm text-slate-900 font-medium">
+                                        {{ $profile->willing_to_relocate ? 'Yes' : 'No' }}</dd>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
-                            <a href="{{ route('candidate.profile.show') }}"
-                                class="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">Cancel</a>
-                            <button type="submit"
-                                class="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">Update
-                                Profile</button>
+                    <!-- Step 8: Languages -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">8</span>
+                                Languages
+                            </h3>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 8]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
                         </div>
-                    </form>
+                        <div class="p-6">
+                            <div class="flex flex-wrap gap-2">
+                                @forelse($profile->languages as $language)
+                                    <span
+                                        class="px-3 py-1 rounded-lg bg-slate-100 text-slate-800 text-xs font-bold border border-slate-200">
+                                        {{ $language->name }} ({{ $language->pivot->proficiency }})
+                                    </span>
+                                @empty
+                                    <span class="italic text-slate-400 text-sm">No languages added.</span>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 9: Media & Compliance -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">9</span>
+                                Media & Compliance
+                            </h3>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 9]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center space-x-6">
+                                <div
+                                    class="flex items-center space-x-2 text-sm {{ $profile->profile_picture ? 'text-emerald-600' : 'text-slate-400' }}">
+                                    <i data-lucide="{{ $profile->profile_picture ? 'check-circle' : 'circle' }}"
+                                        class="w-5 h-5"></i>
+                                    <span class="font-bold">Photo Uploaded</span>
+                                </div>
+                                <div
+                                    class="flex items-center space-x-2 text-sm {{ $profile->video_cv ? 'text-emerald-600' : 'text-slate-400' }}">
+                                    <i data-lucide="{{ $profile->video_cv ? 'check-circle' : 'circle' }}"
+                                        class="w-5 h-5"></i>
+                                    <span class="font-bold">Video CV Uploaded</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 text-center text-slate-500 text-sm">
+                    <p>Coyzon Recruitment &copy; {{ date('Y') }} | Quality Talent, Global Reach</p>
                 </div>
             </div>
         </div>
-
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <style>
-            .select2-container--default .select2-selection--multiple {
-                border-color: #d1d5db;
-                border-radius: 0.375rem;
-                padding: 0.25rem;
-            }
-
-            .select2-container--default.select2-container--focus .select2-selection--multiple {
-                border-color: #6366f1;
-                box-shadow: 0 0 0 1px #6366f1;
-            }
-        </style>
-
-        <script>
-            function validateImageFile(input) {
-                const file = input.files[0];
-                if (!file) return;
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('File size exceeds 2MB limit.');
-                    input.value = '';
-                }
-            }
-
-            function validateVideoFile(input) {
-                const file = input.files[0];
-                if (!file) return;
-                if (file.size > 20 * 1024 * 1024) {
-                    alert('File size exceeds 20MB limit.');
-                    input.value = '';
-                }
-            }
-
-            $(document).ready(function () {
-                // Initialize Select2 for Skills
-                $('#skills-select').select2({
-                    placeholder: "Select or type skills",
-                    tags: true,
-                    width: '100%',
-                    tokenSeparators: [',']
-                });
-
-                // Initialize Select2 for Languages
-                $('#languages-select').select2({
-                    placeholder: "Select or type languages",
-                    tags: true,
-                    width: '100%',
-                    tokenSeparators: [',']
-                });
-
-                $('#preferred-titles-select').select2({
-                    placeholder: "Select or type preferred Job Titles",
-                    tags: true,
-                    width: '100%',
-                    tokenSeparators: [',']
-                });
-            });
-        </script>
+    </div>
 @endsection

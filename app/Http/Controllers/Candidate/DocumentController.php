@@ -56,6 +56,24 @@ class DocumentController extends Controller
             // Store relative path for database (without public/)
             $filePath = 'documents/' . $candidate->id . '/' . $fileName;
 
+            // Handle Video CV special case - sync with CandidateProfile
+            if ($validated['document_type'] === 'video_cv') {
+                // Change destination path for Video CV to match Wizard
+                $videoPath = public_path('uploads/video_cvs');
+                if (!file_exists($videoPath)) {
+                    mkdir($videoPath, 0755, true);
+                }
+                
+                // If it was already moved to documents/, move it to uploads/video_cvs/
+                rename($destinationPath . '/' . $fileName, $videoPath . '/' . $fileName);
+                $filePath = 'uploads/video_cvs/' . $fileName;
+
+                // Update the candidate profile field
+                if ($candidate->candidateProfile) {
+                    $candidate->candidateProfile->update(['video_cv' => $fileName]);
+                }
+            }
+
             Document::create([
                 'user_id' => $candidate->id,
                 'document_type' => $validated['document_type'],

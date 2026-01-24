@@ -2,174 +2,340 @@
 
 @section('title', 'My Profile - Candidate')
 
+@include('candidate.partials.nav')
+
 @section('content')
-    <div class="min-h-screen bg-gray-50">
-        @include('candidate.partials.nav')
-
-        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-            <div class="px-4 py-6 sm:px-0">
-                <div class="mb-6 flex justify-between items-center">
-                    <h2 class="text-2xl font-bold text-gray-900">My Profile</h2>
-                    <div class="flex space-x-3">
-                        @if(!$profile)
-                            <a href="{{ route('candidate.profile.create') }}"
-                                class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                                Create Profile
-                            </a>
-                        @else
-                            <a href="{{ route('candidate.profile.edit') }}"
-                                class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                                Edit Profile
-                            </a>
-                        @endif
-                    </div>
+    <div class="max-w-4xl mx-auto py-6">
+        @if(!$profile)
+            <div class="bg-white border border-slate-200 rounded-xl p-12 text-center shadow-sm">
+                <div class="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="user-plus" class="w-10 h-10 text-emerald-600"></i>
                 </div>
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Create Your Profile</h2>
+                <p class="text-slate-600 mb-8 max-w-sm mx-auto">You haven't completed your professional profile yet. Get started
+                    now to connect with employers.</p>
+                <a href="{{ route('candidate.wizard.show') }}"
+                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-deep-green hover:bg-emerald-700 transition-colors">
+                    Complete My Profile
+                </a>
+            </div>
+        @else
+            <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900">My Profile</h2>
+                    <p class="mt-1 text-slate-500 font-medium">As seen by verified employers</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <span
+                        class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full 
+                                        {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
+                ($profile->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
+                        <i data-lucide="{{ $profile->verification_status == 'approved' ? 'shield-check' : 'clock' }}"
+                            class="w-3 h-3 mr-1"></i>
+                        {{ ucfirst($profile->verification_status) }}
+                    </span>
+                    <a href="{{ route('candidate.profile.edit') }}"
+                        class="inline-flex items-center px-4 py-2 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 bg-white hover:bg-slate-50 transition-colors shadow-sm">
+                        <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                        Manage Profile
+                    </a>
+                </div>
+            </div>
 
-                @if(session('success'))
-                    <div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded">
-                        {{ session('success') }}
-                    </div>
-                @endif
+            @if(session('success'))
+                <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl flex items-center">
+                    <i data-lucide="check-circle" class="w-5 h-5 mr-3"></i>
+                    {{ session('success') }}
+                </div>
+            @endif
 
-                @if(session('error'))
-                    <div class="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
-                        {{ session('error') }}
+            <div class="space-y-8">
+                <!-- Step 1 & 2: Account & Basic Info -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="user" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            Basic Information
+                        </h3>
                     </div>
-                @endif
-
-                @if(!$profile)
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-8 text-center">
-                        <p class="text-gray-700 mb-4">You haven't created your profile yet.</p>
-                        <a href="{{ route('candidate.profile.create') }}"
-                            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-                            Start Creating Your Profile
-                        </a>
-                    </div>
-                @else
-                        <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
-                            <div class="px-4 py-5 sm:px-6">
-                                <div class="flex justify-between items-start">
-                                    <div class="flex items-center">
-                                        @if($profile->profile_picture)
-                                            @php
-                                                $imageUrl = asset($profile->profile_picture);
-                                                $fileExists = file_exists(public_path($profile->profile_picture));
-                                            @endphp
-                                            @if($fileExists)
-                                                <img src="{{ $imageUrl }}?v={{ time() }}" alt="Profile Picture"
-                                                    class="h-20 w-20 rounded-full object-cover border-2 border-gray-200 mr-4"
-                                                    onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                                            @endif
-                                            <div class="h-20 w-20 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-200 mr-4"
-                                                style="{{ $fileExists ? 'display:none;' : 'display:flex;' }}">
-                                                <span
-                                                    class="text-gray-500 text-2xl font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                            </div>
-                                        @else
-                                            <div
-                                                class="h-20 w-20 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-200 mr-4">
-                                                <span
-                                                    class="text-gray-500 text-2xl font-medium">{{ substr(auth()->user()->name, 0, 1) }}</span>
-                                            </div>
-                                        @endif
-                                        <div>
-                                            <h3 class="text-xl leading-6 font-bold text-gray-900">{{ auth()->user()->name }}</h3>
-                                            <p class="text-indigo-600 font-medium">{{ $profile->title ?? 'Title not set' }}</p>
-                                            <p class="mt-1 text-sm text-gray-500">{{ auth()->user()->email }} |
-                                                {{ auth()->user()->phone }}</p>
-                                            <p class="text-sm text-gray-500">{{ $profile->location ?? 'Location not set' }}</p>
-                                        </div>
+                    <div class="p-6">
+                        <div class="flex flex-col md:flex-row gap-8 items-start">
+                            <div class="flex-shrink-0">
+                                @if($profile->profile_picture)
+                                    <img src="{{ asset('profile-pictures/' . $profile->profile_picture) }}"
+                                        class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md">
+                                @else
+                                    <div
+                                        class="w-24 h-24 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 border-4 border-white shadow-md">
+                                        <i data-lucide="user" class="w-12 h-12"></i>
                                     </div>
-                                    <span
-                                        class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
-                    ($profile->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
-                                        {{ ucfirst($profile->verification_status) }}
-                                    </span>
-                                </div>
+                                @endif
                             </div>
-
-                            <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-                                <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Professional Summary
-                                </h4>
-                                <p class="text-gray-900">{{ $profile->description ?? 'No description provided.' }}</p>
-                            </div>
-
-                            <div class="border-t border-gray-200">
-                                <dl>
-                                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt class="text-sm font-medium text-gray-500">Education</dt>
-                                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                            <span
-                                                class="font-bold">{{ ucfirst(str_replace('-', ' ', $profile->education_level ?? 'N/A')) }}</span>
-                                            in {{ $profile->course_studied ?? 'N/A' }}
-                                        </dd>
+                            <div class="flex-1">
+                                <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                                    <div>
+                                        <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Full Name</dt>
+                                        <dd class="mt-1 text-sm text-slate-900">{{ auth()->user()->name }}</dd>
                                     </div>
-                                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt class="text-sm font-medium text-gray-500">Experience</dt>
-                                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                            <p class="font-bold mb-2">{{ $profile->years_of_experience ?? '0' }} years |
-                                                {{ $profile->experienceCategory->name ?? 'N/A' }}</p>
-                                            <div class="bg-gray-50 p-3 rounded border text-gray-700">
-                                                {{ $profile->experience_description ?? 'No experience description provided.' }}
-                                            </div>
-                                        </dd>
+                                    <div>
+                                        <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Email Address
+                                        </dt>
+                                        <dd class="mt-1 text-sm text-slate-900">{{ auth()->user()->email }}</dd>
                                     </div>
-                                    @php
-                                        if (!$profile->relationLoaded('skills'))
-                                            $profile->load('skills');
-                                        if (!$profile->relationLoaded('languages'))
-                                            $profile->load('languages');
-                                    @endphp
-                                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt class="text-sm font-medium text-gray-500">Skills & Languages</dt>
-                                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                            <div class="mb-3">
-                                                <p class="text-xs text-gray-500 mb-1">Skills</p>
-                                                @forelse($profile->skills as $skill)
-                                                    <span
-                                                        class="inline-block bg-indigo-100 rounded-full px-3 py-1 text-xs text-indigo-700 mr-2 mb-2">{{ $skill->name }}</span>
-                                                @empty
-                                                    <span class="text-gray-400 italic text-sm">No skills added</span>
-                                                @endforelse
-                                            </div>
-                                            <div>
-                                                <p class="text-xs text-gray-500 mb-1">Languages</p>
-                                                @forelse($profile->languages as $language)
-                                                    <span
-                                                        class="inline-block bg-green-100 rounded-full px-3 py-1 text-xs text-green-700 mr-2 mb-2">{{ $language->name }}</span>
-                                                @empty
-                                                    <span class="text-gray-400 italic text-sm">No languages added</span>
-                                                @endforelse
-                                            </div>
-                                        </dd>
+                                    <div>
+                                        <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Nationality
+                                        </dt>
+                                        <dd class="mt-1 text-sm text-slate-900">{{ $profile->citizenship ?? '-' }}</dd>
                                     </div>
-                                    <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                        <dt class="text-sm font-medium text-gray-500">Preferences</dt>
-                                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                            <div class="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <p class="text-xs text-gray-500">Expected Salary</p>
-                                                    <p>{{ $profile->expected_salary ? number_format($profile->expected_salary, 2) . ' ' . $profile->currency : 'Not specified' }}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <p class="text-xs text-gray-500">Target Destination</p>
-                                                    <p>{{ $profile->target_destination ?? 'Not specified' }}</p>
-                                                </div>
-                                                <div>
-                                                    <p class="text-xs text-gray-500">Availability</p>
-                                                    <p>{{ $profile->is_available ? 'Available for work' : 'Not currently available' }}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </dd>
+                                    <div>
+                                        <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date of Birth
+                                        </dt>
+                                        <dd class="mt-1 text-sm text-slate-900">
+                                            {{ $profile->date_of_birth ? $profile->date_of_birth->format('M d, Y') : '-' }}</dd>
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Current
+                                            Location</dt>
+                                        <dd class="mt-1 text-sm text-slate-900">{{ $profile->location }}</dd>
                                     </div>
                                 </dl>
                             </div>
                         </div>
-                @endif
+                    </div>
+                </div>
+
+                <!-- Step 3: Job Preferences -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="briefcase" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            Job Preferences
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <dl class="space-y-4">
+                            <div>
+                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Job Categories</dt>
+                                <dd class="mt-1 flex flex-wrap gap-2">
+                                    @forelse($profile->categories as $category)
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
+                                            {{ $category->name }}
+                                        </span>
+                                    @empty
+                                        <span class="text-sm text-slate-400">Not specified</span>
+                                    @endforelse
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Preferred Job Titles
+                                </dt>
+                                <dd class="mt-1 text-sm text-slate-900">
+                                    {{ is_array($profile->preferred_job_titles) ? implode(', ', $profile->preferred_job_titles) : ($profile->preferred_job_titles ?? 'Open to suggestions') }}
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Availability Status
+                                </dt>
+                                <dd class="mt-1 text-sm text-slate-900 font-medium text-emerald-700">
+                                    {{ $profile->availability_status }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Step 4: Skills -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="zap" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            Skills & Competencies
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex flex-wrap gap-2">
+                            @forelse($profile->skills as $skill)
+                                <span
+                                    class="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                    {{ $skill->name }}
+                                </span>
+                            @empty
+                                <span class="text-sm text-slate-400 italic">No skills added yet.</span>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Work Experience -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="history" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            Work Experience
+                        </h3>
+                    </div>
+                    <div class="p-6 divide-y divide-slate-100">
+                        @forelse($profile->workExperiences as $experience)
+                            <div class="py-4 first:pt-0 last:pb-0">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h4 class="text-sm font-bold text-slate-900">{{ $experience->job_title }}</h4>
+                                        <p class="text-sm font-medium text-slate-600">{{ $experience->employer }}</p>
+                                    </div>
+                                    <span class="text-xs font-medium text-slate-500 px-2 py-1 bg-slate-100 rounded">
+                                        {{ $experience->start_date->format('M Y') }} -
+                                        {{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : '') }}
+                                    </span>
+                                </div>
+                                @if($experience->description)
+                                    <div class="text-xs text-slate-600 prose prose-sm max-w-none">
+                                        {!! $experience->description !!}
+                                    </div>
+                                @endif
+                            </div>
+                        @empty
+                            <p class="text-sm text-slate-400 italic">No work experience added.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Step 6: Education -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="graduation-cap" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            Education
+                        </h3>
+                    </div>
+                    <div class="p-6 divide-y divide-slate-100">
+                        @forelse($profile->educations as $education)
+                            <div class="py-4 first:pt-0 last:pb-0">
+                                <h4 class="text-sm font-bold text-slate-900">{{ $education->level }} -
+                                    {{ $education->field_of_study }}</h4>
+                                <p class="text-sm font-medium text-slate-600">{{ $education->institution }}</p>
+                                <p class="text-xs text-slate-500 mt-1">{{ $education->city }}, {{ $education->country }}</p>
+                            </div>
+                        @empty
+                            <p class="text-sm text-slate-400 italic">No education history added.</p>
+                        @endforelse
+                    </div>
+                </div>
+
+                <!-- Step 7: International Readiness -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="globe" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            International Readiness
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
+                            <div>
+                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Willing to Relocate
+                                </dt>
+                                <dd class="mt-1 text-sm text-slate-900 font-medium whitespace-nowrap">
+                                    @if($profile->willing_to_relocate === true)
+                                        <span class="text-emerald-600 flex items-center"><i data-lucide="check"
+                                                class="w-4 h-4 mr-1"></i> Yes</span>
+                                    @else
+                                        <span class="text-slate-500 whitespace-nowrap flex items-center"><i data-lucide="x"
+                                                class="w-4 h-4 mr-1"></i> No</span>
+                                    @endif
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Passport Status</dt>
+                                <dd class="mt-1 text-sm text-slate-900">{{ $profile->passport_status ?? 'Not Specified' }}</dd>
+                            </div>
+                            <div class="sm:col-span-2">
+                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Preferred Destinations
+                                </dt>
+                                <dd class="mt-1 flex flex-wrap gap-2">
+                                    @forelse($profile->preferred_destinations ?? [] as $destination)
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
+                                            {{ $destination }}
+                                        </span>
+                                    @empty
+                                        <span class="text-sm text-slate-400">None selected</span>
+                                    @endforelse
+                                </dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Step 8: Languages -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="languages" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            Languages
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                            @forelse($profile->languages as $language)
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <p class="text-sm font-bold text-slate-900">{{ $language->name }}</p>
+                                    <p class="text-xs text-slate-500">{{ $language->pivot->proficiency }}</p>
+                                </div>
+                            @empty
+                                <p class="text-sm text-slate-400 italic">No languages added.</p>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 9: Media & Compliance -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="camera" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            Media & Compliance
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            <div>
+                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Profile Photo
+                                </dt>
+                                <dd>
+                                    @if($profile->profile_picture)
+                                        <img src="{{ asset('profile-pictures/' . $profile->profile_picture) }}"
+                                            class="w-32 h-32 rounded-lg object-cover border-2 border-slate-200">
+                                    @else
+                                        <div
+                                            class="w-32 h-32 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-xs text-center p-4">
+                                            No Photo Uploaded</div>
+                                    @endif
+                                </dd>
+                            </div>
+                            <div>
+                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Video CV</dt>
+                                <dd>
+                                    @if($profile->video_cv)
+                                        <div class="aspect-video bg-black rounded-lg overflow-hidden">
+                                            <video controls class="w-full h-full">
+                                                <source src="{{ asset('uploads/video_cvs/' . $profile->video_cv) }}"
+                                                    type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    @else
+                                        <div
+                                            class="aspect-video rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-sm italic">
+                                            No video uploaded</div>
+                                    @endif
+                                </dd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        @endif
+    </div>
+    </div>
     </div>
 @endsection

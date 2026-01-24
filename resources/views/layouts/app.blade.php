@@ -16,7 +16,23 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Tailwind -->
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-green': '#105e46',
+                        'deep-blue': '#0a2540',
+                    },
+                    fontFamily: {
+                        sans: ['Figtree', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
 
     <!-- App assets -->
 
@@ -124,7 +140,7 @@
 
             <!-- Sidebar -->
             <aside id="sidebar" :class="mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-                class="fixed inset-y-0 left-0 z-50 h-screen w-72 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-slate-100 shadow-2xl transition-transform duration-300">
+                class="fixed inset-y-0 left-0 z-50 h-screen w-72 bg-deep-green text-slate-100 shadow-2xl transition-transform duration-300">
                 <div class="flex h-full flex-col">
                     <div class="flex h-16 items-center gap-3 border-b border-white/10 px-6">
                         <a href="{{ route('home') }}" class="flex items-center">
@@ -149,7 +165,8 @@
                                 </div>
                                 <div class="min-w-0">
                                     <p class="text-sm font-semibold text-white truncate">
-                                        {{ auth()->user()?->name ?? 'Welcome' }}</p>
+                                        {{ auth()->user()?->name ?? 'Welcome' }}
+                                    </p>
                                     <p class="text-[12px] font-medium text-white/60 truncate">@yield('page_label', 'Portal')
                                         space</p>
                                 </div>

@@ -43,6 +43,8 @@ class CandidateProfile extends Model
         'police_clearance',
         'preferred_job_titles',
         'experience_level',
+        'preferred_destinations',
+        'international_experience',
     ];
 
     protected $casts = [
@@ -53,6 +55,8 @@ class CandidateProfile extends Model
         'is_available' => 'boolean',
         'willing_to_relocate' => 'boolean',
         'preferred_job_titles' => 'array',
+        'preferred_destinations' => 'array',
+        'international_experience' => 'boolean',
     ];
 
     /**
@@ -100,7 +104,25 @@ class CandidateProfile extends Model
      */
     public function languages(): BelongsToMany
     {
-        return $this->belongsToMany(Language::class, 'candidate_profile_language');
+        return $this->belongsToMany(Language::class, 'candidate_profile_language')
+                    ->withPivot('proficiency')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Get the work experiences for the profile
+     */
+    public function workExperiences(): HasMany
+    {
+        return $this->hasMany(WorkExperience::class);
+    }
+
+    /**
+     * Get the educations for the profile
+     */
+    public function educations(): HasMany
+    {
+        return $this->hasMany(Education::class);
     }
 
     /**
@@ -109,5 +131,13 @@ class CandidateProfile extends Model
     public function experienceCategory(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'experience_category_id');
+    }
+
+    /**
+     * Get the categories (job preferences) for the profile
+     */
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'candidate_profile_category');
     }
 }

@@ -18,7 +18,7 @@ class ProfileController extends Controller
         $profile = $candidate->candidateProfile;
         
         if ($profile) {
-            $profile->load(['skills', 'languages', 'experienceCategory']);
+            $profile->load(['categories', 'skills', 'workExperiences', 'educations', 'languages']);
         }
         
         return view('candidate.profile.show', compact('profile'));
@@ -34,10 +34,12 @@ class ProfileController extends Controller
                 ->with('info', 'Profile already exists. You can edit it instead.');
         }
 
-        $skills = Skill::orderBy('name')->get();
-        $languages = Language::orderBy('name')->get();
-
-        return view('candidate.profile.create', compact('skills', 'languages'));
+        return redirect()->route('candidate.wizard.show');
+        
+        // Old implementation
+        // $skills = Skill::orderBy('name')->get();
+        // $languages = Language::orderBy('name')->get();
+        // return view('candidate.profile.create', compact('skills', 'languages'));
     }
 
     public function storeStep1(Request $request)
@@ -194,7 +196,7 @@ class ProfileController extends Controller
                 ->with('error', 'Please create your profile first.');
         }
 
-        $profile->load(['skills', 'languages', 'experienceCategory']);
+        $profile->load(['categories', 'skills', 'workExperiences', 'educations', 'languages']);
         
         $skills = Skill::orderBy('name')->get();
         $languages = Language::orderBy('name')->get();

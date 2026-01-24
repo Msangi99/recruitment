@@ -262,6 +262,26 @@ Route::middleware('auth')->group(function () {
         Route::post('/profile/step3', [ProfileController::class, 'storeStep3'])->name('profile.storeStep3');
         Route::post('/profile/submit', [ProfileController::class, 'submit'])->name('profile.submit');
 
+        // New Profile Wizard Routes
+        Route::prefix('wizard')->name('wizard.')->group(function () {
+            Route::get('/step/{step?}', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'show'])->name('show');
+            Route::post('/step/{step}', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'process'])->name('process');
+            
+            // File upload specific routes
+            Route::post('/upload/photo', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'uploadPhoto'])->name('upload.photo');
+            Route::post('/upload/video', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'uploadVideo'])->name('upload.video');
+            
+            // AJAX endpoints for dependent dropdowns or async data
+            Route::get('/data/skills', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'getSkills'])->name('data.skills');
+
+            // Work Experience & Education Management
+            Route::post('/work-experience', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'storeWorkExperience'])->name('work-experience.store');
+            Route::delete('/work-experience/{workExperience}', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'destroyWorkExperience'])->name('work-experience.destroy');
+
+            Route::post('/education', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'storeEducation'])->name('education.store');
+            Route::delete('/education/{education}', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'destroyEducation'])->name('education.destroy');
+        });
+
         // Job Applications
         Route::get('/jobs', [JobApplicationController::class, 'index'])->name('jobs.index');
         Route::get('/jobs/{job}', [JobApplicationController::class, 'show'])->name('jobs.show');

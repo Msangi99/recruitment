@@ -10,6 +10,18 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-green': '#105e46',
+                        'deep-blue': '#0a2540',
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
 </head>
@@ -49,12 +61,12 @@
                                 to dashboard</a>
                         @else
                             <a href="{{ route('login') }}"
-                                class="hidden rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-blue-200 hover:text-blue-700 md:inline-flex">Sign
+                                class="hidden rounded-xl px-4 py-2 text-sm font-semibold text-white bg-deep-green hover:bg-opacity-90 transition-colors md:inline-flex">Log
                                 in</a>
                             @if (Route::has('register'))
                                 <a href="{{ route('register') }}"
-                                    class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 hover:bg-blue-700">
-                                    Get started
+                                    class="inline-flex items-center gap-2 rounded-xl bg-deep-green px-4 py-2 text-sm font-semibold text-white shadow-lg hover:bg-opacity-90">
+                                    Sign up
                                     <i data-lucide="arrow-right" class="h-4 w-4"></i>
                                 </a>
                             @endif
