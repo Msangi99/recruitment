@@ -186,7 +186,7 @@
 
                 <!-- Action Button -->
                 <a href="{{ route('public.candidates.interview', $candidate) }}"
-                    class="block w-full py-3 px-4 bg-deep-green hover:bg-emerald-800 text-white text-center text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg uppercase tracking-wide">
+                    class="block w-full py-3 px-4 bg-deep-green hover:bg-emerald-800 text-white text-center text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg tracking-wide">
                     Request This Candidate
                 </a>
 
