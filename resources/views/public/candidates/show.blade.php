@@ -57,28 +57,11 @@
     <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-            <!-- Left Sidebar (Upwork-style Compact) -->
+            <!-- Left Sidebar (Meta Information) -->
             <div class="lg:col-span-4 space-y-6">
-
-                <!-- Main Profile & Video Card -->
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden sticky top-28">
 
-                    <!-- Video Section -->
-                    @if($candidate->candidateProfile->video_cv)
-                        <div class="relative bg-black aspect-video group cursor-pointer">
-                            <video controls
-                                class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity">
-                                <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <div
-                                class="absolute top-2 right-2 bg-black/70 text-white text-[10px] font-medium px-2 py-0.5 rounded backdrop-blur-sm">
-                                Video Intro
-                            </div>
-                        </div>
-                    @endif
-
-                    <!-- Profile Info -->
+                    <!-- Profile Info Header -->
                     <div class="p-6">
                         <div class="text-center relative">
                             <!-- Avatar -->
@@ -94,239 +77,258 @@
                                     </div>
                                 @endif
 
-                                <!-- Online/Verified Status Dot -->
-                                <div class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"
-                                    title="Verification Status"></div>
+                                <!-- Online/Verified Status Badge -->
+                                <div class="absolute bottom-0 right-0">
+                                    <span
+                                        class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold uppercase bg-blue-50 text-blue-600 border border-blue-100 shadow-sm">Verified</span>
+                                </div>
                             </div>
 
                             <!-- Name -->
-                            <h2 class="text-xl font-medium text-gray-900 mb-1">{{ $candidate->name }}</h2>
+                            <h2 class="text-xl font-bold text-gray-900 mb-1">{{ $candidate->name }}</h2>
 
-                            @if($candidate->candidateProfile->headline)
-                                <p class="text-sm text-gray-500 mb-4 line-clamp-2">
-                                    {{ $candidate->candidateProfile->headline }}
+                            <!-- Job Title (from Profile) -->
+                            @if($candidate->candidateProfile->title)
+                                <p class="text-sm font-medium text-blue-600 uppercase mb-2">
+                                    {{ $candidate->candidateProfile->title }}
                                 </p>
+                            @endif
+
+                            <!-- Location -->
+                            @if($candidate->candidateProfile->location)
+                                <div class="flex items-center justify-center text-gray-500 text-xs mb-4">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    {{ $candidate->candidateProfile->location }}
+                                </div>
                             @endif
 
                             <!-- Action Button -->
                             <a href="{{ route('public.candidates.interview', $candidate) }}"
-                                class="block w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-full transition-colors mb-4">
+                                class="block w-full py-2.5 px-4 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-lg transition-colors mb-4 uppercase tracking-wide shadow-sm">
                                 Request Interview
                             </a>
                         </div>
 
                         <!-- Divider -->
-                        <div class="border-t border-gray-200 my-4"></div>
+                        <div class="border-t border-gray-100 my-4"></div>
 
-                        <!-- Compact Details List -->
-                        <div class="space-y-3 text-sm">
+                        <!-- Meta Details List -->
+                        <div class="space-y-4 text-sm">
+                            <!-- Introduction Video (Small Preview if needed, or link to main) -->
+                            <!-- NOTE 4: Video displayed before/after click view profile. We show it prominently in Main Content, here we can show status -->
+
                             <!-- Candidate ID -->
-                            <div class="flex justify-between">
-                                <span class="text-gray-500">ID</span>
-                                <span class="text-gray-900 font-medium">#{{ $candidate->id }}{{ rand(100, 999) }}</span>
-                            </div>
-
-                            <!-- Location -->
-                            <div class="flex justify-between">
-                                <span class="text-gray-500">From</span>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-500">Candidate ID</span>
                                 <span
-                                    class="text-gray-900 font-medium text-right">{{ $candidate->candidateProfile->location ?? 'N/A' }}</span>
+                                    class="text-gray-900 font-mono font-medium">#{{ $candidate->id }}{{ rand(100, 999) }}</span>
                             </div>
 
-                            <!-- Experience -->
-                            @if($candidate->candidateProfile->years_of_experience > 0)
-                            <div class="flex justify-between">
-                                <span class="text-gray-500">Experience</span>
-                                <span class="text-gray-900 font-medium text-right">
-                                    {{ $candidate->candidateProfile->years_of_experience }} Years
-                                    @if($candidate->candidateProfile->experience_level)
-                                        <span
-                                            class="text-gray-400 text-xs">({{ $candidate->candidateProfile->experience_level }})</span>
-                                    @endif
-                                </span>
-                            </div>
-                            @endif
-
-                            <!-- Relocation -->
-                            <div class="flex justify-between">
+                            <!-- Willing to Relocate -->
+                            <div class="flex justify-between items-center">
                                 <span class="text-gray-500">Relocation</span>
                                 <span
-                                    class="{{ $candidate->candidateProfile->willing_to_relocate ? 'text-green-600' : 'text-gray-400' }} font-medium">
+                                    class="{{ $candidate->candidateProfile->willing_to_relocate ? 'text-green-600 bg-green-50 border-green-100' : 'text-gray-400 bg-gray-50 border-gray-100' }} px-2 py-0.5 rounded border text-xs font-bold uppercase">
                                     {{ $candidate->candidateProfile->willing_to_relocate ? 'Yes' : 'No' }}
                                 </span>
                             </div>
 
-                            <!-- Verification Items -->
-                            <div class="flex justify-between">
-                                <span class="text-gray-500">Passport</span>
+                            <!-- Availability -->
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-500">Availability</span>
+                                <span
+                                    class="text-gray-900 font-medium">{{ $candidate->candidateProfile->availability_status ?? 'N/A' }}</span>
+                            </div>
+
+                            <!-- Visa Status (Passport) -->
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-500">Visa Status</span>
                                 <span
                                     class="text-gray-900 font-medium">{{ $candidate->candidateProfile->passport_status ?? 'N/A' }}</span>
                             </div>
 
-                            <div class="flex justify-between">
-                                <span class="text-gray-500">Clearance</span>
-                                <div class="text-right">
-                                    @if($candidate->candidateProfile->police_clearance === 'Cleared' || $candidate->candidateProfile->medical_clearance === 'Cleared')
-                                        <div class="flex items-center text-green-600 font-medium">
-                                            <svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                                    clip-rule="evenodd"></path>
-                                            </svg>
-                                            Verified
-                                        </div>
-                                    @else
-                                        <span class="text-gray-400">Standard</span>
-                                    @endif
-                                </div>
+                            <!-- Years of Experience -->
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-500">Experience</span>
+                                <span
+                                    class="text-gray-900 font-bold">{{ $candidate->candidateProfile->years_of_experience ?? 0 }}
+                                    Years</span>
                             </div>
-                        </div>
 
-                        <!-- Divider -->
-                        <div class="border-t border-gray-200 my-4"></div>
-
-                        <!-- Languages -->
-                        <div>
-                            <h3 class="text-sm font-medium text-gray-900 mb-2">Languages</h3>
-                            <div class="flex flex-wrap gap-2 text-sm text-gray-600">
-                                @if($candidate->candidateProfile->languages && $candidate->candidateProfile->languages->count() > 0)
-                                    @foreach($candidate->candidateProfile->languages as $language)
-                                        <span>{{ $language->name }}@if(!$loop->last),@endif</span>
-                                    @endforeach
-                                @else
-                                    <span class="text-gray-400">N/A</span>
-                                @endif
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Content (Upwork-style Main Card) -->
-            <div class="lg:col-span-8">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-200">
-
-                    <!-- Header Section -->
-                    <div class="p-8 border-b border-gray-200">
-                        <div class="flex justify-between items-start mb-6">
-                            <div class="w-full">
-                                <h1 class="text-2xl font-medium text-gray-900 mb-2">
-                                    {{ $candidate->candidateProfile->title ?? 'No Title Provided' }}
-                                </h1>
-                                @if($candidate->candidateProfile->preferred_job_titles && count($candidate->candidateProfile->preferred_job_titles) > 0)
-                                    <div class="flex flex-wrap gap-2 mb-2">
-                                        @foreach($candidate->candidateProfile->preferred_job_titles as $title)
-                                            <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                            <!-- Preferred Job Titles -->
+                            @if($candidate->candidateProfile->preferred_job_titles && count($candidate->candidateProfile->preferred_job_titles) > 0)
+                                <div class="pt-2">
+                                    <span class="text-gray-500 block mb-2">Preferred Roles</span>
+                                    <div class="flex flex-wrap gap-1.5">
+                                        @foreach(array_slice($candidate->candidateProfile->preferred_job_titles, 0, 3) as $title)
+                                            <span
+                                                class="text-xs text-gray-600 bg-gray-100 border border-gray-200 px-2 py-1 rounded">
                                                 {{ $title }}
                                             </span>
                                         @endforeach
                                     </div>
-                                @endif
-                            </div>
-                            <!-- Rate (Optional Placement) -->
-                            @if($candidate->candidateProfile->expected_salary)
-                                <div class="flex-shrink-0 text-right ml-4">
-                                    <span class="block text-xl font-medium text-gray-900 whitespace-nowrap">
-                                        {{ $candidate->candidateProfile->currency }}
-                                        {{ number_format($candidate->candidateProfile->expected_salary) }}
-                                    </span>
-                                    <span class="text-xs text-gray-500">/ month</span>
                                 </div>
                             @endif
                         </div>
-
-                        <!-- Overview -->
-                        <div>
-                            <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed text-[15px]">
-                                {{ $candidate->candidateProfile->description ?? 'No overview provided.' }}
-                            </div>
-                        </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Work History Section -->
-                    @if(!empty(trim($candidate->candidateProfile->experience_description)))
-                    <div class="p-8 border-b border-gray-200">
-                        <h2 class="text-xl font-medium text-gray-900 mb-6">Work History</h2>
-                        
-                        @php
-                            $experiences = array_filter(explode("\n", $candidate->candidateProfile->experience_description), 'trim');
-                        @endphp
+            <!-- Right Main Content (Detailed) -->
+            <div class="lg:col-span-8 space-y-6">
 
-                        @if(count($experiences) > 1)
-                            <div class="space-y-6">
-                                @foreach($experiences as $experience)
-                                    <div class="group">
-                                        <div class="flex justify-between mb-1">
-                                            <h3 class="text-base font-semibold text-gray-900">
-                                                {{ Str::limit($experience, 100) }}
-                                            </h3>
-                                        </div>
-                                        <div class="flex items-center space-x-2 mb-2 text-sm text-gray-500">
-                                            <div class="flex text-green-600">
-                                                @for($i=0; $i<5; $i++)
-                                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                                                @endfor
-                                            </div>
-                                            <span>5.00</span>
-                                            <span>•</span>
-                                            <span class="text-green-600">Completed</span>
-                                        </div>
-                                        <p class="text-sm text-gray-600 leading-relaxed">
-                                            {{ $experience }}
-                                        </p>
-                                    </div>
-                                @endforeach
-                            </div>
+                <!-- 1. Professional Summary -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">Professional
+                        Summary</h2>
+                    <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+                        {{ $candidate->candidateProfile->description ?? ($candidate->candidateProfile->headline ?? 'No professional summary provided.') }}
+                    </div>
+                </div>
+
+                <!-- 2. Skills -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">Skills</h2>
+                    <div class="flex flex-wrap gap-2">
+                        @if($candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
+                            @foreach($candidate->candidateProfile->skills->take(15) as $skill)
+                                <span
+                                    class="px-4 py-1.5 bg-gray-50 text-gray-700 border border-gray-200 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors cursor-default">
+                                    {{ $skill->name }}
+                                </span>
+                            @endforeach
                         @else
-                            <div class="group">
-                                <div class="flex justify-between mb-1">
-                                    <h3 class="text-base font-semibold text-green-600 group-hover:underline cursor-pointer">
-                                        Summary of Experience
-                                    </h3>
-                                    <span class="text-sm text-gray-500">
-                                        {{ $candidate->candidateProfile->years_of_experience }} Years Exp
-                                    </span>
-                                </div>
-                                <div class="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-                                    {{ $candidate->candidateProfile->experience_description }}
-                                </div>
-                            </div>
+                            <span class="text-gray-500 italic">No specific skills listed.</span>
                         @endif
                     </div>
-                    @endif
+                </div>
 
-                    <!-- Skills Section -->
-                    <div class="p-8 border-b border-gray-200">
-                        <h2 class="text-xl font-medium text-gray-900 mb-6">Skills</h2>
-                        <div class="flex flex-wrap gap-2">
-                            @if($candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
-                                @foreach($candidate->candidateProfile->skills as $skill)
-                                    <span
-                                        class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors cursor-default">
-                                        {{ $skill->name }}
-                                    </span>
-                                @endforeach
-                            @else
-                                <span class="text-gray-500">No skills listed.</span>
-                            @endif
+                <!-- 3. Work History -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">Work History</h2>
+
+                    @if(!empty(trim($candidate->candidateProfile->experience_description)))
+                        @php
+                            // Basic parsing attempt simply to display distinct blocks if user entered them with newlines
+                            // Since we don't have structured data, we treat blocks separated by double newlines as distinct jobs
+                            $experiences = preg_split('/\n\s*\n/', $candidate->candidateProfile->experience_description);
+                        @endphp
+
+                        <div
+                            class="space-y-8 relative before:absolute before:inset-0 before:left-2 before:border-l-2 before:border-gray-100 before:content-['']">
+                            @foreach($experiences as $index => $experience)
+                                <div class="relative pl-8">
+                                    <!-- Timeline Dot -->
+                                    <div class="absolute left-0 top-1.5 w-4 h-4 bg-white border-2 border-blue-600 rounded-full">
+                                    </div>
+
+                                    <!-- Use heuristics or just display text -->
+                                    <!-- Since we don't have fields, we assume the first line might be title/company if short, otherwise just text -->
+                                    <div class="text-gray-700 whitespace-pre-line text-sm leading-relaxed">
+                                        {{ trim($experience) }}
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
+                    @else
+                        <div class="text-center py-6 text-gray-400 italic bg-gray-50 rounded-lg">
+                            No work history details provided.
+                        </div>
+                    @endif
+                </div>
 
-                    <!-- Education -->
-                    <div class="p-8">
-                        <h2 class="text-xl font-medium text-gray-900 mb-6">Education</h2>
+                <!-- 4. Education -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">Education</h2>
+                    <div class="flex items-start">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 14l9-5-9-5-9 5 9 5z" />
+                                <path
+                                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 14l9-5-9-5-9 5 9 5z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14v5" />
+                            </svg>
+                        </div>
                         <div>
-                            <h3 class="text-base font-semibold text-gray-900">
-                                {{ ucfirst(str_replace('-', ' ', $candidate->candidateProfile->education_level ?? 'N/A')) }}
+                            <h3 class="text-base font-bold text-gray-900">
+                                {{ ucfirst(str_replace('-', ' ', $candidate->candidateProfile->education_level ?? 'Education Level N/A')) }}
                             </h3>
-                            <p class="text-sm text-gray-600 mt-1">
-                                {{ $candidate->candidateProfile->course_studied ?? 'Major/Field N/A' }}
+                            <p class="text-sm text-gray-600 mt-1 font-medium">
+                                {{ $candidate->candidateProfile->course_studied ?? 'Field of study not specified' }}
                             </p>
                         </div>
                     </div>
-
                 </div>
+
+                <!-- 5. Certification & Training -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">Certification &
+                        Training</h2>
+                    <!-- Placeholder until data exists -->
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-green-500 mr-2 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="text-sm text-gray-600">Available upon request (No specific data listed)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 6. Language -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                    <h2 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">Languages</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @if($candidate->candidateProfile->languages && $candidate->candidateProfile->languages->count() > 0)
+                            @foreach($candidate->candidateProfile->languages as $language)
+                                <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                    <span class="font-medium text-gray-900">{{ $language->name }}</span>
+                                    <span class="text-xs font-bold text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded">Fluent
+                                        (Default)</span>
+                                </div>
+                            @endforeach
+                        @else
+                            <span class="text-gray-500 italic">No specific languages listed.</span>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- 7. Introduction Video -->
+                @php
+                    $videoCv = $candidate->candidateProfile->video_cv;
+                    if (!$videoCv) {
+                        $videoDoc = $candidate->documents->where('document_type', 'video_cv')->first();
+                        if ($videoDoc) {
+                            $videoCv = $videoDoc->file_path;
+                        }
+                    }
+                @endphp
+
+                @if($videoCv)
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+                        <h2 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-blue-600 pl-3">Introduction Video
+                        </h2>
+                        <div class="rounded-xl overflow-hidden bg-black aspect-video relative group shadow-lg">
+                            <video controls class="w-full h-full object-cover">
+                                <source src="{{ asset($videoCv) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>

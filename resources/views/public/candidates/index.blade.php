@@ -238,6 +238,9 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     @forelse($candidates as $candidate)
+                        @if(!$candidate->candidateProfile)
+                            @continue
+                        @endif
                         <div
                             class="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300 flex flex-col h-full group">
                             <div class="p-3 flex-1 flex flex-col relative">
@@ -250,10 +253,10 @@
                                     <div class="flex gap-1">
                                         @if($candidate->candidateProfile->is_available)
                                             <span
-                                                class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-green-50 text-green-700 border border-green-100">Available</span>
+                                                class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-green-50 text-green-700 border border-green-100">Available</span>
                                         @endif
                                         <span
-                                            class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-blue-50 text-blue-600 border border-blue-100">Verified</span>
+                                            class="inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-50 text-blue-600 border border-blue-100">Verified</span>
                                     </div>
                                 </div>
 
@@ -348,13 +351,24 @@
                             </div>
 
                             <!-- Action Buttons -->
-                            <div class="grid grid-cols-2 border-t border-gray-100 divide-x divide-gray-100 bg-gray-50">
+                            @php
+                                $videoDoc = $candidate->documents->where('document_type', 'video_cv')->first();
+                                $hasVideoDoc = $videoDoc && !$candidate->candidateProfile->video_cv;
+                                $gridCols = $hasVideoDoc ? 'grid-cols-3' : 'grid-cols-2';
+                            @endphp
+                            <div class="grid {{ $gridCols }} border-t border-gray-100 divide-x divide-gray-100 bg-gray-50">
                                 <a href="{{ route('public.candidates.show', $candidate) }}"
-                                    class="py-2.5 text-center text-[10px] font-bold text-gray-600 hover:text-blue-600 hover:bg-white transition-colors uppercase tracking-tight">
+                                    class="py-2.5 text-center text-[10px] font-bold text-gray-600 hover:text-blue-600 hover:bg-white transition-colors tracking-tight">
                                     View Profile
                                 </a>
+                                @if($hasVideoDoc)
+                                    <a href="{{ asset($videoDoc->file_path) }}" target="_blank"
+                                        class="py-2.5 text-center text-[10px] font-bold text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors tracking-tight">
+                                        View Video CV
+                                    </a>
+                                @endif
                                 <a href="{{ route('public.candidates.interview', $candidate) }}"
-                                    class="py-2.5 text-center text-[10px] font-bold text-green-700 hover:text-green-800 hover:bg-green-50 transition-colors uppercase tracking-tight">
+                                    class="py-2.5 text-center text-[10px] font-bold text-green-700 hover:text-green-800 hover:bg-green-50 transition-colors tracking-tight">
                                     Request This Candidate
                                 </a>
                             </div>
