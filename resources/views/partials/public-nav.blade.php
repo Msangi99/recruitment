@@ -4,7 +4,7 @@
             <div class="flex items-center">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-16 w-auto">
-                    <span class="ml-3 text-2xl font-bold text-white">Coyzon</span>
+                    <span class="ml-3 text-xl font-bold text-white">Coyzon</span>
                 </a>
             </div>
             <div class="hidden md:flex flex-1 justify-center items-center space-x-8">
@@ -29,7 +29,7 @@
                         up</a>
                 @else
                     <a href="{{ route('dashboard') }}"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">Dashboard</a>
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
                 @endguest
             </div>
             <!-- Mobile menu button -->
@@ -66,7 +66,8 @@
                     class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Log
                     in</a>
                 <a href="{{ route('register') }}"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Register</a>
+                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Sign
+                    up</a>
             @else
                 <a href="{{ route('dashboard') }}"
                     class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700">Dashboard</a>
@@ -74,7 +75,7 @@
         </div>
     </div>
     <script>
-        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+        document.getElementById('mobile-menu-button')?.addEventListener('click', function () {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
     </script>

@@ -21,44 +21,7 @@
 </head>
 
 <body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-gray-900 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-16 w-auto">
-                        <span class="ml-3 text-xl font-bold text-white">Coyzon</span>
-                    </a>
-                </div>
-                <div class="hidden md:flex flex-1 justify-center items-center space-x-8">
-                    <a href="{{ route('about') }}"
-                        class="text-white hover:text-blue-400 font-medium transition-colors">About Us</a>
-                    <a href="{{ route('public.jobs.index') }}"
-                        class="text-white hover:text-blue-400 font-medium transition-colors">Find Job</a>
-                    <a href="{{ route('public.candidates.index') }}"
-                        class="text-white hover:text-blue-400 font-medium transition-colors">Find Candidate</a>
-                    <a href="{{ route('public.appointments.index') }}"
-                        class="text-white hover:text-blue-400 font-medium transition-colors">Book Appointment</a>
-                    <a href="{{ route('contact') }}"
-                        class="text-white hover:text-blue-400 font-medium transition-colors">Contact Us</a>
-                </div>
-                <div class="hidden md:flex items-center space-x-3">
-                    @guest
-                        <a href="{{ route('login') }}"
-                            class="px-4 py-2 text-white bg-deep-green rounded-lg hover:bg-opacity-90 transition-colors">Log
-                            in</a>
-                        <a href="{{ route('register') }}"
-                            class="px-4 py-2 bg-deep-green text-white rounded-lg hover:bg-opacity-90 transition-colors">Sign
-                            up</a>
-                    @else
-                        <a href="{{ route('dashboard') }}"
-                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Dashboard</a>
-                    @endguest
-                </div>
-            </div>
-        </div>
-    </nav>
+    @include('partials.public-nav')
 
     <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <!-- Hero Section -->
@@ -581,24 +544,25 @@
                             @if($hasVideo)
                                 <div
                                     class="w-full md:w-80 bg-black relative group/video flex-shrink-0 min-h-[250px] md:min-h-full">
-                                    <video class="w-full h-full object-cover">
+                                    <video class="w-full h-full object-cover" preload="metadata">
                                         <source src="{{ asset($videoPath) }}" type="video/mp4">
                                         Your browser does not support the video tag.
                                     </video>
 
                                     <div
-                                        class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/video:bg-black/40 transition-all">
-                                        <a href="{{ asset($videoPath) }}" target="_blank"
+                                        class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/video:bg-black/40 transition-all z-10">
+                                        <button
+                                            onclick="const video = this.parentElement.previousElementSibling; video.play(); video.controls = true; this.parentElement.style.display = 'none';"
                                             class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center pl-1 border border-white/50 cursor-pointer shadow-xl hover:scale-110 hover:bg-white/30 transition-all duration-300">
                                             <svg class="w-6 h-6 text-white drop-shadow-md" fill="currentColor"
                                                 viewBox="0 0 24 24">
                                                 <path d="M8 5v14l11-7z" />
                                             </svg>
-                                        </a>
+                                        </button>
                                     </div>
 
                                     <div
-                                        class="absolute bottom-3 right-3 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded">
+                                        class="absolute bottom-3 right-3 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded pointer-events-none z-20">
                                         ...
                                     </div>
                                 </div>

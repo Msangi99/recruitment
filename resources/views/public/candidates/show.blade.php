@@ -28,43 +28,7 @@
 </head>
 
 <body class="bg-gray-50/50">
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 bg-gray-900 border-b border-gray-800 shadow-xl backdrop-blur-lg bg-opacity-95">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center">
-                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-16 w-auto">
-                        <span class="ml-3 text-xl font-bold text-white">Coyzon</span>
-                    </a>
-                </div>
-                <div class="hidden md:flex flex-1 justify-center items-center space-x-8">
-                    <a href="{{ route('about') }}"
-                        class="text-gray-300 hover:text-white font-medium transition-colors text-sm">About Us</a>
-                    <a href="{{ route('public.jobs.index') }}"
-                        class="text-gray-300 hover:text-white font-medium transition-colors text-sm">Find Job</a>
-                    <a href="{{ route('public.candidates.index') }}"
-                        class="text-white hover:text-blue-400 font-semibold transition-colors text-sm">Find
-                        Candidate</a>
-                    <a href="{{ route('contact') }}"
-                        class="text-gray-300 hover:text-white font-medium transition-colors text-sm">Contact Us</a>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    @guest
-                        <a href="{{ route('login') }}"
-                            class="px-4 py-2 text-white bg-deep-green rounded-lg hover:bg-opacity-90 transition-colors">Log
-                            in</a>
-                        <a href="{{ route('register') }}"
-                            class="px-5 py-2.5 bg-deep-green text-white text-sm font-semibold rounded-xl hover:bg-opacity-90 transition-all shadow-lg">Sign
-                            up</a>
-                    @else
-                        <a href="{{ route('dashboard') }}"
-                            class="px-5 py-2.5 bg-gray-800 text-white text-sm font-semibold rounded-xl hover:bg-gray-700 transition-all border border-gray-700">Dashboard</a>
-                    @endguest
-                </div>
-            </div>
-        </div>
-    </nav>
+    @include('partials.public-nav')
 
     <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
 
