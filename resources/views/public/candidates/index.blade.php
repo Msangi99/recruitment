@@ -27,7 +27,7 @@
         <!-- Hero Section -->
         <div class="mb-10 text-center max-w-4xl mx-auto">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 font-heading tracking-tight">
-                Find Your Perfect Candidate
+                Find Your Preferred Candidate
             </h1>
             <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
                 From talent sourcing to shortlisting, we help you find candidates who fit your role, culture, and
@@ -427,8 +427,36 @@
 
                         <div
                             class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300 group flex flex-col md:flex-row">
-                            <!-- Left Side: Candidate Details -->
-                            <div class="flex-1 flex flex-col p-5 {{ $hasVideo ? 'md:border-r border-gray-100' : '' }}">
+                            <!-- Left Side: Video CV (if available) -->
+                            @if($hasVideo)
+                                <div
+                                    class="w-full md:w-80 bg-black relative group/video flex-shrink-0 min-h-[250px] md:min-h-full md:border-r border-gray-100">
+                                    <video class="w-full h-full object-cover" preload="metadata">
+                                        <source src="{{ asset($videoPath) }}" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+
+                                    <div
+                                        class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/video:bg-black/40 transition-all z-10">
+                                        <button
+                                            onclick="const video = this.parentElement.previousElementSibling; video.play(); video.controls = true; this.parentElement.style.display = 'none';"
+                                            class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center pl-1 border border-white/50 cursor-pointer shadow-xl hover:scale-110 hover:bg-white/30 transition-all duration-300">
+                                            <svg class="w-6 h-6 text-white drop-shadow-md" fill="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+
+                                    <div
+                                        class="absolute bottom-3 right-3 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded pointer-events-none z-20">
+                                        ...
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Right Side: Candidate Details -->
+                            <div class="flex-1 flex flex-col p-5">
 
                                 <!-- Top: ID & Badges -->
                                 <div class="flex justify-between items-start mb-4">
@@ -443,10 +471,6 @@
                                                 Available
                                             </span>
                                         @endif
-                                        <span
-                                            class="inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-blue-50 text-blue-600 border border-blue-100">
-                                            Verified
-                                        </span>
                                     </div>
                                 </div>
 
@@ -472,31 +496,37 @@
                                     </div>
 
                                     <div class="flex-1 min-w-0">
-                                        <h3 class="text-lg font-bold text-gray-900 leading-tight">
+                                        <h3 class="text-lg font-bold text-gray-900 leading-tight flex items-center gap-2">
                                             @php
                                                 $nameParts = explode(' ', $candidate->name);
                                                 $firstName = $nameParts[0];
                                                 $lastNameInitial = isset($nameParts[1]) ? strtoupper(substr($nameParts[1], 0, 1)) . '.' : '';
                                             @endphp
                                             {{ $firstName }} {{ $lastNameInitial }}
+                                            <span class="text-blue-500">
+                                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd"
+                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                        clip-rule="evenodd" />
+                                                </svg>
+                                            </span>
                                         </h3>
 
-                                        @if($candidate->candidateProfile->categories->count() > 0)
-                                            <p class="text-xs font-bold text-emerald-600 uppercase mt-1 tracking-wide">
-                                                {{ $candidate->candidateProfile->categories->first()->name }}
+                                        @if($candidate->candidateProfile->headline)
+                                            <p class="text-sm text-gray-900 font-bold mt-1">
+                                                {{ $candidate->candidateProfile->headline }}
                                             </p>
                                         @elseif($candidate->candidateProfile->title)
                                             <p class="text-xs font-bold text-blue-600 uppercase mt-1 tracking-wide">
                                                 {{ $candidate->candidateProfile->title }}
                                             </p>
-                                        @endif
-
-                                        @if($candidate->candidateProfile->headline)
-                                            <p
-                                                class="text-sm text-gray-500 font-medium leading-snug line-clamp-2 mt-2 border-l-2 border-deep-green pl-3">
-                                                {{ $candidate->candidateProfile->headline }}
+                                        @elseif($candidate->candidateProfile->categories->count() > 0)
+                                            <p class="text-xs font-bold text-emerald-600 uppercase mt-1 tracking-wide">
+                                                {{ $candidate->candidateProfile->categories->first()->name }}
                                             </p>
                                         @endif
+
+
 
                                         @if($candidate->candidateProfile->description)
                                             <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 mt-2">
@@ -539,34 +569,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Right Side: Video CV (if available) -->
-                            @if($hasVideo)
-                                <div
-                                    class="w-full md:w-80 bg-black relative group/video flex-shrink-0 min-h-[250px] md:min-h-full">
-                                    <video class="w-full h-full object-cover" preload="metadata">
-                                        <source src="{{ asset($videoPath) }}" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-
-                                    <div
-                                        class="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/video:bg-black/40 transition-all z-10">
-                                        <button
-                                            onclick="const video = this.parentElement.previousElementSibling; video.play(); video.controls = true; this.parentElement.style.display = 'none';"
-                                            class="w-14 h-14 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center pl-1 border border-white/50 cursor-pointer shadow-xl hover:scale-110 hover:bg-white/30 transition-all duration-300">
-                                            <svg class="w-6 h-6 text-white drop-shadow-md" fill="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path d="M8 5v14l11-7z" />
-                                            </svg>
-                                        </button>
-                                    </div>
-
-                                    <div
-                                        class="absolute bottom-3 right-3 bg-black/60 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded pointer-events-none z-20">
-                                        ...
-                                    </div>
-                                </div>
-                            @endif
                         </div>
                     @empty
                         <div

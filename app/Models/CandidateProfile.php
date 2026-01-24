@@ -21,6 +21,7 @@ class CandidateProfile extends Model
         'location',
         'date_of_birth',
         'gender',
+        'citizenship',
         'education_level',
         'course_studied',
         'years_of_experience',

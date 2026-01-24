@@ -28,7 +28,7 @@
                 <div class="flex items-center space-x-3">
                     <span
                         class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full 
-                                                                        {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
+                                                                                {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
                 ($profile->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                         <i data-lucide="{{ $profile->verification_status == 'approved' ? 'shield-check' : 'clock' }}"
                             class="w-3 h-3 mr-1"></i>
@@ -110,44 +110,8 @@
                     </div>
                 </div>
 
-                <!-- Step 2 Extended: Professional Overview -->
-                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
-                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                            <i data-lucide="award" class="w-5 h-5 mr-3 text-slate-400"></i>
-                            Professional Overview
-                        </h3>
-                    </div>
-                    <div class="p-6">
-                        <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                            <div>
-                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Professional Title
-                                </dt>
-                                <dd class="mt-1 text-sm font-bold text-slate-900">{{ $profile->title ?? '-' }}</dd>
-                            </div>
-                            <div>
-                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Years of Experience
-                                </dt>
-                                <dd class="mt-1 text-sm text-slate-900">{{ $profile->years_of_experience }} Years</dd>
-                            </div>
-                            <div>
-                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Highest Education</dt>
-                                <dd class="mt-1 text-sm text-slate-900">{{ $profile->education_level ?? '-' }}</dd>
-                            </div>
-                            <div>
-                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Field of Study</dt>
-                                <dd class="mt-1 text-sm text-slate-900">{{ $profile->course_studied ?? '-' }}</dd>
-                            </div>
-                            <div class="sm:col-span-2">
-                                <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Experience Summary
-                                </dt>
-                                <dd class="mt-1 text-sm text-slate-600 prose prose-sm max-w-none">
-                                    {!! $profile->experience_description ?? '-' !!}
-                                </dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
+                <!-- Professional Overview Hidden -->
+
 
                 <!-- Step 3: Job Preferences -->
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">

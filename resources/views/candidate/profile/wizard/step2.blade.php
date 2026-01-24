@@ -25,6 +25,26 @@
                     @enderror
                 </div>
 
+                <!-- Gender -->
+                <div>
+                    <label for="gender" class="block text-sm font-medium text-slate-700">Gender</label>
+                    <div class="mt-1">
+                        <select name="gender" id="gender"
+                            class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                            <option value="">Select Gender</option>
+                            <option value="male" {{ old('gender', $profile->gender) == 'male' ? 'selected' : '' }}>Male
+                            </option>
+                            <option value="female" {{ old('gender', $profile->gender) == 'female' ? 'selected' : '' }}>Female
+                            </option>
+                            <option value="other" {{ old('gender', $profile->gender) == 'other' ? 'selected' : '' }}>Other
+                            </option>
+                        </select>
+                    </div>
+                    @error('gender')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Date of Birth -->
                 <div>
                     <label for="date_of_birth" class="block text-sm font-medium text-slate-700">Date of Birth</label>

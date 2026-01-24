@@ -70,6 +70,7 @@ class ProfileWizardController extends Controller
             case 2: // Basic Info
                 $validated = $request->validate([
                     'citizenship' => 'required|string|max:255',
+                    'gender' => 'required|string|in:male,female,other',
                     'date_of_birth' => 'required|date',
                     'city' => 'required|string|max:255',
                     'country' => 'required|string|max:255',
@@ -77,8 +78,9 @@ class ProfileWizardController extends Controller
                 
                 $profile->update([
                     'citizenship' => $validated['citizenship'],
+                    'gender' => $validated['gender'],
                     'date_of_birth' => $validated['date_of_birth'],
-                    'location' => $validated['city'] . ', ' . $validated['country'], // Storing as comma separated for now to match existing
+                    'location' => $validated['city'] . ', ' . $validated['country'],
                 ]);
                 break;
 

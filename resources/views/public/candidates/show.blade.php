@@ -90,12 +90,12 @@
                                     d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
                                     clip-rule="evenodd" />
                             </svg>
-                            Available now
+                            Available
                         </span>
 
-                        @if($candidate->candidateProfile->categories->count() > 0)
+                        @if($candidate->candidateProfile->headline)
                             <span class="text-xs font-semibold text-gray-600 border border-gray-200 px-2 py-1 rounded">
-                                {{ $candidate->candidateProfile->categories->first()->name }}
+                                {{ $candidate->candidateProfile->headline }}
                             </span>
                         @endif
                     </div>
@@ -109,13 +109,15 @@
             <!-- Left Sidebar (Navigation & Meta) -->
             <div class="lg:col-span-4 space-y-6">
 
-                <div class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden p-6">
-                    
+                <div
+                    class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden p-6">
+
                     <!-- Introduction Video -->
                     @if($candidate->candidateProfile->video_cv)
                         <div class="mb-6">
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Introduction Video</h3>
-                            <div class="rounded-xl overflow-hidden bg-black aspect-video shadow-sm relative group border border-gray-100">
+                            <h3 class="text-xs font-bold text-gray-900 mb-2">Introduction video</h3>
+                            <div
+                                class="rounded-xl overflow-hidden bg-black aspect-video shadow-sm relative group border border-gray-100">
                                 <video controls class="w-full h-full object-cover">
                                     <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
                                     Your browser does not support the video tag.
@@ -127,70 +129,56 @@
                     <div class="space-y-4">
                         <!-- Candidate ID -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Candidate ID</h3>
-                            <p class="text-sm font-semibold text-gray-900">#{{ $candidate->id }}</p>
+                            <h3 class="text-xs font-bold text-gray-900 mb-1">Candidate ID</h3>
+                            <p class="text-sm font-semibold text-gray-500">#{{ $candidate->id }}</p>
                         </div>
 
                         <!-- Willing to relocate -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Willing to relocate</h3>
-                            <p class="text-sm font-semibold text-gray-900">
+                            <h3 class="text-xs font-bold text-gray-900 mb-1">Willing to relocate</h3>
+                            <p class="text-sm font-semibold text-gray-500">
                                 {{ $candidate->candidateProfile->willing_to_relocate ? 'Yes' : 'No' }}
                             </p>
                         </div>
 
                         <!-- Availability -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Availability</h3>
-                            <p class="text-sm font-semibold text-gray-900">
+                            <h3 class="text-xs font-bold text-gray-900 mb-1">Availability</h3>
+                            <p class="text-sm font-semibold text-gray-500">
                                 {{ $candidate->candidateProfile->availability_status ?? 'Not specified' }}
                             </p>
                         </div>
 
                         <!-- Visa status -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Visa Status</h3>
-                            <p class="text-sm font-semibold text-gray-900">
+                            <h3 class="text-xs font-bold text-gray-900 mb-1">Passport status</h3>
+                            <p class="text-sm font-semibold text-gray-500">
                                 {{ $candidate->candidateProfile->passport_status ?? 'Not Specified' }}
                             </p>
                         </div>
 
                         <!-- Years of experience -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Years of Experience</h3>
-                            <p class="text-sm font-semibold text-gray-900">
+                            <h3 class="text-xs font-bold text-gray-900 mb-1">Years of experience</h3>
+                            <p class="text-sm font-semibold text-gray-500">
                                 {{ $candidate->candidateProfile->years_of_experience ?? '0' }} Years
                             </p>
                         </div>
 
-                        <!-- Prefer job titles max 3 -->
+                        <!-- Preferred job titles max 3 -->
                         <div>
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Preferred Job Titles</h3>
+                            <h3 class="text-xs font-bold text-gray-900 mb-1">Preferred job titles</h3>
                             <div class="flex flex-wrap gap-1.5">
                                 @if(is_array($candidate->candidateProfile->preferred_job_titles) && count($candidate->candidateProfile->preferred_job_titles) > 0)
                                     @foreach(array_slice($candidate->candidateProfile->preferred_job_titles, 0, 3) as $title)
-                                        <span class="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded">
+                                        <span
+                                            class="inline-flex items-center px-2 py-1 bg-gray-50 text-gray-500 text-xs font-medium rounded border border-gray-100">
                                             {{ $title }}
                                         </span>
                                     @endforeach
                                 @else
-                                    <span class="text-sm text-gray-500 italic">Not specified</span>
+                                    <span class="text-sm text-gray-400 italic">Not specified</span>
                                 @endif
-                            </div>
-                        </div>
-
-                        <!-- Language -->
-                        <div>
-                            <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Languages</h3>
-                            <div class="space-y-1">
-                                @forelse($candidate->candidateProfile->languages as $language)
-                                    <div class="text-sm text-gray-900 flex justify-between">
-                                        <span class="font-medium">{{ $language->name }}</span>
-                                        <span class="text-gray-500 text-xs">{{ $language->pivot->proficiency }}</span>
-                                    </div>
-                                @empty
-                                    <span class="text-sm text-gray-500 italic">No languages listed</span>
-                                @endforelse
                             </div>
                         </div>
                     </div>
@@ -209,40 +197,63 @@
 
                 <div class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6">
 
-                    <!-- 1. Headline & Summary -->
-                    <div id="summary" class="mb-5">
-                        <h2 class="text-xl font-bold text-gray-900 mb-1">
-                            {{ $candidate->candidateProfile->title ?? 'Professional Profile' }}
-                        </h2>
-                        <p class="text-gray-500 text-sm mb-3">{{ $candidate->candidateProfile->headline }}</p>
+                    <!-- 1. Professional summary -->
+                    <div id="summary" class="mb-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-3">Professional Summary</h2>
+                        @if($candidate->candidateProfile->title || $candidate->candidateProfile->headline)
+                            <div class="mb-4">
+                                <h3 class="text-base font-bold text-deep-green">
+                                    {{ $candidate->candidateProfile->title ?? 'Candidate' }}
+                                </h3>
+                                <p class="text-gray-500 text-sm italic">{{ $candidate->candidateProfile->headline }}</p>
+                            </div>
+                        @endif
                         <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed font-normal">
                             {!! $candidate->candidateProfile->description !!}
                         </div>
                     </div>
 
-                    <div class="h-px bg-gray-100 w-full mb-5"></div>
+                    <div class="h-px bg-gray-100 w-full mb-6"></div>
 
-                    <!-- 2. Work Experience -->
-                    <div id="experience" class="mb-5">
-                        <h2 class="text-lg font-bold text-gray-900 mb-4">Professional Experience</h2>
+                    <!-- 2. Skills -->
+                    <div id="skills" class="mb-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-3">Skills</h2>
+                        <div class="flex flex-wrap gap-2">
+                            @if($candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
+                                @foreach($candidate->candidateProfile->skills as $skill)
+                                    <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
+                                        {{ $skill->name }}
+                                    </span>
+                                @endforeach
+                            @else
+                                <p class="text-gray-400 italic text-sm">No specific skills listed.</p>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-gray-100 w-full mb-6"></div>
+
+                    <!-- 3. Working history -->
+                    <div id="experience" class="mb-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-4">Working history</h2>
                         <div class="space-y-5">
                             @forelse($candidate->candidateProfile->workExperiences as $experience)
-                                <div
-                                    class="relative pl-5 before:absolute before:inset-0 before:left-0 before:border-l-2 before:border-gray-100">
-                                    <div class="absolute left-[-5px] top-1.5 w-2.5 h-2.5 bg-gray-400 rounded-full"></div>
-                                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-1">
-                                        <div>
-                                            <h3 class="font-bold text-gray-900">{{ $experience->job_title }}</h3>
-                                            <p class="text-sm font-medium text-emerald-600">{{ $experience->employer }}</p>
+                                <div class="relative pl-6">
+                                    <div class="absolute left-0 top-1.5 w-2 h-2 bg-deep-green rounded-full"></div>
+                                    <div class="space-y-2">
+                                        <p class="text-sm font-bold text-gray-900">- Job title: <span
+                                                class="font-medium text-gray-700">{{ $experience->job_title }}</span></p>
+                                        <p class="text-sm font-bold text-gray-900">- Organization: <span
+                                                class="font-medium text-gray-700">{{ $experience->employer }}</span></p>
+                                        <p class="text-sm font-bold text-gray-900">- From – To: <span
+                                                class="font-medium text-gray-700">
+                                                {{ $experience->start_date->format('M Y') }} -
+                                                {{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : 'N/A') }}
+                                            </span></p>
+                                        <p class="text-sm font-bold text-gray-900">- Roles & responsibilities:</p>
+                                        <div class="text-sm text-gray-600 prose prose-sm max-w-none mt-2 ml-4">
+                                            {!! $experience->description !!}
                                         </div>
-                                        <span
-                                            class="text-xs font-bold text-gray-500 bg-gray-50 px-2 py-1 rounded inline-block mt-1 sm:mt-0">
-                                            {{ $experience->start_date->format('M Y') }} -
-                                            {{ $experience->is_current ? 'Present' : $experience->end_date->format('M Y') }}
-                                        </span>
-                                    </div>
-                                    <div class="text-sm text-gray-600 prose prose-sm max-w-none">
-                                        {!! $experience->description !!}
                                     </div>
                                 </div>
                             @empty
@@ -252,42 +263,85 @@
                         </div>
                     </div>
 
-                    <div class="h-px bg-gray-100 w-full mb-5"></div>
+                    <div class="h-px bg-gray-100 w-full mb-6"></div>
 
-                    <!-- 3. Skills -->
-                    <div id="skills" class="mb-5">
-                        <h2 class="text-lg font-bold text-gray-900 mb-3">Expertise & Skills</h2>
-                        <div class="flex flex-wrap gap-2">
-                            @if($candidate->candidateProfile->skills && $candidate->candidateProfile->skills->count() > 0)
-                                @foreach($candidate->candidateProfile->skills as $skill)
-                                    <span
-                                        class="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-semibold border border-emerald-100">
-                                        {{ $skill->name }}
-                                    </span>
-                                @endforeach
-                            @else
-                                <span class="text-gray-400 italic text-sm">No specific skills listed.</span>
-                            @endif
+                    <!-- 4. Education -->
+                    <div id="education" class="mb-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-4">Education</h2>
+                        <div class="grid grid-cols-1 gap-4">
+                            @forelse($candidate->candidateProfile->educations->whereNotIn('level', ['Certificate']) as $education)
+                                <div class="p-4 rounded-xl bg-gray-50 border border-gray-100">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h3 class="font-bold text-gray-900 text-sm">{{ $education->level }} -
+                                                {{ $education->field_of_study }}
+                                            </h3>
+                                            <p class="text-xs text-emerald-600 font-bold mt-1 uppercase tracking-wide">
+                                                {{ $education->institution }}
+                                            </p>
+                                            <p class="text-[11px] text-gray-400 mt-1 uppercase tracking-wider font-medium">
+                                                {{ $education->city }}, {{ $education->country }}
+                                            </p>
+                                        </div>
+                                        <span
+                                            class="text-[10px] font-bold text-gray-400 bg-white px-2 py-1 rounded shadow-sm border border-gray-100">
+                                            {{ $education->start_date->format('Y') }} -
+                                            {{ $education->is_current ? 'Present' : ($education->end_date ? $education->end_date->format('Y') : '') }}
+                                        </span>
+                                    </div>
+                                </div>
+                            @empty
+                                <p class="text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl w-full">No education
+                                    history details provided.</p>
+                            @endforelse
                         </div>
                     </div>
 
-                    <div class="h-px bg-gray-100 w-full mb-5"></div>
+                    <div class="h-px bg-gray-100 w-full mb-6"></div>
 
-                    <!-- 4. Education -->
-                    <div id="education">
-                        <h2 class="text-lg font-bold text-gray-900 mb-4">Education</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            @forelse($candidate->candidateProfile->educations as $education)
-                                <div class="p-3 rounded-lg bg-gray-50 border border-gray-100">
-                                    <h3 class="font-bold text-gray-900 text-sm">{{ $education->level }} -
-                                        {{ $education->field_of_study }}</h3>
-                                    <p class="text-xs text-emerald-600 font-medium mt-0.5">{{ $education->institution }}</p>
-                                    <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">
-                                        {{ $education->city }}, {{ $education->country }}</p>
+                    <!-- 5. Certification & Training -->
+                    <div id="certifications" class="mb-6">
+                        <h2 class="text-lg font-bold text-gray-900 mb-4">Certification & Training</h2>
+                        <div class="grid grid-cols-1 gap-4">
+                            @php
+                                $certifications = $candidate->candidateProfile->educations->where('level', 'Certificate');
+                            @endphp
+                            @forelse($certifications as $cert)
+                                <div class="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-bold text-gray-900 text-sm">{{ $cert->field_of_study }}</h3>
+                                            <p class="text-xs text-indigo-600 font-bold mt-0.5">{{ $cert->institution }}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             @empty
-                                <p class="col-span-2 text-gray-400 italic text-center py-4">No education history details
-                                    provided.</p>
+                                <p class="text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl w-full">No
+                                    certifications or trainings listed.</p>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <div class="h-px bg-gray-100 w-full mb-6"></div>
+
+                    <!-- 6. Language (na level zake) -->
+                    <div id="languages">
+                        <h2 class="text-lg font-bold text-gray-900 mb-4">Language</h2>
+                        <div class="space-y-3">
+                            @forelse($candidate->candidateProfile->languages as $language)
+                                <div class="flex items-center gap-1">
+                                    <span class="text-base font-medium text-gray-900">{{ $language->name }}:</span>
+                                    <span class="text-base text-gray-500">{{ $language->pivot->proficiency }}</span>
+                                </div>
+                            @empty
+                                <p class="text-gray-400 italic text-center py-2 bg-gray-50 rounded-xl w-full">No languages
+                                    listed.</p>
                             @endforelse
                         </div>
                     </div>
