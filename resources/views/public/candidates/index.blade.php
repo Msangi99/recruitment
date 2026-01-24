@@ -300,7 +300,7 @@
                                 <div class="flex gap-3 mb-2">
                                     <div class="flex-shrink-0 text-center">
                                         @if($candidate->candidateProfile->profile_picture)
-                                            <img src="{{ asset('profile-pictures/' . $candidate->candidateProfile->profile_picture) }}"
+                                            <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
                                                 alt="{{ $candidate->name }}"
                                                 class="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm mx-auto">
                                         @else
@@ -374,17 +374,17 @@
 
                             <!-- Action Buttons -->
                             @php
-                                $videoDoc = $candidate->documents->where('document_type', 'video_cv')->first();
-                                $hasVideoDoc = $videoDoc && !$candidate->candidateProfile->video_cv;
-                                $gridCols = $hasVideoDoc ? 'grid-cols-3' : 'grid-cols-2';
+                                $videoPath = $candidate->candidateProfile->video_cv ?? ($candidate->documents->where('document_type', 'video_cv')->first()?->file_path);
+                                $hasVideo = !empty($videoPath);
+                                $gridCols = $hasVideo ? 'grid-cols-3' : 'grid-cols-2';
                             @endphp
                             <div class="grid {{ $gridCols }} border-t border-gray-100 divide-x divide-gray-100 bg-gray-50">
                                 <a href="{{ route('public.candidates.show', $candidate) }}"
                                     class="py-2.5 text-center text-[10px] font-bold text-gray-600 hover:text-blue-600 hover:bg-white transition-colors tracking-tight">
                                     View Profile
                                 </a>
-                                @if($hasVideoDoc)
-                                    <a href="{{ asset($videoDoc->file_path) }}" target="_blank"
+                                @if($hasVideo)
+                                    <a href="{{ asset($videoPath) }}" target="_blank"
                                         class="py-2.5 text-center text-[10px] font-bold text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors tracking-tight">
                                         View Video CV
                                     </a>

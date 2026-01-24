@@ -75,7 +75,7 @@
                         <div class="text-center relative">
                             <div class="relative inline-block mb-3">
                                 @if($candidate->candidateProfile->profile_picture)
-                                    <img src="{{ asset('profile-pictures/' . $candidate->candidateProfile->profile_picture) }}"
+                                    <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
                                         alt="{{ $candidate->name }}"
                                         class="w-24 h-24 rounded-full object-cover border border-gray-200 mx-auto">
                                 @else
@@ -251,8 +251,7 @@
                         <h2 class="text-lg font-bold text-gray-900 mb-4 border-l-4 border-emerald-600 pl-3">Video CV</h2>
                         <div class="rounded-2xl overflow-hidden bg-black aspect-video shadow-2xl">
                             <video controls class="w-full h-full">
-                                <source src="{{ asset('uploads/video_cvs/' . $candidate->candidateProfile->video_cv) }}"
-                                    type="video/mp4">
+                                <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>

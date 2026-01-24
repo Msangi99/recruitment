@@ -10,6 +10,7 @@ use App\Models\Skill;
 use App\Models\Language;
 use App\Models\WorkExperience;
 use App\Models\Education;
+use Illuminate\Support\Facades\Log;
 
 class ProfileWizardController extends Controller
 {
@@ -301,15 +302,42 @@ class ProfileWizardController extends Controller
 
         if ($request->hasFile('profile_picture')) {
             $file = $request->file('profile_picture');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('profile-pictures'), $filename);
-
-            $profile->update(['profile_picture' => $filename]);
             
-            return response()->json([
-                'success' => true,
-                'path' => asset('profile-pictures/' . $filename)
-            ]);
+            // Generate clean filename
+            $originalName = $file->getClientOriginalName();
+            $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
+            $filename = time() . '_' . $cleanName;
+            
+            // Build user-specific path
+            $directory = 'profile-pictures/' . $user->id;
+            $destinationPath = public_path($directory);
+            
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+
+            try {
+                $file->move($destinationPath, $filename);
+                $relativePath = $directory . '/' . $filename;
+
+                // Delete old picture if it exists
+                if ($profile->profile_picture) {
+                    $oldPath = public_path($profile->profile_picture);
+                    if (file_exists($oldPath)) {
+                        @unlink($oldPath);
+                    }
+                }
+
+                $profile->update(['profile_picture' => $relativePath]);
+                
+                return response()->json([
+                    'success' => true,
+                    'path' => asset($relativePath)
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('Profile photo upload failed: ' . $e->getMessage());
+                return response()->json(['success' => false, 'message' => 'Upload failed'], 500);
+            }
         }
 
         return response()->json(['success' => false], 400);
@@ -326,38 +354,59 @@ class ProfileWizardController extends Controller
 
         if ($request->hasFile('video_cv')) {
             $file = $request->file('video_cv');
-            $filename = time() . '_' . $file->getClientOriginalName();
             
-            // Unified storage path
-            $destinationPath = public_path('uploads/video_cvs');
+            // Generate clean filename
+            $originalName = $file->getClientOriginalName();
+            $mimeType = $file->getMimeType();
+            $fileSize = $file->getSize();
+            $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
+            $filename = time() . '_' . $cleanName;
+            
+            // Build user-specific path
+            $directory = 'uploads/video_cvs/' . $user->id;
+            $destinationPath = public_path($directory);
+            
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
-            
-            $file->move($destinationPath, $filename);
-            $filePath = 'uploads/video_cvs/' . $filename;
 
-            $profile->update(['video_cv' => $filename]);
+            try {
+                $file->move($destinationPath, $filename);
+                $relativePath = $directory . '/' . $filename;
 
-            // Sync with Documents table
-            \App\Models\Document::updateOrCreate(
-                [
-                    'user_id' => $user->id,
-                    'document_type' => 'video_cv',
-                ],
-                [
-                    'file_name' => $file->getClientOriginalName(),
-                    'file_path' => $filePath,
-                    'file_type' => $file->getMimeType(),
-                    'file_size' => $file->getSize(),
-                    'verification_status' => 'pending',
-                ]
-            );
-            
-            return response()->json([
-                'success' => true,
-                'path' => asset($filePath)
-            ]);
+                // Delete old video if it exists
+                if ($profile->video_cv) {
+                    $oldPath = public_path($profile->video_cv);
+                    if (file_exists($oldPath)) {
+                        @unlink($oldPath);
+                    }
+                }
+
+                $profile->update(['video_cv' => $relativePath]);
+
+                // Sync with Documents table
+                \App\Models\Document::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'document_type' => 'video_cv',
+                    ],
+                    [
+                        'file_name' => $cleanName,
+                        'file_path' => $relativePath,
+                        'file_type' => $mimeType,
+                        'file_size' => $fileSize,
+                        'verification_status' => 'pending',
+                    ]
+                );
+                
+                return response()->json([
+                    'success' => true,
+                    'path' => asset($relativePath)
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('Video CV upload failed: ' . $e->getMessage());
+                return response()->json(['success' => false, 'message' => 'Upload failed'], 500);
+            }
         }
         
         return response()->json(['success' => false], 400);

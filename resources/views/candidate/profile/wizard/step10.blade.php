@@ -15,7 +15,7 @@
                 <div class="flex items-start space-x-6">
                     <div class="flex-shrink-0">
                         <img id="profile-preview" class="h-24 w-24 rounded-full object-cover border-2 border-slate-200"
-                            src="{{ $profile->profile_picture ? asset('profile-pictures/' . $profile->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&color=7F9CF5&background=EBF4FF' }}"
+                            src="{{ $profile->profile_picture ? asset($profile->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&color=7F9CF5&background=EBF4FF' }}"
                             alt="Profile preview">
                     </div>
                     <div class="flex-1">
@@ -24,12 +24,12 @@
                             <form id="photo-form" enctype="multipart/form-data">
                                 @csrf
                                 <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="block w-full text-sm text-slate-500
-                                                        file:mr-4 file:py-2 file:px-4
-                                                        file:rounded-full file:border-0
-                                                        file:text-sm file:font-semibold
-                                                        file:bg-emerald-50 file:text-emerald-700
-                                                        hover:file:bg-emerald-100
-                                                    " />
+                                                            file:mr-4 file:py-2 file:px-4
+                                                            file:rounded-full file:border-0
+                                                            file:text-sm file:font-semibold
+                                                            file:bg-emerald-50 file:text-emerald-700
+                                                            hover:file:bg-emerald-100
+                                                        " />
                                 <p class="mt-1 text-xs text-slate-500">JPG or PNG, max 3MB. Clear face, plain background.
                                 </p>
                                 <button type="button" id="upload-photo-btn"
@@ -59,7 +59,7 @@
                         <div class="mb-4">
                             <p class="text-sm text-emerald-600 font-medium mb-2">✓ Video Uploaded</p>
                             <video controls class="w-full max-h-64 rounded-lg bg-black">
-                                <source src="{{ asset('uploads/video_cvs/' . $profile->video_cv) }}" type="video/mp4">
+                                <source src="{{ asset($profile->video_cv) }}" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
                         </div>

@@ -288,7 +288,7 @@
                             </dt>
                             <dd>
                                 @if($profile->profile_picture)
-                                    <img src="{{ asset('profile-pictures/' . $profile->profile_picture) }}"
+                                    <img src="{{ asset($profile->profile_picture) }}"
                                         class="w-32 h-32 rounded-lg object-cover border-2 border-slate-200">
                                 @else
                                     <div

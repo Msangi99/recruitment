@@ -306,28 +306,49 @@ class ProfileController extends Controller
         if ($request->hasFile('video_cv')) {
             try {
                 $videoFile = $request->file('video_cv');
+                $mimeType = $videoFile->getMimeType();
+                $fileSize = $videoFile->getSize();
                 
-                // Ensure directory exists in public folder
-                $videoDirectory = public_path('video-cvs');
-                if (!file_exists($videoDirectory)) {
-                    mkdir($videoDirectory, 0755, true);
+                // Clean filename
+                $originalName = $videoFile->getClientOriginalName();
+                $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
+                $videoFileName = time() . '_' . $cleanName;
+                
+                // Build user-specific path
+                $videoDirectory = 'uploads/video_cvs/' . $candidate->id;
+                $videoAbsPath = public_path($videoDirectory);
+                
+                if (!file_exists($videoAbsPath)) {
+                    mkdir($videoAbsPath, 0755, true);
                 }
                 
                 // Delete old video if exists
                 if ($profile->video_cv) {
                     $oldVideoPath = public_path($profile->video_cv);
                     if (file_exists($oldVideoPath)) {
-                        unlink($oldVideoPath);
+                        @unlink($oldVideoPath);
                     }
                 }
                 
-                // Generate unique filename
-                $videoExtension = $videoFile->getClientOriginalExtension();
-                $videoFileName = 'video_cv_' . auth()->id() . '_' . time() . '.' . $videoExtension;
-                
-                // Move uploaded file to public directory
-                if ($videoFile->move($videoDirectory, $videoFileName)) {
-                    $validated['video_cv'] = 'video-cvs/' . $videoFileName;
+                // Move file
+                if ($videoFile->move($videoAbsPath, $videoFileName)) {
+                    $relativePath = $videoDirectory . '/' . $videoFileName;
+                    $validated['video_cv'] = $relativePath;
+
+                    // Sync with Documents table
+                    \App\Models\Document::updateOrCreate(
+                        [
+                            'user_id' => $candidate->id,
+                            'document_type' => 'video_cv',
+                        ],
+                        [
+                            'file_name' => $cleanName,
+                            'file_path' => $relativePath,
+                            'file_type' => $mimeType,
+                            'file_size' => $fileSize,
+                            'verification_status' => 'pending',
+                        ]
+                    );
                 } else {
                     return back()->withErrors(['video_cv' => 'Failed to upload video. Please try again.'])->withInput();
                 }
@@ -374,110 +395,37 @@ class ProfileController extends Controller
             try {
                 $file = $request->file('profile_picture');
                 
-                // Log initial file info
-                Log::info('Profile picture upload started', [
-                    'user_id' => auth()->id(),
-                    'file_name' => $file->getClientOriginalName(),
-                    'file_size' => $file->getSize(),
-                    'mime_type' => $file->getMimeType(),
-                    'is_valid' => $file->isValid()
-                ]);
+                // Generate clean filename
+                $originalName = $file->getClientOriginalName();
+                $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
+                $fileName = time() . '_' . $cleanName;
                 
-                // Check if file is valid
-                if (!$file->isValid()) {
-                    Log::error('Invalid file uploaded', [
-                        'user_id' => auth()->id(),
-                        'error' => $file->getError(),
-                        'error_message' => $file->getErrorMessage()
-                    ]);
-                    return back()->withErrors(['profile_picture' => 'Invalid file uploaded. Please try again.'])->withInput();
-                }
+                // Build user-specific path
+                $directory = 'profile-pictures/' . $candidate->id;
+                $destinationPath = public_path($directory);
                 
-                // Additional validation
-                $allowedMimes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
-                $maxSize = 2048; // 2MB in KB
-                
-                if (!in_array($file->getMimeType(), $allowedMimes)) {
-                    Log::warning('Invalid MIME type', [
-                        'user_id' => auth()->id(),
-                        'mime_type' => $file->getMimeType(),
-                        'allowed' => $allowedMimes
-                    ]);
-                    return back()->withErrors(['profile_picture' => 'Invalid file type. Please upload a JPEG, PNG, or GIF image.'])->withInput();
-                }
-                
-                if ($file->getSize() > ($maxSize * 1024)) {
-                    Log::warning('File too large', [
-                        'user_id' => auth()->id(),
-                        'file_size' => $file->getSize(),
-                        'max_size' => $maxSize * 1024
-                    ]);
-                    return back()->withErrors(['profile_picture' => 'File size exceeds 2MB limit. Please upload a smaller image.'])->withInput();
-                }
-                
-                // Ensure directory exists in public folder
-                $directory = public_path('profile-pictures');
-                if (!file_exists($directory)) {
-                    mkdir($directory, 0755, true);
-                    Log::info('Created profile-pictures directory', ['path' => $directory]);
+                if (!file_exists($destinationPath)) {
+                    mkdir($destinationPath, 0755, true);
                 }
                 
                 // Delete old profile picture if exists
                 if ($profile->profile_picture) {
                     $oldPath = public_path($profile->profile_picture);
                     if (file_exists($oldPath)) {
-                        unlink($oldPath);
-                        Log::info('Deleted old profile picture', ['path' => $oldPath]);
+                        @unlink($oldPath);
                     }
                 }
                 
-                // Generate unique filename
-                $extension = $file->getClientOriginalExtension();
-                $fileName = 'profile_' . auth()->id() . '_' . time() . '.' . $extension;
-                $destinationPath = $directory . '/' . $fileName;
-                
                 // Move uploaded file to public directory
-                if (!$file->move($directory, $fileName)) {
-                    Log::error('Failed to move uploaded file', [
-                        'user_id' => auth()->id(),
-                        'file_name' => $file->getClientOriginalName(),
-                        'destination' => $destinationPath
-                    ]);
+                if ($file->move($destinationPath, $fileName)) {
+                    $validated['profile_picture'] = $directory . '/' . $fileName;
+                } else {
                     return back()->withErrors(['profile_picture' => 'Failed to upload image. Please try again.'])->withInput();
                 }
                 
-                // Verify file was stored
-                if (!file_exists($destinationPath)) {
-                    Log::error('Profile picture file not found after upload', [
-                        'user_id' => auth()->id(),
-                        'destination' => $destinationPath,
-                        'directory_exists' => file_exists($directory),
-                        'directory_writable' => is_writable($directory)
-                    ]);
-                    return back()->withErrors(['profile_picture' => 'File was uploaded but could not be verified. Please check server permissions.'])->withInput();
-                }
-                
-                // Store relative path (from public directory)
-                $validated['profile_picture'] = 'profile-pictures/' . $fileName;
-                
-                // Log successful upload with full details
-                Log::info('Profile picture uploaded successfully', [
-                    'user_id' => auth()->id(),
-                    'path' => $validated['profile_picture'],
-                    'full_path' => $destinationPath,
-                    'file_size' => filesize($destinationPath),
-                    'url' => asset($validated['profile_picture']),
-                    'exists' => file_exists($destinationPath)
-                ]);
             } catch (\Exception $e) {
-                Log::error('Profile picture upload exception', [
-                    'user_id' => auth()->id(),
-                    'file_name' => isset($file) ? $file->getClientOriginalName() : 'unknown',
-                    'file_size' => isset($file) ? $file->getSize() : 0,
-                    'error' => $e->getMessage(),
-                    'trace' => $e->getTraceAsString()
-                ]);
-                return back()->withErrors(['profile_picture' => 'An error occurred while uploading the image: ' . $e->getMessage()])->withInput();
+                Log::error('Profile picture upload exception: ' . $e->getMessage());
+                return back()->withErrors(['profile_picture' => 'An error occurred while uploading the image.'])->withInput();
             }
         } else {
             Log::warning('No file in request', [
