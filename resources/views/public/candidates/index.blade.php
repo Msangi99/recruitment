@@ -278,7 +278,9 @@
                                 @if($candidate->candidateProfile->video_cv)
                                     <div class="mb-3 rounded-md overflow-hidden bg-black h-32 relative group/video">
                                         <video class="w-full h-full object-cover">
-                                            <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
+                                            <source
+                                                src="{{ asset('uploads/video_cvs/' . $candidate->candidateProfile->video_cv) }}"
+                                                type="video/mp4">
                                         </video>
                                         <div
                                             class="absolute inset-0 flex items-center justify-center bg-black/10 group-hover/video:bg-black/20 transition-all">
@@ -298,7 +300,7 @@
                                 <div class="flex gap-3 mb-2">
                                     <div class="flex-shrink-0 text-center">
                                         @if($candidate->candidateProfile->profile_picture)
-                                            <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
+                                            <img src="{{ asset('profile-pictures/' . $candidate->candidateProfile->profile_picture) }}"
                                                 alt="{{ $candidate->name }}"
                                                 class="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm mx-auto">
                                         @else
@@ -323,7 +325,11 @@
                                             @endphp
                                             {{ $firstName }} {{ $lastNameInitial }}
                                         </h3>
-                                        @if($candidate->candidateProfile->title)
+                                        @if($candidate->candidateProfile->categories->count() > 0)
+                                            <p class="text-[10px] font-bold text-emerald-600 truncate uppercase mt-0.5">
+                                                {{ $candidate->candidateProfile->categories->first()->name }}
+                                            </p>
+                                        @elseif($candidate->candidateProfile->title)
                                             <p class="text-xs font-bold text-blue-600 truncate uppercase mt-0.5">
                                                 {{ $candidate->candidateProfile->title }}
                                             </p>
@@ -331,15 +337,17 @@
 
                                         @if($candidate->candidateProfile->headline)
                                             <p
-                                                class="text-[10px] text-gray-500 leading-snug line-clamp-2 mt-1 border-l-2 border-gray-100 pl-2">
+                                                class="text-[10px] text-gray-500 font-bold leading-snug line-clamp-2 mt-1 border-l-2 border-gray-100 pl-2">
                                                 {{ $candidate->candidateProfile->headline }}
                                             </p>
-                                        @elseif($candidate->candidateProfile->description)
+                                        @endif
+
+                                        @if($candidate->candidateProfile->description)
                                             <p
                                                 class="text-[10px] text-gray-500 leading-snug line-clamp-3 mt-1 border-l-2 border-gray-100 pl-2">
-                                                {{ Str::limit($candidate->candidateProfile->description, 250) }}
+                                                {{ Str::limit(strip_tags($candidate->candidateProfile->description), 250) }}
                                             </p>
-                                        @else
+                                        @elseif(!$candidate->candidateProfile->headline)
                                             <p class="text-[10px] text-gray-400 italic mb-1 border-l-2 border-gray-100 pl-2">
                                                 Professional Summary</p>
                                         @endif

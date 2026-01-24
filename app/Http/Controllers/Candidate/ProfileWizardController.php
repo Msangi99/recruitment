@@ -16,7 +16,7 @@ class ProfileWizardController extends Controller
     public function show($step = 1)
     {
         $step = intval($step);
-        if ($step < 1 || $step > 11) {
+        if ($step < 1 || $step > 12) {
             return redirect()->route('candidate.wizard.show', ['step' => 1]);
         }
 
@@ -43,10 +43,10 @@ class ProfileWizardController extends Controller
                 $viewData['allSkills'] = Skill::orderBy('name')->get();
                 // Get existing skills
                 break;
-            case 8: // Languages
+            case 9: // Languages
                 $viewData['allLanguages'] = Language::orderBy('name')->get();
                 break;
-            case 10: // Review & Submit
+            case 11: // Review & Submit
                 $profile->load(['categories', 'skills', 'workExperiences', 'educations', 'languages']);
                 break;
         }
@@ -147,7 +147,19 @@ class ProfileWizardController extends Controller
                 }
                 break;
 
-            case 7: // International Readiness
+            case 7: // Professional Summary
+                $validated = $request->validate([
+                    'headline' => 'required|string|max:255',
+                    'description' => 'required|string',
+                ]);
+
+                $profile->update([
+                    'headline' => $validated['headline'],
+                    'description' => $validated['description'],
+                ]);
+                break;
+
+            case 8: // International Readiness
                 $validated = $request->validate([
                     'willing_to_relocate' => 'required|boolean',
                     'preferred_destinations' => 'nullable|array',
@@ -162,7 +174,7 @@ class ProfileWizardController extends Controller
                 ]);
                 break;
             
-            case 8: // Languages
+            case 9: // Languages
                 $validated = $request->validate([
                     'languages' => 'required|array',
                     'languages.*.id' => 'required|exists:languages,id',
@@ -179,7 +191,7 @@ class ProfileWizardController extends Controller
                 $profile->languages()->sync($syncData);
                 break;
 
-            case 9: // Compliance & Documents
+            case 10: // Compliance & Documents
                  // Check if files are uploaded if they are mandatory (Photo verified in logic below or client side)
                  // Requirement: "Before submit, candidate must tick: I consent..."
                  $validated = $request->validate([
@@ -188,7 +200,7 @@ class ProfileWizardController extends Controller
                  // Proceed to next step
                  break;
 
-            case 10: // Review & Submit
+            case 11: // Review & Submit
                  // Mark profile as pending verification or active
                  // If default is pending, we might no need to change it, or we can explicitely set it
                  $profile->update([
@@ -197,8 +209,7 @@ class ProfileWizardController extends Controller
                  ]);
                  break;
             
-            case 11: // Completion (if posted from completion page?)
-                 // Usually we don't post from here, just redirect
+            case 12: // Completion
                  break;
 
             // ... other cases
@@ -208,7 +219,7 @@ class ProfileWizardController extends Controller
         
         // If we processed step 10, we go to step 11 (Completion View)
         // If we processed step 11, we go to dashboard
-        if ($nextStep > 11) {
+        if ($nextStep > 12) {
             return redirect()->route('candidate.dashboard')->with('success', 'Profile completed!');
         }
 

@@ -196,7 +196,7 @@
                         </div>
                     </div>
 
-                    <!-- Step 7: International Readiness -->
+                    <!-- Step 7: Professional Summary -->
                     <div
                         class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
                         <div
@@ -204,9 +204,33 @@
                             <h3 class="text-lg font-bold text-slate-900 flex items-center">
                                 <span
                                     class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">7</span>
-                                International Readiness
+                                Professional Summary
                             </h3>
                             <a href="{{ route('candidate.wizard.show', ['step' => 7]) }}"
+                                class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                Edit Section
+                            </a>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-sm font-bold text-slate-900 mb-2">{{ $profile->headline ?? 'No headline specified' }}</p>
+                            <div class="text-sm text-slate-600 prose prose-sm max-w-none">
+                                {!! $profile->description ?? '<span class="italic text-slate-400">No summary added yet.</span>' !!}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 8: International Readiness -->
+                    <div
+                        class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
+                        <div
+                            class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center">
+                                <span
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">8</span>
+                                International Readiness
+                            </h3>
+                            <a href="{{ route('candidate.wizard.show', ['step' => 8]) }}"
                                 class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
                                 <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
                                 Edit Section
@@ -230,19 +254,19 @@
                         </div>
                     </div>
 
-                    <!-- Step 8: Languages -->
+                    <!-- Step 9: Languages -->
                     <div
                         class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
                         <div
                             class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
                             <h3 class="text-lg font-bold text-slate-900 flex items-center">
                                 <span
-                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">8</span>
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">9</span>
                                 Languages
                             </h3>
-                            <a href="{{ route('candidate.wizard.show', ['step' => 8]) }}"
+                            <a href="{{ route('candidate.wizard.show', ['step' => 9]) }}"
                                 class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
-                                <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
+                                <i data-lucide="edit-3" class="w-4 h-4 mr-1"></i>
                                 Edit Section
                             </a>
                         </div>
@@ -260,17 +284,17 @@
                         </div>
                     </div>
 
-                    <!-- Step 9: Media & Compliance -->
+                    <!-- Step 10: Media & Compliance -->
                     <div
                         class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden group hover:border-emerald-300 transition-all">
                         <div
                             class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center group-hover:bg-emerald-50/30 transition-all">
                             <h3 class="text-lg font-bold text-slate-900 flex items-center">
                                 <span
-                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">9</span>
+                                    class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-xs">10</span>
                                 Media & Compliance
                             </h3>
-                            <a href="{{ route('candidate.wizard.show', ['step' => 9]) }}"
+                            <a href="{{ route('candidate.wizard.show', ['step' => 10]) }}"
                                 class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-bold text-emerald-600 hover:bg-emerald-50 transition-all">
                                 <i data-lucide="edit-3" class="w-4 h-4 mr-2"></i>
                                 Edit Section

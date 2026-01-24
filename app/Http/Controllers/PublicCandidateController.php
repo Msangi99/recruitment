@@ -16,7 +16,7 @@ class PublicCandidateController extends Controller
                 $q->where('verification_status', 'approved')
                     ->where('is_public', true);
             })
-            ->with(['candidateProfile.skills', 'candidateProfile.languages', 'documents' => function($q) {
+            ->with(['candidateProfile.categories', 'candidateProfile.skills', 'candidateProfile.languages', 'documents' => function($q) {
                 $q->where('verification_status', 'approved');
             }]);
 
@@ -126,7 +126,7 @@ class PublicCandidateController extends Controller
             abort(404);
         }
 
-        $candidate->load(['candidateProfile.experienceCategory', 'candidateProfile.skills', 'candidateProfile.languages', 'documents' => function($q) {
+        $candidate->load(['candidateProfile.categories', 'candidateProfile.skills', 'candidateProfile.workExperiences', 'candidateProfile.educations', 'candidateProfile.languages', 'documents' => function($q) {
             $q->where('verification_status', 'approved');
         }]);
 

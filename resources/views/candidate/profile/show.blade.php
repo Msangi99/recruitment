@@ -28,7 +28,7 @@
                 <div class="flex items-center space-x-3">
                     <span
                         class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full 
-                                        {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
+                                                        {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
                 ($profile->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                         <i data-lucide="{{ $profile->verification_status == 'approved' ? 'shield-check' : 'clock' }}"
                             class="w-3 h-3 mr-1"></i>
@@ -91,7 +91,8 @@
                                         <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date of Birth
                                         </dt>
                                         <dd class="mt-1 text-sm text-slate-900">
-                                            {{ $profile->date_of_birth ? $profile->date_of_birth->format('M d, Y') : '-' }}</dd>
+                                            {{ $profile->date_of_birth ? $profile->date_of_birth->format('M d, Y') : '-' }}
+                                        </dd>
                                     </div>
                                     <div class="sm:col-span-2">
                                         <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Current
@@ -138,7 +139,8 @@
                                 <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Availability Status
                                 </dt>
                                 <dd class="mt-1 text-sm text-slate-900 font-medium text-emerald-700">
-                                    {{ $profile->availability_status }}</dd>
+                                    {{ $profile->availability_status }}
+                                </dd>
                             </div>
                         </dl>
                     </div>
@@ -211,7 +213,8 @@
                         @forelse($profile->educations as $education)
                             <div class="py-4 first:pt-0 last:pb-0">
                                 <h4 class="text-sm font-bold text-slate-900">{{ $education->level }} -
-                                    {{ $education->field_of_study }}</h4>
+                                    {{ $education->field_of_study }}
+                                </h4>
                                 <p class="text-sm font-medium text-slate-600">{{ $education->institution }}</p>
                                 <p class="text-xs text-slate-500 mt-1">{{ $education->city }}, {{ $education->country }}</p>
                             </div>
@@ -221,7 +224,23 @@
                     </div>
                 </div>
 
-                <!-- Step 7: International Readiness -->
+                <!-- Step 7: Professional Summary -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                    <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+                        <h3 class="text-lg font-semibold text-slate-900 flex items-center">
+                            <i data-lucide="user-check" class="w-5 h-5 mr-3 text-slate-400"></i>
+                            Professional Summary
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-sm font-bold text-slate-900 mb-2">{{ $profile->headline ?? 'No headline specified' }}</p>
+                        <div class="text-sm text-slate-600 prose prose-sm max-w-none">
+                            {!! $profile->description ?? '<span class="italic text-slate-400">No summary added yet.</span>' !!}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 8: International Readiness -->
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                     <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
                         <h3 class="text-lg font-semibold text-slate-900 flex items-center">
@@ -266,7 +285,7 @@
                     </div>
                 </div>
 
-                <!-- Step 8: Languages -->
+                <!-- Step 9: Languages -->
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                     <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
                         <h3 class="text-lg font-semibold text-slate-900 flex items-center">
@@ -288,7 +307,7 @@
                     </div>
                 </div>
 
-                <!-- Step 9: Media & Compliance -->
+                <!-- Step 10: Media & Compliance -->
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                     <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
                         <h3 class="text-lg font-semibold text-slate-900 flex items-center">

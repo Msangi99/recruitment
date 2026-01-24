@@ -1,138 +1,120 @@
 @extends('candidate.profile.wizard.layout')
 
 @section('wizard-content')
-    <div class="max-w-2xl mx-auto">
-        <div class="text-center mb-8">
-            <h2 class="text-2xl font-bold text-slate-900">Language Skills</h2>
-            <p class="mt-2 text-sm text-slate-600">Select languages you speak and your proficiency level.</p>
-        </div>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<style>
+    /* Tailwind-ish styling for Select2 */
+    .select2-container .select2-selection--multiple {
+        border-color: #e2e8f0;
+        border-radius: 0.5rem;
+        min-height: 42px;
+        padding: 4px;
+    }
+    .select2-container--default.select2-container--focus .select2-selection--multiple {
+        border-color: #10b981;
+        box-shadow: 0 0 0 1px #10b981;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+        background-color: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+        border-radius: 0.25rem;
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+        color: #065f46;
+        margin-right: 6px;
+        border-right: 1px solid #a7f3d0;
+    }
+</style>
 
-        <form action="{{ route('candidate.wizard.process', ['step' => 8]) }}" method="POST" class="space-y-6">
-            @csrf
-
-            <div id="languages-container" class="space-y-4">
-                @php
-                    $currentLanguages = $profile->languages;
-                    if ($currentLanguages->isEmpty()) {
-                        $currentLanguages = [null]; // Start with one empty row
-                    }
-                @endphp
-
-                @foreach($currentLanguages as $index => $lang)
-                    <div class="language-row flex gap-4 items-start p-4 bg-slate-50 rounded-lg border border-slate-200">
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Language</label>
-                            <select name="languages[{{ $index }}][id]"
-                                class="block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
-                                <option value="">Select Language</option>
-                                @foreach($allLanguages as $l)
-                                    <option value="{{ $l->id }}" {{ $lang && $lang->id == $l->id ? 'selected' : '' }}>{{ $l->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="flex-1">
-                            <label class="block text-sm font-medium text-slate-700 mb-1">Proficiency</label>
-                            <select name="languages[{{ $index }}][proficiency]"
-                                class="block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
-                                <option value="Basic" {{ $lang && $lang->pivot->proficiency == 'Basic' ? 'selected' : '' }}>Basic
-                                </option>
-                                <option value="Conversational" {{ $lang && $lang->pivot->proficiency == 'Conversational' ? 'selected' : '' }}>Conversational</option>
-                                <option value="Fluent" {{ $lang && $lang->pivot->proficiency == 'Fluent' ? 'selected' : '' }}>
-                                    Fluent</option>
-                                <option value="Native" {{ $lang && $lang->pivot->proficiency == 'Native' ? 'selected' : '' }}>
-                                    Native</option>
-                            </select>
-                        </div>
-                        <button type="button" class="mt-6 text-slate-400 hover:text-red-500" onclick="removeRow(this)">
-                            <span class="sr-only">Remove</span>
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
-                        </button>
-                    </div>
-                @endforeach
-            </div>
-
-            <button type="button" id="add-language-btn"
-                class="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700">
-                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Add Another Language
-            </button>
-
-            <div class="flex items-center justify-between pt-6 border-t border-slate-200 mt-6">
-                <a href="{{ route('candidate.wizard.show', ['step' => 7]) }}"
-                    class="text-sm font-medium text-slate-600 hover:text-slate-900">Back</a>
-                <button type="submit"
-                    class="inline-flex justify-center rounded-lg border border-transparent bg-deep-green px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-                    Save & Continue
-                </button>
-            </div>
-        </form>
+<div class="max-w-2xl mx-auto">
+    <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-slate-900">International Readiness</h2>
+        <p class="mt-2 text-sm text-slate-600">Are you interested in opportunities abroad? Let employers know.</p>
     </div>
 
-    <template id="language-row-template">
-        <div class="language-row flex gap-4 items-start p-4 bg-slate-50 rounded-lg border border-slate-200">
-            <div class="flex-1">
-                <label class="block text-sm font-medium text-slate-700 mb-1">Language</label>
-                <select name="languages[INDEX][id]"
-                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
-                    <option value="">Select Language</option>
-                    @foreach($allLanguages as $l)
-                        <option value="{{ $l->id }}">{{ $l->name }}</option>
+    <form action="{{ route('candidate.wizard.process', ['step' => 8]) }}" method="POST" class="space-y-8">
+        @csrf
+
+        <!-- Willing to Work Abroad -->
+        <div>
+            <label class="block text-sm font-medium text-slate-700 mb-3">Willing to Work Abroad?</label>
+            <div class="flex items-center space-x-6">
+                <div class="flex items-center">
+                    <input id="relocate-yes" name="willing_to_relocate" type="radio" value="1"
+                        {{ $profile->willing_to_relocate ? 'checked' : '' }}
+                        class="h-4 w-4 border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                    <label for="relocate-yes" class="ml-3 block text-sm font-medium text-slate-700">Yes</label>
+                </div>
+                <div class="flex items-center">
+                    <input id="relocate-no" name="willing_to_relocate" type="radio" value="0"
+                        {{ !$profile->willing_to_relocate && !is_null($profile->willing_to_relocate) ? 'checked' : '' }}
+                        class="h-4 w-4 border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                    <label for="relocate-no" class="ml-3 block text-sm font-medium text-slate-700">No</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preferred Destination Countries -->
+        <div>
+            <label for="preferred_destinations" class="block text-sm font-medium text-slate-700">Preferred Destination Countries</label>
+            <p class="text-xs text-slate-500 mb-2">Select countries you'd like to work in (Max 7).</p>
+            <select name="preferred_destinations[]" id="preferred_destinations" multiple="multiple"
+                class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                @if(is_array($profile->preferred_destinations))
+                    @foreach($profile->preferred_destinations as $country)
+                        <option value="{{ $country }}" selected>{{ $country }}</option>
                     @endforeach
-                </select>
-            </div>
-            <div class="flex-1">
-                <label class="block text-sm font-medium text-slate-700 mb-1">Proficiency</label>
-                <select name="languages[INDEX][proficiency]"
-                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
-                    <option value="Basic">Basic</option>
-                    <option value="Conversational">Conversational</option>
-                    <option value="Fluent">Fluent</option>
-                    <option value="Native">Native</option>
-                </select>
-            </div>
-            <button type="button" class="mt-6 text-slate-400 hover:text-red-500" onclick="removeRow(this)">
-                <span class="sr-only">Remove</span>
-                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
+                @endif
+                {{-- Add some common options if needed, or just let users type --}}
+                <option value="UAE">UAE</option>
+                <option value="Qatar">Qatar</option>
+                <option value="Saudi Arabia">Saudi Arabia</option>
+                <option value="Kuwait">Kuwait</option>
+                <option value="Oman">Oman</option>
+                <option value="Bahrain">Bahrain</option>
+                <option value="Germany">Germany</option>
+                <option value="Canada">Canada</option>
+                <option value="UK">UK</option>
+                <option value="USA">USA</option>
+            </select>
+        </div>
+
+        <!-- Passport Status -->
+        <div>
+            <label for="passport_status" class="block text-sm font-medium text-slate-700">Passport Status</label>
+            <select name="passport_status" id="passport_status"
+                class="mt-1 block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                <option value="">Select Status</option>
+                <option value="Valid" {{ $profile->passport_status == 'Valid' ? 'selected' : '' }}>Valid</option>
+                <option value="In Process" {{ $profile->passport_status == 'In Process' ? 'selected' : '' }}>In Process</option>
+                <option value="Not Available" {{ $profile->passport_status == 'Not Available' ? 'selected' : '' }}>Not Available</option>
+            </select>
+        </div>
+
+        <div class="flex items-center justify-between pt-6 border-t border-slate-200 mt-6">
+            <a href="{{ route('candidate.wizard.show', ['step' => 7]) }}" class="text-sm font-medium text-slate-600 hover:text-slate-900">Back</a>
+            <button type="submit" class="inline-flex justify-center rounded-lg border border-transparent bg-deep-green px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                Save & Continue
             </button>
         </div>
-    </template>
+    </form>
+</div>
 
-    <script>
-        const container = document.getElementById('languages-container');
-        const addBtn = document.getElementById('add-language-btn');
-        const template = document.getElementById('language-row-template');
-        let rowCount = {{ $currentLanguages instanceof \Illuminate\Database\Eloquent\Collection ? $currentLanguages->count() : 1 }};
-
-        addBtn.addEventListener('click', () => {
-            const clone = template.content.cloneNode(true);
-            const row = clone.querySelector('.language-row');
-
-            // Update names with index
-            row.querySelectorAll('select').forEach(select => {
-                select.name = select.name.replace('INDEX', rowCount);
-            });
-
-            container.appendChild(row);
-            rowCount++;
+@push('scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#preferred_destinations').select2({
+            placeholder: "Select or type countries",
+            tags: true,
+            maximumSelectionLength: 7,
+            width: '100%'
         });
-
-        window.removeRow = function (btn) {
-            if (container.children.length > 1) {
-                btn.closest('.language-row').remove();
-            } else {
-                // Clear values instead of removing last row
-                const row = btn.closest('.language-row');
-                row.querySelectorAll('select').forEach(s => s.value = '');
-            }
-        };
-    </script>
+    });
+</script>
+@endpush
 @endsection

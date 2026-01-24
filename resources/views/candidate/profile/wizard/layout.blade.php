@@ -14,17 +14,17 @@
                     <div>
                         <span
                             class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-emerald-600 bg-emerald-100">
-                            Step {{ $step ?? 1 }} of 11
+                            Step {{ $step ?? 1 }} of 12
                         </span>
                     </div>
                     <div class="text-right">
                         <span class="text-xs font-semibold inline-block text-emerald-600">
-                            {{ round((($step ?? 1) / 11) * 100) }}%
+                            {{ round((($step ?? 1) / 12) * 100) }}%
                         </span>
                     </div>
                 </div>
                 <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-emerald-100">
-                    <div style="width:{{ (($step ?? 1) / 11) * 100 }}%"
+                    <div style="width:{{ (($step ?? 1) / 12) * 100 }}%"
                         class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-deep-green transition-all duration-500">
                     </div>
                 </div>

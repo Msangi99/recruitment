@@ -1,310 +1,242 @@
 @extends('candidate.profile.wizard.layout')
 
 @section('wizard-content')
-    <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-slate-900">Review Your Profile</h2>
-            <p class="mt-2 text-slate-600 font-medium">Please verify your information before final submission.</p>
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-slate-900">Profile Media & Compliance</h2>
+            <p class="mt-2 text-sm text-slate-600">Upload a professional photo and a short introduction video.</p>
         </div>
 
         <div class="space-y-8">
-            <!-- Step 1 & 2: Account & Basic Info -->
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span
-                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-sm">1-2</span>
-                        Basic Information
-                    </h3>
-                    <a href="{{ route('candidate.wizard.show', ['step' => 2]) }}"
-                        class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
-                </div>
-                <div class="p-6">
-                    <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Full Name</dt>
-                            <dd class="mt-1 text-sm text-slate-900">{{ $user->name }}</dd>
-                        </div>
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Email Address</dt>
-                            <dd class="mt-1 text-sm text-slate-900">{{ $user->email }}</dd>
-                        </div>
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Nationality</dt>
-                            <dd class="mt-1 text-sm text-slate-900">{{ $profile->citizenship ?? '-' }}</dd>
-                        </div>
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Date of Birth</dt>
-                            <dd class="mt-1 text-sm text-slate-900">
-                                {{ $profile->date_of_birth ? $profile->date_of_birth->format('M d, Y') : '-' }}</dd>
-                        </div>
-                        <div class="sm:col-span-2">
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Current Location</dt>
-                            <dd class="mt-1 text-sm text-slate-900">{{ $profile->location }}</dd>
-                        </div>
-                    </dl>
-                </div>
-            </div>
+            <!-- Profile Picture Upload -->
+            <div class="bg-white border border-slate-200 rounded-lg p-6">
+                <h3 class="text-lg font-medium text-slate-900 mb-4">Profile Picture</h3>
 
-            <!-- Step 3: Job Preferences -->
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span
-                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-sm">3</span>
-                        Job Preferences
-                    </h3>
-                    <a href="{{ route('candidate.wizard.show', ['step' => 3]) }}"
-                        class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
-                </div>
-                <div class="p-6">
-                    <dl class="space-y-4">
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Job Categories</dt>
-                            <dd class="mt-1 flex flex-wrap gap-2">
-                                @forelse($profile->categories as $category)
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800 border border-slate-200">
-                                        {{ $category->name }}
-                                    </span>
-                                @empty
-                                    <span class="text-sm text-slate-400">Not specified</span>
-                                @endforelse
-                            </dd>
+                <div class="flex items-start space-x-6">
+                    <div class="flex-shrink-0">
+                        <img id="profile-preview" class="h-24 w-24 rounded-full object-cover border-2 border-slate-200"
+                            src="{{ $profile->profile_picture ? asset('profile-pictures/' . $profile->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&color=7F9CF5&background=EBF4FF' }}"
+                            alt="Profile preview">
+                    </div>
+                    <div class="flex-1">
+                        <div id="photo-upload-container">
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Upload New Photo</label>
+                            <form id="photo-form" enctype="multipart/form-data">
+                                @csrf
+                                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="block w-full text-sm text-slate-500
+                                                        file:mr-4 file:py-2 file:px-4
+                                                        file:rounded-full file:border-0
+                                                        file:text-sm file:font-semibold
+                                                        file:bg-emerald-50 file:text-emerald-700
+                                                        hover:file:bg-emerald-100
+                                                    " />
+                                <p class="mt-1 text-xs text-slate-500">JPG or PNG, max 3MB. Clear face, plain background.
+                                </p>
+                                <button type="button" id="upload-photo-btn"
+                                    class="mt-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+                                    style="display:none;">
+                                    Upload Photo
+                                </button>
+                            </form>
+                            <div id="photo-progress" class="hidden mt-2">
+                                <div class="w-full bg-slate-200 rounded-full h-2.5">
+                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Preferred Job Titles
-                            </dt>
-                            <dd class="mt-1 text-sm text-slate-900">
-                                {{ is_array($profile->preferred_job_titles) ? implode(', ', $profile->preferred_job_titles) : ($profile->preferred_job_titles ?? 'Open to suggestions') }}
-                            </dd>
-                        </div>
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Availability Status
-                            </dt>
-                            <dd class="mt-1 text-sm text-slate-900 font-medium text-emerald-700">
-                                {{ $profile->availability_status }}</dd>
-                        </div>
-                    </dl>
-                </div>
-            </div>
-
-            <!-- Step 4: Skills -->
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span
-                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-sm">4</span>
-                        Skills & Competencies
-                    </h3>
-                    <a href="{{ route('candidate.wizard.show', ['step' => 4]) }}"
-                        class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
-                </div>
-                <div class="p-6">
-                    <div class="flex flex-wrap gap-2">
-                        @forelse($profile->skills as $skill)
-                            <span
-                                class="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                {{ $skill->name }}
-                            </span>
-                        @empty
-                            <span class="text-sm text-slate-400 italic">No skills added yet.</span>
-                        @endforelse
                     </div>
                 </div>
             </div>
 
-            <!-- Step 5: Work Experience -->
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span
-                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-sm">5</span>
-                        Work Experience
-                    </h3>
-                    <a href="{{ route('candidate.wizard.show', ['step' => 5]) }}"
-                        class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
-                </div>
-                <div class="p-6 divide-y divide-slate-100">
-                    @forelse($profile->workExperiences as $experience)
-                        <div class="py-4 first:pt-0 last:pb-0">
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <h4 class="text-sm font-bold text-slate-900">{{ $experience->job_title }}</h4>
-                                    <p class="text-sm font-medium text-slate-600">{{ $experience->employer }}</p>
+            <!-- Introduction Video Upload -->
+            <div class="bg-white border border-slate-200 rounded-lg p-6">
+                <h3 class="text-lg font-medium text-slate-900 mb-2">Introduction Video</h3>
+                <p class="text-sm text-slate-500 mb-4">Introduce yourself, mention your role, experience, and availability
+                    (30-60 sec).</p>
+
+                <div id="video-upload-container">
+                    @if($profile->video_cv)
+                        <div class="mb-4">
+                            <p class="text-sm text-emerald-600 font-medium mb-2">✓ Video Uploaded</p>
+                            <video controls class="w-full max-h-64 rounded-lg bg-black">
+                                <source src="{{ asset('uploads/video_cvs/' . $profile->video_cv) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    @endif
+
+                    <form id="video-form" enctype="multipart/form-data">
+                        @csrf
+                        <div
+                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-emerald-400 transition-colors">
+                            <div class="space-y-1 text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
+                                    viewBox="0 0 48 48" aria-hidden="true">
+                                    <path
+                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <div class="flex text-sm text-gray-600">
+                                    <label for="video_cv"
+                                        class="relative cursor-pointer bg-white rounded-md font-medium text-emerald-600 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500">
+                                        <span>Upload a video</span>
+                                        <input id="video_cv" name="video_cv" type="file" class="sr-only"
+                                            accept="video/mp4,video/quicktime">
+                                    </label>
+                                    <p class="pl-1">or drag and drop</p>
                                 </div>
-                                <span class="text-xs font-medium text-slate-500 px-2 py-1 bg-slate-100 rounded">
-                                    {{ $experience->start_date->format('M Y') }} -
-                                    {{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : '') }}
-                                </span>
+                                <p class="text-xs text-gray-500">MP4 up to 100MB</p>
                             </div>
-                            @if($experience->description)
-                                <div class="text-xs text-slate-600 prose prose-sm max-w-none">
-                                    {!! $experience->description !!}
-                                </div>
-                            @endif
                         </div>
-                    @empty
-                        <p class="text-sm text-slate-400 italic">No work experience added.</p>
-                    @endforelse
-                </div>
-            </div>
-
-            <!-- Step 6: Education -->
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span
-                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-sm">6</span>
-                        Education
-                    </h3>
-                    <a href="{{ route('candidate.wizard.show', ['step' => 6]) }}"
-                        class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
-                </div>
-                <div class="p-6 divide-y divide-slate-100">
-                    @forelse($profile->educations as $education)
-                        <div class="py-4 first:pt-0 last:pb-0">
-                            <h4 class="text-sm font-bold text-slate-900">{{ $education->level }} -
-                                {{ $education->field_of_study }}</h4>
-                            <p class="text-sm font-medium text-slate-600">{{ $education->institution }}</p>
-                            <p class="text-xs text-slate-500 mt-1">{{ $education->city }}, {{ $education->country }}</p>
+                        <button type="button" id="upload-video-btn"
+                            class="mt-3 w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+                            style="display:none;">
+                            Upload Video
+                        </button>
+                    </form>
+                    <div id="video-progress" class="hidden mt-2">
+                        <div class="w-full bg-slate-200 rounded-full h-2.5">
+                            <div id="video-progress-bar" class="bg-emerald-600 h-2.5 rounded-full" style="width: 0%"></div>
                         </div>
-                    @empty
-                        <p class="text-sm text-slate-400 italic">No education history added.</p>
-                    @endforelse
-                </div>
-            </div>
-
-            <!-- Step 7: International Readiness -->
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span
-                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-sm">7</span>
-                        International Readiness
-                    </h3>
-                    <a href="{{ route('candidate.wizard.show', ['step' => 7]) }}"
-                        class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
-                </div>
-                <div class="p-6">
-                    <dl class="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Willing to Relocate
-                            </dt>
-                            <dd class="mt-1 text-sm text-slate-900 font-medium whitespace-nowrap">
-                                @if($profile->willing_to_relocate === true)
-                                    <span class="text-emerald-600 flex items-center"><i data-lucide="check"
-                                            class="w-4 h-4 mr-1"></i> Yes</span>
-                                @else
-                                    <span class="text-slate-500 whitespace-nowrap flex items-center"><i data-lucide="x"
-                                            class="w-4 h-4 mr-1"></i> No</span>
-                                @endif
-                            </dd>
-                        </div>
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Passport Status</dt>
-                            <dd class="mt-1 text-sm text-slate-900">{{ $profile->passport_status ?? 'Not Specified' }}</dd>
-                        </div>
-                        <div class="sm:col-span-2">
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Preferred Destinations
-                            </dt>
-                            <dd class="mt-1 flex flex-wrap gap-2">
-                                @forelse($profile->preferred_destinations ?? [] as $destination)
-                                    <span
-                                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 border border-blue-100">
-                                        {{ $destination }}
-                                    </span>
-                                @empty
-                                    <span class="text-sm text-slate-400">None selected</span>
-                                @endforelse
-                            </dd>
-                        </div>
-                    </dl>
-                </div>
-            </div>
-
-            <!-- Step 8: Languages -->
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span
-                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-sm">8</span>
-                        Languages
-                    </h3>
-                    <a href="{{ route('candidate.wizard.show', ['step' => 8]) }}"
-                        class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
-                </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        @forelse($profile->languages as $language)
-                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                                <p class="text-sm font-bold text-slate-900">{{ $language->name }}</p>
-                                <p class="text-xs text-slate-500">{{ $language->pivot->proficiency }}</p>
-                            </div>
-                        @empty
-                            <p class="text-sm text-slate-400 italic">No languages added.</p>
-                        @endforelse
+                        <p id="video-status" class="text-xs text-center text-slate-500 mt-1">Uploading...</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 9: Media & Compliance -->
-            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-slate-900 flex items-center">
-                        <span
-                            class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mr-3 text-sm">9</span>
-                        Media & Compliance
-                    </h3>
+            <!-- Privacy & Consent -->
+            <form action="{{ route('candidate.wizard.process', ['step' => 10]) }}" method="POST">
+                @csrf
+                <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
+                    <div class="flex items-start">
+                        <div class="flex h-5 items-center">
+                            <input id="consent" name="consent" type="checkbox" required
+                                class="h-4 w-4 rounded border-blue-300 text-blue-600 focus:ring-blue-500">
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="consent" class="font-medium text-blue-900">I consent to sharing my profile</label>
+                            <p class="text-blue-700">I agree to Coyzon sharing my photo, video, and profile details with
+                                verified employers only.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between pt-6 border-t border-slate-200">
                     <a href="{{ route('candidate.wizard.show', ['step' => 9]) }}"
-                        class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
+                        class="text-sm font-medium text-slate-600 hover:text-slate-900">Back</a>
+                    <button type="submit"
+                        class="inline-flex justify-center rounded-lg border border-transparent bg-deep-green px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                        Review & Submit
+                    </button>
                 </div>
-                <div class="p-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Profile Photo
-                            </dt>
-                            <dd>
-                                @if($profile->profile_picture)
-                                    <img src="{{ asset('profile-pictures/' . $profile->profile_picture) }}"
-                                        class="w-32 h-32 rounded-lg object-cover border-2 border-slate-200">
-                                @else
-                                    <div
-                                        class="w-32 h-32 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-xs">
-                                        No Photo</div>
-                                @endif
-                            </dd>
-                        </div>
-                        <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Video CV</dt>
-                            <dd>
-                                @if($profile->video_cv)
-                                    <div class="flex items-center text-sm text-emerald-600 font-medium">
-                                        <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Document Uploaded
-                                    </div>
-                                @else
-                                    <div class="text-sm text-slate-400 italic">No video uploaded</div>
-                                @endif
-                            </dd>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
-
-        <form action="{{ route('candidate.wizard.process', ['step' => 10]) }}" method="POST">
-            @csrf
-            <div class="flex items-center justify-between pt-10 border-t border-slate-200 mt-10">
-                <a href="{{ route('candidate.wizard.show', ['step' => 9]) }}"
-                    class="text-sm font-medium text-slate-600 hover:text-slate-900 flex items-center">
-                    <i data-lucide="arrow-left" class="w-4 h-4 mr-1"></i> Back to Media
-                </a>
-                <button type="submit"
-                    class="inline-flex justify-center items-center rounded-xl border border-transparent bg-deep-green px-8 py-3 text-base font-bold text-white shadow-xl hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95">
-                    Complete & Submit Profile
-                    <i data-lucide="check-circle" class="w-5 h-5 ml-2"></i>
-                </button>
-            </div>
-        </form>
     </div>
+
+    <script>
+        // Photo Upload
+        const photoInput = document.getElementById('profile_picture');
+        const photoBtn = document.getElementById('upload-photo-btn');
+        const photoForm = document.getElementById('photo-form');
+
+        photoInput.addEventListener('change', () => {
+            if (photoInput.files.length > 0) {
+                photoBtn.style.display = 'inline-flex';
+            }
+        });
+
+        photoBtn.addEventListener('click', () => {
+            const formData = new FormData(photoForm);
+            const btn = photoBtn;
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'Uploading...';
+
+            fetch('{{ route("candidate.wizard.upload.photo") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('profile-preview').src = data.path;
+                        btn.innerText = 'Uploaded!';
+                        btn.classList.add('bg-gray-400');
+                        setTimeout(() => {
+                            btn.style.display = 'none';
+                            btn.disabled = false;
+                            btn.innerText = originalText;
+                            btn.classList.remove('bg-gray-400');
+                        }, 2000);
+                    } else {
+                        alert('Upload failed');
+                        btn.disabled = false;
+                        btn.innerText = originalText;
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Upload error');
+                    btn.disabled = false;
+                    btn.innerText = originalText;
+                });
+        });
+
+        // Video Upload
+        const videoInput = document.getElementById('video_cv');
+        const videoBtn = document.getElementById('upload-video-btn');
+        const videoForm = document.getElementById('video-form');
+        const videoProgress = document.getElementById('video-progress');
+        const videoProgressBar = document.getElementById('video-progress-bar');
+
+        videoInput.addEventListener('change', () => {
+            if (videoInput.files.length > 0) {
+                videoBtn.style.display = 'inline-flex';
+                // Show filename
+                videoBtn.innerText = 'Upload ' + videoInput.files[0].name;
+            }
+        });
+
+        videoBtn.addEventListener('click', () => {
+            const formData = new FormData(videoForm);
+            videoBtn.style.display = 'none';
+            videoProgress.classList.remove('hidden');
+
+            // Use XMLHttpRequest for progress
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '{{ route("candidate.wizard.upload.video") }}', true);
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+            xhr.upload.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const percentComplete = (e.loaded / e.total) * 100;
+                    videoProgressBar.style.width = percentComplete + '%';
+                    document.getElementById('video-status').innerText = Math.round(percentComplete) + '% Uploaded';
+                }
+            };
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    const data = JSON.parse(xhr.responseText);
+                    if (data.success) {
+                        document.getElementById('video-status').innerText = 'Upload Complete!';
+                        // Ideally show video player or reload page section
+                        location.reload(); // Simple way to show new video
+                    } else {
+                        alert('Upload failed');
+                        videoProgress.classList.add('hidden');
+                        videoBtn.style.display = 'inline-flex';
+                    }
+                } else {
+                    alert('Upload error');
+                    videoProgress.classList.add('hidden');
+                    videoBtn.style.display = 'inline-flex';
+                }
+            };
+
+            xhr.send(formData);
+        });
+    </script>
 @endsection

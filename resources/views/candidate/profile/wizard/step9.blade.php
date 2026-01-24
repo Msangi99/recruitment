@@ -3,240 +3,136 @@
 @section('wizard-content')
     <div class="max-w-2xl mx-auto">
         <div class="text-center mb-8">
-            <h2 class="text-2xl font-bold text-slate-900">Profile Media & Compliance</h2>
-            <p class="mt-2 text-sm text-slate-600">Upload a professional photo and a short introduction video.</p>
+            <h2 class="text-2xl font-bold text-slate-900">Language Skills</h2>
+            <p class="mt-2 text-sm text-slate-600">Select languages you speak and your proficiency level.</p>
         </div>
 
-        <div class="space-y-8">
-            <!-- Profile Picture Upload -->
-            <div class="bg-white border border-slate-200 rounded-lg p-6">
-                <h3 class="text-lg font-medium text-slate-900 mb-4">Profile Picture</h3>
+        <form action="{{ route('candidate.wizard.process', ['step' => 9]) }}" method="POST" class="space-y-6">
+            @csrf
 
-                <div class="flex items-start space-x-6">
-                    <div class="flex-shrink-0">
-                        <img id="profile-preview" class="h-24 w-24 rounded-full object-cover border-2 border-slate-200"
-                            src="{{ $profile->profile_picture ? asset('profile-pictures/' . $profile->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&color=7F9CF5&background=EBF4FF' }}"
-                            alt="Profile preview">
-                    </div>
-                    <div class="flex-1">
-                        <div id="photo-upload-container">
-                            <label class="block text-sm font-medium text-slate-700 mb-2">Upload New Photo</label>
-                            <form id="photo-form" enctype="multipart/form-data">
-                                @csrf
-                                <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="block w-full text-sm text-slate-500
-                                                file:mr-4 file:py-2 file:px-4
-                                                file:rounded-full file:border-0
-                                                file:text-sm file:font-semibold
-                                                file:bg-emerald-50 file:text-emerald-700
-                                                hover:file:bg-emerald-100
-                                            " />
-                                <p class="mt-1 text-xs text-slate-500">JPG or PNG, max 3MB. Clear face, plain background.
-                                </p>
-                                <button type="button" id="upload-photo-btn"
-                                    class="mt-3 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
-                                    style="display:none;">
-                                    Upload Photo
-                                </button>
-                            </form>
-                            <div id="photo-progress" class="hidden mt-2">
-                                <div class="w-full bg-slate-200 rounded-full h-2.5">
-                                    <div class="bg-emerald-600 h-2.5 rounded-full" style="width: 45%"></div>
-                                </div>
-                            </div>
+            <div id="languages-container" class="space-y-4">
+                @php
+                    $currentLanguages = $profile->languages;
+                    if ($currentLanguages->isEmpty()) {
+                        $currentLanguages = [null]; // Start with one empty row
+                    }
+                @endphp
+
+                @foreach($currentLanguages as $index => $lang)
+                    <div class="language-row flex gap-4 items-start p-4 bg-slate-50 rounded-lg border border-slate-200">
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Language</label>
+                            <select name="languages[{{ $index }}][id]"
+                                class="block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                                <option value="">Select Language</option>
+                                @foreach($allLanguages as $l)
+                                    <option value="{{ $l->id }}" {{ $lang && $lang->id == $l->id ? 'selected' : '' }}>{{ $l->name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Introduction Video Upload -->
-            <div class="bg-white border border-slate-200 rounded-lg p-6">
-                <h3 class="text-lg font-medium text-slate-900 mb-2">Introduction Video</h3>
-                <p class="text-sm text-slate-500 mb-4">Introduce yourself, mention your role, experience, and availability
-                    (30-60 sec).</p>
-
-                <div id="video-upload-container">
-                    @if($profile->video_cv)
-                        <div class="mb-4">
-                            <p class="text-sm text-emerald-600 font-medium mb-2">✓ Video Uploaded</p>
-                            <video controls class="w-full max-h-64 rounded-lg bg-black">
-                                <source src="{{ asset('uploads/video_cvs/' . $profile->video_cv) }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
+                        <div class="flex-1">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Proficiency</label>
+                            <select name="languages[{{ $index }}][proficiency]"
+                                class="block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                                <option value="Basic" {{ $lang && $lang->pivot->proficiency == 'Basic' ? 'selected' : '' }}>Basic
+                                </option>
+                                <option value="Conversational" {{ $lang && $lang->pivot->proficiency == 'Conversational' ? 'selected' : '' }}>Conversational</option>
+                                <option value="Fluent" {{ $lang && $lang->pivot->proficiency == 'Fluent' ? 'selected' : '' }}>
+                                    Fluent</option>
+                                <option value="Native" {{ $lang && $lang->pivot->proficiency == 'Native' ? 'selected' : '' }}>
+                                    Native</option>
+                            </select>
                         </div>
-                    @endif
-
-                    <form id="video-form" enctype="multipart/form-data">
-                        @csrf
-                        <div
-                            class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-emerald-400 transition-colors">
-                            <div class="space-y-1 text-center">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none"
-                                    viewBox="0 0 48 48" aria-hidden="true">
-                                    <path
-                                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <div class="flex text-sm text-gray-600">
-                                    <label for="video_cv"
-                                        class="relative cursor-pointer bg-white rounded-md font-medium text-emerald-600 hover:text-emerald-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-emerald-500">
-                                        <span>Upload a video</span>
-                                        <input id="video_cv" name="video_cv" type="file" class="sr-only"
-                                            accept="video/mp4,video/quicktime">
-                                    </label>
-                                    <p class="pl-1">or drag and drop</p>
-                                </div>
-                                <p class="text-xs text-gray-500">MP4 up to 100MB</p>
-                            </div>
-                        </div>
-                        <button type="button" id="upload-video-btn"
-                            class="mt-3 w-full inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
-                            style="display:none;">
-                            Upload Video
+                        <button type="button" class="mt-6 text-slate-400 hover:text-red-500" onclick="removeRow(this)">
+                            <span class="sr-only">Remove</span>
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
                         </button>
-                    </form>
-                    <div id="video-progress" class="hidden mt-2">
-                        <div class="w-full bg-slate-200 rounded-full h-2.5">
-                            <div id="video-progress-bar" class="bg-emerald-600 h-2.5 rounded-full" style="width: 0%"></div>
-                        </div>
-                        <p id="video-status" class="text-xs text-center text-slate-500 mt-1">Uploading...</p>
                     </div>
-                </div>
+                @endforeach
             </div>
 
-            <!-- Privacy & Consent -->
-            <form action="{{ route('candidate.wizard.process', ['step' => 9]) }}" method="POST">
-                @csrf
-                <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
-                    <div class="flex items-start">
-                        <div class="flex h-5 items-center">
-                            <input id="consent" name="consent" type="checkbox" required
-                                class="h-4 w-4 rounded border-blue-300 text-blue-600 focus:ring-blue-500">
-                        </div>
-                        <div class="ml-3 text-sm">
-                            <label for="consent" class="font-medium text-blue-900">I consent to sharing my profile</label>
-                            <p class="text-blue-700">I agree to Coyzon sharing my photo, video, and profile details with
-                                verified employers only.</p>
-                        </div>
-                    </div>
-                </div>
+            <button type="button" id="add-language-btn"
+                class="inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700">
+                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Another Language
+            </button>
 
-                <div class="flex items-center justify-between pt-6 border-t border-slate-200">
-                    <a href="{{ route('candidate.wizard.show', ['step' => 8]) }}"
-                        class="text-sm font-medium text-slate-600 hover:text-slate-900">Back</a>
-                    <button type="submit"
-                        class="inline-flex justify-center rounded-lg border border-transparent bg-deep-green px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-                        Review & Submit
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="flex items-center justify-between pt-6 border-t border-slate-200 mt-6">
+                <a href="{{ route('candidate.wizard.show', ['step' => 8]) }}"
+                    class="text-sm font-medium text-slate-600 hover:text-slate-900">Back</a>
+                <button type="submit"
+                    class="inline-flex justify-center rounded-lg border border-transparent bg-deep-green px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                    Save & Continue
+                </button>
+            </div>
+        </form>
     </div>
 
+    <template id="language-row-template">
+        <div class="language-row flex gap-4 items-start p-4 bg-slate-50 rounded-lg border border-slate-200">
+            <div class="flex-1">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Language</label>
+                <select name="languages[INDEX][id]"
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                    <option value="">Select Language</option>
+                    @foreach($allLanguages as $l)
+                        <option value="{{ $l->id }}">{{ $l->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex-1">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Proficiency</label>
+                <select name="languages[INDEX][proficiency]"
+                    class="block w-full rounded-md border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                    <option value="Basic">Basic</option>
+                    <option value="Conversational">Conversational</option>
+                    <option value="Fluent">Fluent</option>
+                    <option value="Native">Native</option>
+                </select>
+            </div>
+            <button type="button" class="mt-6 text-slate-400 hover:text-red-500" onclick="removeRow(this)">
+                <span class="sr-only">Remove</span>
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+        </div>
+    </template>
+
     <script>
-        // Photo Upload
-        const photoInput = document.getElementById('profile_picture');
-        const photoBtn = document.getElementById('upload-photo-btn');
-        const photoForm = document.getElementById('photo-form');
+        const container = document.getElementById('languages-container');
+        const addBtn = document.getElementById('add-language-btn');
+        const template = document.getElementById('language-row-template');
+        let rowCount = {{ $currentLanguages instanceof \Illuminate\Database\Eloquent\Collection ? $currentLanguages->count() : 1 }};
 
-        photoInput.addEventListener('change', () => {
-            if (photoInput.files.length > 0) {
-                photoBtn.style.display = 'inline-flex';
+        addBtn.addEventListener('click', () => {
+            const clone = template.content.cloneNode(true);
+            const row = clone.querySelector('.language-row');
+
+            // Update names with index
+            row.querySelectorAll('select').forEach(select => {
+                select.name = select.name.replace('INDEX', rowCount);
+            });
+
+            container.appendChild(row);
+            rowCount++;
+        });
+
+        window.removeRow = function (btn) {
+            if (container.children.length > 1) {
+                btn.closest('.language-row').remove();
+            } else {
+                // Clear values instead of removing last row
+                const row = btn.closest('.language-row');
+                row.querySelectorAll('select').forEach(s => s.value = '');
             }
-        });
-
-        photoBtn.addEventListener('click', () => {
-            const formData = new FormData(photoForm);
-            const btn = photoBtn;
-            const originalText = btn.innerText;
-            btn.disabled = true;
-            btn.innerText = 'Uploading...';
-
-            fetch('{{ route("candidate.wizard.upload.photo") }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('profile-preview').src = data.path;
-                        btn.innerText = 'Uploaded!';
-                        btn.classList.add('bg-gray-400');
-                        setTimeout(() => {
-                            btn.style.display = 'none';
-                            btn.disabled = false;
-                            btn.innerText = originalText;
-                            btn.classList.remove('bg-gray-400');
-                        }, 2000);
-                    } else {
-                        alert('Upload failed');
-                        btn.disabled = false;
-                        btn.innerText = originalText;
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert('Upload error');
-                    btn.disabled = false;
-                    btn.innerText = originalText;
-                });
-        });
-
-        // Video Upload
-        const videoInput = document.getElementById('video_cv');
-        const videoBtn = document.getElementById('upload-video-btn');
-        const videoForm = document.getElementById('video-form');
-        const videoProgress = document.getElementById('video-progress');
-        const videoProgressBar = document.getElementById('video-progress-bar');
-
-        videoInput.addEventListener('change', () => {
-            if (videoInput.files.length > 0) {
-                videoBtn.style.display = 'inline-flex';
-                // Show filename
-                videoBtn.innerText = 'Upload ' + videoInput.files[0].name;
-            }
-        });
-
-        videoBtn.addEventListener('click', () => {
-            const formData = new FormData(videoForm);
-            videoBtn.style.display = 'none';
-            videoProgress.classList.remove('hidden');
-
-            // Use XMLHttpRequest for progress
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '{{ route("candidate.wizard.upload.video") }}', true);
-            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-
-            xhr.upload.onprogress = function (e) {
-                if (e.lengthComputable) {
-                    const percentComplete = (e.loaded / e.total) * 100;
-                    videoProgressBar.style.width = percentComplete + '%';
-                    document.getElementById('video-status').innerText = Math.round(percentComplete) + '% Uploaded';
-                }
-            };
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    const data = JSON.parse(xhr.responseText);
-                    if (data.success) {
-                        document.getElementById('video-status').innerText = 'Upload Complete!';
-                        // Ideally show video player or reload page section
-                        location.reload(); // Simple way to show new video
-                    } else {
-                        alert('Upload failed');
-                        videoProgress.classList.add('hidden');
-                        videoBtn.style.display = 'inline-flex';
-                    }
-                } else {
-                    alert('Upload error');
-                    videoProgress.classList.add('hidden');
-                    videoBtn.style.display = 'inline-flex';
-                }
-            };
-
-            xhr.send(formData);
-        });
+        };
     </script>
 @endsection

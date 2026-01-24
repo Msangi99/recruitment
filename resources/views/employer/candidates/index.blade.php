@@ -206,9 +206,15 @@
                                         </div>
                                     </div>
 
+                                    @if($candidate->candidateProfile->headline)
+                                        <p class="text-[10px] text-gray-500 font-bold mb-1 italic">
+                                            "{{ $candidate->candidateProfile->headline }}"
+                                        </p>
+                                    @endif
+
                                     @if($candidate->candidateProfile->description)
-                                        <p class="text-xs text-gray-600 mb-4 line-clamp-2 italic">
-                                            "{{ Str::limit($candidate->candidateProfile->description, 100) }}"
+                                        <p class="text-xs text-gray-600 mb-4 line-clamp-3 italic leading-relaxed">
+                                            {{ Str::limit(strip_tags($candidate->candidateProfile->description), 250) }}
                                         </p>
                                     @endif
 
