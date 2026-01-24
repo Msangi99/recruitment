@@ -203,9 +203,10 @@
                         @if($candidate->candidateProfile->title || $candidate->candidateProfile->headline)
                             <div class="mb-4">
                                 <h3 class="text-base font-bold text-deep-green">
-                                    {{ $candidate->candidateProfile->title ?? 'Candidate' }}
+                                    {{ $candidate->candidateProfile->headline }}
+                                    {{-- {{ $candidate->candidateProfile->title ?? 'Candidate' }} --}}
                                 </h3>
-                                <p class="text-gray-500 text-sm ">{{ $candidate->candidateProfile->headline }}</p>
+                                {{-- <p class="text-gray-500 text-sm ">{{ $candidate->candidateProfile->headline }}</p> --}}
                             </div>
                         @endif
                         <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed font-normal">
