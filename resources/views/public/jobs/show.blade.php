@@ -150,7 +150,7 @@
                     <div>
                         <h2 class="text-xl font-bold text-gray-900 mb-4">Job Description</h2>
                         <div class="prose max-w-none text-gray-700">
-                            {!! nl2br(e($job->description)) !!}
+                            {!! $job->description !!}
                         </div>
                     </div>
 
@@ -159,7 +159,7 @@
                         <div>
                             <h2 class="text-xl font-bold text-gray-900 mb-4">Requirements</h2>
                             <div class="prose max-w-none text-gray-700">
-                                {!! nl2br(e($job->requirements)) !!}
+                                {!! $job->requirements !!}
                             </div>
                         </div>
                     @endif
@@ -169,7 +169,7 @@
                         <div>
                             <h2 class="text-xl font-bold text-gray-900 mb-4">Benefits</h2>
                             <div class="prose max-w-none text-gray-700">
-                                {!! nl2br(e($job->benefits)) !!}
+                                {!! $job->benefits !!}
                             </div>
                         </div>
                     @endif

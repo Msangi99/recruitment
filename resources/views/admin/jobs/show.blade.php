@@ -45,7 +45,7 @@
                             @method('PATCH')
                             <button type="submit"
                                 class="px-6 py-2 rounded-xl font-bold transition-all shadow-sm flex items-center
-                                    {{ $job->is_active ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100' }}">
+                                        {{ $job->is_active ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100' }}">
                                 <i data-lucide="{{ $job->is_active ? 'eye-off' : 'eye' }}" class="w-4 h-4 mr-2"></i>
                                 {{ $job->is_active ? 'Deactivate' : 'Activate' }}
                             </button>
@@ -91,7 +91,7 @@
                         Job Description
                     </h3>
                     <div class="prose max-w-none text-gray-700 text-sm leading-relaxed">
-                        {!! nl2br(e($job->description)) !!}
+                        {!! $job->description !!}
                     </div>
 
                     @if($job->requirements)
@@ -100,7 +100,7 @@
                             Key Requirements
                         </h3>
                         <div class="prose max-w-none text-gray-700 text-sm leading-relaxed">
-                            {!! nl2br(e($job->requirements)) !!}
+                            {!! $job->requirements !!}
                         </div>
                     @endif
                 </div>
@@ -141,13 +141,13 @@
                                             <div x-data="{ open: false }" class="relative">
                                                 <button @click="open = !open"
                                                     class="px-2 py-1 rounded-full text-xs font-bold cursor-pointer hover:opacity-80 flex items-center gap-1
-                                                                {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                                                {{ $application->status === 'reviewed' ? 'bg-blue-100 text-blue-700' : '' }}
-                                                                {{ $application->status === 'shortlisted' ? 'bg-purple-100 text-purple-700' : '' }}
-                                                                {{ $application->status === 'interview' ? 'bg-indigo-100 text-indigo-700' : '' }}
-                                                                {{ $application->status === 'offered' ? 'bg-green-100 text-green-700' : '' }}
-                                                                {{ $application->status === 'rejected' ? 'bg-red-100 text-red-700' : '' }}
-                                                                {{ $application->status === 'withdrawn' ? 'bg-gray-100 text-gray-700' : '' }}">
+                                                                        {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                                                        {{ $application->status === 'reviewed' ? 'bg-blue-100 text-blue-700' : '' }}
+                                                                        {{ $application->status === 'shortlisted' ? 'bg-purple-100 text-purple-700' : '' }}
+                                                                        {{ $application->status === 'interview' ? 'bg-indigo-100 text-indigo-700' : '' }}
+                                                                        {{ $application->status === 'offered' ? 'bg-green-100 text-green-700' : '' }}
+                                                                        {{ $application->status === 'rejected' ? 'bg-red-100 text-red-700' : '' }}
+                                                                        {{ $application->status === 'withdrawn' ? 'bg-gray-100 text-gray-700' : '' }}">
                                                     {{ ucfirst($application->status) }}
                                                     <i data-lucide="chevron-down" class="w-3 h-3"></i>
                                                 </button>

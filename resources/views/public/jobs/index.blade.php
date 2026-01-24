@@ -461,7 +461,7 @@
                                         </span>
                                     </div>
                                     <div class="text-gray-600 text-sm line-clamp-2 leading-relaxed">
-                                        {{ $job->description }}
+                                        {{ Str::limit(strip_tags($job->description), 200) }}
                                     </div>
                                 </div>
 

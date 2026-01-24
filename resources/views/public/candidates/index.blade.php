@@ -275,7 +275,7 @@
                                 </div>
 
                                 <!-- Introduction Video (Moved Up prominent) -->
-                                @if($candidate->candidateProfile->video_cv)
+                                {{-- @if($candidate->candidateProfile->video_cv)
                                     <div class="mb-3 rounded-md overflow-hidden bg-black h-32 relative group/video">
                                         <video class="w-full h-full object-cover">
                                             <source
@@ -294,7 +294,7 @@
                                         <div class="absolute bottom-1 right-1 bg-black/60 text-white text-[9px] px-1 rounded">
                                             30-60s</div>
                                     </div>
-                                @endif
+                                @endif --}}
 
                                 <!-- Profile Details Grid -->
                                 <div class="flex gap-3 mb-2">

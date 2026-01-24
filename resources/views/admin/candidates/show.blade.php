@@ -79,7 +79,7 @@
                             </div>
                             <div>
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Professional Summary</dt>
-                                <dd class="text-sm text-gray-900 leading-relaxed">{{ $candidate->candidateProfile->description ?? 'No description provided' }}</dd>
+                                <dd class="text-sm text-gray-900 leading-relaxed">{!! $candidate->candidateProfile->description ?? 'No description provided' !!}</dd>
                             </div>
                         </div>
 

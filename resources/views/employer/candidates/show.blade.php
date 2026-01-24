@@ -70,7 +70,7 @@
                     @if($candidate->candidateProfile && $candidate->candidateProfile->description)
                         <div class="bg-white px-6 py-6 border-b border-gray-200">
                             <h4 class="text-lg font-semibold text-gray-900 mb-2">Professional Summary</h4>
-                            <p class="text-gray-600 leading-relaxed">{{ $candidate->candidateProfile->description }}</p>
+                            <div class="text-gray-600 leading-relaxed">{!! $candidate->candidateProfile->description !!}</div>
                         </div>
                     @endif
 
