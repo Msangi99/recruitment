@@ -101,7 +101,7 @@
 
                 <div class="flex justify-end pt-2">
                     <button type="submit"
-                        class="inline-flex justify-center rounded-md border border-transparent bg-white py-2 px-4 text-sm font-medium text-emerald-700 shadow-sm ring-1 ring-emerald-300 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                        class="inline-flex justify-center rounded-md border border-transparent bg-deep-green py-2 px-6 text-sm font-bold text-white shadow-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95">
                         <i data-lucide="plus" class="h-4 w-4 mr-2"></i> Add Education
                     </button>
                 </div>
@@ -130,17 +130,27 @@
     </div>
 
     <script>
-        const isCurrent = document.getElementById('is_current');
-        const endDate = document.getElementById('end_date');
+        document.addEventListener('DOMContentLoaded', function () {
+            const isCurrent = document.getElementById('is_current');
+            const endDate = document.getElementById('end_date');
 
-        isCurrent.addEventListener('change', function () {
-            if (this.checked) {
-                endDate.value = '';
-                endDate.disabled = true;
-                endDate.classList.add('bg-slate-100');
-            } else {
-                endDate.disabled = false;
-                endDate.classList.remove('bg-slate-100');
+            if (isCurrent && endDate) {
+                isCurrent.addEventListener('change', function () {
+                    if (this.checked) {
+                        endDate.value = '';
+                        endDate.disabled = true;
+                        endDate.classList.add('bg-slate-100');
+                    } else {
+                        endDate.disabled = false;
+                        endDate.classList.remove('bg-slate-100');
+                    }
+                });
+
+                // Initial check
+                if (isCurrent.checked) {
+                    endDate.disabled = true;
+                    endDate.classList.add('bg-slate-100');
+                }
             }
         });
     </script>

@@ -34,7 +34,7 @@
         <!-- Wizard Content -->
         <div class="bg-white shadow-sm ring-1 ring-slate-200 sm:rounded-xl">
             <div class="px-4 py-5 sm:p-6">
-                @if(session('error'))
+                @if(session('error') || $errors->any())
                     <div class="mb-4 bg-red-50 border-l-4 border-red-500 p-4">
                         <div class="flex">
                             <div class="flex-shrink-0">
@@ -43,6 +43,28 @@
                             <div class="ml-3">
                                 <p class="text-sm text-red-700">
                                     {{ session('error') }}
+                                </p>
+                                @if($errors->any())
+                                    <ul class="mt-1 list-disc list-inside text-sm text-red-700">
+                                        @foreach($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                @if(session('success'))
+                    <div class="mb-4 bg-emerald-50 border-l-4 border-emerald-500 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i data-lucide="check-circle" class="h-5 w-5 text-emerald-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-emerald-700">
+                                    {{ session('success') }}
                                 </p>
                             </div>
                         </div>

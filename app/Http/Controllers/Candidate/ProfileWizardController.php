@@ -132,12 +132,10 @@ class ProfileWizardController extends Controller
                 break;
 
             case 5: // Work Experience (Continue action)
-                // Just update the "International Experience" checkbox if needed
-                if ($request->has('international_experience')) {
-                    $profile->update([
-                        'international_experience' => $request->boolean('international_experience')
-                    ]);
-                }
+                // Update the "International Experience" checkbox
+                $profile->update([
+                    'international_experience' => $request->boolean('international_experience')
+                ]);
                 break;
             
             case 6: // Education (Continue action)
