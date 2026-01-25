@@ -497,8 +497,9 @@
                                 placeholder="Optional...">{{ old('other_benefits', $job->other_benefits) }}</textarea>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Step 4: Review & Update -->
+                <!-- Step 4: Review & Update -->
                     <div x-show="step === 4" x-cloak class="p-6 md:p-8 space-y-8">
                         <div class="text-center max-w-xl mx-auto">
                             <div

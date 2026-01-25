@@ -339,16 +339,16 @@
 
                         <!-- Language Requirements -->
                         <div class="md:col-span-2 bg-gray-50 p-6 rounded-3xl border border-gray-100" x-data="{
-                                        languages: [],
-                                        currentLang: 'English',
-                                        currentProf: 'Fluent',
-                                        addLang() {
-                                            this.languages.push({ name: this.currentLang, proficiency: this.currentProf });
-                                        },
-                                        removeLang(index) {
-                                            this.languages.splice(index, 1);
-                                        }
-                                    }">
+                                                    languages: [],
+                                                    currentLang: 'English',
+                                                    currentProf: 'Fluent',
+                                                    addLang() {
+                                                        this.languages.push({ name: this.currentLang, proficiency: this.currentProf });
+                                                    },
+                                                    removeLang(index) {
+                                                        this.languages.splice(index, 1);
+                                                    }
+                                                }">
                             <h3 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Language Requirements
                             </h3>
 
@@ -503,85 +503,85 @@
                                 placeholder="Optional..."></textarea>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Step 4: Review & Publish -->
-                    <div x-show="step === 4" x-cloak class="p-6 md:p-8 space-y-8">
-                        <div class="text-center max-w-xl mx-auto">
-                            <div
-                                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 mb-4 font-extrabold text-2xl">
-                                4</div>
-                            <h2 class="text-2xl font-bold text-gray-900">Review & Publish Job</h2>
-                            <p class="text-slate-500 mt-1 text-sm font-medium">Review your job post before publishing to
-                                ensure accuracy and professionalism.</p>
-                        </div>
+                <!-- Step 4: Review & Publish -->
+                <div x-show="step === 4" x-cloak class="p-6 md:p-8 space-y-8">
+                    <div class="text-center max-w-xl mx-auto">
+                        <div
+                            class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 mb-4 font-extrabold text-2xl">
+                            4</div>
+                        <h2 class="text-2xl font-bold text-gray-900">Review & Publish Job</h2>
+                        <p class="text-slate-500 mt-1 text-sm font-medium">Review your job post before publishing to
+                            ensure accuracy and professionalism.</p>
+                    </div>
 
-                        <div class="bg-gray-50 rounded-[2rem] p-6 md:p-8 border border-gray-100">
-                            <div class="space-y-6">
-                                <div>
-                                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[3px] mb-3">Final
-                                        Checks
-                                    </h3>
-                                    <ul class="space-y-3">
-                                        <li class="flex items-start">
-                                            <i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i>
-                                            <p class="ml-2.5 text-xs text-gray-600 font-bold">Content is clear and accurate.
-                                            </p>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                                    <button type="button" @click="step = 1"
-                                        class="flex-1 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm text-sm">
-                                        Edit Details
-                                    </button>
-                                    <button type="button" @click="previewJob()"
-                                        class="flex-1 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm text-sm">
-                                        Preview Post
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex flex-col md:flex-row items-center gap-6 pt-4">
-                            <div class="flex items-center gap-3">
-                                <input id="is_draft_cb" name="is_draft_cb" type="checkbox" value="1"
-                                    class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded-md">
-                                <label for="is_draft_cb"
-                                    class="text-xs font-bold text-gray-700 uppercase tracking-widest">Save
-                                    as Draft</label>
+                    <div class="bg-gray-50 rounded-[2rem] p-6 md:p-8 border border-gray-100">
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[3px] mb-3">Final
+                                    Checks
+                                </h3>
+                                <ul class="space-y-3">
+                                    <li class="flex items-start">
+                                        <i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i>
+                                        <p class="ml-2.5 text-xs text-gray-600 font-bold">Content is clear and accurate.
+                                        </p>
+                                    </li>
+                                </ul>
                             </div>
 
-                            <div class="ml-auto w-full md:w-auto flex flex-col md:flex-row gap-4">
-                                <button type="button" @click="submitAsDraft()"
-                                    class="px-8 py-4 bg-gray-100 text-gray-700 rounded-2xl font-black hover:bg-gray-200 transition-all text-xs uppercase tracking-widest">
-                                    Save Draft
+                            <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                                <button type="button" @click="step = 1"
+                                    class="flex-1 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm text-sm">
+                                    Edit Details
                                 </button>
-                                <button type="submit"
-                                    class="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
-                                    Publish Job
-                                    <i data-lucide="rocket" class="w-4 h-4"></i>
+                                <button type="button" @click="previewJob()"
+                                    class="flex-1 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm text-sm">
+                                    Preview Post
                                 </button>
                             </div>
-                            <input id="is_draft" name="is_draft" type="hidden" value="0">
                         </div>
                     </div>
 
-                    <!-- Footer Navigation -->
-                    <div class="p-6 border-t border-gray-50 bg-gray-50/50 flex items-center justify-between">
-                        <button type="button" @click="prevStep()" x-show="step > 1"
-                            class="px-6 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm text-sm">
-                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                            Previous
-                        </button>
-                        <div x-show="step === 1"></div>
+                    <div class="flex flex-col md:flex-row items-center gap-6 pt-4">
+                        <div class="flex items-center gap-3">
+                            <input id="is_draft_cb" name="is_draft_cb" type="checkbox" value="1"
+                                class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded-md">
+                            <label for="is_draft_cb" class="text-xs font-bold text-gray-700 uppercase tracking-widest">Save
+                                as Draft</label>
+                        </div>
 
-                        <button type="button" @click="nextStep()" x-show="step < 4"
-                            class="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center gap-2 shadow-lg shadow-blue-100 text-sm">
-                            Next Step
-                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
+                        <div class="ml-auto w-full md:w-auto flex flex-col md:flex-row gap-4">
+                            <button type="button" @click="submitAsDraft()"
+                                class="px-8 py-4 bg-gray-100 text-gray-700 rounded-2xl font-black hover:bg-gray-200 transition-all text-xs uppercase tracking-widest">
+                                Save Draft
+                            </button>
+                            <button type="submit"
+                                class="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
+                                Publish Job
+                                <i data-lucide="rocket" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <input id="is_draft" name="is_draft" type="hidden" value="0">
                     </div>
+                </div>
+
+                <!-- Footer Navigation -->
+                <div class="p-6 border-t border-gray-50 bg-gray-50/50 flex items-center justify-between">
+                    <button type="button" @click="prevStep()" x-show="step > 1"
+                        class="px-6 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm text-sm">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        Previous
+                    </button>
+                    <div x-show="step === 1"></div>
+
+                    <button type="button" @click="nextStep()" x-show="step < 4"
+                        class="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center gap-2 shadow-lg shadow-blue-100 text-sm">
+                        Next Step
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
