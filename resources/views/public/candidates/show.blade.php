@@ -84,7 +84,7 @@
 
                     <div class="flex flex-wrap items-center gap-4">
                         <span
-                            class="flex items-center px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold uppercase tracking-wide">
+                            class="flex items-center px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold tracking-wide">
                             <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd"
                                     d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
@@ -242,16 +242,16 @@
                                 <div class="relative pl-6">
                                     <div class="absolute left-0 top-1.5 w-2 h-2 bg-deep-green rounded-full"></div>
                                     <div class="space-y-2">
-                                        <p class="text-sm font-bold text-gray-900">- Job title: <span
+                                        <p class="text-sm font-bold text-gray-900">Job title: <span
                                                 class="font-medium text-gray-700">{{ $experience->job_title }}</span></p>
-                                        <p class="text-sm font-bold text-gray-900">- Organization: <span
+                                        <p class="text-sm font-bold text-gray-900">Organization: <span
                                                 class="font-medium text-gray-700">{{ $experience->employer }}</span></p>
-                                        <p class="text-sm font-bold text-gray-900">- From – To: <span
+                                        <p class="text-sm font-bold text-gray-900">From: <span
                                                 class="font-medium text-gray-700">
                                                 {{ $experience->start_date->format('M Y') }} -
-                                                {{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : 'N/A') }}
-                                            </span></p>
-                                        <p class="text-sm font-bold text-gray-900">- Roles & responsibilities:</p>
+                                                
+                                            </span> To: {{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : 'N/A') }}</p>
+                                        <p class="text-sm font-bold text-gray-900">Roles & responsibilities:</p>
                                         <div class="text-sm text-gray-600 prose prose-sm max-w-none mt-2 ml-4">
                                             {!! $experience->description !!}
                                         </div>
