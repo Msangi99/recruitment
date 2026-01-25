@@ -26,7 +26,19 @@
         .step-transition {
             transition: all 0.3s ease-in-out;
         }
+
+        .ck-editor__editable {
+            min-height: 250px;
+            border-bottom-left-radius: 12px !important;
+            border-bottom-right-radius: 12px !important;
+        }
+
+        .ck-toolbar {
+            border-top-left-radius: 12px !important;
+            border-top-right-radius: 12px !important;
+        }
     </style>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
 </head>
 
 <body class="bg-gray-50">
@@ -145,7 +157,59 @@
                                     </p>
                                 </div>
                             @endif
+                            @if($application->cover_letter)
+                                <div class="text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
+                                    <p class="font-medium text-gray-700 mb-1">Cover Letter:</p>
+                                    <div class="prose prose-sm max-w-none text-gray-600">
+                                        {!! $application->cover_letter !!}
+                                    </div>
+                                </div>
+                            @endif
 
+                            <div class="flex flex-wrap gap-4">
+                                @if($application->cv_path)
+                                    <div class="bg-blue-50 rounded-lg p-3 flex-1 min-w-[200px]">
+                                        <p class="font-medium text-blue-700 mb-2 flex items-center">
+                                            <i data-lucide="file-text" class="w-4 h-4 mr-2"></i> CV / Resume
+                                        </p>
+                                        <div class="flex items-center gap-3">
+                                            <a href="{{ asset('storage/' . $application->cv_path) }}" target="_blank"
+                                                class="inline-flex items-center px-4 py-2 bg-white border border-blue-200 text-blue-600 rounded-lg text-sm hover:bg-blue-50 transition-colors shadow-sm">
+                                                <i data-lucide="external-link" class="w-4 h-4 mr-2"></i> View CV
+                                            </a>
+                                            <a href="{{ asset('storage/' . $application->cv_path) }}" download
+                                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors shadow-sm">
+                                                <i data-lucide="download" class="w-4 h-4 mr-2"></i> Download
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                @if($application->video_path)
+                                    <div class="bg-purple-50 rounded-lg p-3 flex-1 min-w-[200px]"
+                                        x-data="{ showVideo: false }">
+                                        <button @click="showVideo = !showVideo"
+                                            class="w-full font-medium text-purple-700 flex items-center justify-between">
+                                            <span class="flex items-center">
+                                                <i data-lucide="video" class="w-4 h-4 mr-2"></i> Application Video
+                                            </span>
+                                            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform"
+                                                :class="{ 'rotate-180': showVideo }"></i>
+                                        </button>
+                                        <div x-show="showVideo" x-collapse class="mt-2">
+                                            <video controls class="w-full h-48 rounded-lg shadow-sm object-cover"
+                                                preload="metadata">
+                                                <source src="{{ asset($application->video_path) }}" type="video/mp4">
+                                                Your browser does not support the video tag.
+                                            </video>
+                                            <a href="{{ asset($application->video_path) }}" target="_blank"
+                                                class="inline-flex items-center mt-2 text-sm text-purple-600 hover:text-purple-800">
+                                                <i data-lucide="external-link" class="w-4 h-4 mr-1"></i> Open in new tab
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
                             @if($job->contract_duration)
                                 <div class="bg-gray-50 rounded-lg p-4">
                                     <h3 class="text-sm font-medium text-gray-500 mb-2">Contract Duration</h3>
@@ -435,19 +499,31 @@
         const wordCountDisplay = document.getElementById('word-count');
 
         if (coverLetter) {
-            coverLetter.addEventListener('input', function () {
-                const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
-                const count = words.length;
-                wordCountDisplay.textContent = `${count} words`;
+            ClassicEditor
+                .create(coverLetter, {
+                    toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+                    placeholder: 'Briefly explain why you are suitable for this position. Highlight your experience, skills, and availability.'
+                })
+                .then(editor => {
+                    editor.model.document.on('change:data', () => {
+                        const data = editor.getData();
+                        const text = data.replace(/<[^>]*>/g, '').trim();
+                        const words = text.split(/\s+/).filter(word => word.length > 0);
+                        const count = words.length;
+                        wordCountDisplay.textContent = `${count} words`;
 
-                if (count > 1000) {
-                    wordCountDisplay.classList.add('text-red-500');
-                    wordCountDisplay.classList.remove('text-gray-400');
-                } else {
-                    wordCountDisplay.classList.remove('text-red-500');
-                    wordCountDisplay.classList.add('text-gray-400');
-                }
-            });
+                        if (count > 1000) {
+                            wordCountDisplay.classList.add('text-red-500');
+                            wordCountDisplay.classList.remove('text-gray-400');
+                        } else {
+                            wordCountDisplay.classList.remove('text-red-500');
+                            wordCountDisplay.classList.add('text-gray-400');
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
     </script>
 
