@@ -343,16 +343,16 @@
 
                         <!-- Language Requirements -->
                         <div class="md:col-span-2 bg-gray-50 p-6 rounded-3xl border border-gray-100" x-data="{
-                                    languages: @js($job->languages ?? []),
-                                    currentLang: 'English',
-                                    currentProf: 'Fluent',
-                                    addLang() {
-                                        this.languages.push({ name: this.currentLang, proficiency: this.currentProf });
-                                    },
-                                    removeLang(index) {
-                                        this.languages.splice(index, 1);
-                                    }
-                                }">
+                                        languages: @js($job->languages ?? []),
+                                        currentLang: 'English',
+                                        currentProf: 'Fluent',
+                                        addLang() {
+                                            this.languages.push({ name: this.currentLang, proficiency: this.currentProf });
+                                        },
+                                        removeLang(index) {
+                                            this.languages.splice(index, 1);
+                                        }
+                                    }">
                             <h3 class="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider text-xs">Languages</h3>
 
                             <div class="space-y-2 mb-4">
@@ -441,115 +441,126 @@
                 <!-- Step 3: Job Benefits -->
                 <div x-show="step === 3" x-cloak class="p-6 md:p-8 space-y-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900">Step 3: Job Benefits</h2>
-                        <p class="text-gray-500 mt-1">Select benefits offered for this position.</p>
+                        <h2 class="text-2xl font-bold text-gray-900">Step 3: Requirements & Benefits</h2>
+                        <p class="text-gray-500 mt-1">Update job requirements and benefits.</p>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                        @php
-                            $availableBenefits = [
-                                'Competitive Salary',
-                                'Overtime Pay',
-                                'Free Accommodation',
-                                'Transport Provided',
-                                'Meals Provided',
-                                'Health Insurance',
-                                'Work Visa Sponsorship',
-                                'Annual Leave',
-                                'Paid Holidays',
-                                'End of Service Benefits',
-                                'Training Provided',
-                                'Performance Bonus',
-                                'Air Ticket Provided',
-                                'Contract Renewal',
-                                'Family Sponsorship',
-                                'Tax-Free Salary'
-                            ];
-                            $selectedBenefits = is_array($job->benefits) ? $job->benefits : [];
-                        @endphp
-
-                        @foreach($availableBenefits as $benefit)
-                            <label
-                                class="flex items-center p-3 bg-gray-50 rounded-2xl border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all cursor-pointer group">
-                                <input type="checkbox" name="benefits[]" value="{{ $benefit }}" {{ in_array($benefit, $selectedBenefits) ? 'checked' : '' }}
-                                    class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
-                                <span
-                                    class="ml-2.5 text-xs font-bold text-gray-700 group-hover:text-blue-700 text-xs">{{ $benefit }}</span>
-                            </label>
-                        @endforeach
+                    <div class="pb-6 border-b border-gray-100">
+                        <label for="requirements" class="block text-sm font-bold text-gray-700 mb-1.5">Job
+                            Requirement</label>
+                        <textarea name="requirements" id="requirements" rows="6"
+                            class="w-full border-gray-200 rounded-2xl px-5 py-2.5 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all">{{ old('requirements', $job->requirements) }}</textarea>
                     </div>
 
-                    <div class="pt-4 border-t border-gray-100">
-                        <label for="other_benefits" class="block text-sm font-bold text-gray-700 mb-1.5 text-sm">Other
-                            Benefits</label>
-                        <textarea name="other_benefits" id="other_benefits" rows="3"
-                            class="w-full border-gray-200 rounded-2xl px-5 py-2.5 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all text-sm"
-                            placeholder="Optional...">{{ old('other_benefits', $job->other_benefits) }}</textarea>
-                    </div>
-                </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Select Benefits</h3>
 
-                <!-- Step 4: Review & Update -->
-                <div x-show="step === 4" x-cloak class="p-6 md:p-8 space-y-8">
-                    <div class="text-center max-w-xl mx-auto">
-                        <div
-                            class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 mb-4 font-extrabold text-2xl">
-                            4</div>
-                        <h2 class="text-2xl font-bold text-gray-900">Review & Update Job</h2>
-                        <p class="text-slate-500 mt-1 text-sm font-medium">Review your changes before updating.</p>
-                    </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            @php
+                                $availableBenefits = [
+                                    'Competitive Salary',
+                                    'Overtime Pay',
+                                    'Free Accommodation',
+                                    'Transport Provided',
+                                    'Meals Provided',
+                                    'Health Insurance',
+                                    'Work Visa Sponsorship',
+                                    'Annual Leave',
+                                    'Paid Holidays',
+                                    'End of Service Benefits',
+                                    'Training Provided',
+                                    'Performance Bonus',
+                                    'Air Ticket Provided',
+                                    'Contract Renewal',
+                                    'Family Sponsorship',
+                                    'Tax-Free Salary'
+                                ];
+                                $selectedBenefits = is_array($job->benefits) ? $job->benefits : [];
+                            @endphp
 
-                    <div class="bg-gray-50 rounded-[2rem] p-6 md:p-8 border border-gray-100">
-                        <div class="space-y-6">
-                            <div>
-                                <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[3px] mb-3">Final Checks
-                                </h3>
-                                <ul class="space-y-3">
-                                    <li class="flex items-start">
-                                        <i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i>
-                                        <p class="ml-2.5 text-xs text-gray-600 font-bold">Information is updated and
-                                            correct.</p>
-                                    </li>
-                                </ul>
-                            </div>
+                            @foreach($availableBenefits as $benefit)
+                                <label
+                                    class="flex items-center p-3 bg-gray-50 rounded-2xl border border-transparent hover:border-blue-200 hover:bg-blue-50 transition-all cursor-pointer group">
+                                    <input type="checkbox" name="benefits[]" value="{{ $benefit }}" {{ in_array($benefit, $selectedBenefits) ? 'checked' : '' }}
+                                        class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <span
+                                        class="ml-2.5 text-xs font-bold text-gray-700 group-hover:text-blue-700 text-xs">{{ $benefit }}</span>
+                                </label>
+                            @endforeach
+                        </div>
 
-                            <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                                <button type="button" @click="step = 1"
-                                    class="flex-1 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm text-xs">
-                                    Edit Details
-                                </button>
-                            </div>
+                        <div class="pt-4 border-t border-gray-100">
+                            <label for="other_benefits" class="block text-sm font-bold text-gray-700 mb-1.5 text-sm">Other
+                                Benefits</label>
+                            <textarea name="other_benefits" id="other_benefits" rows="3"
+                                class="w-full border-gray-200 rounded-2xl px-5 py-2.5 focus:ring-blue-500 focus:border-blue-500 shadow-sm transition-all text-sm"
+                                placeholder="Optional...">{{ old('other_benefits', $job->other_benefits) }}</textarea>
                         </div>
                     </div>
 
-                    <div class="flex flex-col md:flex-row items-center justify-end gap-6 pt-4">
-                        <button type="button" @click="submitAsDraft()"
-                            class="px-8 py-4 bg-gray-100 text-gray-700 rounded-2xl font-black hover:bg-gray-200 transition-all text-xs uppercase tracking-widest">
-                            {{ $job->is_active ? 'Unpublish' : 'Save Draft' }}
-                        </button>
-                        <button type="submit"
-                            class="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
-                            Update Job
-                            <i data-lucide="check" class="w-4 h-4"></i>
-                        </button>
-                        <input id="is_draft" name="is_draft" type="checkbox" class="hidden" {{ !$job->is_active ? 'checked' : '' }}>
+                    <!-- Step 4: Review & Update -->
+                    <div x-show="step === 4" x-cloak class="p-6 md:p-8 space-y-8">
+                        <div class="text-center max-w-xl mx-auto">
+                            <div
+                                class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 mb-4 font-extrabold text-2xl">
+                                4</div>
+                            <h2 class="text-2xl font-bold text-gray-900">Review & Update Job</h2>
+                            <p class="text-slate-500 mt-1 text-sm font-medium">Review your changes before updating.</p>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-[2rem] p-6 md:p-8 border border-gray-100">
+                            <div class="space-y-6">
+                                <div>
+                                    <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[3px] mb-3">Final
+                                        Checks
+                                    </h3>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-start">
+                                            <i data-lucide="check" class="w-4 h-4 text-green-500 mt-0.5"></i>
+                                            <p class="ml-2.5 text-xs text-gray-600 font-bold">Information is updated and
+                                                correct.</p>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                                    <button type="button" @click="step = 1"
+                                        class="flex-1 px-6 py-3 bg-white border border-gray-200 rounded-xl text-gray-700 font-bold hover:bg-gray-50 transition-all flex items-center justify-center gap-2 shadow-sm text-xs">
+                                        Edit Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row items-center justify-end gap-6 pt-4">
+                            <button type="button" @click="submitAsDraft()"
+                                class="px-8 py-4 bg-gray-100 text-gray-700 rounded-2xl font-black hover:bg-gray-200 transition-all text-xs uppercase tracking-widest">
+                                {{ $job->is_active ? 'Unpublish' : 'Save Draft' }}
+                            </button>
+                            <button type="submit"
+                                class="px-10 py-4 bg-blue-600 text-white rounded-2xl font-black hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-2 text-xs uppercase tracking-widest">
+                                Update Job
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </button>
+                            <input id="is_draft" name="is_draft" type="checkbox" class="hidden" {{ !$job->is_active ? 'checked' : '' }}>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Footer Navigation -->
-                <div class="p-6 border-t border-gray-50 bg-gray-50/50 flex items-center justify-between">
-                    <button type="button" @click="prevStep()" x-show="step > 1"
-                        class="px-6 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm text-sm">
-                        <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                        Previous
-                    </button>
-                    <div x-show="step === 1"></div>
+                    <!-- Footer Navigation -->
+                    <div class="p-6 border-t border-gray-50 bg-gray-50/50 flex items-center justify-between">
+                        <button type="button" @click="prevStep()" x-show="step > 1"
+                            class="px-6 py-2.5 bg-white border border-gray-200 rounded-xl text-gray-600 font-bold hover:bg-gray-50 transition-all flex items-center gap-2 shadow-sm text-sm">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                            Previous
+                        </button>
+                        <div x-show="step === 1"></div>
 
-                    <button type="button" @click="nextStep()" x-show="step < 4"
-                        class="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center gap-2 shadow-lg shadow-blue-100 text-sm">
-                        Next Step
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
-                </div>
+                        <button type="button" @click="nextStep()" x-show="step < 4"
+                            class="px-8 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center gap-2 shadow-lg shadow-blue-100 text-sm">
+                            Next Step
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
             </form>
         </div>
     </div>
@@ -602,7 +613,7 @@
                 });
 
                 tinymce.init({
-                    selector: '#description, #other_benefits',
+                    selector: '#description, #other_benefits, #requirements',
                     height: 300,
                     menubar: false,
                     plugins: 'lists link',

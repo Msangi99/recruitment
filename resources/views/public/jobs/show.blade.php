@@ -68,13 +68,13 @@
                             <h3 class="text-sm font-medium text-gray-500 mb-2">Salary</h3>
                             <p class="text-lg font-semibold text-gray-900">
                                 @if($job->salary_min && $job->salary_max)
-                                    {{ $job->currency ?? 'USD' }} {{ number_format($job->salary_min) }} -
+                                    {{ $job->salary_currency ?? 'USD' }} {{ number_format($job->salary_min) }} -
                                     {{ number_format($job->salary_max) }}
                                     @if($job->salary_period)
                                         / {{ $job->salary_period }}
                                     @endif
                                 @elseif($job->salary_min)
-                                    {{ $job->currency ?? 'USD' }} {{ number_format($job->salary_min) }}+
+                                    {{ $job->salary_currency ?? 'USD' }} {{ number_format($job->salary_min) }}+
                                 @else
                                     Competitive salary
                                 @endif
@@ -104,6 +104,24 @@
                             </div>
                         @endif
 
+                        @if($job->contract_duration)
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-sm font-medium text-gray-500 mb-2">Contract Duration</h3>
+                                <p class="text-lg font-semibold text-gray-900">
+                                    {{ $job->contract_duration }}
+                                </p>
+                            </div>
+                        @endif
+
+                        @if($job->working_mode)
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="text-sm font-medium text-gray-500 mb-2">Working Mode</h3>
+                                <p class="text-lg font-semibold text-gray-900">
+                                    {{ ucfirst($job->working_mode) }}
+                                </p>
+                            </div>
+                        @endif
+
                         @if(!empty($job->languages))
                                                 <div class="bg-gray-50 rounded-lg p-4">
                                                     <h3 class="text-sm font-medium text-gray-500 mb-2">Language Requirements</h3>
@@ -112,7 +130,7 @@
                                 if (is_array($lang)) {
                                     $name = $lang['name'] ?? $lang['language'] ?? '';
                                     $prof = $lang['proficiency'] ?? $lang['level'] ?? '';
-                                    return $name . ($prof ? '-' . $prof : '');
+                                    return $name . ($prof ? ' (' . $prof . ')' : '');
                                 }
                                 return $lang;
                             })->filter()->implode(', ') }}
@@ -132,46 +150,57 @@
                     <!-- Requirements -->
                     @if($job->requirements)
                         <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-4">Requirements</h2>
+                            <h2 class="text-xl font-bold text-gray-900 mb-4">Job Requirement</h2>
                             <div class="prose max-w-none text-gray-700">
                                 {!! $job->requirements !!}
                             </div>
                         </div>
                     @endif
 
-                    <!-- Benefits -->
-                    @if($job->benefits)
+                    <!-- Skills -->
+                    @if(!empty($job->required_skills))
                         <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-4">Benefits</h2>
+                            <h2 class="text-xl font-bold text-gray-900 mb-4">Required Skills</h2>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($job->required_skills as $skill)
+                                    <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
+                                        {{ $skill }}
+                                    </span>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Benefits -->
+                    @if($job->benefits || $job->other_benefits)
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 mb-4">Job Benefits</h2>
                             <div class="prose max-w-none text-gray-700">
-                                @if(is_array($job->benefits))
-                                    <ul>
+                                @if(is_array($job->benefits) && count($job->benefits) > 0)
+                                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
                                         @foreach($job->benefits as $benefit)
                                             <li>{{ $benefit }}</li>
                                         @endforeach
                                     </ul>
                                 @endif
-                            </div>
-                        </div>
-                    @endif
 
-                    @if($job->other_benefits)
-                        <div>
-                            <h2 class="text-xl font-bold text-gray-900 mb-4">Additional Benefits</h2>
-                            <div class="prose max-w-none text-gray-700">
-                                {!! $job->other_benefits !!}
+                                @if($job->other_benefits)
+                                    <div class="mt-4">
+                                        {!! $job->other_benefits !!}
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @endif
 
                     <!-- Application Deadline -->
-                    @if($job->deadline)
-                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                    @if($job->application_deadline)
+                        <div class="bg-red-50 border-l-4 border-red-400 p-4">
                             <div class="flex">
                                 <div class="ml-3">
-                                    <p class="text-sm text-yellow-700">
-                                        <strong>Application Deadline:</strong>
-                                        {{ \Carbon\Carbon::parse($job->deadline)->format('F d, Y') }}
+                                    <p class="text-sm text-red-700 font-bold">
+                                        Deadline:
+                                        {{ \Carbon\Carbon::parse($job->application_deadline)->format('F d, Y') }}
                                     </p>
                                 </div>
                             </div>
@@ -227,14 +256,14 @@
 
                                     <button type="submit"
                                         class="w-full px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors">
-                                        Apply for This Job
+                                        Apply now
                                     </button>
                                 </form>
                             @endif
                         @else
                             <a href="{{ route('login') }}?redirect={{ urlencode(request()->url()) }}"
                                 class="block w-full text-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors">
-                                Apply for This Job
+                                Apply now
                             </a>
                         @endif
                     </div>

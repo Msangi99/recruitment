@@ -389,7 +389,8 @@
                                             {{ str_replace('-', ' ', $job->employment_type) }}
                                         </span>
                                     </div>
-                                    <p class="text-blue-500 text-sm font-medium mb-3">Confidential Company</p>
+                                    <p class="text-blue-500 text-sm font-bold mb-3 uppercase tracking-tight">
+                                        {{ $job->company_name }}</p>
 
                                     <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 mb-4">
                                         <span class="flex items-center gap-1.5">
@@ -426,6 +427,22 @@
                                     <div class="text-gray-600 text-sm line-clamp-2 leading-relaxed">
                                         {{ Str::limit(strip_tags($job->description), 200) }}
                                     </div>
+
+                                    @if(!empty($job->required_skills))
+                                        <div class="flex flex-wrap gap-1.5 mt-3">
+                                            @foreach(array_slice($job->required_skills, 0, 4) as $skill)
+                                                <span
+                                                    class="px-2.5 py-1 bg-slate-50 text-slate-600 rounded-lg text-[10px] font-bold border border-slate-200/50">
+                                                    {{ $skill }}
+                                                </span>
+                                            @endforeach
+                                            @if(count($job->required_skills) > 4)
+                                                <span class="text-[10px] text-slate-400 font-bold flex items-center ml-1">
+                                                    +{{ count($job->required_skills) - 4 }} more
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="flex flex-col items-end justify-between self-stretch gap-4 min-w-[140px]">
