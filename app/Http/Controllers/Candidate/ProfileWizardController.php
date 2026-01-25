@@ -10,6 +10,7 @@ use App\Models\Skill;
 use App\Models\Language;
 use App\Models\WorkExperience;
 use App\Models\Education;
+use App\Models\Document;
 use Illuminate\Support\Facades\Log;
 
 class ProfileWizardController extends Controller
@@ -43,6 +44,12 @@ class ProfileWizardController extends Controller
             case 4: // Skills
                 $viewData['allSkills'] = Skill::orderBy('name')->get();
                 // Get existing skills
+                break;
+            case 10: // Compliance & Media
+                $viewData['complianceDocuments'] = Document::where('user_id', $user->id)
+                    ->whereIn('document_type', ['Medical Fitness Status', 'Police Clearance Status'])
+                    ->latest()
+                    ->get();
                 break;
             case 9: // Languages
                 $viewData['allLanguages'] = Language::orderBy('name')->get();
@@ -417,5 +424,70 @@ class ProfileWizardController extends Controller
         }
         
         return response()->json(['success' => false], 400);
+    }
+
+    public function storeComplianceDocument(Request $request)
+    {
+        $validated = $request->validate([
+            'document_type' => 'required|string|in:Medical Fitness Status,Police Clearance Status',
+            'document' => 'required|file|mimes:pdf|max:5120', // 5MB max, PDF only as requested
+        ]);
+
+        $user = auth()->user();
+
+        if ($request->hasFile('document')) {
+            $file = $request->file('document');
+            $originalName = $file->getClientOriginalName();
+            $mimeType = $file->getMimeType();
+            $fileSize = $file->getSize();
+            
+            $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
+            $fileName = time() . '_' . $cleanName;
+            
+            $directory = 'documents/' . $user->id;
+            $destinationPath = public_path($directory);
+            
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0755, true);
+            }
+            
+            try {
+                $file->move($destinationPath, $fileName);
+                $filePath = $directory . '/' . $fileName;
+
+                Document::create([
+                    'user_id' => $user->id,
+                    'document_type' => $validated['document_type'],
+                    'file_name' => $cleanName,
+                    'file_path' => $filePath,
+                    'file_type' => $mimeType,
+                    'file_size' => $fileSize,
+                    'verification_status' => 'pending',
+                ]);
+
+                return redirect()->back()->with('success', $validated['document_type'] . ' uploaded successfully.');
+            } catch (\Exception $e) {
+                Log::error('Compliance document upload failed: ' . $e->getMessage());
+                return redirect()->back()->with('error', 'Upload failed. Please try again.');
+            }
+        }
+
+        return redirect()->back()->with('error', 'No file selected.');
+    }
+
+    public function destroyComplianceDocument(Document $document)
+    {
+        if ($document->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $absolutePath = public_path($document->file_path);
+        if (file_exists($absolutePath)) {
+            @unlink($absolutePath);
+        }
+
+        $document->delete();
+
+        return redirect()->back()->with('success', 'Document removed successfully.');
     }
 }

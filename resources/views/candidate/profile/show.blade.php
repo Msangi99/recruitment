@@ -28,7 +28,7 @@
                 <div class="flex items-center space-x-3">
                     <span
                         class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full 
-                                                                                        {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
+                                                                                                {{ $profile->verification_status == 'approved' ? 'bg-green-100 text-green-800' :
                 ($profile->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800') }}">
                         <i data-lucide="{{ $profile->verification_status == 'approved' ? 'shield-check' : 'clock' }}"
                             class="w-3 h-3 mr-1"></i>
@@ -370,6 +370,38 @@
                                     @endif
                                 </dd>
                             </div>
+                        </div>
+
+                        <div class="mt-8 pt-8 border-t border-slate-100">
+                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">Compliance Documents
+                            </dt>
+                            <dd>
+                    @php
+                        $complianceDocs = auth()->user()->documents->whereIn('document_type', ['Medical Fitness Status', 'Police Clearance Status']);
+                    @endphp
+                                @if($complianceDocs->count() > 0)
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        @foreach($complianceDocs as $doc)
+                                            <div
+                                                class="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                                <div class="flex items-center">
+                                                    <i data-lucide="file-check" class="w-5 h-5 text-emerald-500 mr-3"></i>
+                                                    <div>
+                                                        <p class="text-sm font-bold text-slate-900">{{ $doc->document_type }}</p>
+                                                        <p class="text-[10px] text-slate-500">{{ $doc->file_name }}</p>
+                                                    </div>
+                                                </div>
+                                                <a href="{{ asset($doc->file_path) }}" target="_blank"
+                                                    class="text-emerald-600 hover:text-emerald-700">
+                                                    <i data-lucide="external-link" class="w-5 h-5"></i>
+                                                </a>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    <p class="text-sm text-slate-400 italic">No compliance documents uploaded.</p>
+                                @endif
+                            </dd>
                         </div>
                     </div>
                 </div>

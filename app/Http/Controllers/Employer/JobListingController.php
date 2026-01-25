@@ -65,11 +65,31 @@ class JobListingController extends Controller
             'application_deadline' => 'nullable|date',
             'is_active' => 'boolean',
             'requires_video' => 'boolean',
+            'languages' => 'nullable|array',
+            'languages.*' => 'string',
+            'benefits' => 'nullable|array',
+            'benefits.*' => 'string',
+            'other_benefits' => 'nullable|string',
+            'working_mode' => 'nullable|string',
+            'industry' => 'nullable|string',
+            'experience_level' => 'nullable|string',
+            'visa_sponsorship' => 'boolean',
+            'job_location_type' => 'nullable|string',
+            'contract_duration' => 'nullable|string',
+            'willing_to_relocate' => 'boolean',
+            'required_passport' => 'boolean',
+            'medical_clearance' => 'boolean',
+            'police_clearance' => 'boolean',
         ]);
 
         $validated['employer_id'] = auth()->id();
         $validated['is_active'] = $request->has('is_active');
         $validated['requires_video'] = $request->has('requires_video');
+        $validated['visa_sponsorship'] = $request->has('visa_sponsorship');
+        $validated['willing_to_relocate'] = $request->has('willing_to_relocate');
+        $validated['required_passport'] = $request->has('required_passport');
+        $validated['medical_clearance'] = $request->has('medical_clearance');
+        $validated['police_clearance'] = $request->has('police_clearance');
 
         JobListing::create($validated);
 
@@ -122,10 +142,30 @@ class JobListingController extends Controller
             'application_deadline' => 'nullable|date',
             'is_active' => 'boolean',
             'requires_video' => 'boolean',
+            'languages' => 'nullable|array',
+            'languages.*' => 'string',
+            'benefits' => 'nullable|array',
+            'benefits.*' => 'string',
+            'other_benefits' => 'nullable|string',
+            'working_mode' => 'nullable|string',
+            'industry' => 'nullable|string',
+            'experience_level' => 'nullable|string',
+            'visa_sponsorship' => 'boolean',
+            'job_location_type' => 'nullable|string',
+            'contract_duration' => 'nullable|string',
+            'willing_to_relocate' => 'boolean',
+            'required_passport' => 'boolean',
+            'medical_clearance' => 'boolean',
+            'police_clearance' => 'boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active');
         $validated['requires_video'] = $request->has('requires_video');
+        $validated['visa_sponsorship'] = $request->has('visa_sponsorship');
+        $validated['willing_to_relocate'] = $request->has('willing_to_relocate');
+        $validated['required_passport'] = $request->has('required_passport');
+        $validated['medical_clearance'] = $request->has('medical_clearance');
+        $validated['police_clearance'] = $request->has('police_clearance');
         $job->update($validated);
 
         return redirect()->route('employer.jobs.index')

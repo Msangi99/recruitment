@@ -10,9 +10,15 @@ use App\Mail\ConsultationStatusUpdated;
 
 class ConsultationRequestController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $consultations = ConsultationRequest::latest()->paginate(20);
+        $query = ConsultationRequest::query();
+
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        $consultations = $query->latest()->paginate(20);
         return view('admin.consultations.index', compact('consultations'));
     }
 

@@ -4,300 +4,478 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request Interview with {{ $candidate->name }} - Coyzon Recruitment</title>
+    <title>Request Candidate: {{ $candidate->name }} - Coyzon Recruitment</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'deep-green': '#105e46',
+                        'deep-blue': '#0a2540',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .step-gradient {
+            background: linear-gradient(135deg, #105e46 0%, #0a2540 100%);
+        }
+
+        .input-focus {
+            transition: all 0.2s ease;
+        }
+
+        .input-focus:focus {
+            border-color: #105e46;
+            box-shadow: 0 0 0 4px rgba(16, 94, 70, 0.1);
+        }
+
+        .read-only-bg {
+            background-color: #f9fafb;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            z-index: 50;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: opacity 0.3s;
+        }
+
+        .has-tooltip:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Radio button focus styles */
+        input[type="radio"]:focus + label {
+            outline: 2px solid #059669;
+            outline-offset: 2px;
+        }
+
+        input[type="radio"]:active + label {
+            transform: scale(0.98);
+        }
+    </style>
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50/50">
     @include('partials.public-nav')
 
-    <div class="max-w-2xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div class="px-4 py-6 sm:px-0">
-            <div class="mb-6">
-                <a href="{{ route('public.candidates.show', $candidate) }}" class="text-blue-600 hover:text-blue-900">←
-                    Back to Candidate Profile</a>
-                <h2 class="mt-4 text-2xl font-bold text-gray-900">Request Interview with {{ $candidate->name }}</h2>
-                <p class="mt-1 text-sm text-gray-500">No registration required. Fill out the form below and our team
-                    will process your request.</p>
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Navigation Back -->
+        <div class="mb-8">
+            <a href="{{ route('public.candidates.show', $candidate) }}"
+                class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-deep-green transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Candidate Profile
+            </a>
+        </div>
+
+        @if(session('success'))
+            <div
+                class="mb-8 p-6 bg-white rounded-2xl shadow-sm border border-emerald-100 flex items-start gap-4 animate-in fade-in duration-500">
+                <div class="p-2 bg-emerald-100 rounded-full text-emerald-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-gray-900">Request Submitted Successfully!</h3>
+                    <p class="text-gray-600 mt-1">Thank you for your request. Our team will review it and contact you within
+                        24 hours.</p>
+                </div>
             </div>
+        @endif
 
-            @if(session('error'))
-                <div class="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded">
-                    {{ session('error') }}
-                </div>
-            @endif
+        @if(session('error'))
+            <div class="mb-8 p-4 bg-red-50 border border-red-200 text-red-800 rounded-xl flex items-center gap-3">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                {{ session('error') }}
+            </div>
+        @endif
 
-            <form method="POST" action="{{ route('public.candidates.interview.store', $candidate) }}"
-                class="bg-white shadow-lg rounded-lg overflow-hidden">
-                @csrf
-
-                <!-- Form Header -->
-                <div class="bg-gradient-to-r from-green-600 to-green-700 px-8 py-6">
-                    <h3 class="text-xl font-semibold text-white">Interview Request Form</h3>
-                    <p class="text-green-100 text-sm mt-1">Please fill out all required fields marked with *</p>
-                </div>
-
-                <div class="p-8 space-y-8">
-                    <!-- Interview Details Section -->
-                    <div class="border-b border-gray-200 pb-6">
-                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Interview Details</h4>
-                        <div class="grid grid-cols-1 gap-6">
-                            <div>
-                                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Position / Interview Title *
-                                    <span class="text-gray-500 font-normal">(e.g., "Construction Worker
-                                        Interview")</span>
-                                </label>
-                                <input type="text" id="title" name="title" value="{{ old('title') }}" required
-                                    placeholder="Enter the position or interview title"
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('title') border-red-300 @enderror">
-                                @error('title')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+            <!-- Header -->
+            <div class="px-8 py-10 step-gradient text-white">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <h1 class="text-3xl font-extrabold tracking-tight">Request Candidate: {{ $candidate->name }}
+                        </h1>
+                        <p class="mt-2 text-emerald-100 text-lg opacity-90">No registration needed. Complete the details
+                            below to request an interview or placement.</p>
+                    </div>
+                    <!-- Candidate Quick View -->
+                    <div
+                        class="flex items-center gap-4 bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/20">
+                        @if($candidate->candidateProfile->profile_picture)
+                            <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
+                                alt="{{ $candidate->name }}"
+                                class="w-16 h-16 rounded-xl object-cover border-2 border-white/30 shadow-lg">
+                        @else
+                            <div
+                                class="w-16 h-16 rounded-xl bg-deep-green flex items-center justify-center text-xl font-bold border-2 border-white/30 shadow-lg">
+                                {{ strtoupper(substr($candidate->name, 0, 1)) }}
                             </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label for="scheduled_at"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Preferred Interview Date &
-                                        Time *</label>
-                                    <input type="datetime-local" id="scheduled_at" name="scheduled_at"
-                                        value="{{ old('scheduled_at') }}" required min="{{ date('Y-m-d\TH:i') }}"
-                                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('scheduled_at') border-red-300 @enderror">
-                                    @error('scheduled_at')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <label for="duration_minutes"
-                                        class="block text-sm font-medium text-gray-700 mb-2">Duration *</label>
-                                    <select id="duration_minutes" name="duration_minutes" required
-                                        class="appearance-none relative block w-full px-4 py-3 border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('duration_minutes') border-red-300 @enderror">
-                                        <option value="30" {{ old('duration_minutes', 60) == '30' ? 'selected' : '' }}>30
-                                            minutes</option>
-                                        <option value="45" {{ old('duration_minutes') == '45' ? 'selected' : '' }}>45
-                                            minutes</option>
-                                        <option value="60" {{ old('duration_minutes', 60) == '60' ? 'selected' : '' }}>1
-                                            hour</option>
-                                        <option value="90" {{ old('duration_minutes') == '90' ? 'selected' : '' }}>1.5
-                                            hours</option>
-                                        <option value="120" {{ old('duration_minutes') == '120' ? 'selected' : '' }}>2
-                                            hours</option>
-                                    </select>
-                                    @error('duration_minutes')
-                                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
+                        @endif
+                        <div>
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-200">Candidate ID</p>
+                            <p class="text-lg font-mono font-bold">#{{ str_pad($candidate->id, 7, '0', STR_PAD_LEFT) }}
+                            </p>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Company/Employer Details Section -->
-                    <div class="border-b border-gray-200 pb-6">
-                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Your Company & Contact Details</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form method="POST" action="{{ route('public.candidates.interview.store', $candidate) }}"
+                class="p-8 md:p-12" id="request-form">
+                @csrf
+
+                <div class="space-y-12">
+                    <!-- Step 1: Candidate Info (Auto-Filled) -->
+                    <section class="relative">
+                        <div class="flex items-center gap-4 mb-6">
+                            <span
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-deep-green text-white flex items-center justify-center font-bold">1</span>
+                            <h2 class="text-xl font-bold text-gray-900">Candidate Info (Auto-Filled)</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-12">
+                            <div class="has-tooltip relative">
+                                <span
+                                    class="tooltip bg-gray-900 text-white text-xs py-1 px-3 rounded-lg opacity-0 transition-opacity">Candidate
+                                    info is auto-filled from profile</span>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Candidate Name</label>
+                                <input type="text" value="{{ $candidate->name }}" readonly
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 read-only-bg text-gray-500 font-medium focus:outline-none cursor-not-allowed">
+                            </div>
+                            <div class="has-tooltip relative">
+                                <span
+                                    class="tooltip bg-gray-900 text-white text-xs py-1 px-3 rounded-lg opacity-0 transition-opacity">Candidate
+                                    info is auto-filled from profile</span>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Profile ID</label>
+                                <input type="text" value="{{ str_pad($candidate->id, 7, '0', STR_PAD_LEFT) }}" readonly
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 read-only-bg text-gray-500 font-medium font-mono focus:outline-none cursor-not-allowed">
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Step 2: Request Type -->
+                    <section>
+                        <div class="flex items-center gap-4 mb-6">
+                            <span
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-deep-green text-white flex items-center justify-center font-bold">2</span>
+                            <h2 class="text-xl font-bold text-gray-900">Request Type</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-12">
+                            <!-- Interview Option -->
+                            <div class="relative">
+                                <input type="radio" id="type_interview" name="appointment_type" value="interview"
+                                    class="peer sr-only" 
+                                    @if(old('appointment_type', 'interview') == 'interview') checked @endif
+                                    required>
+                                <label for="type_interview"
+                                    class="flex items-center p-4 cursor-pointer rounded-2xl border-2 border-gray-100 transition-all peer-checked:border-deep-green peer-checked:bg-emerald-50/50 hover:border-gray-200 hover:shadow-md h-full">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-deep-green shadow-sm border border-gray-50">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-900">Interview</p>
+                                            <p class="text-sm text-gray-500">Schedule a one-on-one session</p>
+                                        </div>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <div
+                                            class="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:border-deep-green flex items-center justify-center">
+                                            <div
+                                                class="w-2.5 h-2.5 rounded-full bg-deep-green hidden peer-checked:block">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <!-- Placement Option -->
+                            <div class="relative">
+                                <input type="radio" id="type_placement" name="appointment_type" value="placement"
+                                    class="peer sr-only" 
+                                    @if(old('appointment_type', 'interview') == 'placement') checked @endif
+                                    required>
+                                <label for="type_placement"
+                                    class="flex items-center p-4 cursor-pointer rounded-2xl border-2 border-gray-100 transition-all peer-checked:border-deep-green peer-checked:bg-emerald-50/50 hover:border-gray-200 hover:shadow-md h-full">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-deep-green shadow-sm border border-gray-50">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p class="font-bold text-gray-900">Placement / Hire</p>
+                                            <p class="text-sm text-gray-500">Proceed with candidate onboarding</p>
+                                        </div>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <div
+                                            class="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:border-deep-green flex items-center justify-center">
+                                            <div
+                                                class="w-2.5 h-2.5 rounded-full bg-deep-green hidden peer-checked:block">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        @error('appointment_type')
+                            <p class="mt-2 text-sm text-red-600 ml-12">{{ $message }}</p>
+                        @enderror
+                    </section>
+
+                    <!-- Step 3: Employer Details -->
+                    <section>
+                        <div class="flex items-center gap-4 mb-6">
+                            <span
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-deep-green text-white flex items-center justify-center font-bold">3</span>
+                            <h2 class="text-xl font-bold text-gray-900">Employer Details</h2>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-12">
                             <div>
-                                <label for="company_name" class="block text-sm font-medium text-gray-700 mb-2">Company
+                                <label for="company_name" class="block text-sm font-bold text-gray-700 mb-2">Company
                                     Name *</label>
                                 <input type="text" id="company_name" name="company_name"
-                                    value="{{ old('company_name') }}" required placeholder="Your company name"
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('company_name') border-red-300 @enderror">
+                                    value="{{ old('company_name') }}" required placeholder="Enter company name"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('company_name') border-red-300 @enderror">
                                 @error('company_name')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-
                             <div>
-                                <label for="job_title" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Your Job Title *
-                                    <span class="text-gray-500 font-normal">(Your position)</span>
-                                </label>
+                                <label for="job_title" class="block text-sm font-bold text-gray-700 mb-2">Contact Person
+                                    *</label>
                                 <input type="text" id="job_title" name="job_title" value="{{ old('job_title') }}"
-                                    required placeholder="e.g., HR Manager, Operations Manager"
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('job_title') border-red-300 @enderror">
+                                    required placeholder="Full name of contact person"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('job_title') border-red-300 @enderror">
                                 @error('job_title')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-
                             <div>
-                                <label for="interviewer_email"
-                                    class="block text-sm font-medium text-gray-700 mb-2">Contact Email *</label>
+                                <label for="interviewer_email" class="block text-sm font-bold text-gray-700 mb-2">Email
+                                    *</label>
                                 <input type="email" id="interviewer_email" name="interviewer_email"
                                     value="{{ old('interviewer_email') }}" required placeholder="your.email@company.com"
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('interviewer_email') border-red-300 @enderror">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('interviewer_email') border-red-300 @enderror">
                                 @error('interviewer_email')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-
                             <div>
-                                <label for="interviewer_phone"
-                                    class="block text-sm font-medium text-gray-700 mb-2">Contact Phone
-                                    (Optional)</label>
+                                <label for="interviewer_phone" class="block text-sm font-bold text-gray-700 mb-2">Phone
+                                    *</label>
                                 <input type="tel" id="interviewer_phone" name="interviewer_phone"
-                                    value="{{ old('interviewer_phone') }}" placeholder="+255 XXX XXX XXX"
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('interviewer_phone') border-red-300 @enderror">
+                                    value="{{ old('interviewer_phone') }}" required placeholder="+255 XXX XXX XXX"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('interviewer_phone') border-red-300 @enderror">
                                 @error('interviewer_phone')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
-                    </div>
+                    </section>
 
-                    <!-- Meeting Method Section -->
-                    <div class="border-b border-gray-200 pb-6">
-                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Meeting Method</h4>
-                        <div class="space-y-6">
-                            <div>
-                                <label for="meeting_mode" class="block text-sm font-medium text-gray-700 mb-2">Interview
-                                    Method *</label>
-                                <select id="meeting_mode" name="meeting_mode" required
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('meeting_mode') border-red-300 @enderror">
-                                    <option value="">Select Interview Method</option>
-                                    <option value="online" {{ old('meeting_mode') == 'online' ? 'selected' : '' }}>Online
-                                        (Zoom/Google Meet/Microsoft Teams)</option>
-                                    <option value="in-person" {{ old('meeting_mode') == 'in-person' ? 'selected' : '' }}>
-                                        In-Person Meeting</option>
-                                </select>
-                                @error('meeting_mode')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div id="meeting_link_field" style="display: none;">
-                                <label for="meeting_link" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Online Meeting Link *
-                                </label>
-                                <input type="url" id="meeting_link" name="meeting_link"
-                                    value="{{ old('meeting_link') }}"
-                                    placeholder="https://zoom.us/j/123456789 or https://meet.google.com/xyz"
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('meeting_link') border-red-300 @enderror">
-                                <p class="mt-1 text-xs text-gray-500">Provide a Zoom, Google Meet, or Microsoft Teams
-                                    link</p>
-                                @error('meeting_link')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div id="meeting_location_field" style="display: none;">
-                                <label for="meeting_location" class="block text-sm font-medium text-gray-700 mb-2">
-                                    Meeting Location *
-                                </label>
-                                <input type="text" id="meeting_location" name="meeting_location"
-                                    value="{{ old('meeting_location') }}"
-                                    placeholder="Full office address with floor/room number"
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('meeting_location') border-red-300 @enderror">
-                                <p class="mt-1 text-xs text-gray-500">Include full address with city, building name,
-                                    floor, and room number</p>
-                                @error('meeting_location')
-                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
+                    <!-- Step 4: Request Details -->
+                    <section>
+                        <div class="flex items-center gap-4 mb-6">
+                            <span
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-deep-green text-white flex items-center justify-center font-bold">4</span>
+                            <h2 class="text-xl font-bold text-gray-900">Request Details</h2>
                         </div>
-                    </div>
-
-                    <!-- Additional Information Section -->
-                    <div class="border-b border-gray-200 pb-6">
-                        <h4 class="text-lg font-semibold text-gray-900 mb-4">Additional Information</h4>
-                        <div class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-12">
                             <div>
-                                <label for="requirements" class="block text-sm font-medium text-gray-700 mb-2">
-                                    What should the candidate prepare? (Optional)
-                                </label>
-                                <textarea id="requirements" name="requirements" rows="4"
-                                    placeholder="Example: Please bring copies of your certificates, be ready to discuss your work experience..."
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('requirements') border-red-300 @enderror">{{ old('requirements') }}</textarea>
-                                @error('requirements')
+                                <label for="scheduled_at" class="block text-sm font-bold text-gray-700 mb-2">Preferred
+                                    Date & Time *</label>
+                                <input type="datetime-local" id="scheduled_at" name="scheduled_at"
+                                    value="{{ old('scheduled_at') }}" required min="{{ date('Y-m-d\TH:i') }}"
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('scheduled_at') border-red-300 @enderror">
+                                @error('scheduled_at')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
-
                             <div>
-                                <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">Additional Notes
+                                <label for="title" class="block text-sm font-bold text-gray-700 mb-2">Job Role /
+                                    Position *</label>
+                                <input type="text" id="title" name="title" value="{{ old('title') }}" required
+                                    placeholder="e.g. Sales Executive, Driver, etc."
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('title') border-red-300 @enderror">
+                                @error('title')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="md:col-span-2">
+                                <label for="notes" class="block text-sm font-bold text-gray-700 mb-2">Additional Notes
                                     (Optional)</label>
-                                <textarea id="notes" name="notes" rows="3"
-                                    placeholder="Any other information about the interview process..."
-                                    class="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 sm:text-sm @error('notes') border-red-300 @enderror">{{ old('notes') }}</textarea>
+                                <div class="rounded-xl border border-gray-200 overflow-hidden">
+                                    <textarea id="notes" name="notes" rows="4"
+                                        placeholder="Any other specific requirements or details about the request..."
+                                        class="w-full input-focus @error('notes') border-red-300 @enderror">{{ old('notes') }}</textarea>
+                                </div>
                                 @error('notes')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
-                    </div>
+                    </section>
 
-                    <!-- Important Notice -->
-                    <div class="bg-green-50 border-l-4 border-green-400 p-4">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <svg class="h-5 w-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </div>
-                            <div class="ml-3">
-                                <h3 class="text-sm font-medium text-green-800">What happens next?</h3>
-                                <div class="mt-2 text-sm text-green-700">
-                                    <ul class="list-disc list-inside space-y-1">
-                                        <li>This interview request is <strong>free of charge</strong></li>
-                                        <li>Our admin team will <strong>review your request</strong> within 24-48 hours
-                                        </li>
-                                        <li>You will be <strong>notified via email</strong> once approved</li>
-                                        <li>The candidate will then receive the interview invitation</li>
-                                    </ul>
-                                </div>
-                            </div>
+                    <!-- Step 5: Submit -->
+                    <section class="pt-6">
+                        <div class="pl-12">
+                            <button type="submit"
+                                class="w-full md:w-auto px-12 py-4 bg-deep-green hover:bg-emerald-800 text-white text-lg font-bold rounded-2xl shadow-lg shadow-emerald-900/10 transition-all hover:-translate-y-1 active:scale-[0.98] tracking-wide">
+                                Submit Request
+                            </button>
+                            <p class="mt-4 text-sm text-gray-500 text-center md:text-left">
+                                By submitting, you agree to our <a href="{{ route('terms') }}"
+                                    class="text-deep-green underline decoration-emerald-200 underline-offset-4">Terms
+                                    and Conditions</a>.
+                            </p>
                         </div>
-                    </div>
-
-                    <!-- Form Actions -->
-                    <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
-                        <a href="{{ route('public.candidates.show', $candidate) }}"
-                            class="px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors">
-                            Cancel
-                        </a>
-                        <button type="submit"
-                            class="px-8 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all">
-                            Submit Interview Request
-                        </button>
-                    </div>
+                    </section>
                 </div>
             </form>
+        </div>
+
+        <!-- Support Info -->
+        <div class="mt-12 text-center">
+            <p class="text-gray-500">Need help? Contact our support team at <a href="mailto:support@coyzon.com"
+                    class="text-deep-green font-bold">support@coyzon.com</a> or call <span
+                    class="text-deep-green font-bold">+255 (0) 123 456 789</span></p>
         </div>
     </div>
 
     @include('partials.footer')
 
     <script>
-        document.getElementById('meeting_mode').addEventListener('change', function () {
-            const meetingLinkField = document.getElementById('meeting_link_field');
-            const meetingLocationField = document.getElementById('meeting_location_field');
-
-            if (this.value === 'online') {
-                meetingLinkField.style.display = 'block';
-                meetingLocationField.style.display = 'none';
-                meetingLinkField.querySelector('input').required = true;
-                meetingLocationField.querySelector('input').required = false;
-            } else if (this.value === 'in-person') {
-                meetingLinkField.style.display = 'none';
-                meetingLocationField.style.display = 'block';
-                meetingLinkField.querySelector('input').required = false;
-                meetingLocationField.querySelector('input').required = true;
-            } else {
-                meetingLinkField.style.display = 'none';
-                meetingLocationField.style.display = 'none';
-                meetingLinkField.querySelector('input').required = false;
-                meetingLocationField.querySelector('input').required = false;
-            }
+        ClassicEditor
+            .create(document.querySelector('#notes'), {
+                toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote'],
+            })
+            .catch(error => {
+                console.error(error);
+            });
+            
+        // Ensure radio buttons work properly and add some interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            const radioButtons = document.querySelectorAll('input[name="appointment_type"]');
+            const form = document.getElementById('request-form');
+            
+            // Add click logging for debugging
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    console.log('Selected appointment type:', this.value);
+                    // You could add conditional logic here based on selection
+                    if (this.value === 'placement') {
+                        // Example: Change placeholder text based on selection
+                        const jobTitleInput = document.getElementById('title');
+                        if (jobTitleInput) {
+                            jobTitleInput.placeholder = "e.g. Full-time Sales Executive, Permanent Driver, etc.";
+                        }
+                    } else if (this.value === 'interview') {
+                        const jobTitleInput = document.getElementById('title');
+                        if (jobTitleInput) {
+                            jobTitleInput.placeholder = "e.g. Sales Executive, Driver, etc.";
+                        }
+                    }
+                });
+            });
+            
+            // Form validation before submit
+            form.addEventListener('submit', function(e) {
+                const selectedRadio = document.querySelector('input[name="appointment_type"]:checked');
+                if (!selectedRadio) {
+                    e.preventDefault();
+                    alert('Please select a request type (Interview or Placement)');
+                    return false;
+                }
+                
+                // Additional validation if needed
+                const dateInput = document.getElementById('scheduled_at');
+                if (dateInput && new Date(dateInput.value) < new Date()) {
+                    e.preventDefault();
+                    alert('Please select a future date and time');
+                    dateInput.focus();
+                    return false;
+                }
+                
+                // Show loading state
+                const submitBtn = form.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.innerHTML = 'Submitting...';
+                    submitBtn.disabled = true;
+                }
+            });
         });
-
-        // Trigger on page load if value is already set
-        if (document.getElementById('meeting_mode').value) {
-            document.getElementById('meeting_mode').dispatchEvent(new Event('change'));
-        }
     </script>
+    <style>
+        .ck-editor__editable {
+            min-height: 200px;
+            border-radius: 0 0 12px 12px !important;
+        }
+
+        .ck-toolbar {
+            border-radius: 12px 12px 0 0 !important;
+            border-color: #e5e7eb !important;
+        }
+
+        .ck-content {
+            border-color: #e5e7eb !important;
+            font-size: 0.875rem !important;
+        }
+
+        .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+            border-color: #e5e7eb !important;
+        }
+
+        .ck.ck-editor__main>.ck-editor__editable.ck-focused {
+            border-color: #105e46 !important;
+            box-shadow: 0 0 0 4px rgba(16, 94, 70, 0.1) !important;
+        }
+        
+        /* Ensure radio button labels are fully clickable */
+        .relative input[type="radio"] + label {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        /* Smooth transitions for radio button states */
+        .peer-checked\:border-deep-green {
+            transition: border-color 0.2s ease;
+        }
+        
+        .peer-checked\:bg-emerald-50\/50 {
+            transition: background-color 0.2s ease;
+        }
+    </style>
 </body>
 
 </html>

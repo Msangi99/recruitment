@@ -247,9 +247,10 @@
                                         <p class="text-sm font-bold text-gray-900">From: <span
                                                 class="font-medium text-gray-700">
                                                 {{ $experience->start_date->format('M Y') }} -
-                                                
+
                                             </span> To: <span
-                                                class="font-medium text-gray-700">{{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : 'N/A') }}</span></p>
+                                                class="font-medium text-gray-700">{{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : 'N/A') }}</span>
+                                        </p>
                                         <p class="text-sm font-bold text-gray-900">Roles & responsibilities:</p>
                                         <div class="text-sm text-gray-600 prose prose-sm max-w-none mt-2 ml-4">
                                             {!! $experience->description !!}
@@ -305,6 +306,7 @@
                         <div class="grid grid-cols-1 gap-4">
                             @php
                                 $certifications = $candidate->candidateProfile->educations->where('level', 'Certificate');
+                                $complianceDocs = $candidate->documents->whereIn('document_type', ['Medical Fitness Status', 'Police Clearance Status']);
                             @endphp
                             @forelse($certifications as $cert)
                                 <div class="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100">
@@ -322,9 +324,35 @@
                                     </div>
                                 </div>
                             @empty
-                                <p class="text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl w-full">No
-                                    certifications or trainings listed.</p>
+                                @if($complianceDocs->isEmpty())
+                                    <p class="text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl w-full">No
+                                        certifications or trainings listed.</p>
+                                @endif
                             @endforelse
+
+                            @foreach($complianceDocs as $doc)
+                                <div class="p-4 rounded-xl bg-emerald-50/50 border border-emerald-100">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div class="p-2 bg-emerald-100 rounded-lg text-emerald-600">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-bold text-gray-900 text-sm">{{ $doc->document_type }}</h3>
+                                                <p class="text-xs text-emerald-600 font-bold mt-0.5">Verified PDF Document
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <a href="{{ asset($doc->file_path) }}" target="_blank"
+                                            class="inline-flex items-center px-3 py-1 bg-white border border-emerald-200 text-emerald-700 text-xs font-bold rounded-lg hover:bg-emerald-50 transition-colors">
+                                            View Document
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
 

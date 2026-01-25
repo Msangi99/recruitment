@@ -8,8 +8,75 @@
         </div>
 
         <div class="space-y-8">
+            <!-- Compliance Documents Upload -->
+            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                    <h3 class="text-lg font-bold text-slate-900">Compliance Documents</h3>
+                    <span class="text-xs font-medium text-slate-500 uppercase">Step 10 / 12</span>
+                </div>
+                <div class="p-6">
+                    <!-- List of Added Documents -->
+                    @if($complianceDocuments->count() > 0)
+                        <div class="space-y-3 mb-6">
+                            @foreach($complianceDocuments as $doc)
+                                <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 rounded bg-emerald-100 flex items-center justify-center mr-3">
+                                            <i data-lucide="file-text" class="w-4 h-4 text-emerald-600"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold text-slate-900">{{ $doc->document_type }}</p>
+                                            <p class="text-[10px] text-slate-500">{{ $doc->file_name }} ({{ $doc->file_size_human }})</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <a href="{{ asset($doc->file_path) }}" target="_blank" class="text-slate-400 hover:text-emerald-600 p-1">
+                                            <i data-lucide="eye" class="h-4 w-4"></i>
+                                        </a>
+                                        <form action="{{ route('candidate.wizard.compliance-document.destroy', $doc->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to remove this document?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-slate-400 hover:text-red-500 p-1">
+                                                <i data-lucide="trash-2" class="h-4 w-4"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <!-- Add New Document Form -->
+                    <form action="{{ route('candidate.wizard.compliance-document.store') }}" method="POST" enctype="multipart/form-data" class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                        @csrf
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Document Type</label>
+                                <select name="document_type" required
+                                    class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 text-sm">
+                                    <option value="">Select Type</option>
+                                    <option value="Medical Fitness Status">Medical Fitness Status</option>
+                                    <option value="Police Clearance Status">Police Clearance Status</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Upload PDF</label>
+                                <input type="file" name="document" accept="application/pdf" required
+                                    class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer" />
+                            </div>
+                        </div>
+                        <div class="flex justify-end mt-4">
+                            <button type="submit"
+                                class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-lg hover:bg-emerald-700 transition-colors shadow-sm">
+                                <i data-lucide="upload-cloud" class="w-4 h-4 mr-2"></i> Upload Document
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
             <!-- Medical & Police Status -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
                     <label class="block text-sm font-bold text-slate-900 mb-4 flex items-center">
                         <i data-lucide="heart-pulse" class="w-5 h-5 mr-2 text-rose-500"></i>
@@ -47,7 +114,7 @@
                         @endforeach
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <!-- Profile Picture Upload -->
             <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">

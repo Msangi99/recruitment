@@ -45,7 +45,7 @@
                             @method('PATCH')
                             <button type="submit"
                                 class="px-6 py-2 rounded-xl font-bold transition-all shadow-sm flex items-center
-                                            {{ $job->is_active ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100' }}">
+                                                {{ $job->is_active ? 'bg-red-50 text-red-600 hover:bg-red-100' : 'bg-green-50 text-green-600 hover:bg-green-100' }}">
                                 <i data-lucide="{{ $job->is_active ? 'eye-off' : 'eye' }}" class="w-4 h-4 mr-2"></i>
                                 {{ $job->is_active ? 'Deactivate' : 'Activate' }}
                             </button>
@@ -56,7 +56,9 @@
             <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 flex items-center justify-between">
                 <div class="flex flex-col">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Experience</span>
-                    <span class="text-sm font-bold text-gray-700">{{ $job->experience_required ?? 0 }} Years</span>
+                    <span
+                        class="text-sm font-bold text-gray-700">{{ $job->experience_years ?? $job->experience_required ?? 0 }}
+                        Years</span>
                 </div>
                 <div class="flex flex-col">
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Min Education</span>
@@ -141,13 +143,13 @@
                                             <div x-data="{ open: false }" class="relative">
                                                 <button @click="open = !open"
                                                     class="px-2 py-1 rounded-full text-xs font-bold cursor-pointer hover:opacity-80 flex items-center gap-1
-                                                                                {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
-                                                                                {{ $application->status === 'reviewed' ? 'bg-blue-100 text-blue-700' : '' }}
-                                                                                {{ $application->status === 'shortlisted' ? 'bg-purple-100 text-purple-700' : '' }}
-                                                                                {{ $application->status === 'interview' ? 'bg-indigo-100 text-indigo-700' : '' }}
-                                                                                {{ $application->status === 'offered' ? 'bg-green-100 text-green-700' : '' }}
-                                                                                {{ $application->status === 'rejected' ? 'bg-red-100 text-red-700' : '' }}
-                                                                                {{ $application->status === 'withdrawn' ? 'bg-gray-100 text-gray-700' : '' }}">
+                                                                                        {{ $application->status === 'pending' ? 'bg-yellow-100 text-yellow-700' : '' }}
+                                                                                        {{ $application->status === 'reviewed' ? 'bg-blue-100 text-blue-700' : '' }}
+                                                                                        {{ $application->status === 'shortlisted' ? 'bg-purple-100 text-purple-700' : '' }}
+                                                                                        {{ $application->status === 'interview' ? 'bg-indigo-100 text-indigo-700' : '' }}
+                                                                                        {{ $application->status === 'offered' ? 'bg-green-100 text-green-700' : '' }}
+                                                                                        {{ $application->status === 'rejected' ? 'bg-red-100 text-red-700' : '' }}
+                                                                                        {{ $application->status === 'withdrawn' ? 'bg-gray-100 text-gray-700' : '' }}">
                                                     {{ ucfirst($application->status) }}
                                                     <i data-lucide="chevron-down" class="w-3 h-3"></i>
                                                 </button>
@@ -304,10 +306,16 @@
                         </div>
                         <div class="flex items-center justify-between py-2 border-b border-gray-50">
                             <span class="text-sm text-gray-500">Languages</span>
-                            @php
-                                $langs = is_array($job->languages) ? implode(', ', $job->languages) : $job->languages;
-                            @endphp
-                            <span class="text-sm font-bold text-gray-900">{{ $langs ?? 'No requirement' }}</span>
+                            <span class="text-sm font-bold text-gray-900">
+                                {{ collect($job->languages)->map(function ($lang) {
+        if (is_array($lang)) {
+            $name = $lang['name'] ?? $lang['language'] ?? '';
+            $prof = $lang['proficiency'] ?? $lang['level'] ?? '';
+            return $name . ($prof ? '-' . $prof : '');
+        }
+        return $lang;
+    })->filter()->implode(', ') ?: 'No requirement' }}
+                            </span>
                         </div>
                         <div class="flex items-center justify-between py-2 border-b border-gray-50">
                             <span class="text-sm text-gray-500">Visibility</span>

@@ -301,7 +301,7 @@
                             </a>
                         </div>
                         <div class="p-6">
-                            <div class="flex items-center space-x-6">
+                            <div class="flex flex-wrap items-center gap-6">
                                 <div
                                     class="flex items-center space-x-2 text-sm {{ $profile->profile_picture ? 'text-emerald-600' : 'text-slate-400' }}">
                                     <i data-lucide="{{ $profile->profile_picture ? 'check-circle' : 'circle' }}"
@@ -313,6 +313,15 @@
                                     <i data-lucide="{{ $profile->video_cv ? 'check-circle' : 'circle' }}"
                                         class="w-5 h-5"></i>
                                     <span class="font-bold">Video CV Uploaded</span>
+                                </div>
+                                @php
+                                    $complianceDocsCount = auth()->user()->documents->whereIn('document_type', ['Medical Fitness Status', 'Police Clearance Status'])->count();
+                                @endphp
+                                <div
+                                    class="flex items-center space-x-2 text-sm {{ $complianceDocsCount > 0 ? 'text-emerald-600' : 'text-slate-400' }}">
+                                    <i data-lucide="{{ $complianceDocsCount > 0 ? 'check-circle' : 'circle' }}"
+                                        class="w-5 h-5"></i>
+                                    <span class="font-bold">Compliance Documents ({{ $complianceDocsCount }})</span>
                                 </div>
                             </div>
                         </div>

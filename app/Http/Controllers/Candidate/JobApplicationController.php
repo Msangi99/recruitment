@@ -71,22 +71,34 @@ class JobApplicationController extends Controller
         if ($request->filled('experience_level')) {
             switch ($request->experience_level) {
                 case 'no-experience':
-                    $query->where('experience_required', 0);
+                    $query->where(function($q) {
+                        $q->where('experience_required', 0)->orWhere('experience_years', 0);
+                    });
                     break;
                 case 'mid-level':
-                    $query->whereBetween('experience_required', [2, 5]);
+                    $query->where(function($q) {
+                        $q->whereBetween('experience_required', [2, 5])->orWhereBetween('experience_years', [2, 5]);
+                    });
                     break;
                 case 'senior':
-                    $query->where('experience_required', '>=', 5);
+                    $query->where(function($q) {
+                        $q->where('experience_required', '>=', 5)->orWhere('experience_years', '>=', 5);
+                    });
                     break;
                 case '1-2':
-                    $query->whereBetween('experience_required', [1, 2]);
+                    $query->where(function($q) {
+                        $q->whereBetween('experience_required', [1, 2])->orWhereBetween('experience_years', [1, 2]);
+                    });
                     break;
                 case '3-5':
-                    $query->whereBetween('experience_required', [3, 5]);
+                    $query->where(function($q) {
+                        $q->whereBetween('experience_required', [3, 5])->orWhereBetween('experience_years', [3, 5]);
+                    });
                     break;
                 case '5+':
-                    $query->where('experience_required', '>=', 5);
+                    $query->where(function($q) {
+                        $q->where('experience_required', '>=', 5)->orWhere('experience_years', '>=', 5);
+                    });
                     break;
             }
         }

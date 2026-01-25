@@ -130,16 +130,20 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="language" class="block text-sm font-medium text-gray-700 mb-2">Language
-                                        Requirement</label>
-                                    <select id="language" name="language"
-                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
-                                        <option value="">Select Language</option>
-                                        <option value="English" {{ old('language', $job->languages ?? '') == 'English' ? 'selected' : '' }}>English</option>
-                                        <option value="Arabic" {{ old('language', $job->languages ?? '') == 'Arabic' ? 'selected' : '' }}>Arabic</option>
-                                        <option value="French" {{ old('language', $job->languages ?? '') == 'French' ? 'selected' : '' }}>French</option>
-                                        <option value="Swahili" {{ old('language', $job->languages ?? '') == 'Swahili' ? 'selected' : '' }}>Swahili</option>
+                                    <label for="languages" class="block text-sm font-medium text-gray-700 mb-2">Language
+                                        Requirements</label>
+                                    <select id="languages" name="languages[]" multiple
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm h-24">
+                                        <option value="English" {{ (is_array(old('languages', $job->languages)) && in_array('English', old('languages', $job->languages))) ? 'selected' : '' }}>
+                                            English</option>
+                                        <option value="Arabic" {{ (is_array(old('languages', $job->languages)) && in_array('Arabic', old('languages', $job->languages))) ? 'selected' : '' }}>
+                                            Arabic</option>
+                                        <option value="French" {{ (is_array(old('languages', $job->languages)) && in_array('French', old('languages', $job->languages))) ? 'selected' : '' }}>
+                                            French</option>
+                                        <option value="Swahili" {{ (is_array(old('languages', $job->languages)) && in_array('Swahili', old('languages', $job->languages))) ? 'selected' : '' }}>
+                                            Swahili</option>
                                     </select>
+                                    <p class="mt-1 text-xs text-gray-500">Hold Ctrl (Cmd) to select multiple</p>
                                 </div>
                             </div>
 
@@ -197,6 +201,14 @@
                                 <textarea id="requirements" name="requirements" rows="4"
                                     class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                     placeholder="List required qualifications, skills, and experience...">{{ old('requirements', $job->requirements) }}</textarea>
+                            </div>
+
+                            <div>
+                                <label for="other_benefits" class="block text-sm font-medium text-gray-700 mb-2">Benefits &
+                                    Perks</label>
+                                <textarea id="other_benefits" name="other_benefits" rows="4"
+                                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="List additional benefits, insurance, accommodation, etc...">{{ old('other_benefits', $job->other_benefits) }}</textarea>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

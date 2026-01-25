@@ -9,15 +9,40 @@
 
             <form method="GET" action="{{ route('admin.candidates.index') }}" class="flex flex-wrap gap-2">
                 <div class="relative">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search candidates..."
-                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 w-full md:w-64 shadow-sm">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search name/email..."
+                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 w-full md:w-48 shadow-sm text-sm">
                     <div class="absolute left-3 top-2.5 text-gray-400">
-                        <i data-lucide="search" class="w-5 h-5"></i>
+                        <i data-lucide="search" class="w-4 h-4"></i>
                     </div>
                 </div>
+
+                <input type="text" name="job_title" value="{{ request('job_title') }}" placeholder="Job Title"
+                    class="border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm px-4 py-2 bg-white text-sm w-full md:w-40">
+
+                <select name="experience_level"
+                    class="border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm px-4 py-2 bg-white text-sm">
+                    <option value="">Experience</option>
+                    <option value="Entry Level" {{ request('experience_level') == 'Entry Level' ? 'selected' : '' }}>Entry
+                        Level</option>
+                    <option value="Junior" {{ request('experience_level') == 'Junior' ? 'selected' : '' }}>Junior</option>
+                    <option value="Mid-Level" {{ request('experience_level') == 'Mid-Level' ? 'selected' : '' }}>Mid-Level
+                    </option>
+                    <option value="Expert" {{ request('experience_level') == 'Expert' ? 'selected' : '' }}>Expert</option>
+                </select>
+
+                <select name="availability_status"
+                    class="border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm px-4 py-2 bg-white text-sm">
+                    <option value="">Availability</option>
+                    <option value="Immediately Available" {{ request('availability_status') == 'Immediately Available' ? 'selected' : '' }}>Immediate</option>
+                    <option value="Within 2 Weeks" {{ request('availability_status') == 'Within 2 Weeks' ? 'selected' : '' }}>
+                        2 Weeks</option>
+                    <option value="Within 1 Month" {{ request('availability_status') == 'Within 1 Month' ? 'selected' : '' }}>
+                        1 Month</option>
+                </select>
+
                 <select name="verification_status"
-                    class="border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm px-4 py-2 bg-white">
-                    <option value="">All Verification</option>
+                    class="border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm px-4 py-2 bg-white text-sm">
+                    <option value="">Verification</option>
                     <option value="pending" {{ request('verification_status') == 'pending' ? 'selected' : '' }}>Pending
                     </option>
                     <option value="approved" {{ request('verification_status') == 'approved' ? 'selected' : '' }}>Approved
@@ -25,10 +50,24 @@
                     <option value="rejected" {{ request('verification_status') == 'rejected' ? 'selected' : '' }}>Rejected
                     </option>
                 </select>
+
+                <select name="status"
+                    class="border border-gray-300 rounded-xl focus:ring-blue-500 focus:border-blue-500 shadow-sm px-4 py-2 bg-white text-sm">
+                    <option value="">Account Status</option>
+                    <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                    <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                </select>
+
                 <button type="submit"
-                    class="px-6 py-2 fb-blue-bg text-white font-bold rounded-xl hover:bg-blue-600 transition-colors shadow-sm">
+                    class="px-6 py-2 fb-blue-bg text-white font-bold rounded-xl hover:bg-blue-600 transition-colors shadow-sm text-sm">
                     Filter
                 </button>
+                @if(request()->anyFilled(['search', 'job_title', 'experience_level', 'availability_status', 'verification_status', 'status']))
+                    <a href="{{ route('admin.candidates.index') }}"
+                        class="px-4 py-2 bg-gray-100 text-gray-700 font-bold rounded-xl hover:bg-gray-200 transition-colors shadow-sm text-sm flex items-center">
+                        Clear
+                    </a>
+                @endif
             </form>
         </div>
 
@@ -75,7 +114,7 @@
                                     @if($candidate->candidateProfile)
                                                         <span
                                                             class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full 
-                                                                    {{ $candidate->candidateProfile->verification_status == 'approved' ? 'bg-green-100 text-green-700' :
+                                                                                                {{ $candidate->candidateProfile->verification_status == 'approved' ? 'bg-green-100 text-green-700' :
                                         ($candidate->candidateProfile->verification_status == 'pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700') }}">
                                                             {{ ucfirst($candidate->candidateProfile->verification_status) }}
                                                         </span>

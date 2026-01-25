@@ -61,9 +61,11 @@ class PublicCandidateController extends Controller
 
         // Current Location filter
         if ($request->filled('country')) {
-            $query->whereHas('candidateProfile', function($q) use ($request) {
-                $q->where('location', 'like', "%{$request->country}%");
-            })->orWhere('country', 'like', "%{$request->country}%");
+            $query->where(function($q) use ($request) {
+                $q->whereHas('candidateProfile', function($sq) use ($request) {
+                    $sq->where('location', 'like', "%{$request->country}%");
+                })->orWhere('country', 'like', "%{$request->country}%");
+            });
         }
 
         // Target Destination filter
@@ -176,43 +178,36 @@ class PublicCandidateController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => 'required|string|max:255',
+            'appointment_type' => 'required|in:interview,placement',
             'company_name' => 'required|string|max:255',
-            'job_title' => 'required|string|max:255',
+            'job_title' => 'required|string|max:255', // Contact Person
             'interviewer_email' => 'required|email|max:255',
-            'interviewer_phone' => 'nullable|string|max:20',
+            'interviewer_phone' => 'required|string|max:20',
             'scheduled_at' => 'required|date|after:now',
-            'meeting_mode' => 'required|in:online,in-person',
-            'duration_minutes' => 'required|integer|min:15|max:120',
-            'meeting_link' => 'required_if:meeting_mode,online|nullable|url',
-            'meeting_location' => 'required_if:meeting_mode,in-person|nullable|string|max:255',
-            'notes' => 'nullable|string|max:1000',
-            'requirements' => 'nullable|string|max:2000',
+            'title' => 'required|string|max:255', // Job Role
+            'notes' => 'nullable|string|max:5000', // Allow more for rich text
         ]);
 
         $appointment = Appointment::create([
             'user_id' => $candidate->id,
             'employer_id' => null, // No employer account needed
-            'appointment_type' => 'interview',
+            'appointment_type' => $validated['appointment_type'],
             'title' => $validated['title'],
             'company_name' => $validated['company_name'],
             'job_title' => $validated['job_title'],
             'interviewer_email' => $validated['interviewer_email'],
-            'interviewer_phone' => $validated['interviewer_phone'] ?? null,
-            'meeting_mode' => $validated['meeting_mode'],
+            'interviewer_phone' => $validated['interviewer_phone'],
+            'meeting_mode' => 'in-person', // Default for public requests
             'scheduled_at' => $validated['scheduled_at'],
-            'duration_minutes' => $validated['duration_minutes'],
-            'meeting_link' => $validated['meeting_link'] ?? null,
-            'meeting_location' => $validated['meeting_location'] ?? null,
+            'duration_minutes' => 60, // Default 1 hour
             'notes' => $validated['notes'] ?? null,
-            'requirements' => $validated['requirements'] ?? null,
             'amount' => 0, // Free for employers
             'currency' => 'TZS',
             'payment_status' => 'completed', // Free
             'status' => 'pending', // Waiting for admin approval
         ]);
 
-        return redirect()->route('public.candidates.index')
-            ->with('success', 'Interview request submitted successfully! Our admin team will review and contact you at ' . $validated['interviewer_email']);
+        return redirect()->back()
+            ->with('success', 'Thank you for your request. Our team will review it and contact you within 24 hours.');
     }
 }

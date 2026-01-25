@@ -281,6 +281,10 @@ Route::middleware('auth')->group(function () {
 
             Route::post('/education', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'storeEducation'])->name('education.store');
             Route::delete('/education/{education}', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'destroyEducation'])->name('education.destroy');
+
+            // Compliance Documents
+            Route::post('/compliance-document', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'storeComplianceDocument'])->name('compliance-document.store');
+            Route::delete('/compliance-document/{document}', [\App\Http\Controllers\Candidate\ProfileWizardController::class, 'destroyComplianceDocument'])->name('compliance-document.destroy');
         });
 
         // Job Applications

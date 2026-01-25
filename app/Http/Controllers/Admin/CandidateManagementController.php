@@ -24,6 +24,52 @@ class CandidateManagementController extends Controller
             });
         }
 
+        // Job Title filter
+        if ($request->filled('job_title')) {
+            $query->whereHas('candidateProfile', function ($q) use ($request) {
+                $q->where('title', 'like', "%{$request->job_title}%")
+                  ->orWhere('headline', 'like', "%{$request->job_title}%");
+            });
+        }
+
+        // Skills filter
+        if ($request->filled('skills')) {
+            $skills = array_map('trim', explode(',', $request->skills));
+            $query->whereHas('candidateProfile.skills', function ($q) use ($skills) {
+                $q->whereIn('name', $skills);
+            });
+        }
+
+        // Experience Level filter
+        if ($request->filled('experience_level')) {
+            $query->whereHas('candidateProfile', function ($q) use ($request) {
+                $q->where('experience_level', $request->experience_level);
+            });
+        }
+
+        // Current Location filter
+        if ($request->filled('country')) {
+            $query->where(function($q) use ($request) {
+                $q->whereHas('candidateProfile', function($sq) use ($request) {
+                    $sq->where('location', 'like', "%{$request->country}%");
+                })->orWhere('country', 'like', "%{$request->country}%");
+            });
+        }
+
+        // Target Destination filter
+        if ($request->filled('target_destination')) {
+            $query->whereHas('candidateProfile', function ($q) use ($request) {
+                $q->where('target_destination', 'like', "%{$request->target_destination}%");
+            });
+        }
+
+        // Availability Status filter
+        if ($request->filled('availability_status')) {
+            $query->whereHas('candidateProfile', function ($q) use ($request) {
+                $q->where('availability_status', $request->availability_status);
+            });
+        }
+
         // Verification status filter
         if ($request->filled('verification_status')) {
             $query->whereHas('candidateProfile', function($q) use ($request) {
@@ -31,7 +77,12 @@ class CandidateManagementController extends Controller
             });
         }
 
-        $candidates = $query->latest()->paginate(20);
+        // Status (active/inactive) filter
+        if ($request->filled('status')) {
+            $query->where('is_active', $request->status == 'active');
+        }
+
+        $candidates = $query->latest()->paginate(20)->withQueryString();
 
         return view('admin.candidates.index', compact('candidates'));
     }

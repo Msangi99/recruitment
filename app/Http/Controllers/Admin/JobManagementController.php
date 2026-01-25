@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JobListing;
 use App\Models\JobApplication;
 use App\Models\Category;
+use App\Models\Skill;
 use Illuminate\Http\Request;
 
 class JobManagementController extends Controller
@@ -24,7 +25,22 @@ class JobManagementController extends Controller
             });
         }
 
-        // Status filter
+        // Category filter
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Country filter
+        if ($request->filled('country')) {
+            $query->where('country', $request->country);
+        }
+
+        // Employment Type filter
+        if ($request->filled('employment_type')) {
+            $query->where('employment_type', $request->employment_type);
+        }
+
+        // Status (active/inactive) filter
         if ($request->filled('status')) {
             if ($request->status === 'active') {
                 $query->where('is_active', true);
@@ -33,7 +49,7 @@ class JobManagementController extends Controller
             }
         }
 
-        $jobs = $query->latest()->paginate(20);
+        $jobs = $query->latest()->paginate(20)->withQueryString();
         $categories = Category::all();
 
         return view('admin.jobs.index', compact('jobs', 'categories'));
@@ -42,7 +58,8 @@ class JobManagementController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.jobs.create', compact('categories'));
+        $skills = Skill::all();
+        return view('admin.jobs.create', compact('categories', 'skills'));
     }
 
     public function store(Request $request)
@@ -51,34 +68,47 @@ class JobManagementController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'required|string',
-            'requirements' => 'nullable|string',
-            'responsibilities' => 'nullable|string',
-            'benefits' => 'nullable|string',
             'company_name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'country' => 'required|string|max:100',
+            'job_location_type' => 'required|string|in:Local,Abroad',
             'employment_type' => 'required|string',
-            'work_hours' => 'nullable|string',
-            'education_level' => 'nullable|string',
-            'experience_required' => 'nullable|string',
-            'languages' => 'nullable|string',
+            'contract_duration' => 'nullable|string',
+            'working_mode' => 'nullable|string',
+            'application_deadline' => 'nullable|date',
             'salary_min' => 'nullable|numeric|min:0',
             'salary_max' => 'nullable|numeric|min:0',
-            'salary_currency' => 'nullable|string|max:10',
-            'salary_period' => 'nullable|string|max:20',
-            'positions_available' => 'nullable|integer|min:1',
-            'application_deadline' => 'nullable|date',
-            'is_active' => 'boolean',
+            'salary_currency' => 'nullable|string',
+            'salary_period' => 'nullable|string',
+            'experience_years' => 'nullable|integer',
+            'education_level' => 'nullable|string',
+            'required_skills' => 'nullable|string', // JSON string from hidden input
+            'languages' => 'nullable|string', // JSON string from hidden input
+            'willing_to_relocate' => 'boolean',
+            'required_passport' => 'boolean',
+            'medical_clearance' => 'boolean',
+            'police_clearance' => 'boolean',
+            'benefits' => 'nullable|array',
+            'other_benefits' => 'nullable|string',
         ]);
+
+        // Handle custom currency if provided
+        if ($request->salary_currency === 'OTHER' && $request->filled('custom_currency')) {
+            $validated['salary_currency'] = $request->custom_currency;
+        }
+
+        // Parse JSON fields
+        if ($request->filled('required_skills')) {
+            $validated['required_skills'] = json_decode($request->input('required_skills'), true);
+        }
+        if ($request->filled('languages')) {
+            $validated['languages'] = json_decode($request->input('languages'), true);
+        }
 
         // Admin posts jobs without employer_id (system jobs)
         $validated['employer_id'] = null;
-        $validated['is_active'] = $request->has('is_active');
-
-        // Ensure languages is saved as an array for JsonContains search
-        if ($request->filled('languages')) {
-            $validated['languages'] = (array) $request->input('languages');
-        }
+        $validated['is_active'] = !$request->has('is_draft');
+        $validated['status'] = $validated['is_active'] ? 'open' : 'open'; // You might want a 'draft' status in DB
 
         JobListing::create($validated);
 
@@ -95,7 +125,8 @@ class JobManagementController extends Controller
     public function edit(JobListing $job)
     {
         $categories = Category::all();
-        return view('admin.jobs.edit', compact('job', 'categories'));
+        $skills = Skill::all();
+        return view('admin.jobs.edit', compact('job', 'categories', 'skills'));
     }
 
     public function update(Request $request, JobListing $job)
@@ -104,32 +135,44 @@ class JobManagementController extends Controller
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:categories,id',
             'description' => 'required|string',
-            'requirements' => 'nullable|string',
-            'responsibilities' => 'nullable|string',
-            'benefits' => 'nullable|string',
             'company_name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'country' => 'required|string|max:100',
+            'job_location_type' => 'required|string|in:Local,Abroad',
             'employment_type' => 'required|string',
-            'work_hours' => 'nullable|string',
-            'education_level' => 'nullable|string',
-            'experience_required' => 'nullable|string',
-            'languages' => 'nullable|string',
+            'contract_duration' => 'nullable|string',
+            'working_mode' => 'nullable|string',
+            'application_deadline' => 'nullable|date',
             'salary_min' => 'nullable|numeric|min:0',
             'salary_max' => 'nullable|numeric|min:0',
-            'salary_currency' => 'nullable|string|max:10',
-            'salary_period' => 'nullable|string|max:20',
-            'positions_available' => 'nullable|integer|min:1',
-            'application_deadline' => 'nullable|date',
-            'is_active' => 'boolean',
+            'salary_currency' => 'nullable|string',
+            'salary_period' => 'nullable|string',
+            'experience_years' => 'nullable|integer',
+            'education_level' => 'nullable|string',
+            'required_skills' => 'nullable|string', // JSON string from hidden input
+            'languages' => 'nullable|string', // JSON string from hidden input
+            'willing_to_relocate' => 'boolean',
+            'required_passport' => 'boolean',
+            'medical_clearance' => 'boolean',
+            'police_clearance' => 'boolean',
+            'benefits' => 'nullable|array',
+            'other_benefits' => 'nullable|string',
         ]);
 
-        $validated['is_active'] = $request->has('is_active');
-
-        // Ensure languages is saved as an array for JsonContains search
-        if ($request->filled('languages')) {
-            $validated['languages'] = (array) $request->input('languages');
+        // Handle custom currency if provided
+        if ($request->salary_currency === 'OTHER' && $request->filled('custom_currency')) {
+            $validated['salary_currency'] = $request->custom_currency;
         }
+
+        // Parse JSON fields
+        if ($request->filled('required_skills')) {
+            $validated['required_skills'] = json_decode($request->input('required_skills'), true);
+        }
+        if ($request->filled('languages')) {
+            $validated['languages'] = json_decode($request->input('languages'), true);
+        }
+
+        $validated['is_active'] = !$request->has('is_draft');
 
         $job->update($validated);
 

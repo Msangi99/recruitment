@@ -55,7 +55,10 @@
     </style>
 </head>
 
-<body class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased" x-data="{ mobileSidebarOpen: false }">
+<body class="min-h-screen bg-slate-50 font-sans text-slate-900 antialiased" x-data="{ 
+    mobileSidebarOpen: false, 
+    bookingsOpen: {{ request()->routeIs('admin.consultations.*') ? 'true' : 'false' }} 
+}">
     <!-- Top Navbar -->
     <nav class="fixed inset-x-0 top-0 z-40 h-16 border-b border-slate-200 bg-white/80 backdrop-blur">
         <div class="flex h-full items-center px-4 sm:px-6 lg:px-8 lg:pl-80 gap-4">
@@ -176,10 +179,37 @@
                             :active="request()->routeIs('admin.categories.*')" />
                         <x-admin-sidebar-item href="{{ route('admin.jobs.index') }}" icon="briefcase" label="Jobs"
                             :active="request()->routeIs('admin.jobs.*')" />
-                        <x-admin-sidebar-item href="{{ route('admin.appointments.index') }}" icon="calendar"
-                            label="Interviews" :active="request()->routeIs('admin.appointments.*')" />
-                        <x-admin-sidebar-item href="{{ route('admin.consultations.index') }}" icon="calendar-days"
-                            label="Appointments" :active="request()->routeIs('admin.consultations.*')" />
+                        {{-- <x-admin-sidebar-item href="{{ route('admin.appointments.index') }}" icon="calendar"
+                            label="Candidate Requests" :active="request()->routeIs('admin.appointments.*')" /> --}}
+
+                        <div class="space-y-1">
+                            <button @click="bookingsOpen = !bookingsOpen"
+                                class="flex w-full items-center px-4 py-3.5 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.consultations.*') ? 'bg-white/10 text-white' : 'text-white/60 hover:text-white hover:bg-white/5' }}">
+                                <div
+                                    class="mr-4 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
+                                    <i data-lucide="calendar-check"
+                                        class="w-5 h-5 {{ request()->routeIs('admin.consultations.*') ? 'text-white' : 'text-orange-500' }}"></i>
+                                </div>
+                                <span class="text-[14px] font-bold tracking-wide">Bookings</span>
+                                <i data-lucide="chevron-down" class="ml-auto w-4 h-4 transition-transform duration-200"
+                                    :class="bookingsOpen ? 'rotate-180' : ''"></i>
+                            </button>
+
+                            <div x-show="bookingsOpen" x-cloak x-collapse class="pl-12 space-y-1">
+                                <a href="{{ route('admin.consultations.index', ['type' => 'employer']) }}"
+                                    class="block py-2 text-sm font-bold transition-colors {{ request('type') == 'employer' ? 'text-white' : 'text-white/50 hover:text-white' }}">
+                                    Book Employer Meeting
+                                </a>
+                                <a href="{{ route('admin.consultations.index', ['type' => 'partnership']) }}"
+                                    class="block py-2 text-sm font-bold transition-colors {{ request('type') == 'partnership' ? 'text-white' : 'text-white/50 hover:text-white' }}">
+                                    Schedule Partnership Call
+                                </a>
+                                <a href="{{ route('admin.consultations.index', ['type' => 'job_seeker']) }}"
+                                    class="block py-2 text-sm font-bold transition-colors {{ request('type') == 'job_seeker' ? 'text-white' : 'text-white/50 hover:text-white' }}">
+                                    Book Career Consultation
+                                </a>
+                            </div>
+                        </div>
                         <x-admin-sidebar-item href="{{ route('admin.calendar') }}" icon="calendar-range"
                             label="Calendar" :active="request()->routeIs('admin.calendar')" />
                         <x-admin-sidebar-item href="{{ route('admin.payments.index') }}" icon="credit-card"
@@ -256,6 +286,7 @@
     </div>
 
     <!-- Alpine.js -->
+    <script defer src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {

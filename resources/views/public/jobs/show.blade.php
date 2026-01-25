@@ -84,10 +84,13 @@
                         <div class="bg-gray-50 rounded-lg p-4">
                             <h3 class="text-sm font-medium text-gray-500 mb-2">Experience Required</h3>
                             <p class="text-lg font-semibold text-gray-900">
-                                @if($job->experience_required == 0)
+                                @php
+                                    $exp = $job->experience_years ?? $job->experience_required ?? 0;
+                                @endphp
+                                @if($exp == 0)
                                     No experience required
                                 @else
-                                    {{ $job->experience_required }}+ years
+                                    {{ $exp }}+ years
                                 @endif
                             </p>
                         </div>
@@ -101,11 +104,20 @@
                             </div>
                         @endif
 
-                        @if($job->languages && count($job->languages) > 0)
-                            <div class="bg-gray-50 rounded-lg p-4">
-                                <h3 class="text-sm font-medium text-gray-500 mb-2">Language Requirements</h3>
-                                <p class="text-lg font-semibold text-gray-900">{{ implode(', ', $job->languages) }}</p>
-                            </div>
+                        @if(!empty($job->languages))
+                                                <div class="bg-gray-50 rounded-lg p-4">
+                                                    <h3 class="text-sm font-medium text-gray-500 mb-2">Language Requirements</h3>
+                                                    <p class="text-lg font-semibold text-gray-900">
+                                                        {{ collect($job->languages)->map(function ($lang) {
+                                if (is_array($lang)) {
+                                    $name = $lang['name'] ?? $lang['language'] ?? '';
+                                    $prof = $lang['proficiency'] ?? $lang['level'] ?? '';
+                                    return $name . ($prof ? '-' . $prof : '');
+                                }
+                                return $lang;
+                            })->filter()->implode(', ') }}
+                                                    </p>
+                                                </div>
                         @endif
                     </div>
 
@@ -132,7 +144,22 @@
                         <div>
                             <h2 class="text-xl font-bold text-gray-900 mb-4">Benefits</h2>
                             <div class="prose max-w-none text-gray-700">
-                                {!! $job->benefits !!}
+                                @if(is_array($job->benefits))
+                                    <ul>
+                                        @foreach($job->benefits as $benefit)
+                                            <li>{{ $benefit }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($job->other_benefits)
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900 mb-4">Additional Benefits</h2>
+                            <div class="prose max-w-none text-gray-700">
+                                {!! $job->other_benefits !!}
                             </div>
                         </div>
                     @endif
