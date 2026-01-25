@@ -199,14 +199,12 @@
 
                     <!-- 1. Professional summary -->
                     <div id="summary" class="mb-6">
-                        {{-- <h2 class="text-lg font-bold text-gray-900 mb-3">Professional Summary</h2> --}}
                         @if($candidate->candidateProfile->title || $candidate->candidateProfile->headline)
                             <div class="mb-4">
                                 <h3 class="text-base font-bold text-deep-green">
                                     {{ $candidate->candidateProfile->headline }}
                                     {{-- {{ $candidate->candidateProfile->title ?? 'Candidate' }} --}}
                                 </h3>
-                                {{-- <p class="text-gray-500 text-sm ">{{ $candidate->candidateProfile->headline }}</p> --}}
                             </div>
                         @endif
                         <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed font-normal">
@@ -250,7 +248,8 @@
                                                 class="font-medium text-gray-700">
                                                 {{ $experience->start_date->format('M Y') }} -
                                                 
-                                            </span> To: {{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : 'N/A') }}</p>
+                                            </span> To: <span
+                                                class="font-medium text-gray-700">{{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : 'N/A') }}</span></p>
                                         <p class="text-sm font-bold text-gray-900">Roles & responsibilities:</p>
                                         <div class="text-sm text-gray-600 prose prose-sm max-w-none mt-2 ml-4">
                                             {!! $experience->description !!}
