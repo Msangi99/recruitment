@@ -311,146 +311,145 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Step 2: Application Form -->
-                <div id="step-2" class="step-transition hidden">
-                    <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-100">
-                        <div class="bg-deep-green px-8 py-6 text-white">
-                            <div class="flex justify-between items-center mb-2">
-                                <h2 class="text-2xl font-bold">Submit Your Application</h2>
-                                <span
-                                    class="text-green-100 text-sm font-medium bg-white/10 px-3 py-1 rounded-full border border-white/20">Step
-                                    2 of 2</span>
+            <!-- Step 2: Application Form -->
+            <div id="step-2" class="step-transition hidden">
+                <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-100">
+                    <div class="bg-deep-green px-8 py-6 text-white">
+                        <div class="flex justify-between items-center mb-2">
+                            <h2 class="text-2xl font-bold">Submit Your Application</h2>
+                            <span
+                                class="text-green-100 text-sm font-medium bg-white/10 px-3 py-1 rounded-full border border-white/20">Step
+                                2 of 2</span>
+                        </div>
+                        <p class="text-green-100 opacity-90">Application Details</p>
+                    </div>
+
+                    <form method="POST" action="{{ route('candidate.jobs.apply', $job) }}" enctype="multipart/form-data"
+                        class="p-8 space-y-8">
+                        @csrf
+
+                        <!-- Section 1: Cover Letter -->
+                        <div class="space-y-3">
+                            <label for="cover_letter" class="block text-sm font-bold text-gray-700">Cover
+                                Letter</label>
+                            <textarea name="cover_letter" id="cover_letter" rows="8"
+                                class="w-full rounded-xl border-gray-200 shadow-sm focus:border-deep-green focus:ring-deep-green transition-all"
+                                placeholder="Briefly explain why you are suitable for this position. Highlight your experience, skills, and availability.">{{ old('cover_letter') }}</textarea>
+                            <div class="flex justify-between text-xs text-gray-400">
+                                <span>Text area (maximum 1,000 words)</span>
+                                <span id="word-count">0 words</span>
                             </div>
-                            <p class="text-green-100 opacity-90">Application Details</p>
                         </div>
 
-                        <form method="POST" action="{{ route('candidate.jobs.apply', $job) }}"
-                            enctype="multipart/form-data" class="p-8 space-y-8">
-                            @csrf
+                        <!-- Section 2: Upload CV -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-bold text-gray-700">Upload Your CV / Resume</label>
+                            <div class="relative group">
+                                <input type="file" name="cv_file" id="cv_file" accept=".pdf,.doc,.docx" class="hidden"
+                                    required onchange="updateFileName(this)">
+                                <label for="cv_file"
+                                    class="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-2xl p-8 hover:border-deep-green hover:bg-green-50 transition-all cursor-pointer">
+                                    <div
+                                        class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-deep-green group-hover:text-white transition-all">
+                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <span id="file-name" class="text-gray-600 font-medium">Click to upload or drag
+                                        and drop</span>
+                                    <div class="flex items-center gap-3 mt-4">
+                                        <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-lg text-xs">PDF,
+                                            DOC, DOCX</span>
+                                        <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-lg text-xs">MAX
+                                            5MB</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
 
-                            <!-- Section 1: Cover Letter -->
-                            <div class="space-y-3">
-                                <label for="cover_letter" class="block text-sm font-bold text-gray-700">Cover
-                                    Letter</label>
-                                <textarea name="cover_letter" id="cover_letter" rows="8"
-                                    class="w-full rounded-xl border-gray-200 shadow-sm focus:border-deep-green focus:ring-deep-green transition-all"
-                                    placeholder="Briefly explain why you are suitable for this position. Highlight your experience, skills, and availability.">{{ old('cover_letter') }}</textarea>
-                                <div class="flex justify-between text-xs text-gray-400">
-                                    <span>Text area (maximum 1,000 words)</span>
-                                    <span id="word-count">0 words</span>
+                        <!-- Section 3: Auto-Filled Information -->
+                        <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
+                            <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider">Your Information
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-1">Full Name</label>
+                                    <input type="text" value="{{ auth()->user()->name ?? '-' }}" disabled
+                                        class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-400 mb-1">Email
+                                        Address</label>
+                                    <input type="text" value="{{ auth()->user()->email ?? '-' }}" disabled
+                                        class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-medium text-gray-400 mb-1">Phone Number</label>
+                                    <input type="text" value="{{ auth()->user()->phone ?? '-' }}" disabled
+                                        class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
                                 </div>
                             </div>
+                            <p class="text-[10px] text-gray-400 italic mt-4 text-center">Information is
+                                automatically pulled from your user profile.</p>
+                        </div>
 
-                            <!-- Section 2: Upload CV -->
-                            <div class="space-y-3">
-                                <label class="block text-sm font-bold text-gray-700">Upload Your CV / Resume</label>
-                                <div class="relative group">
-                                    <input type="file" name="cv_file" id="cv_file" accept=".pdf,.doc,.docx"
-                                        class="hidden" required onchange="updateFileName(this)">
-                                    <label for="cv_file"
-                                        class="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-2xl p-8 hover:border-deep-green hover:bg-green-50 transition-all cursor-pointer">
-                                        <div
-                                            class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-deep-green group-hover:text-white transition-all">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                                                </path>
-                                            </svg>
-                                        </div>
-                                        <span id="file-name" class="text-gray-600 font-medium">Click to upload or drag
-                                            and drop</span>
-                                        <div class="flex items-center gap-3 mt-4">
-                                            <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-lg text-xs">PDF,
-                                                DOC, DOCX</span>
-                                            <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-lg text-xs">MAX
-                                                5MB</span>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Section 3: Auto-Filled Information -->
-                            <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
-                                <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider">Your Information
-                                </h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-400 mb-1">Full Name</label>
-                                        <input type="text" value="{{ auth()->user()->name ?? '-' }}" disabled
-                                            class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-400 mb-1">Email
-                                            Address</label>
-                                        <input type="text" value="{{ auth()->user()->email ?? '-' }}" disabled
-                                            class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label class="block text-xs font-medium text-gray-400 mb-1">Phone Number</label>
-                                        <input type="text" value="{{ auth()->user()->phone ?? '-' }}" disabled
-                                            class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
-                                    </div>
-                                </div>
-                                <p class="text-[10px] text-gray-400 italic mt-4 text-center">Information is
-                                    automatically pulled from your user profile.</p>
-                            </div>
-
-                            <div class="flex gap-4 pt-4">
-                                <button type="button" onclick="showStep1()"
-                                    class="flex-1 px-8 py-4 border border-gray-200 text-gray-600 font-bold rounded-xl hover:bg-gray-50 transition-all">
-                                    Back
-                                </button>
-                                <button type="submit"
-                                    class="flex-[2] px-8 py-4 bg-deep-green text-white font-bold rounded-xl hover:bg-opacity-90 transform active:scale-95 transition-all shadow-lg text-lg">
-                                    Submit Application
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="flex gap-4 pt-4">
+                            <button type="button" onclick="showStep1()"
+                                class="flex-1 px-8 py-4 border border-gray-200 text-gray-600 font-bold rounded-xl hover:bg-gray-50 transition-all">
+                                Back
+                            </button>
+                            <button type="submit"
+                                class="flex-[2] px-8 py-4 bg-deep-green text-white font-bold rounded-xl hover:bg-opacity-90 transform active:scale-95 transition-all shadow-lg text-lg">
+                                Submit Application
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <script>
-            function showStep2() {
-                document.getElementById('step-1').classList.add('hidden');
-                document.getElementById('step-2').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
-            function showStep1() {
-                document.getElementById('step-2').classList.add('hidden');
-                document.getElementById('step-1').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-
-            function updateFileName(input) {
-                const fileName = input.files[0] ? input.files[0].name : 'Click to upload or drag and drop';
-                document.getElementById('file-name').textContent = fileName;
-            }
-
-            const coverLetter = document.getElementById('cover_letter');
-            const wordCountDisplay = document.getElementById('word-count');
-
-            if (coverLetter) {
-                coverLetter.addEventListener('input', function () {
-                    const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
-                    const count = words.length;
-                    wordCountDisplay.textContent = `${count} words`;
-
-                    if (count > 1000) {
-                        wordCountDisplay.classList.add('text-red-500');
-                        wordCountDisplay.classList.remove('text-gray-400');
-                    } else {
-                        wordCountDisplay.classList.remove('text-red-500');
-                        wordCountDisplay.classList.add('text-gray-400');
-                    }
-                });
-            }
-        </script>
     </div>
-    </div>
+
+    <script>
+        function showStep2() {
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showStep1() {
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-1').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : 'Click to upload or drag and drop';
+            document.getElementById('file-name').textContent = fileName;
+        }
+
+        const coverLetter = document.getElementById('cover_letter');
+        const wordCountDisplay = document.getElementById('word-count');
+
+        if (coverLetter) {
+            coverLetter.addEventListener('input', function () {
+                const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
+                const count = words.length;
+                wordCountDisplay.textContent = `${count} words`;
+
+                if (count > 1000) {
+                    wordCountDisplay.classList.add('text-red-500');
+                    wordCountDisplay.classList.remove('text-gray-400');
+                } else {
+                    wordCountDisplay.classList.remove('text-red-500');
+                    wordCountDisplay.classList.add('text-gray-400');
+                }
+            });
+        }
+    </script>
 
     @include('partials.footer')
 </body>
