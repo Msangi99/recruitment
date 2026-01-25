@@ -3,7 +3,7 @@
 @section('wizard-content')
     <div class="max-w-2xl mx-auto">
         <div class="text-center mb-10">
-            <h2 class="text-3xl font-bold text-slate-900">Profile Media & Introduction</h2>
+            <h2 class="text-3xl font-bold text-slate-900">Compliance & Documents</h2>
             <p class="mt-2 text-base text-slate-600 font-medium">Upload a professional photo and a short introduction video to increase your chances with employers.</p>
         </div>
 
