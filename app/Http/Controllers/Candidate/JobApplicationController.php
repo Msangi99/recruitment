@@ -223,6 +223,8 @@ class JobApplicationController extends Controller
             return back()->with('error', 'This job is no longer accepting applications.');
         }
 
+
+
         // Get PHP upload limits
         $uploadMaxFilesize = $this->convertToBytes(ini_get('upload_max_filesize'));
         $postMaxSize = $this->convertToBytes(ini_get('post_max_size'));
