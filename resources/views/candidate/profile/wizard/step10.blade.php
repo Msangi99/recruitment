@@ -10,9 +10,8 @@
         <div class="space-y-8">
             <!-- Compliance Documents Upload -->
             <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
                     <h3 class="text-lg font-bold text-slate-900">Compliance Documents</h3>
-                    <span class="text-xs font-medium text-slate-500 uppercase">Step 10 / 12</span>
                 </div>
                 <div class="p-6">
                     <!-- List of Added Documents -->
@@ -25,8 +24,27 @@
                                             <i data-lucide="file-text" class="w-4 h-4 text-emerald-600"></i>
                                         </div>
                                         <div>
-                                            <p class="text-sm font-bold text-slate-900">{{ $doc->document_type }}</p>
-                                            <p class="text-[10px] text-slate-500">{{ $doc->file_name }} ({{ $doc->file_size_human }})</p>
+                                            <div class="flex items-center">
+                                                <p class="text-sm font-bold text-slate-900">{{ $doc->document_type }}</p>
+                                                @if($doc->verification_status == 'approved')
+                                                    <span class="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-100 text-emerald-700 uppercase">
+                                                        <i data-lucide="check" class="w-2.5 h-2.5 mr-0.5"></i> Verified
+                                                    </span>
+                                                @elseif($doc->verification_status == 'rejected')
+                                                    <span class="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-100 text-rose-700 uppercase" title="{{ $doc->rejection_reason }}">
+                                                        <i data-lucide="x" class="w-2.5 h-2.5 mr-0.5"></i> Rejected
+                                                    </span>
+                                                @else
+                                                    <span class="ml-2 inline-flex items-center px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-100 text-amber-700 uppercase">
+                                                        <i data-lucide="clock" class="w-2.5 h-2.5 mr-0.5"></i> Pending
+                                                    </span>
+                                                @endif
+                                            </div>
+                                            <p class="text-[10px] text-slate-500">
+                                                {{ $doc->file_name }} ({{ $doc->file_size_human }}) 
+                                                <span class="mx-1">•</span> 
+                                                Uploaded on {{ $doc->created_at->format('d M Y') }}
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-2">
@@ -61,7 +79,7 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Upload PDF</label>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Upload PDF (Max 5MB)</label>
                                 <input type="file" name="document" accept="application/pdf" required
                                     class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer" />
                             </div>
@@ -76,7 +94,10 @@
                 </div>
             </div>
             <!-- Medical & Police Status -->
-            {{-- <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" x-data="{ 
+                medical: '{{ $profile->medical_clearance ?? 'Pending' }}',
+                police: '{{ $profile->police_clearance ?? 'Pending' }}'
+            }">
                 <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
                     <label class="block text-sm font-bold text-slate-900 mb-4 flex items-center">
                         <i data-lucide="heart-pulse" class="w-5 h-5 mr-2 text-rose-500"></i>
@@ -84,13 +105,14 @@
                     </label>
                     <div class="grid grid-cols-3 gap-2">
                         @foreach(['Fit', 'Pending', 'Unfit'] as $status)
-                            <label class="relative flex cursor-pointer rounded-lg border bg-white p-3 shadow-sm focus:outline-none">
+                            <label class="relative flex cursor-pointer rounded-lg border p-3 shadow-sm focus:outline-none transition-all"
+                                :class="medical === '{{ $status }}' ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:border-slate-300'">
                                 <input type="radio" name="medical_clearance" value="{{ $status }}" form="main-form"
-                                    {{ $profile->medical_clearance == $status ? 'checked' : '' }} class="sr-only">
-                                <span class="flex flex-1 items-center justify-center text-sm font-medium {{ $profile->medical_clearance == $status ? 'text-emerald-700' : 'text-slate-600' }}">
+                                    x-model="medical" class="sr-only">
+                                <span class="flex flex-1 items-center justify-center text-sm font-bold"
+                                    :class="medical === '{{ $status }}' ? 'text-emerald-700' : 'text-slate-600'">
                                     {{ $status }}
                                 </span>
-                                <span class="pointer-events-none absolute -inset-px rounded-lg border-2 {{ $profile->medical_clearance == $status ? 'border-emerald-500' : 'border-transparent' }}" aria-hidden="true"></span>
                             </label>
                         @endforeach
                     </div>
@@ -103,18 +125,19 @@
                     </label>
                     <div class="grid grid-cols-3 gap-2">
                         @foreach(['Cleared', 'Pending', 'Disqualified'] as $status)
-                            <label class="relative flex cursor-pointer rounded-lg border bg-white p-3 shadow-sm focus:outline-none">
+                            <label class="relative flex cursor-pointer rounded-lg border p-3 shadow-sm focus:outline-none transition-all"
+                                :class="police === '{{ $status }}' ? 'border-emerald-500 bg-emerald-50 ring-1 ring-emerald-500' : 'border-slate-200 bg-white hover:border-slate-300'">
                                 <input type="radio" name="police_clearance" value="{{ $status }}" form="main-form"
-                                    {{ $profile->police_clearance == $status ? 'checked' : '' }} class="sr-only">
-                                <span class="flex flex-1 items-center justify-center text-sm font-medium {{ $profile->police_clearance == $status ? 'text-emerald-700' : 'text-slate-600' }}">
+                                    x-model="police" class="sr-only">
+                                <span class="flex flex-1 items-center justify-center text-sm font-bold"
+                                    :class="police === '{{ $status }}' ? 'text-emerald-700' : 'text-slate-600'">
                                     {{ $status }}
                                 </span>
-                                <span class="pointer-events-none absolute -inset-px rounded-lg border-2 {{ $profile->police_clearance == $status ? 'border-emerald-500' : 'border-transparent' }}" aria-hidden="true"></span>
                             </label>
                         @endforeach
                     </div>
                 </div>
-            </div> --}}
+            </div>
             <!-- Profile Picture Upload -->
             <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
