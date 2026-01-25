@@ -290,7 +290,7 @@
                 <div x-show="step === 2" x-cloak class="p-6 md:p-8 space-y-6">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900">Step 2: Candidate Requirements</h2>
-                        <p class="text-gray-500 mt-1">Define qualifications required for this position.</p>
+                        <p class="text-gray-500 mt-1">Define the qualifications and conditions required for this position.</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -448,7 +448,7 @@
                 <div x-show="step === 3" x-cloak class="p-6 md:p-8 space-y-6">
                     <div>
                         <h2 class="text-2xl font-bold text-gray-900">Step 3: Job Benefits</h2>
-                        <p class="text-gray-500 mt-1">Select benefits offered by the employer.</p>
+                        <p class="text-gray-500 mt-1">SSelect the benefits offered by the employer for this position.</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -500,8 +500,7 @@
                             class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-50 text-blue-600 mb-4 font-extrabold text-2xl">
                             4</div>
                         <h2 class="text-2xl font-bold text-gray-900">Review & Publish Job</h2>
-                        <p class="text-slate-500 mt-1 text-sm font-medium">Review your job post before publishing to ensure
-                            accuracy.</p>
+                        <p class="text-slate-500 mt-1 text-sm font-medium">Review your job post before publishing to ensure accuracy and professionalism.</p>
                     </div>
 
                     <div class="bg-gray-50 rounded-[2rem] p-6 md:p-8 border border-gray-100">
