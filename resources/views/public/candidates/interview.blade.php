@@ -124,20 +124,20 @@
                     </div>
                     <!-- Candidate Quick View -->
                     <div
-                        class="flex items-center gap-4 bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/20">
+                        class="flex items-center gap-4 bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/20 min-w-fit">
                         @if($candidate->candidateProfile->profile_picture)
                             <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
                                 alt="{{ $candidate->name }}"
-                                class="w-16 h-16 rounded-xl object-cover border-2 border-white/30 shadow-lg">
+                                class="w-16 h-16 rounded-xl flex-shrink-0 object-cover border-2 border-white/30 shadow-lg">
                         @else
                             <div
-                                class="w-16 h-16 rounded-xl bg-deep-green flex items-center justify-center text-xl font-bold border-2 border-white/30 shadow-lg">
+                                class="w-16 h-16 rounded-xl flex-shrink-0 bg-deep-green flex items-center justify-center text-xl font-bold border-2 border-white/30 shadow-lg">
                                 {{ strtoupper(substr($candidate->name, 0, 1)) }}
                             </div>
                         @endif
-                        <div>
-                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-200">Candidate ID</p>
-                            <p class="text-lg font-mono font-bold">#{{ str_pad($candidate->id, 7, '0', STR_PAD_LEFT) }}
+                        <div class="flex flex-col justify-center">
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-200 whitespace-nowrap">Candidate ID</p>
+                            <p class="text-lg font-mono font-bold whitespace-nowrap">#{{ str_pad($candidate->id, 7, '0', STR_PAD_LEFT) }}
                             </p>
                         </div>
                     </div>
