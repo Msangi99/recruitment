@@ -130,15 +130,17 @@ class VerificationController extends Controller
      */
     public function viewDocument(Document $document)
     {
-        \Log::info('Admin viewing document', [
-            'admin_id' => auth()->id(),
-            'admin_role' => auth()->user()->role,
-            'document_id' => $document->id,
-            'document_path' => $document->file_path,
-            'user_id' => $document->user_id,
-        ]);
+        $path = public_path($document->file_path);
+        
+        if (!file_exists($path)) {
+            // Check storage if not in public
+            $path = storage_path('app/private/' . $document->file_path);
+        }
 
-        // Redirect to public URL (like profile pictures)
-        return redirect(asset($document->file_path));
+        if (!file_exists($path)) {
+            abort(404, 'File not found on disk.');
+        }
+
+        return response()->file($path);
     }
 }
