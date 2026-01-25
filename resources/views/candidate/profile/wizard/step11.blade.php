@@ -282,17 +282,22 @@
                         class="text-sm font-medium text-emerald-600 hover:text-emerald-700">Edit</a>
                 </div>
                 <div class="p-6">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-6 pb-6 border-b border-slate-100">
                         <div>
-                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Profile Photo
-                            </dt>
+                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Profile Photo</dt>
                             <dd>
                                 @if($profile->profile_picture)
-                                    <img src="{{ asset($profile->profile_picture) }}"
-                                        class="w-32 h-32 rounded-lg object-cover border-2 border-slate-200">
+                                    <div class="relative inline-block">
+                                        <img src="{{ asset($profile->profile_picture) }}"
+                                            class="w-32 h-32 rounded-lg object-cover border-2 border-slate-200">
+                                        @if($profile->profile_picture_verified)
+                                            <span class="absolute -top-2 -right-2 bg-emerald-500 text-white rounded-full p-1 shadow-sm">
+                                                <i data-lucide="check" class="w-3 h-3"></i>
+                                            </span>
+                                        @endif
+                                    </div>
                                 @else
-                                    <div
-                                        class="w-32 h-32 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-xs">
+                                    <div class="w-32 h-32 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 text-xs">
                                         No Photo</div>
                                 @endif
                             </dd>
@@ -302,11 +307,27 @@
                             <dd>
                                 @if($profile->video_cv)
                                     <div class="flex items-center text-sm text-emerald-600 font-medium">
-                                        <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Document Uploaded
+                                        <i data-lucide="{{ $profile->video_cv_verified ? 'badge-check' : 'check-circle' }}" class="w-5 h-5 mr-2"></i> 
+                                        Video Uploaded {{ $profile->video_cv_verified ? '(Verified)' : '' }}
                                     </div>
                                 @else
                                     <div class="text-sm text-slate-400 italic">No video uploaded</div>
                                 @endif
+                            </dd>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Medical Fitness</dt>
+                            <dd class="text-sm font-medium {{ $profile->medical_clearance == 'Fit' ? 'text-emerald-600' : ($profile->medical_clearance == 'Unfit' ? 'text-rose-600' : 'text-slate-600') }}">
+                                {{ $profile->medical_clearance ?? 'Not Specified' }}
+                            </dd>
+                        </div>
+                        <div>
+                            <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Police Clearance</dt>
+                            <dd class="text-sm font-medium {{ $profile->police_clearance == 'Cleared' ? 'text-emerald-600' : ($profile->police_clearance == 'Disqualified' ? 'text-rose-600' : 'text-slate-600') }}">
+                                {{ $profile->police_clearance ?? 'Not Specified' }}
                             </dd>
                         </div>
                     </div>

@@ -193,12 +193,17 @@ class ProfileWizardController extends Controller
                 break;
 
             case 10: // Compliance & Documents
-                 // Check if files are uploaded if they are mandatory (Photo verified in logic below or client side)
                  // Requirement: "Before submit, candidate must tick: I consent..."
                  $validated = $request->validate([
                      'consent' => 'required|accepted',
+                     'medical_clearance' => 'nullable|string|in:Fit,Pending,Unfit',
+                     'police_clearance' => 'nullable|string|in:Cleared,Pending,Disqualified',
                  ]);
-                 // Proceed to next step
+                 
+                 $profile->update([
+                     'medical_clearance' => $validated['medical_clearance'] ?? $profile->medical_clearance,
+                     'police_clearance' => $validated['police_clearance'] ?? $profile->police_clearance,
+                 ]);
                  break;
 
             case 11: // Review & Submit

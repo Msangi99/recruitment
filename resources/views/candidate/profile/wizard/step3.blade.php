@@ -32,7 +32,7 @@
 <div class="max-w-2xl mx-auto">
     <div class="text-center mb-8">
         <h2 class="text-2xl font-bold text-slate-900">Job Preferences</h2>
-        <p class="mt-2 text-sm text-slate-600">Tell us what kind of work you're looking for so we can match you with the right employers.</p>
+        {{-- <p class="mt-2 text-sm text-slate-600">Tell us what kind of work you're looking for so we can match you with the right employers.</p> --}}
     </div>
 
     <form action="{{ route('candidate.wizard.process', ['step' => 3]) }}" method="POST" class="space-y-6">
@@ -66,6 +66,7 @@
         </div>
 
         <!-- Availability -->
+        
         <div>
             <label class="block text-sm font-medium text-slate-700 mb-2">Availability</label>
             <div class="space-y-2">

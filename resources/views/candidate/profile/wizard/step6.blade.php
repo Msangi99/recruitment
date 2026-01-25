@@ -40,7 +40,7 @@
 
         <!-- Add New Education Form -->
         <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 mb-8">
-            <h3 class="text-lg font-medium text-slate-900 mb-4">Add Education</h3>
+            <h3 class="text-lg font-medium text-slate-900 mb-4">Education</h3>
             <form action="{{ route('candidate.wizard.education.store') }}" method="POST" class="space-y-4">
                 @csrf
 
@@ -102,7 +102,7 @@
                 <div class="flex justify-end pt-2">
                     <button type="submit"
                         class="inline-flex justify-center rounded-md border border-transparent bg-deep-green py-2 px-6 text-sm font-bold text-white shadow-lg hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 transition-all transform hover:scale-105 active:scale-95">
-                        <i data-lucide="plus" class="h-4 w-4 mr-2"></i> Add Education
+                        <i data-lucide="plus" class="h-4 w-4 mr-2"></i> Save
                     </button>
                 </div>
             </form>
