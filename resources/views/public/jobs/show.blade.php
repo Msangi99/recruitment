@@ -390,51 +390,49 @@
     <script>
         let editor;
 
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof ClassicEditor !== 'undefined') {
+                ClassicEditor
+                    .create(document.querySelector('#cover_letter'), {
+                        placeholder: 'Write your cover letter here...',
+                        toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
+                        removePlugins: ['MediaEmbed', 'ImageUpload', 'CloudServices'],
+                    })
+                    .then(newEditor => {
+                        editor = newEditor;
+
+                        editor.model.document.on('change:data', () => {
+                            const data = editor.getData();
+                            document.querySelector('#cover_letter').value = data;
+
+                            // Update word count
+                            const text = data.replace(/<[^>]*>/g, ' ').trim();
+                            const words = text.split(/\s+/).filter(word => word.length > 0);
+                            const count = words.length;
+
+                            const countEl = document.getElementById('word-count');
+                            if (countEl) {
+                                countEl.textContent = `${count} words`;
+                                if (count > 1000) {
+                                    countEl.classList.add('text-red-500');
+                                    countEl.classList.remove('text-gray-400');
+                                } else {
+                                    countEl.classList.remove('text-red-500');
+                                    countEl.classList.add('text-gray-400');
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        console.error('CKEditor initialization failed:', error);
+                    });
+            }
+        });
+
         function showStep2() {
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            // Initialize editor if not already initialized
-            // Use timeout to ensure DOM is fully visible before initializing
-            if (!editor) {
-                setTimeout(() => {
-                    ClassicEditor
-                        .create(document.querySelector('#cover_letter'), {
-                            placeholder: 'Write your cover letter here...',
-                            toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
-                            removePlugins: ['MediaEmbed', 'ImageUpload', 'CloudServices'],
-                        })
-                        .then(newEditor => {
-                            editor = newEditor;
-
-                            editor.model.document.on('change:data', () => {
-                                const data = editor.getData();
-                                document.querySelector('#cover_letter').value = data;
-
-                                // Update word count
-                                const text = data.replace(/<[^>]*>/g, ' ').trim();
-                                const words = text.split(/\s+/).filter(word => word.length > 0);
-                                const count = words.length;
-
-                                const countEl = document.getElementById('word-count');
-                                if (countEl) {
-                                    countEl.textContent = `${count} words`;
-                                    if (count > 1000) {
-                                        countEl.classList.add('text-red-500');
-                                        countEl.classList.remove('text-gray-400');
-                                    } else {
-                                        countEl.classList.remove('text-red-500');
-                                        countEl.classList.add('text-gray-400');
-                                    }
-                                }
-                            });
-                        })
-                        .catch(error => {
-                            console.error('CKEditor initialization failed:', error);
-                        });
-                }, 100);
-            }
         }
 
         function showStep1() {
