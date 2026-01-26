@@ -84,6 +84,14 @@ class DocumentController extends Controller
                 'verification_status' => 'pending',
             ]);
 
+            // Auto-link to profile if it is a Video CV
+            if ($validated['document_type'] === 'video_cv') {
+                $candidate->candidateProfile()->update([
+                    'video_cv' => $filePath
+                ]);
+            }
+
+
             return back()->with('success', 'Document uploaded successfully. Waiting for admin verification.');
             
         } catch (\Exception $e) {

@@ -389,7 +389,17 @@
                                             {{ str_replace('-', ' ', $job->employment_type) }}
                                         </span>
                                     </div>
-                                    <p class="text-blue-500 text-sm font-medium mb-3">Confidential Company</p>
+                                    <p class="text-blue-500 text-sm font-bold mb-3 uppercase tracking-tight">
+                                        {{ $job->company_name }}</p>
+
+                                    @if($job->application_deadline)
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 rounded-xl text-[10px] font-black uppercase tracking-widest border border-red-100 mb-4 animate-pulse">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            Deadline: {{ \Carbon\Carbon::parse($job->application_deadline)->format('M d, Y') }}
+                                        </div>
+                                    @endif
 
                                     <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 mb-4">
                                         <span class="flex items-center gap-1.5">
@@ -422,10 +432,34 @@
                                             </svg>
                                             {{ (int) ($job->experience_years ?? $job->experience_required ?? 0) }} Years Exp.
                                         </span>
+                                        <span class="flex items-center gap-1.5">
+                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            </svg>
+                                            {{ $job->experience_years ?? $job->experience_required ?? 0 }} Years Exp.
+                                        </span>
                                     </div>
                                     <div class="text-gray-600 text-sm line-clamp-2 leading-relaxed">
                                         {{ Str::limit(strip_tags($job->description), 200) }}
                                     </div>
+
+                                    @if(!empty($job->required_skills))
+                                        <div class="flex flex-wrap gap-1.5 mt-3">
+                                            @foreach(array_slice($job->required_skills, 0, 4) as $skill)
+                                                <span
+                                                    class="px-2.5 py-1 bg-slate-50 text-slate-600 rounded-lg text-[10px] font-bold border border-slate-200/50">
+                                                    {{ $skill }}
+                                                </span>
+                                            @endforeach
+                                            @if(count($job->required_skills) > 4)
+                                                <span class="text-[10px] text-slate-400 font-bold flex items-center ml-1">
+                                                    +{{ count($job->required_skills) - 4 }} more
+                                                </span>
+                                            @endif
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <div class="flex flex-col items-end justify-between self-stretch gap-4 min-w-[140px]">

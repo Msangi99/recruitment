@@ -18,10 +18,10 @@ class JobManagementController extends Controller
         // Search filter
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhere('company_name', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('company_name', 'like', "%{$search}%");
             });
         }
 
@@ -90,6 +90,7 @@ class JobManagementController extends Controller
             'police_clearance' => 'boolean',
             'benefits' => 'nullable|array',
             'other_benefits' => 'nullable|string',
+            'requirements' => 'nullable|string',
         ]);
 
         // Handle custom currency if provided
@@ -157,6 +158,7 @@ class JobManagementController extends Controller
             'police_clearance' => 'boolean',
             'benefits' => 'nullable|array',
             'other_benefits' => 'nullable|string',
+            'requirements' => 'nullable|string',
         ]);
 
         // Handle custom currency if provided

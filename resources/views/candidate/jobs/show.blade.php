@@ -173,9 +173,9 @@
             </div>
 
             <!-- Right: Application Card -->
-            <div class="space-y-6">
+            <div class="space-y-6 lg:sticky lg:top-24 h-fit">
                 <!-- Apply Form -->
-                <div class="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-xl shadow-slate-200/50 sticky top-24">
+                <div class="bg-white rounded-[2rem] p-6 border border-slate-100 shadow-xl shadow-slate-200/50">
                     @if($hasApplied)
                         <div class="text-center py-4">
                             <div class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">

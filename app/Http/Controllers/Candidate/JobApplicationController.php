@@ -223,108 +223,54 @@ class JobApplicationController extends Controller
             return back()->with('error', 'This job is no longer accepting applications.');
         }
 
+
+
         // Get PHP upload limits
         $uploadMaxFilesize = $this->convertToBytes(ini_get('upload_max_filesize'));
         $postMaxSize = $this->convertToBytes(ini_get('post_max_size'));
         $maxUploadMB = floor(min($uploadMaxFilesize, $postMaxSize) / (1024 * 1024));
         
-        // Check if POST data was truncated (file too large for post_max_size)
+        // Check if video/file data was truncated
         if (empty($_POST) && empty($_FILES) && $request->server('CONTENT_LENGTH') > 0) {
-            \Log::error('POST data truncated - file too large', [
-                'content_length' => $request->server('CONTENT_LENGTH'),
-                'post_max_size' => ini_get('post_max_size'),
-                'user_id' => auth()->id()
-            ]);
-            return back()->with('error', "The video file is too large. Your server allows maximum {$maxUploadMB}MB uploads. Please upload a smaller video or contact administrator to increase the limit.")->withInput();
-        }
-
-        // Check raw $_FILES for upload errors before Laravel processes it
-        if (isset($_FILES['application_video']) && $_FILES['application_video']['error'] !== UPLOAD_ERR_OK && $_FILES['application_video']['error'] !== UPLOAD_ERR_NO_FILE) {
-            $errorMessages = [
-                UPLOAD_ERR_INI_SIZE => "The video file is too large. Maximum allowed by server is {$maxUploadMB}MB. Please upload a smaller video.",
-                UPLOAD_ERR_FORM_SIZE => 'The video file is too large for this form.',
-                UPLOAD_ERR_PARTIAL => 'The video was only partially uploaded. Please try again.',
-                UPLOAD_ERR_NO_TMP_DIR => 'Server configuration error. Please contact support.',
-                UPLOAD_ERR_CANT_WRITE => 'Failed to save video to disk. Please contact support.',
-                UPLOAD_ERR_EXTENSION => 'Video upload was stopped by a server extension.',
-            ];
-            $errorCode = $_FILES['application_video']['error'];
-            $errorMessage = $errorMessages[$errorCode] ?? 'Failed to upload video. Error code: ' . $errorCode;
-            \Log::error('Video upload error from $_FILES', ['error_code' => $errorCode, 'user_id' => auth()->id()]);
-            return back()->with('error', $errorMessage)->withInput();
-        }
-
-        // Check if video file was uploaded but had an error (Laravel level)
-        if ($request->hasFile('application_video')) {
-            $file = $request->file('application_video');
-            if (!$file->isValid()) {
-                $errorCode = $file->getError();
-                \Log::error('Video upload error - file invalid', ['error_code' => $errorCode, 'user_id' => auth()->id()]);
-                return back()->with('error', "The video file could not be uploaded. Maximum allowed by server is {$maxUploadMB}MB. Error code: {$errorCode}")->withInput();
-            }
-        }
-
-        // Calculate max size in KB based on PHP settings (use smaller of the two limits)
-        $maxSizeKB = floor(min($uploadMaxFilesize, $postMaxSize) / 1024);
-        
-        // Validate video if job requires it
-        $videoRules = [];
-        if ($job->requires_video) {
-            $videoRules['application_video'] = "required|mimes:mp4,mov,avi,wmv|max:{$maxSizeKB}";
-        } else {
-            $videoRules['application_video'] = "nullable|mimes:mp4,mov,avi,wmv|max:{$maxSizeKB}";
+            return back()->with('error', "The upload file is too large. Please upload a smaller file (max 5MB).")->withInput();
         }
 
         $validated = $request->validate([
-            'cover_letter' => 'nullable|string|max:2000',
-        ] + $videoRules, [
-            'application_video.required' => 'A video is required for this job application.',
-            'application_video.mimes' => 'The video must be a file of type: MP4, MOV, AVI, or WMV.',
-            'application_video.max' => "The video may not be larger than {$maxUploadMB}MB (server limit).",
-            'application_video.uploaded' => "The video failed to upload. Maximum allowed is {$maxUploadMB}MB.",
+            'cover_letter' => 'nullable|string',
+            'cv_file' => 'required|file|mimes:pdf,doc,docx|max:5120', // 5MB limit
+            'application_video' => 'nullable|mimes:mp4,mov,avi,wmv|max:102400', // 100MB max if provided
+        ], [
+            'cv_file.required' => 'Please upload your CV / Resume.',
+            'cv_file.mimes' => 'The CV must be a PDF, DOC, or DOCX file.',
+            'cv_file.max' => 'The CV file size must not exceed 5MB.',
         ]);
 
-        // Handle video upload
+        // Handle CV upload
+        $cvPath = null;
+        if ($request->hasFile('cv_file')) {
+            $file = $request->file('cv_file');
+            $fileName = 'cv_' . auth()->id() . '_' . $job->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $cvPath = $file->storeAs('cv_uploads', $fileName, 'public');
+        }
+
+        // Handle video upload (optional now)
         $videoPath = null;
         if ($request->hasFile('application_video')) {
-            try {
-                $file = $request->file('application_video');
-                
-                // Ensure directory exists in public folder
-                $directory = public_path('application-videos');
-                if (!file_exists($directory)) {
-                    mkdir($directory, 0755, true);
-                }
-                
-                // Generate unique filename
-                $extension = $file->getClientOriginalExtension();
-                $fileName = 'video_' . auth()->id() . '_' . $job->id . '_' . time() . '.' . $extension;
-                $destinationPath = $directory . '/' . $fileName;
-                
-                // Move uploaded file to public directory
-                if ($file->move($directory, $fileName)) {
-                    $videoPath = 'application-videos/' . $fileName;
-                    \Log::info('Video uploaded successfully', ['path' => $videoPath, 'user_id' => auth()->id()]);
-                } else {
-                    return back()->with('error', 'Failed to save video file. Please try again.')->withInput();
-                }
-            } catch (\Exception $e) {
-                \Log::error('Video upload error: ' . $e->getMessage(), ['user_id' => auth()->id(), 'trace' => $e->getTraceAsString()]);
-                return back()->with('error', 'An error occurred while uploading the video: ' . $e->getMessage())->withInput();
-            }
-        } elseif ($job->requires_video) {
-            return back()->with('error', 'Video is required for this job application.')->withInput();
+            $file = $request->file('application_video');
+            $fileName = 'video_' . auth()->id() . '_' . $job->id . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $videoPath = $file->storeAs('application_videos', $fileName, 'public');
         }
 
         JobApplication::create([
             'job_id' => $job->id,
             'candidate_id' => $candidate->id,
             'cover_letter' => $validated['cover_letter'] ?? null,
+            'cv_path' => $cvPath,
             'video_path' => $videoPath,
             'status' => 'pending',
         ]);
 
-        return redirect()->route('candidate.applications.index')
+        return redirect()->route('public.jobs.show', $job)
             ->with('success', 'Application submitted successfully!');
     }
 

@@ -88,8 +88,11 @@
                                 <dt class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Video CV</dt>
                                 <dd>
                                     <div class="w-full max-w-lg">
+                                        @php
+                                            $videoDoc = $candidate->documents->where('document_type', 'video_cv')->first();
+                                        @endphp
                                         <video controls class="w-full h-48 rounded-lg shadow-lg border border-gray-200 bg-black object-cover">
-                                            <source src="{{ asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
+                                            <source src="{{ $videoDoc ? route('admin.verification.document.view', $videoDoc) : asset($candidate->candidateProfile->video_cv) }}" type="video/mp4">
                                             Your browser does not support the video tag.
                                         </video>
                                     </div>
@@ -264,7 +267,7 @@
                                             <option value="rejected" {{ $document->verification_status == 'rejected' ? 'selected' : '' }}>REJECTED</option>
                                         </select>
                                     </form>
-                                    <a href="{{ asset($document->file_path) }}" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 transition-colors" title="View Document">
+                                    <a href="{{ route('admin.verification.document.view', $document) }}" target="_blank" class="p-2 text-gray-400 hover:text-blue-600 transition-colors" title="View Document">
                                         <i data-lucide="external-link" class="w-4 h-4"></i>
                                     </a>
                                 </div>

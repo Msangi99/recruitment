@@ -6,251 +6,250 @@
     <div class="min-h-screen bg-[#F8FAFC]">
         @include('candidate.partials.nav')
 
-        <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-            <!-- Header Section -->
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
-                <div>
-                    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Browse Opportunities</h1>
-                    <p class="text-slate-500 font-medium mt-1">Explore and apply to verified jobs matching your profile.</p>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Sorted by:</span>
-                    <button
-                        class="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 shadow-sm">
-                        Latest Posted
-                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400"></i>
-                    </button>
-                </div>
-            </div>
-
-            <div class="flex flex-col lg:flex-row gap-10">
-                <!-- Left: Sidebar Filters -->
-                <aside class="w-full lg:w-72 space-y-8 shrink-0">
-                    <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm">
-                        <form action="{{ route('candidate.jobs.index') }}" method="GET" class="space-y-8">
-                            <div>
-                                <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Search
-                                    Keywords</label>
-                                <div class="relative">
-                                    <i data-lucide="search" class="absolute left-4 top-3.5 w-4 h-4 text-slate-400"></i>
-                                    <input type="text" name="search" value="{{ request('search') }}"
-                                        placeholder="Title or skill..."
-                                        class="w-full pl-10 pr-4 py-3 bg-slate-50 border-transparent rounded-xl text-sm font-medium focus:ring-brand-600 focus:bg-white transition-all">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Placement</label>
-                                <div class="space-y-3">
-                                    @foreach(['Local', 'Abroad'] as $placement)
-                                        <label class="flex items-center cursor-pointer group">
-                                            <input type="checkbox" name="location_type[]" value="{{ $placement }}" {{ in_array($placement, (array) request('location_type')) ? 'checked' : '' }}
-                                                class="w-5 h-5 rounded border-slate-200 text-brand-600 focus:ring-brand-50">
-                                            <span
-                                                class="ml-3 text-sm font-bold text-slate-600 group-hover:text-brand-600 transition-colors">{{ $placement }}</span>
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-
-                            <div>
-                                <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Job
-                                    Category</label>
-                                <select name="job_category" onchange="this.form.submit()"
-                                    class="w-full bg-slate-50 border-transparent rounded-xl px-4 py-3 text-sm font-bold text-slate-700 focus:ring-brand-600 transition-all">
-                                    <option value="">All Categories</option>
-                                    @foreach($categories as $category)
-                                        <option value="{{ $category->name }}" {{ request('job_category') == $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div>
-                                <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Location
-                                    (Country)</label>
-                                <select name="country" onchange="this.form.submit()"
-                                    class="w-full bg-slate-50 border-transparent rounded-xl px-4 py-3 text-sm font-bold text-slate-700 focus:ring-brand-600 transition-all">
-                                    <option value="">All Countries</option>
-                                    @php
-                                        $countries = \App\Models\JobListing::whereNotNull('country')->distinct()->pluck('country');
-                                    @endphp
-                                    @foreach($countries as $country)
-                                        <option value="{{ $country }}" {{ request('country') == $country ? 'selected' : '' }}>
-                                            {{ $country }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div>
-                                <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Contract
-                                    Type</label>
-                                <select name="employment_type" onchange="this.form.submit()"
-                                    class="w-full bg-slate-50 border-transparent rounded-xl px-4 py-3 text-sm font-bold text-slate-700 focus:ring-brand-600 transition-all">
-                                    <option value="">All Types</option>
-                                    <option value="full-time" {{ request('employment_type') == 'full-time' ? 'selected' : '' }}>Full-time</option>
-                                    <option value="part-time" {{ request('employment_type') == 'part-time' ? 'selected' : '' }}>Part-time</option>
-                                    <option value="contract" {{ request('employment_type') == 'contract' ? 'selected' : '' }}>
-                                        Contract</option>
-                                    <option value="temporary" {{ request('employment_type') == 'temporary' ? 'selected' : '' }}>Temporary</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label
-                                    class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Working
-                                    Mode</label>
-                                <select name="working_mode" onchange="this.form.submit()"
-                                    class="w-full bg-slate-50 border-transparent rounded-xl px-4 py-3 text-sm font-bold text-slate-700 focus:ring-brand-600 transition-all">
-                                    <option value="">All Modes</option>
-                                    <option value="on-site" {{ request('working_mode') == 'on-site' ? 'selected' : '' }}>
-                                        On-site</option>
-                                    <option value="remote" {{ request('working_mode') == 'remote' ? 'selected' : '' }}>Remote
-                                    </option>
-                                    <option value="hybrid" {{ request('working_mode') == 'hybrid' ? 'selected' : '' }}>Hybrid
-                                    </option>
-                                </select>
-                            </div>
-
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+            <!-- Search Header -->
+            <div class="mb-8">
+                <form method="GET" action="{{ route('candidate.jobs.index') }}" class="relative max-w-4xl mx-auto">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Search jobs, companies, or keywords..."
+                            class="block w-full pl-11 pr-24 py-4 bg-white border border-gray-200 rounded-full shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg transition-all duration-200">
+                        <div class="absolute inset-y-0 right-2 flex items-center">
                             <button type="submit"
-                                class="w-full py-4 bg-brand-600 text-white font-black rounded-2xl text-xs uppercase tracking-widest shadow-lg shadow-brand-100 hover:bg-brand-700 transition-all">
-                                Apply Filters
+                                class="bg-blue-600 text-white px-6 py-2.5 rounded-full hover:bg-blue-700 transition-colors font-medium">
+                                Search
                             </button>
-
-                            @if(request()->anyFilled(['search', 'location_type', 'employment_type']))
-                                <a href="{{ route('candidate.jobs.index') }}"
-                                    class="block text-center text-xs font-bold text-slate-400 hover:text-brand-600 transition-colors">Clear
-                                    All Filters</a>
-                            @endif
-                        </form>
+                        </div>
                     </div>
 
-                    <!-- Promo/Help Widget -->
-                    <div class="bg-slate-900 rounded-[2rem] p-8 text-white relative overflow-hidden">
-                        <div class="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 bg-brand-600/20 rounded-full blur-2xl">
+                    @if(request()->anyFilled(['job_category', 'country', 'employment_type', 'working_mode', 'date_posted', 'experience_level', 'salary_period', 'location_type']))
+                        <div class="mt-2 flex items-center gap-2 text-sm">
+                            <span class="text-gray-500">Active filters:</span>
+                            <a href="{{ route('candidate.jobs.index') }}" class="text-blue-600 hover:underline">Clear all</a>
                         </div>
-                        <h4 class="text-lg font-bold mb-4 relative z-10">Need Help?</h4>
-                        <p class="text-slate-400 text-sm font-medium mb-6 relative z-10">Complete your profile to increase
-                            your chances of being noticed by recruiters.</p>
-                        <a href="{{ route('candidate.profile.create') }}"
-                            class="inline-flex items-center text-brand-400 font-bold text-sm group">
+                    @endif
+                </form>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Sidebar Filters -->
+                <aside class="w-full lg:w-64 space-y-6 flex-shrink-0">
+                    <form method="GET" action="{{ route('candidate.jobs.index') }}" id="filterForm" class="space-y-4">
+                        @if(request('search'))
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                        @endif
+
+                        <div class="space-y-3">
+                            <!-- Placement Filter -->
+                            <select name="location_type" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Placement</option>
+                                <option value="Local" {{ request('location_type') == 'Local' ? 'selected' : '' }}>Local</option>
+                                <option value="Abroad" {{ request('location_type') == 'Abroad' ? 'selected' : '' }}>Abroad</option>
+                            </select>
+
+                            <!-- Job Category Filter -->
+                            <select name="job_category" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->name }}" {{ request('job_category') == $category->name ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <!-- Location (Country) Filter -->
+                            <select name="country" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Location</option>
+                                @php
+                                    $countries = \App\Models\JobListing::whereNotNull('country')->distinct()->pluck('country');
+                                @endphp
+                                @foreach($countries as $country)
+                                    <option value="{{ $country }}" {{ request('country') == $country ? 'selected' : '' }}>
+                                        {{ $country }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <!-- Employment Type -->
+                            <select name="employment_type" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Employment Type</option>
+                                <option value="full-time" {{ request('employment_type') == 'full-time' ? 'selected' : '' }}>Full-time</option>
+                                <option value="part-time" {{ request('employment_type') == 'part-time' ? 'selected' : '' }}>Part-time</option>
+                                <option value="contract" {{ request('employment_type') == 'contract' ? 'selected' : '' }}>Contract</option>
+                                <option value="temporary" {{ request('employment_type') == 'temporary' ? 'selected' : '' }}>Temporary</option>
+                            </select>
+
+                            <!-- Working Mode -->
+                            <select name="working_mode" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Working Mode</option>
+                                <option value="on-site" {{ request('working_mode') == 'on-site' ? 'selected' : '' }}>On-site</option>
+                                <option value="remote" {{ request('working_mode') == 'remote' ? 'selected' : '' }}>Remote</option>
+                                <option value="hybrid" {{ request('working_mode') == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
+                            </select>
+
+                            <!-- Date Posted -->
+                            <select name="date_posted" onchange="this.form.submit()"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2.5">
+                                <option value="">Date Posted</option>
+                                <option value="3-days" {{ request('date_posted') == '3-days' ? 'selected' : '' }}>Last 3 days</option>
+                                <option value="7-days" {{ request('date_posted') == '7-days' ? 'selected' : '' }}>Last 7 days</option>
+                                <option value="30-days" {{ request('date_posted') == '30-days' ? 'selected' : '' }}>Last 30 days</option>
+                            </select>
+
+                            <button type="submit"
+                                class="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition-colors text-sm font-medium">
+                                Update Results
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Promo/Help Widget -->
+                    <div class="bg-slate-900 rounded-2xl p-6 text-white relative overflow-hidden">
+                        <div class="absolute top-0 right-0 -mr-4 -mt-4 w-16 h-16 bg-blue-600/20 rounded-full blur-2xl"></div>
+                        <h4 class="text-base font-bold mb-2 relative z-10">Need Help?</h4>
+                        <p class="text-slate-400 text-xs font-medium mb-4 relative z-10">Complete your profile to increase your chances of being noticed by recruiters.</p>
+                        <a href="{{ route('candidate.profile.show') }}"
+                            class="inline-flex items-center text-blue-400 font-bold text-xs group">
                             Update Profile
-                            <i data-lucide="arrow-right"
-                                class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                            <svg class="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
                         </a>
                     </div>
                 </aside>
 
-                <!-- Right: Job Listings -->
+                <!-- Jobs Results -->
                 <main class="flex-1">
+                    <div class="mb-4 flex justify-between items-center">
+                        <h2 class="text-xl font-bold text-gray-900">
+                            {{ $jobs->total() }} Jobs Found
+                        </h2>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-500">Sort by:</span>
+                            <select class="text-sm border-none bg-transparent font-medium text-gray-900 focus:ring-0 cursor-pointer">
+                                <option>Newest</option>
+                                <option>Salary</option>
+                            </select>
+                        </div>
+                    </div>
+
                     @if(session('success'))
-                        <div
-                            class="bg-emerald-50 border border-emerald-100 text-emerald-700 px-6 py-4 rounded-2xl flex items-center gap-3 mb-8">
-                            <i data-lucide="check-circle" class="w-5 h-5"></i>
-                            <span class="text-sm font-bold">{{ session('success') }}</span>
+                        <div class="mb-4 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg text-sm">
+                            {{ session('success') }}
                         </div>
                     @endif
 
-                    <div class="grid grid-cols-1 gap-6">
+                    <div class="space-y-4">
                         @forelse($jobs as $job)
-                            <div
-                                class="bg-white rounded-[2rem] border border-slate-100 p-8 hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 group relative">
-                                <!-- Applied Badge -->
-                                @if(in_array($job->id, $myApplications))
-                                    <div class="absolute top-8 right-8">
-                                        <span
-                                            class="px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-wider border border-emerald-100 flex items-center gap-2">
-                                            <i data-lucide="check" class="w-3 h-3"></i>
-                                            Applied
-                                        </span>
-                                    </div>
-                                @else
-                                    <div class="absolute top-8 right-8">
-                                        <span
-                                            class="px-4 py-1.5 rounded-full bg-brand-50 text-brand-600 text-[10px] font-black uppercase tracking-wider border border-brand-100">
-                                            {{ $job->job_location_type ?? 'Local' }}
-                                        </span>
-                                    </div>
-                                @endif
-
-                                <div class="flex flex-col md:flex-row gap-8">
-                                    <!-- Company Logo Placeholder -->
-                                    <div
-                                        class="w-16 h-16 bg-slate-50 text-slate-300 rounded-2xl flex items-center justify-center font-extrabold text-2xl shrink-0 group-hover:bg-brand-50 group-hover:text-brand-600 transition-colors border border-slate-100">
-                                        {{ substr($job->company_name, 0, 1) }}
-                                    </div>
-
-                                    <!-- Info -->
-                                    <div class="flex-1 space-y-4">
-                                        <div>
-                                            <h3
-                                                class="text-xl md:text-2xl font-extrabold text-slate-900 group-hover:text-brand-600 transition-colors mb-1">
+                            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 relative hover:shadow-md transition-all duration-300 hover:border-blue-100 group">
+                                <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 mb-1">
+                                            <h3 class="text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
                                                 <a href="{{ route('candidate.jobs.show', $job) }}">{{ $job->title }}</a>
                                             </h3>
-                                            <div class="flex items-center gap-3">
-                                                <p class="text-brand-600 font-bold text-sm">{{ $job->company_name }}</p>
-                                                <span class="w-1 h-1 bg-slate-300 rounded-full"></span>
-                                                <p class="text-slate-400 text-xs font-bold uppercase tracking-widest">
-                                                    {{ $job->employment_type }}
-                                                </p>
+                                            @if($job->status === 'urgent')
+                                                <span class="bg-red-50 text-red-600 text-[10px] font-bold px-2.5 py-1 rounded-full border border-red-100 uppercase tracking-wider">URGENT</span>
+                                            @endif
+                                            @if(in_array($job->id, $myApplications))
+                                                <span class="bg-green-50 text-green-600 text-[10px] font-bold px-2.5 py-1 rounded-full border border-green-100 uppercase tracking-wider">Applied</span>
+                                            @else
+                                                <span class="bg-blue-50 text-blue-600 text-[10px] font-bold px-2.5 py-1 rounded-full border border-blue-100 uppercase tracking-wider">
+                                                    {{ str_replace('-', ' ', $job->employment_type) }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <p class="text-blue-500 text-sm font-bold mb-3 uppercase tracking-tight">
+                                            {{ $job->company_name }}
+                                        </p>
+
+                                        @if($job->application_deadline)
+                                            <div class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 rounded-xl text-[10px] font-black uppercase tracking-widest border border-red-100 mb-4 animate-pulse">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                Deadline: {{ \Carbon\Carbon::parse($job->application_deadline)->format('M d, Y') }}
                                             </div>
+                                        @endif
+
+                                        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 mb-4">
+                                            <span class="flex items-center gap-1.5">
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                </svg>
+                                                {{ $job->location }}, {{ $job->country }}
+                                            </span>
+                                            <span class="flex items-center gap-1.5">
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span class="font-semibold text-gray-700">{{ $job->salary_currency }} {{ number_format($job->salary_min) }} - {{ number_format($job->salary_max) }}</span>
+                                                <span class="text-xs text-gray-400">/ {{ $job->salary_period }}</span>
+                                            </span>
+                                            <span class="flex items-center gap-1.5">
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                </svg>
+                                                {{ $job->experience_years ?? $job->experience_required ?? 0 }} Years Exp.
+                                            </span>
+                                        </div>
+                                        <div class="text-gray-600 text-sm line-clamp-2 leading-relaxed">
+                                            {{ Str::limit(strip_tags($job->description), 200) }}
                                         </div>
 
-                                        <div class="flex flex-wrap items-center gap-y-2 gap-x-6">
-                                            <div class="flex items-center gap-2 text-slate-500 text-sm font-medium">
-                                                <i data-lucide="map-pin" class="w-4 h-4 text-slate-300"></i>
-                                                <span>{{ $job->location }}, {{ $job->country }}</span>
+                                        @if(!empty($job->required_skills))
+                                            <div class="flex flex-wrap gap-1.5 mt-3">
+                                                @foreach(array_slice($job->required_skills, 0, 4) as $skill)
+                                                    <span class="px-2.5 py-1 bg-slate-50 text-slate-600 rounded-lg text-[10px] font-bold border border-slate-200/50">
+                                                        {{ $skill }}
+                                                    </span>
+                                                @endforeach
+                                                @if(count($job->required_skills) > 4)
+                                                    <span class="text-[10px] text-slate-400 font-bold flex items-center ml-1">
+                                                        +{{ count($job->required_skills) - 4 }} more
+                                                    </span>
+                                                @endif
                                             </div>
-                                            <div class="flex items-center gap-2 text-slate-500 text-sm font-medium">
-                                                <i data-lucide="banknote" class="w-4 h-4 text-slate-300"></i>
-                                                <span>{{ $job->salary_currency }} {{ number_format($job->salary_min) }} -
-                                                    {{ number_format($job->salary_max) }}</span>
-                                            </div>
-                                            <div class="flex items-center gap-2 text-slate-500 text-sm font-medium">
-                                                <i data-lucide="briefcase" class="w-4 h-4 text-slate-300"></i>
-                                                <span>{{ $job->experience_years ? $job->experience_years . 'y exp' : 'No exp' }}</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="flex flex-wrap gap-2 pt-2">
-                                            @foreach(array_slice($job->required_skills ?? [], 0, 3) as $skill)
-                                                <span
-                                                    class="px-3 py-1 bg-slate-50 rounded-lg text-xs font-bold text-slate-500 border border-slate-100 group-hover:bg-brand-50/30 transition-colors">#{{ $skill }}</span>
-                                            @endforeach
-                                        </div>
+                                        @endif
                                     </div>
 
-                                    <!-- Action -->
-                                    <div class="flex flex-col justify-end min-w-[160px]">
+                                    <div class="flex flex-col items-end justify-between self-stretch gap-4 min-w-[140px]">
+                                        <span class="text-xs text-gray-400 whitespace-nowrap font-medium">{{ $job->created_at->diffForHumans() }}</span>
+
                                         <a href="{{ route('candidate.jobs.show', $job) }}"
-                                            class="w-full inline-flex items-center justify-center px-6 py-4 bg-slate-900 text-white font-black rounded-2xl text-xs uppercase tracking-[2px] hover:bg-brand-600 transition-all hover:-translate-y-1 shadow-lg shadow-slate-100">
-                                            View & Apply
+                                            class="w-full inline-flex justify-center items-center px-4 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-500/20 transition-all hover:-translate-y-0.5 whitespace-nowrap">
+                                            View Details
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         @empty
-                            <div class="bg-white rounded-[2rem] p-16 text-center border border-slate-100">
-                                <div
-                                    class="w-20 h-20 bg-slate-50 text-slate-200 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <i data-lucide="inbox" class="w-10 h-10"></i>
+                            <div class="bg-white p-12 text-center rounded-xl border border-gray-200 shadow-sm">
+                                <div class="mb-4">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
                                 </div>
-                                <h3 class="text-xl font-extrabold text-slate-900 mb-2">No jobs found</h3>
-                                <p class="text-slate-500 font-medium mb-8">Try adjusting your search or filters to find more
-                                    opportunities.</p>
-                                <a href="{{ route('candidate.jobs.index') }}"
-                                    class="px-8 py-3 bg-brand-600 text-white font-bold rounded-xl text-sm transition-all hover:bg-brand-700">Explore
-                                    all jobs</a>
+                                <h3 class="text-lg font-medium text-gray-900">No jobs found</h3>
+                                <p class="mt-1 text-gray-500">Try adjusting your filters or search keywords.</p>
                             </div>
                         @endforelse
+                    </div>
 
-                        <div class="mt-10">
-                            {{ $jobs->links() }}
-                        </div>
+                    <div class="mt-8">
+                        {{ $jobs->links() }}
                     </div>
                 </main>
             </div>
