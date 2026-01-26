@@ -11,6 +11,7 @@ use App\Models\Language;
 use App\Models\WorkExperience;
 use App\Models\Education;
 use App\Models\Document;
+use App\Models\JobListing;
 use Illuminate\Support\Facades\Log;
 
 class ProfileWizardController extends Controller
@@ -40,6 +41,7 @@ class ProfileWizardController extends Controller
         switch ($step) {
             case 3: // Job Preferences
                 $viewData['categories'] = Category::orderBy('name')->get();
+                $viewData['jobTitles'] = JobListing::select('title')->distinct()->whereNotNull('title')->orderBy('title')->pluck('title');
                 break;
             case 4: // Skills
                 $viewData['allSkills'] = Skill::orderBy('name')->get();
@@ -73,7 +75,7 @@ class ProfileWizardController extends Controller
             case 1: // Account Create (handled by Register, but if editing...)
                 // Just update basic user info if needed
                 break;
-            
+
             case 2: // Basic Info
                 $validated = $request->validate([
                     'citizenship' => 'required|string|max:255',
@@ -82,7 +84,7 @@ class ProfileWizardController extends Controller
                     'city' => 'required|string|max:255',
                     'country' => 'required|string|max:255',
                 ]);
-                
+
                 $profile->update([
                     'citizenship' => $validated['citizenship'],
                     'gender' => $validated['gender'],
@@ -94,25 +96,22 @@ class ProfileWizardController extends Controller
             case 3: // Job Preferences
                 $validated = $request->validate([
                     'categories' => 'required|array',
-                    'preferred_job_titles' => 'required|string', // Comma separated for now or tags
+                    'preferred_job_titles' => 'required|array', 
+                    'preferred_job_titles.*' => 'string',
                     'availability_status' => 'required|string',
                     // employment_type handling if needed (add to model/migration if likely new)
                 ]);
 
-                // Map Preferred Job Titles (User input string to array)
-                // Assuming it comes as comma separated string from tag input
-                $titles = array_map('trim', explode(',', $validated['preferred_job_titles']));
-                
                 $profile->update([
                     // 'experience_category_id' => $validated['categories'][0] ?? null, // Keep for backward compatibility if needed, or remove
                     'availability_status' => $validated['availability_status'],
-                    'preferred_job_titles' => $titles,
+                    'preferred_job_titles' => $validated['preferred_job_titles'],
                 ]);
-                
+
                 // Sync categories
                 if (!empty($validated['categories'])) {
                     $profile->categories()->sync($validated['categories']);
-                    
+
                     // Update the primary category for single-category logic compatibility
                     $profile->experience_category_id = $validated['categories'][0];
                     $profile->save();
@@ -125,19 +124,19 @@ class ProfileWizardController extends Controller
             case 4: // Skills
                 $validated = $request->validate([
                     'skills' => 'required|array|max:15',
-                    'skills.*' => 'string', 
+                    'skills.*' => 'string',
                 ]);
 
                 // Logic to sync skills
                 // Assuming skills are sent as IDs if existing, or names if new. 
                 // For simplicity, let's assume UI sends generic tag strings
-                
+
                 $skillIds = [];
                 foreach ($validated['skills'] as $skillName) {
                     $skill = Skill::firstOrCreate(['name' => $skillName]);
                     $skillIds[] = $skill->id;
                 }
-                
+
                 $profile->skills()->sync($skillIds);
                 break;
 
@@ -147,11 +146,11 @@ class ProfileWizardController extends Controller
                     'international_experience' => $request->boolean('international_experience')
                 ]);
                 break;
-            
+
             case 6: // Education (Continue action)
                 // Nothing specific to save on continue, unless "Certifications" field is added
                 if ($request->has('certifications')) {
-                     // handled if column exists
+                    // handled if column exists
                 }
                 break;
 
@@ -159,11 +158,13 @@ class ProfileWizardController extends Controller
                 $validated = $request->validate([
                     'headline' => 'required|string|max:255',
                     'description' => 'required|string',
+                    'years_of_experience' => 'required|integer|min:0|max:50',
                 ]);
 
                 $profile->update([
                     'headline' => $validated['headline'],
                     'description' => $validated['description'],
+                    'years_of_experience' => $validated['years_of_experience'],
                 ]);
                 break;
 
@@ -181,7 +182,7 @@ class ProfileWizardController extends Controller
                     'passport_status' => $validated['passport_status'],
                 ]);
                 break;
-            
+
             case 9: // Languages
                 $validated = $request->validate([
                     'languages' => 'required|array',
@@ -191,45 +192,45 @@ class ProfileWizardController extends Controller
 
                 $syncData = [];
                 foreach ($validated['languages'] as $lang) {
-                    if(!empty($lang['id'])) {
+                    if (!empty($lang['id'])) {
                         $syncData[$lang['id']] = ['proficiency' => $lang['proficiency']];
                     }
                 }
-                
+
                 $profile->languages()->sync($syncData);
                 break;
 
             case 10: // Compliance & Documents
-                 // Requirement: "Before submit, candidate must tick: I consent..."
-                 $validated = $request->validate([
-                     'consent' => 'required|accepted',
-                     'medical_clearance' => 'nullable|string|in:Fit,Pending,Unfit',
-                     'police_clearance' => 'nullable|string|in:Cleared,Pending,Disqualified',
-                 ]);
-                 
-                 $profile->update([
-                     'medical_clearance' => $validated['medical_clearance'] ?? $profile->medical_clearance,
-                     'police_clearance' => $validated['police_clearance'] ?? $profile->police_clearance,
-                 ]);
-                 break;
+                // Requirement: "Before submit, candidate must tick: I consent..."
+                $validated = $request->validate([
+                    'consent' => 'required|accepted',
+                    'medical_clearance' => 'nullable|string|in:Fit,Pending,Unfit',
+                    'police_clearance' => 'nullable|string|in:Cleared,Pending,Disqualified',
+                ]);
+
+                $profile->update([
+                    'medical_clearance' => $validated['medical_clearance'] ?? $profile->medical_clearance,
+                    'police_clearance' => $validated['police_clearance'] ?? $profile->police_clearance,
+                ]);
+                break;
 
             case 11: // Review & Submit
-                 // Mark profile as pending verification or active
-                 // If default is pending, we might no need to change it, or we can explicitely set it
-                 $profile->update([
-                     'verification_status' => 'pending',
-                     'is_available' => true,
-                 ]);
-                 break;
-            
+                // Mark profile as pending verification or active
+                // If default is pending, we might no need to change it, or we can explicitely set it
+                $profile->update([
+                    'verification_status' => 'pending',
+                    'is_available' => true,
+                ]);
+                break;
+
             case 12: // Completion
-                 break;
+                break;
 
             // ... other cases
         }
 
         $nextStep = $step + 1;
-        
+
         // If we processed step 10, we go to step 11 (Completion View)
         // If we processed step 11, we go to dashboard
         if ($nextStep > 12) {
@@ -239,7 +240,7 @@ class ProfileWizardController extends Controller
         return redirect()->route('candidate.wizard.show', ['step' => $nextStep]);
     }
 
-    public function storeWorkExperience(Request $request) 
+    public function storeWorkExperience(Request $request)
     {
         $validated = $request->validate([
             'job_title' => 'required|string|max:255',
@@ -254,7 +255,7 @@ class ProfileWizardController extends Controller
 
         $user = auth()->user();
         $profile = $user->candidateProfile;
-        
+
         $profile->workExperiences()->create($validated);
 
         return redirect()->back()->with('success', 'Work experience added.');
@@ -266,9 +267,9 @@ class ProfileWizardController extends Controller
         if ($workExperience->candidate_profile_id !== auth()->user()->candidateProfile->id) {
             abort(403);
         }
-        
+
         $workExperience->delete();
-        
+
         return redirect()->back()->with('success', 'Work experience removed.');
     }
 
@@ -287,7 +288,7 @@ class ProfileWizardController extends Controller
 
         $user = auth()->user();
         $profile = $user->candidateProfile;
-        
+
         $profile->educations()->create($validated);
 
         return redirect()->back()->with('success', 'Education added.');
@@ -299,9 +300,9 @@ class ProfileWizardController extends Controller
         if ($education->candidate_profile_id !== auth()->user()->candidateProfile->id) {
             abort(403);
         }
-        
+
         $education->delete();
-        
+
         return redirect()->back()->with('success', 'Education removed.');
     }
 
@@ -316,16 +317,16 @@ class ProfileWizardController extends Controller
 
         if ($request->hasFile('profile_picture')) {
             $file = $request->file('profile_picture');
-            
+
             // Generate clean filename
             $originalName = $file->getClientOriginalName();
             $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
             $filename = time() . '_' . $cleanName;
-            
+
             // Build user-specific path
             $directory = 'profile-pictures/' . $user->id;
             $destinationPath = public_path($directory);
-            
+
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
@@ -343,7 +344,7 @@ class ProfileWizardController extends Controller
                 }
 
                 $profile->update(['profile_picture' => $relativePath]);
-                
+
                 return response()->json([
                     'success' => true,
                     'path' => asset($relativePath)
@@ -359,7 +360,7 @@ class ProfileWizardController extends Controller
 
     public function uploadVideo(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'video_cv' => 'required|mimetypes:video/mp4,video/quicktime|max:102400', // 100MB
         ]);
 
@@ -368,18 +369,18 @@ class ProfileWizardController extends Controller
 
         if ($request->hasFile('video_cv')) {
             $file = $request->file('video_cv');
-            
+
             // Generate clean filename
             $originalName = $file->getClientOriginalName();
             $mimeType = $file->getMimeType();
             $fileSize = $file->getSize();
             $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
             $filename = time() . '_' . $cleanName;
-            
+
             // Build user-specific path
             $directory = 'uploads/video_cvs/' . $user->id;
             $destinationPath = public_path($directory);
-            
+
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
@@ -412,7 +413,7 @@ class ProfileWizardController extends Controller
                         'verification_status' => 'pending',
                     ]
                 );
-                
+
                 return response()->json([
                     'success' => true,
                     'path' => asset($relativePath)
@@ -422,7 +423,7 @@ class ProfileWizardController extends Controller
                 return response()->json(['success' => false, 'message' => 'Upload failed'], 500);
             }
         }
-        
+
         return response()->json(['success' => false], 400);
     }
 
@@ -440,17 +441,17 @@ class ProfileWizardController extends Controller
             $originalName = $file->getClientOriginalName();
             $mimeType = $file->getMimeType();
             $fileSize = $file->getSize();
-            
+
             $cleanName = preg_replace('/[^A-Za-z0-9\-\.]/', '_', $originalName);
             $fileName = time() . '_' . $cleanName;
-            
+
             $directory = 'documents/' . $user->id;
             $destinationPath = public_path($directory);
-            
+
             if (!file_exists($destinationPath)) {
                 mkdir($destinationPath, 0755, true);
             }
-            
+
             try {
                 $file->move($destinationPath, $fileName);
                 $filePath = $directory . '/' . $fileName;

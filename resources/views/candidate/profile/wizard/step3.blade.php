@@ -57,10 +57,30 @@
         <div>
             <label for="preferred_job_titles" class="block text-sm font-medium text-slate-700">Preferred Job Titles</label>
             <div class="mt-1">
-                <input type="text" name="preferred_job_titles" id="preferred_job_titles" 
-                    class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm"
-                    value="{{ old('preferred_job_titles', is_array($profile->preferred_job_titles) ? implode(', ', $profile->preferred_job_titles) : $profile->preferred_job_titles) }}"
-                    placeholder="e.g. Accountant, Financial Analyst (Max 5)">
+                @php
+                    $selectedTitles = old('preferred_job_titles', $profile->preferred_job_titles ?? []);
+                    if (!is_array($selectedTitles)) {
+                         $selectedTitles = array_map('trim', explode(',', $selectedTitles));
+                    }
+                    $selectedTitles = array_filter($selectedTitles);
+                @endphp
+                <select name="preferred_job_titles[]" id="preferred_job_titles" multiple="multiple"
+                    class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                    @if(isset($jobTitles))
+                        @foreach($jobTitles as $title)
+                            <option value="{{ $title }}" {{ in_array($title, $selectedTitles) ? 'selected' : '' }}>
+                                {{ $title }}
+                            </option>
+                        @endforeach
+                        {{-- Handle custom values that are not in the predefined list --}}
+                        @foreach($selectedTitles as $selected)
+                            @if(!$jobTitles->contains($selected))
+                                <option value="{{ $selected }}" selected>{{ $selected }}</option>
+                            @endif
+                        @endforeach
+                    @endif
+                </select>
+            </div>
             </div>
             <p class="mt-1 text-xs text-slate-500">Separate multiple titles with commas.</p>
         </div>
@@ -109,6 +129,14 @@
             placeholder: "Select categories",
             allowClear: true,
             width: '100%'
+        });
+
+        $('#preferred_job_titles').select2({
+            placeholder: "Select or type job titles",
+            allowClear: true,
+            width: '100%',
+            tags: true,
+            tokenSeparators: [',']
         });
     });
 </script>

@@ -27,7 +27,9 @@ class PublicCandidateController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhereHas('candidateProfile', function ($q) use ($search) {
-                        $q->where('target_destination', 'like', "%{$search}%");
+                        $q->where('target_destination', 'like', "%{$search}%")
+                          ->orWhere('title', 'like', "%{$search}%")
+                          ->orWhere('headline', 'like', "%{$search}%");
                     })
                     ->orWhereHas('candidateProfile.skills', function ($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%");
