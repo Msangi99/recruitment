@@ -31,6 +31,7 @@
             min-height: 180px;
             max-height: 300px;
             padding: 0.5rem 1rem !important;
+            color: #000000 !important;
         }
 
         .ck-toolbar {
@@ -309,7 +310,7 @@
                         <div class="relative">
                             <textarea name="cover_letter" id="cover_editor"
                                 class="hidden">{{ old('cover_letter') }}</textarea>
-                            <div id="editor-container" class="min-h-[150px] border border-gray-200 rounded-lg"></div>
+                            <div id="editor-container"></div>
                         </div>
                         <div class="flex justify-between text-[10px] text-gray-400">
                             <span>Max 1,000 words</span>
@@ -395,50 +396,79 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             // Initialize editor if not already initialized
+            // Use timeout to ensure DOM is fully visible before initializing
             if (!editor) {
-                ClassicEditor
-                    .create(document.querySelector('#editor-container'), {
-                        placeholder: 'Write your cover letter here...',
-                        toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
-                        removePlugins: ['MediaEmbed', 'ImageUpload', 'CloudServices'],
-                        link: {
-                            defaultProtocol: 'https://'
-                        }
-                    })
-                    .then(newEditor => {
-                        editor = newEditor;
-
-                        // Set initial data if any
-                        const initialData = document.getElementById('cover_editor').value;
-                        if (initialData) {
-                            editor.setData(initialData);
-                        }
-
-                        editor.model.document.on('change:data', () => {
-                            const data = editor.getData();
-                            document.getElementById('cover_editor').value = data;
-
-                            // Update word count
-                            const text = data.replace(/<[^>]*>/g, ' ').trim();
-                            const words = text.split(/\s+/).filter(word => word.length > 0);
-                            const count = words.length;
-
-                            const countEl = document.getElementById('word-count');
-                            if (countEl) {
-                                countEl.textContent = `${count} words`;
-                                if (count > 1000) {
-                                    countEl.classList.add('text-red-500');
-                                    countEl.classList.remove('text-gray-400');
-                                } else {
-                                    countEl.classList.remove('text-red-500');
-                                    countEl.classList.add('text-gray-400');
+                setTimeout(() => {
+                    ClassicEditor
+                        .create(document.querySelector('#editor-container'), {
+                            placeholder: 'Write your cover letter here...',
+                            toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
+                            removePlugins: ['MediaEmbed', 'ImageUpload', 'CloudServices'],
+                            link: {
+                                defaultProtocol: 'https://'
+                            },
+                            // Apply styling to the editor instance
+                            // This will apply to the editable area
+                            htmlSupport: {
+                                allow: [
+                                    {
+                                        name: /.*/,
+                                        attributes: true,
+                                        classes: true,
+                                        styles: true
+                                    }
+                                ]
+                            },
+                            // Custom CSS for the editor's content area
+                            extraPlugins: [
+                                function (editor) {
+                                    editor.ui.on('ready', () => {
+                                        const editableElement = editor.ui.view.editable.element;
+                                        if (editableElement) {
+                                            editableElement.style.minHeight = '150px';
+                                            editableElement.style.border = '1px solid #e5e7eb'; // gray-200
+                                            editableElement.style.borderRadius = '0.5rem'; // rounded-lg
+                                            editableElement.style.padding = '1rem'; // Add some padding for better appearance
+                                        }
+                                    });
                                 }
+                            ]
+                        })
+                        .then(newEditor => {
+                            editor = newEditor;
+
+                            // Set initial data if any
+                            const initialData = document.getElementById('cover_editor').value;
+                            if (initialData) {
+                                editor.setData(initialData);
                             }
+
+                            editor.model.document.on('change:data', () => {
+                                const data = editor.getData();
+                                document.getElementById('cover_editor').value = data;
+
+                                // Update word count
+                                const text = data.replace(/<[^>]*>/g, ' ').trim();
+                                const words = text.split(/\s+/).filter(word => word.length > 0);
+                                const count = words.length;
+
+                                const countEl = document.getElementById('word-count');
+                                if (countEl) {
+                                    countEl.textContent = `${count} words`;
+                                    if (count > 1000) {
+                                        countEl.classList.add('text-red-500');
+                                        countEl.classList.remove('text-gray-400');
+                                    } else {
+                                        countEl.classList.remove('text-red-500');
+                                        countEl.classList.add('text-gray-400');
+                                    }
+                                }
+                            });
+                        })
+                        .catch(error => {
+                            console.error('CKEditor initialization failed:', error);
                         });
-                    })
-                    .catch(error => {
-                        console.error('CKEditor initialization failed:', error);
-                    });
+                }, 100);
             }
         }
 
