@@ -112,7 +112,7 @@
                     </a>
 
                     <!-- Job Header -->
-                    <div class="bg-blue-400 p-6 rounded-md">
+                    <div class="bg-green-600 p-6 rounded-md">
                         <h1 class="text-xl font-bold text-gray-900">{{ $job->title }}</h1>
                         <p class="text-gray-600 text-sm mt-0.5">{{ $job->company_name }}</p>
                         <div class="flex flex-wrap gap-2 mt-3">
