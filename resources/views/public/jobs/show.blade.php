@@ -327,56 +327,56 @@
 
             <!-- Step 2: Application Form -->
             <div id="step-2" class="step-transition hidden">
-                <div class="bg-white shadow-2xl rounded-2xl overflow-hidden border border-gray-100">
-                    <div class="bg-deep-green px-8 py-6 text-white">
-                        <div class="flex justify-between items-center mb-2">
-                            <h2 class="text-2xl font-bold">Submit Your Application</h2>
+                <div class="bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100 max-w-2xl mx-auto">
+                    <div class="bg-deep-green px-6 py-4 text-white">
+                        <div class="flex justify-between items-center mb-1">
+                            <h2 class="text-lg font-bold">Submit Your Application</h2>
                             <span
-                                class="text-green-100 text-sm font-medium bg-white/10 px-3 py-1 rounded-full border border-white/20">Step
+                                class="text-green-100 text-xs font-medium bg-white/10 px-2 py-0.5 rounded-full border border-white/20">Step
                                 2 of 2</span>
                         </div>
-                        <p class="text-green-100 opacity-90">Application Details</p>
+                        <p class="text-green-100 opacity-90 text-xs">Application Details</p>
                     </div>
 
                     <form method="POST" action="{{ route('candidate.jobs.apply', $job) }}" enctype="multipart/form-data"
-                        class="p-8 space-y-8">
+                        class="p-5 space-y-4">
                         @csrf
 
                         <!-- Section 1: Cover Letter -->
-                        <div class="space-y-3">
-                            <label for="cover_letter" class="block text-sm font-bold text-gray-700">Cover
+                        <div class="space-y-2">
+                            <label for="cover_letter" class="block text-xs font-bold text-gray-700">Cover
                                 Letter</label>
-                            <textarea name="cover_letter" id="cover_letter" rows="8"
-                                class="w-full rounded-xl border-gray-200 shadow-sm focus:border-deep-green focus:ring-deep-green transition-all"
+                            <textarea name="cover_letter" id="cover_letter" rows="4"
+                                class="w-full rounded-lg border-gray-200 shadow-sm focus:border-deep-green focus:ring-deep-green transition-all text-sm py-2"
                                 placeholder="Briefly explain why you are suitable for this position. Highlight your experience, skills, and availability.">{{ old('cover_letter') }}</textarea>
-                            <div class="flex justify-between text-xs text-gray-400">
+                            <div class="flex justify-between text-[10px] text-gray-400">
                                 <span>Text area (maximum 1,000 words)</span>
                                 <span id="word-count">0 words</span>
                             </div>
                         </div>
 
                         <!-- Section 2: Upload CV -->
-                        <div class="space-y-3">
-                            <label class="block text-sm font-bold text-gray-700">Upload Your CV / Resume</label>
+                        <div class="space-y-2">
+                            <label class="block text-xs font-bold text-gray-700">Upload Your CV / Resume</label>
                             <div class="relative group">
                                 <input type="file" name="cv_file" id="cv_file" accept=".pdf,.doc,.docx" class="hidden"
                                     required onchange="updateFileName(this)">
                                 <label for="cv_file"
-                                    class="flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-2xl p-8 hover:border-deep-green hover:bg-green-50 transition-all cursor-pointer">
+                                    class="flex flex-col items-center justify-center border border-dashed border-gray-200 rounded-xl p-4 hover:border-deep-green hover:bg-green-50 transition-all cursor-pointer">
                                     <div
-                                        class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4 group-hover:bg-deep-green group-hover:text-white transition-all">
-                                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mb-2 group-hover:bg-deep-green group-hover:text-white transition-all">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
                                             </path>
                                         </svg>
                                     </div>
-                                    <span id="file-name" class="text-gray-600 font-medium">Click to upload or drag
+                                    <span id="file-name" class="text-gray-600 font-medium text-xs">Click to upload or drag
                                         and drop</span>
-                                    <div class="flex items-center gap-3 mt-4">
-                                        <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-lg text-xs">PDF,
+                                    <div class="flex items-center gap-2 mt-2">
+                                        <span class="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-[10px]">PDF,
                                             DOC, DOCX</span>
-                                        <span class="px-3 py-1 bg-gray-100 text-gray-500 rounded-lg text-xs">MAX
+                                        <span class="px-2 py-0.5 bg-gray-100 text-gray-500 rounded text-[10px]">MAX
                                             5MB</span>
                                     </div>
                                 </label>
@@ -384,38 +384,38 @@
                         </div>
 
                         <!-- Section 3: Auto-Filled Information -->
-                        <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100 space-y-4">
-                            <h3 class="text-sm font-bold text-gray-700 uppercase tracking-wider">Your Information
+                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 space-y-3">
+                            <h3 class="text-xs font-bold text-gray-700 uppercase tracking-wider">Your Information
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xs font-medium text-gray-400 mb-1">Full Name</label>
+                                    <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Full Name</label>
                                     <input type="text" value="{{ auth()->user()->name ?? '-' }}" disabled
-                                        class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
+                                        class="w-full bg-white border-none rounded-md text-gray-500 font-medium px-3 py-1.5 opacity-75 text-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-medium text-gray-400 mb-1">Email
+                                    <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Email
                                         Address</label>
                                     <input type="text" value="{{ auth()->user()->email ?? '-' }}" disabled
-                                        class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
+                                        class="w-full bg-white border-none rounded-md text-gray-500 font-medium px-3 py-1.5 opacity-75 text-sm">
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-xs font-medium text-gray-400 mb-1">Phone Number</label>
+                                    <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Phone Number</label>
                                     <input type="text" value="{{ auth()->user()->phone ?? '-' }}" disabled
-                                        class="w-full bg-white border-none rounded-lg text-gray-500 font-medium px-4 py-2 opacity-75">
+                                        class="w-full bg-white border-none rounded-md text-gray-500 font-medium px-3 py-1.5 opacity-75 text-sm">
                                 </div>
                             </div>
-                            <p class="text-[10px] text-gray-400 italic mt-4 text-center">Information is
+                            <p class="text-[10px] text-gray-400 italic mt-2 text-center">Information is
                                 automatically pulled from your user profile.</p>
                         </div>
 
-                        <div class="flex gap-4 pt-4">
+                        <div class="flex gap-3 pt-2">
                             <button type="button" onclick="showStep1()"
-                                class="flex-1 px-8 py-4 border border-gray-200 text-gray-600 font-bold rounded-xl hover:bg-gray-50 transition-all">
+                                class="flex-1 px-4 py-2 border border-gray-200 text-gray-600 font-bold rounded-lg hover:bg-gray-50 transition-all text-sm">
                                 Back
                             </button>
                             <button type="submit"
-                                class="flex-[2] px-8 py-4 bg-deep-green text-white font-bold rounded-xl hover:bg-opacity-90 transform active:scale-95 transition-all shadow-lg text-lg">
+                                class="flex-[2] px-4 py-2 bg-deep-green text-white font-bold rounded-lg hover:bg-opacity-90 transform active:scale-95 transition-all shadow-md text-sm">
                                 Submit Application
                             </button>
                         </div>
