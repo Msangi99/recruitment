@@ -308,9 +308,9 @@
                     <div class="space-y-2">
                         <label class="block text-xs font-bold text-gray-700">Cover Letter</label>
                         <div class="relative">
-                            <textarea name="cover_letter" id="cover_editor"
-                                class="hidden">{{ old('cover_letter') }}</textarea>
-                            <div id="editor-container"></div>
+                            <textarea name="cover_letter" id="cover_letter"
+                                class="w-full border border-gray-300 rounded-lg text-sm"
+                                placeholder="Write your cover letter here...">{{ old('cover_letter') }}</textarea>
                         </div>
                         <div class="flex justify-between text-[10px] text-gray-400">
                             <span>Max 1,000 words</span>
@@ -400,52 +400,17 @@
             if (!editor) {
                 setTimeout(() => {
                     ClassicEditor
-                        .create(document.querySelector('#editor-container'), {
+                        .create(document.querySelector('#cover_letter'), {
                             placeholder: 'Write your cover letter here...',
                             toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
                             removePlugins: ['MediaEmbed', 'ImageUpload', 'CloudServices'],
-                            link: {
-                                defaultProtocol: 'https://'
-                            },
-                            // Apply styling to the editor instance
-                            // This will apply to the editable area
-                            htmlSupport: {
-                                allow: [
-                                    {
-                                        name: /.*/,
-                                        attributes: true,
-                                        classes: true,
-                                        styles: true
-                                    }
-                                ]
-                            },
-                            // Custom CSS for the editor's content area
-                            extraPlugins: [
-                                function (editor) {
-                                    editor.ui.on('ready', () => {
-                                        const editableElement = editor.ui.view.editable.element;
-                                        if (editableElement) {
-                                            editableElement.style.minHeight = '150px';
-                                            editableElement.style.border = '1px solid #e5e7eb'; // gray-200
-                                            editableElement.style.borderRadius = '0.5rem'; // rounded-lg
-                                            editableElement.style.padding = '1rem'; // Add some padding for better appearance
-                                        }
-                                    });
-                                }
-                            ]
                         })
                         .then(newEditor => {
                             editor = newEditor;
 
-                            // Set initial data if any
-                            const initialData = document.getElementById('cover_editor').value;
-                            if (initialData) {
-                                editor.setData(initialData);
-                            }
-
                             editor.model.document.on('change:data', () => {
                                 const data = editor.getData();
-                                document.getElementById('cover_editor').value = data;
+                                document.querySelector('#cover_letter').value = data;
 
                                 // Update word count
                                 const text = data.replace(/<[^>]*>/g, ' ').trim();
