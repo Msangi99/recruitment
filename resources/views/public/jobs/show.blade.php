@@ -27,34 +27,24 @@
             transition: all 0.3s ease-in-out;
         }
 
-        .ck-editor__editable {
-            min-height: 180px !important;
-            border-bottom-left-radius: 8px !important;
-            border-bottom-right-radius: 8px !important;
-            font-size: 0.875rem !important;
+        .ck-editor__editable_inline {
+            min-height: 180px;
+            max-height: 300px;
+            padding: 0.5rem 1rem !important;
         }
 
         .ck-toolbar {
-            border-top-left-radius: 8px !important;
-            border-top-right-radius: 8px !important;
-            padding: 6px 8px !important;
-            min-height: 36px !important;
+            border-radius: 0.5rem 0.5rem 0 0 !important;
         }
 
-        .ck-toolbar__items {
-            height: 24px !important;
+        .ck-content {
+            border-radius: 0 0 0.5rem 0.5rem !important;
+            font-size: 0.875rem !important;
         }
 
-        .ck-button {
-            height: 24px !important;
-            width: 24px !important;
-            min-height: 24px !important;
-            min-width: 24px !important;
-        }
-
-        .ck.ck-icon {
-            width: 14px !important;
-            height: 14px !important;
+        .ck-focused {
+            border-color: #105e46 !important;
+            box-shadow: 0 0 0 1px #105e46 !important;
         }
     </style>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
@@ -65,37 +55,37 @@
 
     <div class="max-w-3xl mx-auto py-4 px-3">
         @if(session('success'))
-        <div class="bg-white shadow-sm rounded-xl mb-6">
-            <div class="p-6 text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                </div>
-                <h2 class="text-xl font-bold text-gray-900 mb-2">Application Submitted</h2>
-                <p class="text-gray-600 mb-6 text-sm">Thank you for applying. We will contact you if shortlisted.</p>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <a href="{{ route('candidate.applications.index') }}"
-                        class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-deep-green hover:bg-opacity-90 transition-all">
-                        View Applications
-                    </a>
-                    <a href="{{ route('public.jobs.index') }}"
-                        class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-all">
-                        Browse Jobs
-                    </a>
+            <div class="bg-white shadow-sm rounded-xl mb-6">
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Application Submitted</h2>
+                    <p class="text-gray-600 mb-6 text-sm">Thank you for applying. We will contact you if shortlisted.</p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="{{ route('candidate.applications.index') }}"
+                            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-deep-green hover:bg-opacity-90 transition-all">
+                            View Applications
+                        </a>
+                        <a href="{{ route('public.jobs.index') }}"
+                            class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-all">
+                            Browse Jobs
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
         @endif
 
         @if(session('error'))
-        <div class="mb-3 bg-red-50 border border-red-200 text-red-800 px-3 py-2 rounded-lg flex items-center text-sm">
-            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            {{ session('error') }}
-        </div>
+            <div class="mb-3 bg-red-50 border border-red-200 text-red-800 px-3 py-2 rounded-lg flex items-center text-sm">
+                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                {{ session('error') }}
+            </div>
         @endif
 
         <!-- Step 1: Job Details -->
@@ -108,13 +98,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
-                        Back to Jobs
+                        Back
                     </a>
 
                     <!-- Job Header -->
                     <div class="bg-green-600 p-6 rounded-md">
                         <h1 class="text-xl font-bold text-gray-900">{{ $job->title }}</h1>
-                        <p class="text-gray-600 text-sm mt-0.5">{{ $job->company_name }}</p>
+                        <p class="text-gray-100 text-sm mt-0.5">{{ $job->company_name }}</p>
                         <div class="flex flex-wrap gap-2 mt-3">
                             <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-xs">
                                 📍 {{ $job->location }}
@@ -123,9 +113,9 @@
                                 💼 {{ ucfirst($job->employment_type) }}
                             </span>
                             @if($job->category)
-                            <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-xs">
-                                🏷️ {{ $job->category->name }}
-                            </span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-gray-100 text-xs">
+                                    🏷️ {{ $job->category->name }}
+                                </span>
                             @endif
                         </div>
                     </div>
@@ -133,51 +123,51 @@
                     <!-- Quick Details -->
                     <div class="grid grid-cols-2 gap-3">
                         @if($job->salary_min || $job->salary_max)
-                        <div class="bg-gray-50 rounded p-2">
-                            <h3 class="text-xs font-medium text-gray-500">Salary</h3>
-                            <p class="text-sm font-semibold text-gray-900">
-                                @if($job->salary_min && $job->salary_max)
-                                {{ $job->salary_currency ?? 'USD' }} {{ number_format($job->salary_min) }} -
-                                {{ number_format($job->salary_max) }}
-                                @elseif($job->salary_min)
-                                {{ $job->salary_currency ?? 'USD' }} {{ number_format($job->salary_min) }}+
-                                @else
-                                Competitive
-                                @endif
-                            </p>
-                        </div>
+                            <div class="bg-gray-50 rounded p-2">
+                                <h3 class="text-xs font-medium text-gray-500">Salary</h3>
+                                <p class="text-sm font-semibold text-gray-900">
+                                    @if($job->salary_min && $job->salary_max)
+                                        {{ $job->salary_currency ?? 'USD' }} {{ number_format($job->salary_min) }} -
+                                        {{ number_format($job->salary_max) }}
+                                    @elseif($job->salary_min)
+                                        {{ $job->salary_currency ?? 'USD' }} {{ number_format($job->salary_min) }}+
+                                    @else
+                                        Competitive
+                                    @endif
+                                </p>
+                            </div>
                         @endif
 
                         @php
-                        $exp = $job->experience_years ?? $job->experience_required ?? 0;
+                            $exp = $job->experience_years ?? $job->experience_required ?? 0;
                         @endphp
                         <div class="bg-gray-50 rounded p-2">
                             <h3 class="text-xs font-medium text-gray-500">Experience</h3>
                             <p class="text-sm font-semibold text-gray-900">
                                 @if($exp == 0)
-                                No experience
+                                    No experience
                                 @else
-                                {{ $exp }}+ years
+                                    {{ $exp }}+ years
                                 @endif
                             </p>
                         </div>
 
                         @if($job->education_level)
-                        <div class="bg-gray-50 rounded p-2">
-                            <h3 class="text-xs font-medium text-gray-500">Education</h3>
-                            <p class="text-sm font-semibold text-gray-900">
-                                {{ ucfirst(str_replace('-', ' ', $job->education_level)) }}
-                            </p>
-                        </div>
+                            <div class="bg-gray-50 rounded p-2">
+                                <h3 class="text-xs font-medium text-gray-500">Education</h3>
+                                <p class="text-sm font-semibold text-gray-900">
+                                    {{ ucfirst(str_replace('-', ' ', $job->education_level)) }}
+                                </p>
+                            </div>
                         @endif
 
                         @if($job->working_mode)
-                        <div class="bg-gray-50 rounded p-2">
-                            <h3 class="text-xs font-medium text-gray-500">Mode</h3>
-                            <p class="text-sm font-semibold text-gray-900">
-                                {{ ucfirst($job->working_mode) }}
-                            </p>
-                        </div>
+                            <div class="bg-gray-50 rounded p-2">
+                                <h3 class="text-xs font-medium text-gray-500">Mode</h3>
+                                <p class="text-sm font-semibold text-gray-900">
+                                    {{ ucfirst($job->working_mode) }}
+                                </p>
+                            </div>
                         @endif
                     </div>
 
@@ -190,95 +180,97 @@
                     </div>
 
                     @if($job->requirements)
-                    <div>
-                        <h2 class="text-base font-bold text-gray-900 mb-2">Requirements</h2>
-                        <div class="prose prose-sm max-w-none text-gray-700">
-                            {!! $job->requirements !!}
+                        <div>
+                            <h2 class="text-base font-bold text-gray-900 mb-2">Requirements</h2>
+                            <div class="prose prose-sm max-w-none text-gray-700">
+                                {!! $job->requirements !!}
+                            </div>
                         </div>
-                    </div>
                     @endif
 
                     @if(!empty($job->required_skills))
-                    <div>
-                        <h2 class="text-base font-bold text-gray-900 mb-2">Skills</h2>
-                        <div class="flex flex-wrap gap-1.5">
-                            @foreach($job->required_skills as $skill)
-                            <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
-                                {{ $skill }}
-                            </span>
-                            @endforeach
+                        <div>
+                            <h2 class="text-base font-bold text-gray-900 mb-2">Skills</h2>
+                            <div class="flex flex-wrap gap-1.5">
+                                @foreach($job->required_skills as $skill)
+                                    <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
+                                        {{ $skill }}
+                                    </span>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
                     @endif
 
                     @if($job->benefits || $job->other_benefits)
-                    <div>
-                        <h2 class="text-base font-bold text-gray-900 mb-2">Benefits</h2>
-                        <div class="prose prose-sm max-w-none text-gray-700">
-                            @if(is_array($job->benefits) && count($job->benefits) > 0)
-                            <ul class="space-y-1">
-                                @foreach($job->benefits as $benefit)
-                                <li class="text-sm">{{ $benefit }}</li>
-                                @endforeach
-                            </ul>
-                            @endif
-                            @if($job->other_benefits)
-                            <div class="mt-2">
-                                {!! $job->other_benefits !!}
+                        <div>
+                            <h2 class="text-base font-bold text-gray-900 mb-2">Benefits</h2>
+                            <div class="prose prose-sm max-w-none text-gray-700">
+                                @if(is_array($job->benefits) && count($job->benefits) > 0)
+                                    <ul class="space-y-1">
+                                        @foreach($job->benefits as $benefit)
+                                            <li class="text-sm">{{ $benefit }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                                @if($job->other_benefits)
+                                    <div class="mt-2">
+                                        {!! $job->other_benefits !!}
+                                    </div>
+                                @endif
                             </div>
-                            @endif
                         </div>
-                    </div>
                     @endif
 
                     @if($job->application_deadline)
-                    <div class="bg-red-50 border-l-3 border-red-400 p-2">
-                        <p class="text-xs text-red-700 font-medium">
-                            Deadline: {{ \Carbon\Carbon::parse($job->application_deadline)->format('M d, Y') }}
-                        </p>
-                    </div>
+                        <div class="bg-red-50 border-l-3 border-red-400 p-2">
+                            <p class="text-xs text-red-700 font-medium">
+                                Deadline: {{ \Carbon\Carbon::parse($job->application_deadline)->format('M d, Y') }}
+                            </p>
+                        </div>
                     @endif
 
                     @if($job->requires_video)
-                    <div class="bg-blue-50 border-l-3 border-blue-400 p-2">
-                        <p class="text-xs text-blue-700">
-                            <strong>Note:</strong> Video introduction required
-                        </p>
-                    </div>
+                        <div class="bg-blue-50 border-l-3 border-blue-400 p-2">
+                            <p class="text-xs text-blue-700">
+                                <strong>Note:</strong> Video introduction required
+                            </p>
+                        </div>
                     @endif
 
                     <!-- Apply Button -->
                     <div class="pt-4 border-t border-gray-200">
                         @if($isCandidate)
-                        @if($hasApplied)
-                        <div class="bg-green-50 border border-green-100 rounded-lg p-4 text-center">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <p class="text-green-800 font-semibold text-sm mb-1">Already Applied</p>
-                            <a href="{{ route('candidate.applications.index') }}"
-                                class="text-green-600 hover:text-green-800 font-medium inline-flex items-center text-xs">
-                                View applications
-                                <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
-                                </svg>
+                            @if($hasApplied)
+                                <div class="bg-green-50 border border-green-100 rounded-lg p-4 text-center">
+                                    <div
+                                        class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="text-green-800 font-semibold text-sm mb-1">Already Applied</p>
+                                    <a href="{{ route('candidate.applications.index') }}"
+                                        class="text-green-600 hover:text-green-800 font-medium inline-flex items-center text-xs">
+                                        View applications
+                                        <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </a>
+                                </div>
+                            @else
+                                <button type="button" onclick="showStep2()"
+                                    class="w-full px-4 py-2.5 bg-deep-green text-white font-bold rounded-lg hover:bg-opacity-90 transition-all text-sm">
+                                    Apply Now
+                                </button>
+                            @endif
+                        @else
+                            <a href="{{ route('login') }}?redirect={{ urlencode(request()->url()) }}"
+                                class="block w-full text-center px-4 py-2.5 bg-deep-green text-white font-bold rounded-lg hover:bg-opacity-90 transition-all text-sm">
+                                Apply Now
                             </a>
-                        </div>
-                        @else
-                        <button type="button" onclick="showStep2()"
-                            class="w-full px-4 py-2.5 bg-deep-green text-white font-bold rounded-lg hover:bg-opacity-90 transition-all text-sm">
-                            Apply Now
-                        </button>
-                        @endif
-                        @else
-                        <a href="{{ route('login') }}?redirect={{ urlencode(request()->url()) }}"
-                            class="block w-full text-center px-4 py-2.5 bg-deep-green text-white font-bold rounded-lg hover:bg-opacity-90 transition-all text-sm">
-                            Apply Now
-                        </a>
                         @endif
                     </div>
 
@@ -343,7 +335,8 @@
                                         </svg>
                                     </div>
                                     <div>
-                                        <span id="file-name" class="text-gray-600 font-medium text-sm">Choose file</span>
+                                        <span id="file-name" class="text-gray-600 font-medium text-sm">Choose
+                                            file</span>
                                         <div class="flex items-center gap-1 mt-0.5">
                                             <span class="text-gray-400 text-xs">PDF, DOC, DOCX</span>
                                             <span class="text-gray-400 text-xs">•</span>
@@ -400,37 +393,51 @@
             document.getElementById('step-1').classList.add('hidden');
             document.getElementById('step-2').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            
+
             // Initialize editor if not already initialized
             if (!editor) {
                 ClassicEditor
                     .create(document.querySelector('#editor-container'), {
-                        placeholder: 'Briefly explain why you are suitable for this position...',
-                        toolbar: ['bold', 'italic', '|', 'bulletedList', 'numberedList'],
-                        removePlugins: ['Heading', 'Link', 'BlockQuote'],
-                        height: '150px'
+                        placeholder: 'Write your cover letter here...',
+                        toolbar: ['heading', '|', 'bold', 'italic', 'bulletedList', 'numberedList', '|', 'undo', 'redo'],
+                        removePlugins: ['MediaEmbed', 'ImageUpload', 'CloudServices'],
+                        link: {
+                            defaultProtocol: 'https://'
+                        }
                     })
                     .then(newEditor => {
                         editor = newEditor;
+
+                        // Set initial data if any
+                        const initialData = document.getElementById('cover_editor').value;
+                        if (initialData) {
+                            editor.setData(initialData);
+                        }
+
                         editor.model.document.on('change:data', () => {
                             const data = editor.getData();
-                            const text = data.replace(/<[^>]*>/g, '').trim();
+                            document.getElementById('cover_editor').value = data;
+
+                            // Update word count
+                            const text = data.replace(/<[^>]*>/g, ' ').trim();
                             const words = text.split(/\s+/).filter(word => word.length > 0);
                             const count = words.length;
-                            document.getElementById('word-count').textContent = `${count} words`;
-                            document.getElementById('cover_editor').value = data;
-                            
-                            if (count > 1000) {
-                                document.getElementById('word-count').classList.add('text-red-500');
-                                document.getElementById('word-count').classList.remove('text-gray-400');
-                            } else {
-                                document.getElementById('word-count').classList.remove('text-red-500');
-                                document.getElementById('word-count').classList.add('text-gray-400');
+
+                            const countEl = document.getElementById('word-count');
+                            if (countEl) {
+                                countEl.textContent = `${count} words`;
+                                if (count > 1000) {
+                                    countEl.classList.add('text-red-500');
+                                    countEl.classList.remove('text-gray-400');
+                                } else {
+                                    countEl.classList.remove('text-red-500');
+                                    countEl.classList.add('text-gray-400');
+                                }
                             }
                         });
                     })
                     .catch(error => {
-                        console.error(error);
+                        console.error('CKEditor initialization failed:', error);
                     });
             }
         }
