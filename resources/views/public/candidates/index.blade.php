@@ -73,6 +73,19 @@
                         <input type="hidden" name="search" value="{{ request('search') }}">
                     @endif
 
+                    <!-- Job Category -->
+                    <div>
+                        <select name="category" onchange="this.form.submit()"
+                            class="w-full rounded border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs py-2">
+                            <option value="">Job Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <!-- Job Title -->
                     <div>
                         <input type="text" name="job_title" value="{{ request('job_title') }}" placeholder="Job Title"
