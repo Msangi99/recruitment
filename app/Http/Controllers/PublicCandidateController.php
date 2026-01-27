@@ -113,7 +113,7 @@ class PublicCandidateController extends Controller
             });
         }
 
-        $candidates = $query->latest()->paginate(20);
+        $candidates = $query->latest()->paginate(10);
 
         return view('public.candidates.index', compact('candidates'));
     }

@@ -38,6 +38,22 @@
     <form action="{{ route('candidate.wizard.process', ['step' => 3]) }}" method="POST" class="space-y-6">
         @csrf
 
+        <!-- Job Title -->
+        <div>
+            <label for="title" class="block text-sm font-medium text-slate-700">Job Title</label>
+            <p class="text-xs text-slate-500 mb-2">Select your current or primary job title.</p>
+            <select name="title" id="title" class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                <option value="">Select a job title</option>
+                @if(isset($jobTitles))
+                    @foreach($jobTitles as $t)
+                        <option value="{{ $t }}" {{ (old('title', $profile->title) == $t) ? 'selected' : '' }}>
+                            {{ $t }}
+                        </option>
+                    @endforeach
+                @endif
+            </select>
+        </div>
+
         <!-- Job Category -->
         <div>
             <label for="categories" class="block text-sm font-medium text-slate-700">Job Category</label>
@@ -125,6 +141,12 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('#title').select2({
+            placeholder: "Select a job title",
+            allowClear: true,
+            width: '100%'
+        });
+
         $('#categories').select2({
             placeholder: "Select categories",
             allowClear: true,

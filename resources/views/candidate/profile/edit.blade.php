@@ -82,6 +82,12 @@
                         <div class="p-6">
                             <dl class="space-y-4">
                                 <div>
+                                    <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Job Title</dt>
+                                    <dd class="mt-1 text-sm text-slate-900 font-medium">
+                                        {{ $profile->title ?? 'Not specified' }}
+                                    </dd>
+                                </div>
+                                <div>
                                     <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Job Categories
                                     </dt>
                                     <dd class="mt-1 flex flex-wrap gap-2">

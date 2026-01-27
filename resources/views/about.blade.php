@@ -202,34 +202,24 @@ l                       ients and
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Tea
-m                        Member 1 -->
+                <!-- Team Member 1 -->
+                <div class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
+                        <img src="{{ asset('user2.jpg') }}" alt="James Majid" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">James Majid</h3>
+                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">Chief Executive Officer & Founder</p>
+                </div>
 
-                                    <div
-
-                                           class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
+                <!-- Team Member 2 -->
+                <div class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
                         <img src="{{ asset('user1.jpg') }}" alt="John Doe" class="w-full h-full object-cover">
-
-                                        </div>
+                    </div>
                     <h3 class="text-xl font-bold text-white mb-1 relative z-10">John Doe</h3>
                     <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">CEO & Founder</p>
-                </div>
-
-                <!-- Tea
-                       m Member 2 -->
-
-                                    <div
-
-                                           class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
-                    <div class="absolute inset-0 bg-gradient-to-br from-emerald-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
-                        <img src="{{ asset('user2.jpg') }}" alt="Jane Smith" class="w-full h-full object-cover">
-
-                                           </div>
-                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">Jane Smith</h3>
-                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">Head of Operations</p>
                 </div>
 
                 <!-- Team Member 3 -->
@@ -248,10 +238,10 @@ m                        Member 1 -->
                     class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-amber-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
-                        <img src="{{ asset('user1.jpg') }}" alt="Sarah Williams" class="w-full h-full object-cover">
+                        <img src="{{ asset('green_mwimbage.jpg') }}" alt="Green Mwimbage" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">Sarah Williams</h3>
-                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">Client Relations</p>
+                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">Green Mwimbage</h3>
+                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">Talent Acquisition Specialist</p>
                 </div>
             </div>
         </div>

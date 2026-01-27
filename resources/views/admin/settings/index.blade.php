@@ -211,6 +211,45 @@
             </div>
         </div>
 
+        <!-- Job Titles Management -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    Job Titles List
+                </h3>
+            </div>
+            <div class="p-6">
+                <form action="{{ route('admin.job-titles.store') }}" method="POST" class="mb-6 flex gap-2">
+                    @csrf
+                    <input type="text" name="name" required placeholder="Add new job title..." 
+                           class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
+                    <button type="submit" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700">Add</button>
+                </form>
+
+                <div class="space-y-2 max-h-64 overflow-y-auto pr-2">
+                    @forelse($jobTitles as $jobTitle)
+                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg group">
+                            <span class="text-sm font-medium text-gray-700">{{ $jobTitle->name }}</span>
+                            <form action="{{ route('admin.job-titles.destroy', $jobTitle) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-400 hover:text-red-600">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    @empty
+                        <p class="text-center text-gray-500 text-sm italic">No job titles added yet</p>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
         <!-- Languages Management -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">

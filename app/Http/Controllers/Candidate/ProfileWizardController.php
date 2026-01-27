@@ -41,7 +41,7 @@ class ProfileWizardController extends Controller
         switch ($step) {
             case 3: // Job Preferences
                 $viewData['categories'] = Category::orderBy('name')->get();
-                $viewData['jobTitles'] = JobListing::select('title')->distinct()->whereNotNull('title')->orderBy('title')->pluck('title');
+                $viewData['jobTitles'] = \App\Models\JobTitle::orderBy('name')->pluck('name');
                 break;
             case 4: // Skills
                 $viewData['allSkills'] = Skill::orderBy('name')->get();
@@ -95,6 +95,7 @@ class ProfileWizardController extends Controller
 
             case 3: // Job Preferences
                 $validated = $request->validate([
+                    'title' => 'required|string|max:255', // Single Job Title
                     'categories' => 'required|array',
                     'preferred_job_titles' => 'required|array', 
                     'preferred_job_titles.*' => 'string',
@@ -103,6 +104,7 @@ class ProfileWizardController extends Controller
                 ]);
 
                 $profile->update([
+                    'title' => $validated['title'],
                     // 'experience_category_id' => $validated['categories'][0] ?? null, // Keep for backward compatibility if needed, or remove
                     'availability_status' => $validated['availability_status'],
                     'preferred_job_titles' => $validated['preferred_job_titles'],

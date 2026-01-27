@@ -14,8 +14,9 @@ class SettingController extends Controller
         $skills = \App\Models\Skill::orderBy('name')->get();
         $languages = \App\Models\Language::orderBy('name')->get();
         $currencies = \App\Models\Currency::orderBy('code')->get();
+        $jobTitles = \App\Models\JobTitle::orderBy('name')->get();
 
-        return view('admin.settings.index', compact('emailSettings', 'skills', 'languages', 'currencies'));
+        return view('admin.settings.index', compact('emailSettings', 'skills', 'languages', 'currencies', 'jobTitles'));
     }
 
     public function update(Request $request)
@@ -65,6 +66,19 @@ class SettingController extends Controller
     {
         $skill->delete();
         return back()->with('success', 'Skill removed successfully.');
+    }
+
+    public function addJobTitle(Request $request)
+    {
+        $request->validate(['name' => 'required|string|max:100|unique:job_titles,name']);
+        \App\Models\JobTitle::create($request->only('name'));
+        return back()->with('success', 'Job title added successfully.');
+    }
+
+    public function deleteJobTitle(\App\Models\JobTitle $jobTitle)
+    {
+        $jobTitle->delete();
+        return back()->with('success', 'Job title removed successfully.');
     }
 
     public function addLanguage(Request $request)
