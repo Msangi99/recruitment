@@ -367,9 +367,9 @@
 
         <!-- Support Info -->
         <div class="mt-12 text-center">
-            <p class="text-gray-500">Need help? Contact our support team at <a href="mailto:support@coyzon.com"
-                    class="text-deep-green font-bold">support@coyzon.com</a> or call <span
-                    class="text-deep-green font-bold">+255 (0) 123 456 789</span></p>
+            <p class="text-gray-500">Need help? Contact our support team at <a href="mailto:support@coyzon.co.tz"
+                    class="text-deep-green font-bold">support@coyzon.co.tz</a> or call <span
+                    class="text-deep-green font-bold">+255610156392</span></p>
         </div>
     </div>
 

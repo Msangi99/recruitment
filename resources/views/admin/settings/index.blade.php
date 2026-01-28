@@ -86,6 +86,67 @@
             </div>
         </div>
 
+        <!-- Google Calendar Integration -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    Google Calendar Integration
+                </h3>
+                <p class="text-sm text-gray-500 mt-1">Configure OAuth 2.0 credentials for calendar syncing</p>
+            </div>
+            <div class="p-6 space-y-6">
+                <!-- Calendar ID -->
+                <div>
+                    <label for="google_calendar_id" class="block text-sm font-medium text-gray-700 mb-2">
+                        Google Calendar ID
+                    </label>
+                    <input type="text" id="google_calendar_id" name="google_calendar_id" 
+                           value="{{ old('google_calendar_id', \App\Models\Setting::get('google_calendar_id')) }}"
+                           placeholder="primary or email@gmail.com"
+                           class="w-full md:w-3/4 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                    <p class="mt-1 text-xs text-gray-500">Usually your email address (e.g., hr@company.com)</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Client ID -->
+                    <div>
+                        <label for="google_client_id" class="block text-sm font-medium text-gray-700 mb-2">
+                            OAuth Client ID
+                        </label>
+                        <input type="text" id="google_client_id" name="google_client_id" 
+                               value="{{ old('google_client_id', \App\Models\Setting::get('google_client_id')) }}"
+                               placeholder="123456789-abc..."
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                    </div>
+
+                    <!-- Client Secret -->
+                    <div>
+                        <label for="google_client_secret" class="block text-sm font-medium text-gray-700 mb-2">
+                            OAuth Client Secret
+                        </label>
+                        <input type="password" id="google_client_secret" name="google_client_secret" 
+                               value="{{ old('google_client_secret', \App\Models\Setting::get('google_client_secret')) }}"
+                               placeholder="GOCSPX-..."
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                    </div>
+                </div>
+
+                <!-- Refresh Token -->
+                <div>
+                    <label for="google_refresh_token" class="block text-sm font-medium text-gray-700 mb-2">
+                        Refresh Token
+                    </label>
+                    <textarea id="google_refresh_token" name="google_refresh_token" rows="3"
+                           placeholder="1//0g..."
+                           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 font-mono text-sm">{{ old('google_refresh_token', \App\Models\Setting::get('google_refresh_token')) }}</textarea>
+                    <p class="mt-1 text-xs text-gray-500">Required for offline access. Generated via Google OAuth Playground.</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Package Settings -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
             <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
