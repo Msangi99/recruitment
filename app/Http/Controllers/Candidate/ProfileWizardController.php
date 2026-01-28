@@ -95,7 +95,8 @@ class ProfileWizardController extends Controller
 
             case 3: // Job Preferences
                 $validated = $request->validate([
-                    'title' => 'required|string|max:255', // Single Job Title
+                    'titles' => 'required|array',
+                    'titles.*' => 'nullable|string|max:255',
                     'categories' => 'required|array',
                     'preferred_job_titles' => 'required|array', 
                     'preferred_job_titles.*' => 'string',
@@ -103,8 +104,11 @@ class ProfileWizardController extends Controller
                     // employment_type handling if needed (add to model/migration if likely new)
                 ]);
 
+                // Filter out empty titles
+                $cleanTitles = array_filter($validated['titles']);
+
                 $profile->update([
-                    'title' => $validated['title'],
+                    'title' => array_values($cleanTitles), // Reset keys
                     // 'experience_category_id' => $validated['categories'][0] ?? null, // Keep for backward compatibility if needed, or remove
                     'availability_status' => $validated['availability_status'],
                     'preferred_job_titles' => $validated['preferred_job_titles'],
