@@ -28,10 +28,6 @@ class SettingController extends Controller
             'package_basic_price' => 'nullable|numeric|min:0',
             'package_premium_price' => 'nullable|numeric|min:0',
             'consultation_price' => 'nullable|numeric|min:0',
-            'google_calendar_id' => 'nullable|string|max:255',
-            'google_client_id' => 'nullable|string|max:255',
-            'google_client_secret' => 'nullable|string|max:255',
-            'google_refresh_token' => 'nullable|string',
         ]);
 
         // Update HR Email
@@ -55,12 +51,6 @@ class SettingController extends Controller
         if ($request->has('consultation_price')) {
             Setting::set('consultation_price', $request->consultation_price);
         }
-
-        // Update Google Calendar Settings
-        if ($request->has('google_calendar_id')) Setting::set('google_calendar_id', $request->google_calendar_id);
-        if ($request->has('google_client_id')) Setting::set('google_client_id', $request->google_client_id);
-        if ($request->has('google_client_secret')) Setting::set('google_client_secret', $request->google_client_secret);
-        if ($request->has('google_refresh_token')) Setting::set('google_refresh_token', $request->google_refresh_token);
 
         return back()->with('success', 'Settings updated successfully.');
     }
