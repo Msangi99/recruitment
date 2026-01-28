@@ -86,8 +86,6 @@
             </div>
         </div>
 
-
-
         <!-- Package Settings -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
             <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
