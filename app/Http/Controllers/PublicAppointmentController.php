@@ -68,6 +68,27 @@ class PublicAppointmentController extends Controller
             'updated_at' => now(),
         ]);
 
+        // Add to Google Calendar
+        try {
+            if (\App\Models\Setting::get('google_calendar_id')) {
+                $startTime = \Carbon\Carbon::parse($requestedAt);
+                $endTime = $startTime->copy()->addMinutes(45); // 45 min consultation
+
+                $event = new \Spatie\GoogleCalendar\Event;
+                $event->name = 'Consultation: ' . $validated['company_name'];
+                $event->description = "Employer: {$validated['name']}\nPhone: {$validated['phone']}\nWorker Type: {$validated['worker_type']}\nCount: {$validated['worker_count']}\nMessage: {$validated['message']}";
+                $event->startDateTime = $startTime;
+                $event->endDateTime = $endTime;
+                $event->addAttendee([
+                    'email' => $validated['email'],
+                    'displayName' => $validated['name']
+                ]);
+                $event->save();
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Google Calendar Error (Employer): ' . $e->getMessage());
+        }
+
         // Send Email Notification
         try {
             $hrEmail = \App\Models\Setting::getHrEmail() ?? 'hr@coyzon.com';
@@ -250,6 +271,27 @@ class PublicAppointmentController extends Controller
                         DB::table('consultation_requests')->where('id', $id)->update([
                             'payment_status' => 'processing',
                         ]);
+
+                        // Add to Google Calendar (Provisional holding)
+                        try {
+                            if (\App\Models\Setting::get('google_calendar_id') && $consultationRequest->requested_date) {
+                                $startTime = \Carbon\Carbon::parse($consultationRequest->requested_date);
+                                $endTime = $startTime->copy()->addMinutes(30);
+
+                                $event = new \Spatie\GoogleCalendar\Event;
+                                $event->name = 'Candidate Consultation: ' . $consultationRequest->name;
+                                $event->description = "Global Job Seeker\nPhone: {$consultationRequest->phone}\nCountry: {$consultationRequest->country}";
+                                $event->startDateTime = $startTime;
+                                $event->endDateTime = $endTime;
+                                $event->addAttendee([
+                                    'email' => $consultationRequest->email, // Send invite to candidate
+                                    'displayName' => $consultationRequest->name
+                                ]);
+                                $event->save();
+                            }
+                        } catch (\Exception $e) {
+                             \Illuminate\Support\Facades\Log::error('Google Calendar Error (Candidate): ' . $e->getMessage());
+                        }
 
                         return view('public.appointments.confirmation', [
                             'request' => $consultationRequest,
