@@ -9,7 +9,7 @@
             <div class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
                 <div class="mb-6 text-center">
                     <a href="{{ route('home') }}" class="inline-block mb-4">
-                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-14 w-auto">
+                        <img src="{{ asset('logo-removed-background.png') }}" alt="Coyzon Logo" class="h-24 w-auto">
                     </a>
                     <h2 class="text-2xl font-bold text-deep-green tracking-tight">
                         Welcome Back

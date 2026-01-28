@@ -13,6 +13,9 @@
                     colors: {
                         'deep-green': '#105e46',
                         'deep-blue': '#0a2540',
+                    },
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
                     }
                 }
             }
@@ -20,7 +23,7 @@
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
@@ -208,18 +211,18 @@ l                       ients and
                     <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
                         <img src="{{ asset('user2.jpg') }}" alt="James Majid" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">James Majid</h3>
-                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">Chief Executive Officer & Founder</p>
+                    <h3 class="text-2xl font-outfit font-extrabold text-white mb-2 relative z-10 tracking-tight">James Majid</h3>
+                    <p class="text-green-400 font-outfit font-medium text-base mb-2 relative z-10">Chief Executive Officer & Founder</p>
                 </div>
 
                 <!-- Team Member 2 -->
                 <div class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
-                        <img src="{{ asset('user1.jpg') }}" alt="John Doe" class="w-full h-full object-cover">
+                        <img src="{{ asset('user1.jpg') }}" alt="Edgar Mwandiga" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">John Doe</h3>
-                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">CEO & Founder</p>
+                    <h3 class="text-2xl font-outfit font-extrabold text-white mb-2 relative z-10 tracking-tight">Edgar Mwandiga</h3>
+                    <p class="text-green-400 font-outfit font-medium text-base mb-2 relative z-10">Marketing Manager</p>
                 </div>
 
                 <!-- Team Member 3 -->
@@ -227,10 +230,10 @@ l                       ients and
                     class="bg-slate-900 rounded-3xl p-8 text-center shadow-lg hover:shadow-xl transition-shadow border border-slate-800 group relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-br from-indigo-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
-                        <img src="{{ asset('user3.jpeg') }}" alt="Michael Johnson" class="w-full h-full object-cover">
+                        <img src="{{ asset('user3.jpeg') }}" alt="Arica Gonzalez" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">Michael Johnson</h3>
-                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">HR Director</p>
+                    <h3 class="text-2xl font-outfit font-extrabold text-white mb-2 relative z-10 tracking-tight">Arica Gonzalez</h3>
+                    <p class="text-green-400 font-outfit font-medium text-base mb-2 relative z-10">Human resource Manager</p>
                 </div>
 
                 <!-- Team Member 4 -->
@@ -240,8 +243,8 @@ l                       ients and
                     <div class="w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden shadow-xl ring-4 ring-white/10 relative z-10">
                         <img src="{{ asset('green_mwimbage.jpg') }}" alt="Green Mwimbage" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-1 relative z-10">Green Mwimbage</h3>
-                    <p class="text-green-400 font-bold text-sm uppercase tracking-wider mb-2 relative z-10">Talent Acquisition Specialist</p>
+                    <h3 class="text-2xl font-outfit font-extrabold text-white mb-2 relative z-10 tracking-tight">Green Mwimbage</h3>
+                    <p class="text-green-400 font-outfit font-medium text-base mb-2 relative z-10">Talent Acquisition Specialist</p>
                 </div>
             </div>
         </div>
