@@ -61,8 +61,14 @@ class AppServiceProvider extends ServiceProvider
                 config(['google-calendar.default_auth_profile' => 'oauth']);
                 config(['google-calendar.calendar_id' => $googleCalendarId]);
                 
-                // Construct credentials array (Google Client accepts array too)
-                config(['google-calendar.auth_profiles.oauth.credentials_json' => [
+                $storagePath = storage_path('app/google-calendar');
+                if (!file_exists($storagePath)) {
+                    mkdir($storagePath, 0755, true);
+                }
+
+                // 1. Write Credentials File
+                $credentialsPath = $storagePath . '/oauth-credentials.json';
+                $credentialsData = [
                     'web' => [
                         'client_id' => $googleClientId,
                         'client_secret' => $googleClientSecret,
@@ -70,15 +76,21 @@ class AppServiceProvider extends ServiceProvider
                         'auth_uri' => 'https://accounts.google.com/o/oauth2/auth',
                         'token_uri' => 'https://oauth2.googleapis.com/token',
                     ]
-                ]]);
+                ];
+                file_put_contents($credentialsPath, json_encode($credentialsData));
+                config(['google-calendar.auth_profiles.oauth.credentials_json' => $credentialsPath]);
 
-                config(['google-calendar.auth_profiles.oauth.token_json' => [
+                // 2. Write Token File
+                $tokenPath = $storagePath . '/oauth-token.json';
+                $tokenData = [
                     'access_token' => 'placeholder', 
                     'refresh_token' => $googleRefreshToken,
                     'token_type' => 'Bearer',
                     'expires_in' => 3599,
                     'created' => time(),
-                ]]);
+                ];
+                file_put_contents($tokenPath, json_encode($tokenData));
+                config(['google-calendar.auth_profiles.oauth.token_json' => $tokenPath]);
             }
         } catch (\Exception $e) {
             // Setup table might not exist yet during migration
