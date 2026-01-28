@@ -2,6 +2,25 @@
 
 use Illuminate\Http\Request;
 
+if (! function_exists('highlight_file')) {
+    function highlight_file($filename, $return = false)
+    {
+        if (! file_exists($filename)) {
+            return false;
+        }
+        
+        $content = file_get_contents($filename);
+        $highlighted = '<code style="background-color: #f8f9fa; padding: 15px; display: block; overflow-x: auto; font-family: monospace;">' . htmlspecialchars($content) . '</code>';
+        
+        if ($return) {
+            return $highlighted;
+        }
+        
+        echo $highlighted;
+        return true;
+    }
+}
+
 define('LARAVEL_START', microtime(true));
 
 // Determine if the application is in maintenance mode...
