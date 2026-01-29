@@ -12,6 +12,7 @@ use App\Models\WorkExperience;
 use App\Models\Education;
 use App\Models\Document;
 use App\Models\JobListing;
+use App\Models\Training;
 use Illuminate\Support\Facades\Log;
 
 class ProfileWizardController extends Controller
@@ -310,6 +311,35 @@ class ProfileWizardController extends Controller
         $education->delete();
 
         return redirect()->back()->with('success', 'Education removed.');
+    }
+
+    public function storeTraining(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'institution' => 'required|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        $user = auth()->user();
+        $profile = $user->candidateProfile;
+
+        $profile->trainings()->create($validated);
+
+        return redirect()->back()->with('success', 'Training added.');
+    }
+
+    public function destroyTraining(Training $training)
+    {
+        // Check ownership
+        if ($training->candidate_profile_id !== auth()->user()->candidateProfile->id) {
+            abort(403);
+        }
+
+        $training->delete();
+
+        return redirect()->back()->with('success', 'Training removed.');
     }
 
     public function uploadPhoto(Request $request)
