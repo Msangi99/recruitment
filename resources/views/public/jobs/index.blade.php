@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Jobs - Coyzon Recruitment</title>
+    <title>Browse Jobs - {{ config('app.name') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo-removed-background.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {

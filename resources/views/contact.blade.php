@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Contact Us - Coyzon Recruitment</title>
+    <title>Contact Us - {{ config('app.name') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo-removed-background.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
