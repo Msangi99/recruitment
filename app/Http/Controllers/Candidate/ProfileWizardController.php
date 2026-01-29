@@ -397,7 +397,7 @@ class ProfileWizardController extends Controller
     public function uploadVideo(Request $request)
     {
         $request->validate([
-            'video_cv' => 'required|mimetypes:video/mp4,video/quicktime|max:102400', // 100MB
+            'video_cv' => 'required|mimetypes:video/mp4,video/quicktime,video/webm,video/x-msvideo,video/mpeg,video/3gpp,video/x-matroska|max:102400', // 100MB
         ]);
 
         $user = auth()->user();
