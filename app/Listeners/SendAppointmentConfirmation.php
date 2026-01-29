@@ -25,7 +25,7 @@ class SendAppointmentConfirmation
                         'user' => $appointment->user,
                     ], function ($message) use ($appointment) {
                         $message->to($appointment->user->email, $appointment->user->name)
-                                ->subject('Subscription Activated - COYZON');
+                                ->subject('Subscription Activated - ' . config('app.name'));
                     });
                 } catch (\Exception $e) {
                     Log::error('Failed to send subscription confirmation email: ' . $e->getMessage());
@@ -40,7 +40,7 @@ class SendAppointmentConfirmation
                         'user' => $appointment->user,
                     ], function ($message) use ($appointment) {
                         $message->to($appointment->user->email, $appointment->user->name)
-                                ->subject('Appointment Confirmed - COYZON');
+                                ->subject('Appointment Confirmed - ' . config('app.name'));
                     });
                 } catch (\Exception $e) {
                     Log::error('Failed to send appointment confirmation email: ' . $e->getMessage());
@@ -55,7 +55,7 @@ class SendAppointmentConfirmation
                         'employer' => $appointment->employer,
                     ], function ($message) use ($appointment) {
                         $message->to($appointment->employer->email, $appointment->employer->name)
-                                ->subject('New Appointment Scheduled - COYZON');
+                                ->subject('New Appointment Scheduled - ' . config('app.name'));
                     });
                 } catch (\Exception $e) {
                     Log::error('Failed to send employer notification email: ' . $e->getMessage());
