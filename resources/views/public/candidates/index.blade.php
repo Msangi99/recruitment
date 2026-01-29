@@ -44,7 +44,7 @@
                         </svg>
                     </div>
                     <input type="text" name="search" value="{{ request('search') }}"
-                        placeholder="Search by name, skills, or destination..."
+                        placeholder="Search by name, job title, skills, or destination..."
                         class="block w-full pl-14 pr-32 py-5 bg-white border border-gray-200 rounded-full shadow-lg shadow-gray-100/50 focus:ring-4 focus:ring-deep-green/10 focus:border-deep-green text-lg transition-all duration-300 placeholder-gray-400">
                     <div class="absolute inset-y-0 right-2 flex items-center">
                         <button type="submit"
@@ -72,6 +72,19 @@
                     @if(request('search'))
                         <input type="hidden" name="search" value="{{ request('search') }}">
                     @endif
+
+                    <!-- Job Category -->
+                    <div>
+                        <select name="category" onchange="this.form.submit()"
+                            class="w-full rounded border-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-xs py-2">
+                            <option value="">Job Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <!-- Job Title -->
                     <div>

@@ -44,6 +44,17 @@
             </div>
 
             <div>
+                <label for="years_of_experience" class="block text-sm font-semibold text-slate-700 mb-1">Years of
+                    Experience</label>
+                <input type="number" name="years_of_experience" id="years_of_experience"
+                    value="{{ old('years_of_experience', $profile->years_of_experience) }}" placeholder="e.g. 5" min="0"
+                    max="50"
+                    class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-deep-green focus:ring-deep-green sm:text-sm"
+                    required>
+                <p class="mt-1 text-xs text-slate-500">Total years of professional experience in your field.</p>
+            </div>
+
+            <div>
                 <label class="block text-sm font-semibold text-slate-700 mb-2">Professional Description</label>
                 <div id="editor-container">{!! old('description', $profile->description) !!}</div>
                 <input type="hidden" name="description" id="description_input">

@@ -195,7 +195,7 @@
             <!-- Right Main Content -->
             <div class="lg:col-span-8">
 
-                <div class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6">
+                <div class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6 overflow-hidden">
 
                     <!-- 1. Professional summary -->
                     <div id="summary" class="mb-6">
@@ -207,7 +207,7 @@
                                 </h3>
                             </div>
                         @endif
-                        <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed font-normal">
+                        <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed font-normal break-words">
                             {!! $candidate->candidateProfile->description !!}
                         </div>
                     </div>
@@ -241,9 +241,9 @@
                                     <div class="absolute left-0 top-1.5 w-2 h-2 bg-deep-green rounded-full"></div>
                                     <div class="space-y-2">
                                         <p class="text-sm font-bold text-gray-900">Job title: <span
-                                                class="font-medium text-gray-700">{{ $experience->job_title }}</span></p>
+                                                class="font-medium text-gray-700 break-words">{{ $experience->job_title }}</span></p>
                                         <p class="text-sm font-bold text-gray-900">Organization: <span
-                                                class="font-medium text-gray-700">{{ $experience->employer }}</span></p>
+                                                class="font-medium text-gray-700 break-words">{{ $experience->employer }}</span></p>
                                         <p class="text-sm font-bold text-gray-900">From: <span
                                                 class="font-medium text-gray-700">
                                                 {{ $experience->start_date->format('M Y') }} -
@@ -252,7 +252,7 @@
                                                 class="font-medium text-gray-700">{{ $experience->is_current ? 'Present' : ($experience->end_date ? $experience->end_date->format('M Y') : 'N/A') }}</span>
                                         </p>
                                         <p class="text-sm font-bold text-gray-900">Roles & responsibilities:</p>
-                                        <div class="text-sm text-gray-600 prose prose-sm max-w-none mt-2 ml-4">
+                                        <div class="text-sm text-gray-600 prose prose-sm max-w-none mt-2 ml-4 break-words">
                                             {!! $experience->description !!}
                                         </div>
                                     </div>
@@ -311,15 +311,15 @@
                             @forelse($certifications as $cert)
                                 <div class="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100">
                                     <div class="flex items-center gap-3">
-                                        <div class="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+                                        <div class="p-2 bg-indigo-100 rounded-lg text-indigo-600 flex-shrink-0">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
-                                        <div>
-                                            <h3 class="font-bold text-gray-900 text-sm">{{ $cert->field_of_study }}</h3>
-                                            <p class="text-xs text-indigo-600 font-bold mt-0.5">{{ $cert->institution }}</p>
+                                        <div class="min-w-0">
+                                            <h3 class="font-bold text-gray-900 text-sm break-words">{{ $cert->field_of_study }}</h3>
+                                            <p class="text-xs text-indigo-600 font-bold mt-0.5 break-words">{{ $cert->institution }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -332,22 +332,22 @@
 
                             @foreach($complianceDocs as $doc)
                                 <div class="p-4 rounded-xl bg-emerald-50/50 border border-emerald-100">
-                                    <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-3">
-                                            <div class="p-2 bg-emerald-100 rounded-lg text-emerald-600">
+                                    <div class="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4">
+                                        <div class="flex items-center gap-3 min-w-0 flex-1">
+                                            <div class="p-2 bg-emerald-100 rounded-lg text-emerald-600 flex-shrink-0">
                                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                                 </svg>
                                             </div>
-                                            <div>
-                                                <h3 class="font-bold text-gray-900 text-sm">{{ $doc->document_type }}</h3>
+                                            <div class="min-w-0">
+                                                <h3 class="font-bold text-gray-900 text-sm break-words">{{ $doc->document_type }}</h3>
                                                 <p class="text-xs text-emerald-600 font-bold mt-0.5">Verified PDF Document
                                                 </p>
                                             </div>
                                         </div>
                                         <a href="{{ asset($doc->file_path) }}" target="_blank"
-                                            class="inline-flex items-center px-3 py-1 bg-white border border-emerald-200 text-emerald-700 text-xs font-bold rounded-lg hover:bg-emerald-50 transition-colors">
+                                            class="inline-flex items-center px-3 py-1 bg-white border border-emerald-200 text-emerald-700 text-xs font-bold rounded-lg hover:bg-emerald-50 transition-colors flex-shrink-0 whitespace-nowrap">
                                             View Document
                                         </a>
                                     </div>

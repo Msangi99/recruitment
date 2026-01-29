@@ -58,6 +58,7 @@ class CandidateProfile extends Model
         'preferred_job_titles' => 'array',
         'preferred_destinations' => 'array',
         'international_experience' => 'boolean',
+        'title' => 'array',
     ];
 
     /**

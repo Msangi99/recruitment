@@ -73,7 +73,7 @@
 <body class="bg-gray-50/50">
     @include('partials.public-nav')
 
-    <div class="max-w-2xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <!-- Navigation Back -->
         <div class="mb-8">
             <a href="{{ route('public.candidates.show', $candidate) }}"
@@ -114,30 +114,30 @@
 
         <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
             <!-- Header -->
-            <div class="px-6 py-6 step-gradient text-white">
+            <div class="px-8 py-10 step-gradient text-white">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
-                        <h1 class="text-xl font-extrabold tracking-tight">Request Candidate: {{ $candidate->name }}
+                        <h1 class="text-3xl font-extrabold tracking-tight">Request Candidate: {{ $candidate->name }}
                         </h1>
-                        <p class="mt-1 text-emerald-100 text-sm opacity-90">No registration needed. Complete the details
+                        <p class="mt-2 text-emerald-100 text-lg opacity-90">No registration needed. Complete the details
                             below to request an interview or placement.</p>
                     </div>
                     <!-- Candidate Quick View -->
                     <div
-                        class="flex items-center gap-3 bg-white/10 p-2 rounded-xl backdrop-blur-sm border border-white/20 min-w-fit">
+                        class="flex items-center gap-4 bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/20 min-w-fit">
                         @if($candidate->candidateProfile->profile_picture)
                             <img src="{{ asset($candidate->candidateProfile->profile_picture) }}"
                                 alt="{{ $candidate->name }}"
-                                class="w-12 h-12 rounded-lg flex-shrink-0 object-cover border-2 border-white/30 shadow-lg">
+                                class="w-16 h-16 rounded-xl flex-shrink-0 object-cover border-2 border-white/30 shadow-lg">
                         @else
                             <div
-                                class="w-12 h-12 rounded-lg flex-shrink-0 bg-deep-green flex items-center justify-center text-lg font-bold border-2 border-white/30 shadow-lg">
+                                class="w-16 h-16 rounded-xl flex-shrink-0 bg-deep-green flex items-center justify-center text-xl font-bold border-2 border-white/30 shadow-lg">
                                 {{ strtoupper(substr($candidate->name, 0, 1)) }}
                             </div>
                         @endif
                         <div class="flex flex-col justify-center">
-                            <p class="text-[10px] font-bold uppercase tracking-wider text-emerald-200 whitespace-nowrap">Candidate ID</p>
-                            <p class="text-base font-mono font-bold whitespace-nowrap">#{{ str_pad($candidate->id, 7, '0', STR_PAD_LEFT) }}
+                            <p class="text-xs font-bold uppercase tracking-wider text-emerald-200 whitespace-nowrap">Candidate ID</p>
+                            <p class="text-lg font-mono font-bold whitespace-nowrap">#{{ str_pad($candidate->id, 7, '0', STR_PAD_LEFT) }}
                             </p>
                         </div>
                     </div>
@@ -145,31 +145,33 @@
             </div>
 
             <form method="POST" action="{{ route('public.candidates.interview.store', $candidate) }}"
-                class="p-6 md:p-8 text-sm" id="request-form">
+                class="p-8 md:p-12" id="request-form">
                 @csrf
 
-                <div class="space-y-8">
+                <div class="space-y-12">
                     <!-- Step 1: Candidate Info (Auto-Filled) -->
                     <section class="relative">
                         <div class="flex items-center gap-3 mb-4">
                             <span
-                                class="flex-shrink-0 w-6 h-6 rounded-full bg-deep-green text-white flex items-center justify-center font-bold text-xs">1</span>
-                            <h2 class="text-lg font-bold text-gray-900">Candidate Info</h2>
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-deep-green text-white flex items-center justify-center font-bold">1</span>
+                            <h2 class="text-xl font-bold text-gray-900">Candidate Info (Auto-Filled)</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-9">
                             <div class="has-tooltip relative">
                                 <span
-                                    class="tooltip bg-gray-900 text-white text-xs py-1 px-3 rounded-lg opacity-0 transition-opacity">Auto-filled</span>
-                                <label class="block text-xs font-bold text-gray-700 mb-1.5">Candidate Name</label>
+                                    class="tooltip bg-gray-900 text-white text-xs py-1 px-3 rounded-lg opacity-0 transition-opacity">Candidate
+                                    info is auto-filled from profile</span>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Candidate Name</label>
                                 <input type="text" value="{{ $candidate->name }}" readonly
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-200 read-only-bg text-gray-500 font-medium focus:outline-none cursor-not-allowed text-sm">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 read-only-bg text-gray-500 font-medium focus:outline-none cursor-not-allowed">
                             </div>
                             <div class="has-tooltip relative">
                                 <span
-                                    class="tooltip bg-gray-900 text-white text-xs py-1 px-3 rounded-lg opacity-0 transition-opacity">Auto-filled</span>
-                                <label class="block text-xs font-bold text-gray-700 mb-1.5">Profile ID</label>
+                                    class="tooltip bg-gray-900 text-white text-xs py-1 px-3 rounded-lg opacity-0 transition-opacity">Candidate
+                                    info is auto-filled from profile</span>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Profile ID</label>
                                 <input type="text" value="{{ str_pad($candidate->id, 7, '0', STR_PAD_LEFT) }}" readonly
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-200 read-only-bg text-gray-500 font-medium font-mono focus:outline-none cursor-not-allowed text-sm">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 read-only-bg text-gray-500 font-medium font-mono focus:outline-none cursor-not-allowed">
                             </div>
                         </div>
                     </section>
@@ -178,10 +180,10 @@
                     <section>
                         <div class="flex items-center gap-3 mb-4">
                             <span
-                                class="flex-shrink-0 w-6 h-6 rounded-full bg-deep-green text-white flex items-center justify-center font-bold text-xs">2</span>
-                            <h2 class="text-lg font-bold text-gray-900">Request Type</h2>
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-deep-green text-white flex items-center justify-center font-bold">2</span>
+                            <h2 class="text-xl font-bold text-gray-900">Request Type</h2>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pl-9">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-12">
                             <!-- Interview Option -->
                             <div class="relative">
                                 <input type="radio" id="type_interview" name="appointment_type" value="interview"
@@ -189,8 +191,8 @@
                                     @if(old('appointment_type', 'interview') == 'interview') checked @endif
                                     required>
                                 <label for="type_interview"
-                                    class="flex items-center p-3 cursor-pointer rounded-xl border-2 border-gray-100 transition-all peer-checked:border-deep-green peer-checked:bg-emerald-50/50 hover:border-gray-200 hover:shadow-sm h-full">
-                                    <div class="flex items-center gap-3">
+                                    class="flex items-center p-4 cursor-pointer rounded-2xl border-2 border-gray-100 transition-all peer-checked:border-deep-green peer-checked:bg-emerald-50/50 hover:border-gray-200 hover:shadow-md h-full">
+                                    <div class="flex items-center gap-4">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-deep-green shadow-sm border border-gray-50">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -199,15 +201,15 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="font-bold text-gray-900 text-sm">Interview</p>
-                                            <p class="text-xs text-gray-500">One-on-one session</p>
+                                            <p class="font-bold text-gray-900">Interview</p>
+                                            <p class="text-sm text-gray-500">Schedule a one-on-one session</p>
                                         </div>
                                     </div>
                                     <div class="ml-auto">
                                         <div
-                                            class="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:border-deep-green flex items-center justify-center">
+                                            class="w-4 h-4 rounded-full border-2 border-gray-300 peer-checked:border-deep-green flex items-center justify-center">
                                             <div
-                                                class="w-2.5 h-2.5 rounded-full bg-deep-green hidden peer-checked:block">
+                                                class="w-2 h-2 rounded-full bg-deep-green hidden peer-checked:block">
                                             </div>
                                         </div>
                                     </div>
@@ -221,8 +223,8 @@
                                     @if(old('appointment_type', 'interview') == 'placement') checked @endif
                                     required>
                                 <label for="type_placement"
-                                    class="flex items-center p-3 cursor-pointer rounded-xl border-2 border-gray-100 transition-all peer-checked:border-deep-green peer-checked:bg-emerald-50/50 hover:border-gray-200 hover:shadow-sm h-full">
-                                    <div class="flex items-center gap-3">
+                                    class="flex items-center p-4 cursor-pointer rounded-2xl border-2 border-gray-100 transition-all peer-checked:border-deep-green peer-checked:bg-emerald-50/50 hover:border-gray-200 hover:shadow-md h-full">
+                                    <div class="flex items-center gap-4">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-white flex items-center justify-center text-deep-green shadow-sm border border-gray-50">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -231,15 +233,15 @@
                                             </svg>
                                         </div>
                                         <div>
-                                            <p class="font-bold text-gray-900 text-sm">Placement / Hire</p>
-                                            <p class="text-xs text-gray-500">Candidate onboarding</p>
+                                            <p class="font-bold text-gray-900">Placement / Hire</p>
+                                            <p class="text-sm text-gray-500">Proceed with candidate onboarding</p>
                                         </div>
                                     </div>
                                     <div class="ml-auto">
                                         <div
-                                            class="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:border-deep-green flex items-center justify-center">
+                                            class="w-4 h-4 rounded-full border-2 border-gray-300 peer-checked:border-deep-green flex items-center justify-center">
                                             <div
-                                                class="w-2.5 h-2.5 rounded-full bg-deep-green hidden peer-checked:block">
+                                                class="w-2 h-2 rounded-full bg-deep-green hidden peer-checked:block">
                                             </div>
                                         </div>
                                     </div>
@@ -247,7 +249,7 @@
                             </div>
                         </div>
                         @error('appointment_type')
-                            <p class="mt-2 text-sm text-red-600 ml-9">{{ $message }}</p>
+                            <p class="mt-2 text-sm text-red-600 ml-12">{{ $message }}</p>
                         @enderror
                     </section>
 
@@ -255,46 +257,46 @@
                     <section>
                         <div class="flex items-center gap-3 mb-4">
                             <span
-                                class="flex-shrink-0 w-6 h-6 rounded-full bg-deep-green text-white flex items-center justify-center font-bold text-xs">3</span>
-                            <h2 class="text-lg font-bold text-gray-900">Employer Details</h2>
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-deep-green text-white flex items-center justify-center font-bold">3</span>
+                            <h2 class="text-xl font-bold text-gray-900">Employer Details</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-9">
                             <div>
-                                <label for="company_name" class="block text-xs font-bold text-gray-700 mb-1.5">Company
+                                <label for="company_name" class="block text-sm font-bold text-gray-700 mb-2">Company
                                     Name *</label>
                                 <input type="text" id="company_name" name="company_name"
                                     value="{{ old('company_name') }}" required placeholder="Enter company name"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-200 input-focus @error('company_name') border-red-300 @enderror text-sm">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('company_name') border-red-300 @enderror">
                                 @error('company_name')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
-                                <label for="job_title" class="block text-xs font-bold text-gray-700 mb-1.5">Contact Person
+                                <label for="job_title" class="block text-sm font-bold text-gray-700 mb-2">Contact Person
                                     *</label>
                                 <input type="text" id="job_title" name="job_title" value="{{ old('job_title') }}"
                                     required placeholder="Full name of contact person"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-200 input-focus @error('job_title') border-red-300 @enderror text-sm">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('job_title') border-red-300 @enderror">
                                 @error('job_title')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
-                                <label for="interviewer_email" class="block text-xs font-bold text-gray-700 mb-1.5">Email
+                                <label for="interviewer_email" class="block text-sm font-bold text-gray-700 mb-2">Email
                                     *</label>
                                 <input type="email" id="interviewer_email" name="interviewer_email"
                                     value="{{ old('interviewer_email') }}" required placeholder="your.email@company.com"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-200 input-focus @error('interviewer_email') border-red-300 @enderror text-sm">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('interviewer_email') border-red-300 @enderror">
                                 @error('interviewer_email')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
-                                <label for="interviewer_phone" class="block text-xs font-bold text-gray-700 mb-1.5">Phone
+                                <label for="interviewer_phone" class="block text-sm font-bold text-gray-700 mb-2">Phone
                                     *</label>
                                 <input type="tel" id="interviewer_phone" name="interviewer_phone"
                                     value="{{ old('interviewer_phone') }}" required placeholder="+255 XXX XXX XXX"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-200 input-focus @error('interviewer_phone') border-red-300 @enderror text-sm">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('interviewer_phone') border-red-300 @enderror">
                                 @error('interviewer_phone')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
@@ -306,37 +308,37 @@
                     <section>
                         <div class="flex items-center gap-3 mb-4">
                             <span
-                                class="flex-shrink-0 w-6 h-6 rounded-full bg-deep-green text-white flex items-center justify-center font-bold text-xs">4</span>
-                            <h2 class="text-lg font-bold text-gray-900">Request Details</h2>
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-deep-green text-white flex items-center justify-center font-bold">4</span>
+                            <h2 class="text-xl font-bold text-gray-900">Request Details</h2>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-9">
                             <div>
-                                <label for="scheduled_at" class="block text-xs font-bold text-gray-700 mb-1.5">Preferred
+                                <label for="scheduled_at" class="block text-sm font-bold text-gray-700 mb-2">Preferred
                                     Date & Time *</label>
                                 <input type="datetime-local" id="scheduled_at" name="scheduled_at"
                                     value="{{ old('scheduled_at') }}" required min="{{ date('Y-m-d\TH:i') }}"
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-200 input-focus @error('scheduled_at') border-red-300 @enderror text-sm">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('scheduled_at') border-red-300 @enderror">
                                 @error('scheduled_at')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div>
-                                <label for="title" class="block text-xs font-bold text-gray-700 mb-1.5">Job Role /
+                                <label for="title" class="block text-sm font-bold text-gray-700 mb-2">Job Role /
                                     Position *</label>
                                 <input type="text" id="title" name="title" value="{{ old('title') }}" required
                                     placeholder="e.g. Sales Executive, Driver, etc."
-                                    class="w-full px-3 py-2 rounded-lg border border-gray-200 input-focus @error('title') border-red-300 @enderror text-sm">
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 input-focus @error('title') border-red-300 @enderror">
                                 @error('title')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
                             <div class="md:col-span-2">
-                                <label for="notes" class="block text-xs font-bold text-gray-700 mb-1.5">Additional Notes
+                                <label for="notes" class="block text-sm font-bold text-gray-700 mb-2">Additional Notes
                                     (Optional)</label>
-                                <div class="rounded-lg border border-gray-200 overflow-hidden">
-                                    <textarea id="notes" name="notes" rows="3"
-                                        placeholder="Any other specific requirements..."
-                                        class="w-full input-focus @error('notes') border-red-300 @enderror text-sm">{{ old('notes') }}</textarea>
+                                <div class="rounded-xl border border-gray-200 overflow-hidden">
+                                    <textarea id="notes" name="notes" rows="4"
+                                        placeholder="Any other specific requirements or details about the request..."
+                                        class="w-full input-focus @error('notes') border-red-300 @enderror">{{ old('notes') }}</textarea>
                                 </div>
                                 @error('notes')
                                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
@@ -349,7 +351,7 @@
                     <section class="pt-4">
                         <div class="pl-9">
                             <button type="submit"
-                                class="w-full md:w-auto px-10 py-3 bg-deep-green hover:bg-emerald-800 text-white text-base font-bold rounded-xl shadow-lg shadow-emerald-900/10 transition-all hover:-translate-y-1 active:scale-[0.98] tracking-wide">
+                                class="w-full md:w-auto px-12 py-4 bg-deep-green hover:bg-emerald-800 text-white text-lg font-bold rounded-2xl shadow-lg shadow-emerald-900/10 transition-all hover:-translate-y-1 active:scale-[0.98] tracking-wide">
                                 Submit Request
                             </button>
                             <p class="mt-3 text-xs text-gray-500 text-center md:text-left">
@@ -364,10 +366,10 @@
         </div>
 
         <!-- Support Info -->
-        <div class="mt-8 text-center">
-            <p class="text-xs text-gray-500">Need help? Contact our support team at <a href="mailto:info@coyzon.co.tz"
-                    class="text-deep-green font-bold">info@coyzon.co.tz</a> or call <span
-                    class="text-deep-green font-bold">+255-746014808</span></p>
+        <div class="mt-12 text-center">
+            <p class="text-gray-500">Need help? Contact our support team at <a href="mailto:support@coyzon.co.tz"
+                    class="text-deep-green font-bold">support@coyzon.co.tz</a> or call <span
+                    class="text-deep-green font-bold">+255610156392</span></p>
         </div>
     </div>
 
@@ -436,12 +438,12 @@
     </script>
     <style>
         .ck-editor__editable {
-            min-height: 120px;
+            min-height: 200px;
             border-radius: 0 0 12px 12px !important;
         }
 
         .ck-toolbar {
-            border-radius: 12px 12px 0 0 !important;
+            border-radius: 8px 8px 0 0 !important;
             border-color: #e5e7eb !important;
         }
 

@@ -38,6 +38,77 @@
     <form action="{{ route('candidate.wizard.process', ['step' => 3]) }}" method="POST" class="space-y-6">
         @csrf
 
+        <!-- Job Title -->
+        <!-- Job Titles -->
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-slate-700 mb-2">Job Titles</label>
+            <p class="text-xs text-slate-500 mb-2">Select your current or primary job titles.</p>
+            
+            <div id="job-titles-container" class="space-y-3">
+                @php
+                    $currentTitles = old('titles', $profile->title);
+                    if (is_string($currentTitles)) {
+                         $decoded = json_decode($currentTitles, true);
+                         $currentTitles = is_array($decoded) ? $decoded : [$currentTitles];
+                    }
+                    if (empty($currentTitles)) {
+                        $currentTitles = [null];
+                    }
+                @endphp
+
+                @foreach($currentTitles as $index => $currentTitle)
+                <div class="job-title-row flex gap-2 items-start">
+                    <div class="flex-grow">
+                         <select name="titles[]" class="job-title-select block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                            <option value="">Select a job title</option>
+                            @if(isset($jobTitles))
+                                @foreach($jobTitles as $t)
+                                    <option value="{{ $t }}" {{ $currentTitle == $t ? 'selected' : '' }}>
+                                        {{ $t }}
+                                    </option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <button type="button" class="mt-1 text-slate-400 hover:text-red-500" onclick="removeJobTitleRow(this)">
+                        <span class="sr-only">Remove</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                @endforeach
+            </div>
+            
+            <button type="button" id="add-job-title-btn" class="mt-2 inline-flex items-center text-sm font-medium text-emerald-600 hover:text-emerald-700">
+                <svg class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                Add Another Job Title
+            </button>
+        </div>
+
+        <template id="job-title-row-template">
+             <div class="job-title-row flex gap-2 items-start">
+                    <div class="flex-grow">
+                         <select name="titles[]" class="job-title-select block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                            <option value="">Select a job title</option>
+                            @if(isset($jobTitles))
+                                @foreach($jobTitles as $t)
+                                    <option value="{{ $t }}">{{ $t }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <button type="button" class="mt-1 text-slate-400 hover:text-red-500" onclick="removeJobTitleRow(this)">
+                        <span class="sr-only">Remove</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+        </template>
+
         <!-- Job Category -->
         <div>
             <label for="categories" class="block text-sm font-medium text-slate-700">Job Category</label>
@@ -57,10 +128,30 @@
         <div>
             <label for="preferred_job_titles" class="block text-sm font-medium text-slate-700">Preferred Job Titles</label>
             <div class="mt-1">
-                <input type="text" name="preferred_job_titles" id="preferred_job_titles" 
-                    class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm"
-                    value="{{ old('preferred_job_titles', is_array($profile->preferred_job_titles) ? implode(', ', $profile->preferred_job_titles) : $profile->preferred_job_titles) }}"
-                    placeholder="e.g. Accountant, Financial Analyst (Max 5)">
+                @php
+                    $selectedTitles = old('preferred_job_titles', $profile->preferred_job_titles ?? []);
+                    if (!is_array($selectedTitles)) {
+                         $selectedTitles = array_map('trim', explode(',', $selectedTitles));
+                    }
+                    $selectedTitles = array_filter($selectedTitles);
+                @endphp
+                <select name="preferred_job_titles[]" id="preferred_job_titles" multiple="multiple"
+                    class="block w-full rounded-lg border-slate-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
+                    @if(isset($jobTitles))
+                        @foreach($jobTitles as $title)
+                            <option value="{{ $title }}" {{ in_array($title, $selectedTitles) ? 'selected' : '' }}>
+                                {{ $title }}
+                            </option>
+                        @endforeach
+                        {{-- Handle custom values that are not in the predefined list --}}
+                        @foreach($selectedTitles as $selected)
+                            @if(!$jobTitles->contains($selected))
+                                <option value="{{ $selected }}" selected>{{ $selected }}</option>
+                            @endif
+                        @endforeach
+                    @endif
+                </select>
+            </div>
             </div>
             <p class="mt-1 text-xs text-slate-500">Separate multiple titles with commas.</p>
         </div>
@@ -105,10 +196,58 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     $(document).ready(function() {
+        function initJobTitleSelect(element) {
+            $(element).select2({
+                placeholder: "Select a job title",
+                allowClear: true,
+                width: '100%'
+            });
+        }
+        
+        // Init existing
+        $('.job-title-select').each(function() {
+            initJobTitleSelect(this);
+        });
+
+        const container = document.getElementById('job-titles-container');
+        const addBtn = document.getElementById('add-job-title-btn');
+        const template = document.getElementById('job-title-row-template');
+
+        addBtn.addEventListener('click', () => {
+            const clone = template.content.cloneNode(true);
+            const row = clone.querySelector('.job-title-row');
+            container.appendChild(row);
+            
+            // Init select2 on new element
+            const newSelect = row.querySelector('select');
+            initJobTitleSelect(newSelect);
+        });
+
+        window.removeJobTitleRow = function(btn) {
+            if (container.children.length > 1) {
+                const row = btn.closest('.job-title-row');
+                // Destroy select2 before removing to prevent leaks/ghosts if any
+                $(row.querySelector('select')).select2('destroy');
+                row.remove();
+            } else {
+                const row = btn.closest('.job-title-row');
+                const select = row.querySelector('select');
+                $(select).val(null).trigger('change');
+            }
+        };
+
         $('#categories').select2({
             placeholder: "Select categories",
             allowClear: true,
             width: '100%'
+        });
+
+        $('#preferred_job_titles').select2({
+            placeholder: "Select or type job titles",
+            allowClear: true,
+            width: '100%',
+            tags: true,
+            tokenSeparators: [',']
         });
     });
 </script>

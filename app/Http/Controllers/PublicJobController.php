@@ -171,7 +171,7 @@ class PublicJobController extends Controller
             }
         }
 
-        $jobs = $query->latest()->paginate(20)->withQueryString();
+        $jobs = $query->latest()->paginate(10)->withQueryString();
         $categories = Category::where('is_active', true)->get();
 
         return view('public.jobs.index', compact('jobs', 'categories'));

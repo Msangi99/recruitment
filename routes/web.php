@@ -236,6 +236,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('/skills/{skill}', [\App\Http\Controllers\Admin\SettingController::class, 'deleteSkill'])->name('skills.destroy');
         Route::post('/languages', [\App\Http\Controllers\Admin\SettingController::class, 'addLanguage'])->name('languages.store');
         Route::delete('/languages/{language}', [\App\Http\Controllers\Admin\SettingController::class, 'deleteLanguage'])->name('languages.destroy');
+        Route::post('/job-titles', [\App\Http\Controllers\Admin\SettingController::class, 'addJobTitle'])->name('job-titles.store');
+        Route::delete('/job-titles/{jobTitle}', [\App\Http\Controllers\Admin\SettingController::class, 'deleteJobTitle'])->name('job-titles.destroy');
 
         // Currency Management
         Route::post('/settings/currencies', [\App\Http\Controllers\Admin\SettingController::class, 'addCurrency'])->name('settings.currencies.store');

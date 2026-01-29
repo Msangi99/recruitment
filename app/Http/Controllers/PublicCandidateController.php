@@ -27,11 +27,24 @@ class PublicCandidateController extends Controller
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhereHas('candidateProfile', function ($q) use ($search) {
-                        $q->where('target_destination', 'like', "%{$search}%");
+                        $q->where('target_destination', 'like', "%{$search}%")
+                          ->orWhere('title', 'like', "%{$search}%")
+                          ->orWhere('headline', 'like', "%{$search}%")
+                          ->orWhereJsonContains('preferred_job_titles', $search);
+                    })
+                    ->orWhereHas('candidateProfile.categories', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
                     })
                     ->orWhereHas('candidateProfile.skills', function ($q) use ($search) {
                         $q->where('name', 'like', "%{$search}%");
                     });
+            });
+        }
+
+        // Job Category filter
+        if ($request->filled('category')) {
+            $query->whereHas('candidateProfile.categories', function ($q) use ($request) {
+                $q->where('categories.id', $request->category);
             });
         }
 
@@ -111,9 +124,10 @@ class PublicCandidateController extends Controller
             });
         }
 
-        $candidates = $query->latest()->paginate(20);
+        $candidates = $query->latest()->paginate(10);
+        $categories = \App\Models\Category::orderBy('name')->get();
 
-        return view('public.candidates.index', compact('candidates'));
+        return view('public.candidates.index', compact('candidates', 'categories'));
     }
 
     public function searchSkills(Request $request)
