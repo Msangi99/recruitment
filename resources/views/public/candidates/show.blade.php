@@ -195,7 +195,8 @@
             <!-- Right Main Content -->
             <div class="lg:col-span-8">
 
-                <div class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6 overflow-hidden">
+                <div
+                    class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6 overflow-hidden">
 
                     <!-- 1. Professional summary -->
                     <div id="summary" class="mb-6">
@@ -241,9 +242,14 @@
                                     <div class="absolute left-0 top-1.5 w-2 h-2 bg-deep-green rounded-full"></div>
                                     <div class="space-y-2">
                                         <p class="text-sm font-bold text-gray-900">Job title: <span
-                                                class="font-medium text-gray-700 break-words">{{ $experience->job_title }}</span></p>
+                                                class="font-medium text-gray-700 break-words">{{ $experience->job_title }}</span>
+                                        </p>
                                         <p class="text-sm font-bold text-gray-900">Organization: <span
-                                                class="font-medium text-gray-700 break-words">{{ $experience->employer }}</span></p>
+                                                class="font-medium text-gray-700 break-words">{{ $experience->employer }}</span>
+                                        </p>
+                                        <p class="text-sm font-bold text-gray-900">Location: <span
+                                                class="font-medium text-gray-700">{{ $experience->city }},
+                                                {{ $experience->country }}</span></p>
                                         <p class="text-sm font-bold text-gray-900">From: <span
                                                 class="font-medium text-gray-700">
                                                 {{ $experience->start_date->format('M Y') }} -
@@ -318,8 +324,10 @@
                                             </svg>
                                         </div>
                                         <div class="min-w-0">
-                                            <h3 class="font-bold text-gray-900 text-sm break-words">{{ $cert->field_of_study }}</h3>
-                                            <p class="text-xs text-indigo-600 font-bold mt-0.5 break-words">{{ $cert->institution }}</p>
+                                            <h3 class="font-bold text-gray-900 text-sm break-words">
+                                                {{ $cert->field_of_study }}</h3>
+                                            <p class="text-xs text-indigo-600 font-bold mt-0.5 break-words">
+                                                {{ $cert->institution }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -341,7 +349,8 @@
                                                 </svg>
                                             </div>
                                             <div class="min-w-0">
-                                                <h3 class="font-bold text-gray-900 text-sm break-words">{{ $doc->document_type }}</h3>
+                                                <h3 class="font-bold text-gray-900 text-sm break-words">
+                                                    {{ $doc->document_type }}</h3>
                                                 <p class="text-xs text-emerald-600 font-bold mt-0.5">Verified PDF Document
                                                 </p>
                                             </div>
