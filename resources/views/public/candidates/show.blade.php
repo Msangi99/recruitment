@@ -277,7 +277,7 @@
                     <div id="education" class="mb-6">
                         <h2 class="text-lg font-bold text-gray-900 mb-4">Education</h2>
                         <div class="space-y-5">
-                            @forelse($candidate->candidateProfile->educations->whereNotIn('level', ['Certificate']) as $education)
+                            @forelse($candidate->candidateProfile->educations as $education)
                                 <div class="relative pl-6">
                                     <div class="absolute left-0 top-1.5 w-2 h-2 bg-deep-green rounded-full"></div>
                                     <div class="space-y-2">
@@ -312,13 +312,12 @@
                         <h2 class="text-lg font-bold text-gray-900 mb-4">Training & Certification</h2>
                         <div class="grid grid-cols-1 gap-4">
                             @php
-                                $certifications = $candidate->candidateProfile->educations->where('level', 'Certificate');
                                 $trainings = $candidate->candidateProfile->trainings;
                                 $complianceDocs = $candidate->documents->whereIn('document_type', ['Medical Fitness Status', 'Police Clearance Status']);
                             @endphp
 
                             {{-- Trainings --}}
-                            @foreach($trainings as $training)
+                            @forelse($trainings as $training)
                                 <div class="p-4 rounded-xl bg-orange-50/50 border border-orange-100">
                                     <div class="flex items-center gap-3">
                                         <div class="p-2 bg-orange-100 rounded-lg text-orange-600 flex-shrink-0">
@@ -336,33 +335,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
-
-                            {{-- Certifications --}}
-                            @forelse($certifications as $cert)
-                                <div class="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100">
-                                    <div class="flex items-center gap-3">
-                                        <div class="p-2 bg-indigo-100 rounded-lg text-indigo-600 flex-shrink-0">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        </div>
-                                        <div class="min-w-0">
-                                            <h3 class="font-bold text-gray-900 text-sm break-words">
-                                                {{ $cert->field_of_study }}</h3>
-                                            <p class="text-xs text-indigo-600 font-bold mt-0.5 break-words">
-                                                {{ $cert->institution }}</p>
-                                        </div>
-                                    </div>
-                                </div>
                             @empty
-                                @if($complianceDocs->isEmpty() && $trainings->isEmpty())
+                                @if($complianceDocs->isEmpty())
                                     <p class="text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl w-full">No
-                                        certifications or trainings listed.</p>
+                                        trainings or certifications listed.</p>
                                 @endif
                             @endforelse
 
+                            {{-- Compliance Documents --}}
                             @foreach($complianceDocs as $doc)
                                 <div class="p-4 rounded-xl bg-emerald-50/50 border border-emerald-100">
                                     <div class="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4">
