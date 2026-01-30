@@ -118,7 +118,7 @@
                                         'user@example.com' }}</p>
                                 </div>
                                 <div class="py-2">
-                                    <a href="#"
+                                    <a href="{{ route('settings.profile') }}"
                                         class="flex items-center px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">
                                         <i data-lucide="user" class="mr-3 h-4 w-4 text-slate-500"></i>
                                         Profile Settings

@@ -164,6 +164,14 @@ Route::middleware('auth')->group(function () {
     // Logout route
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+    // Profile Settings (All Users)
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [App\Http\Controllers\ProfileSettingsController::class, 'show'])->name('profile');
+        Route::put('/password', [App\Http\Controllers\ProfileSettingsController::class, 'updatePassword'])->name('password.update');
+        Route::put('/email', [App\Http\Controllers\ProfileSettingsController::class, 'updateEmail'])->name('email.update');
+        Route::put('/phone', [App\Http\Controllers\ProfileSettingsController::class, 'updatePhone'])->name('phone.update');
+    });
+
     // Dashboard redirect based on role
     Route::get('/dashboard', function () {
         $user = auth()->user();
