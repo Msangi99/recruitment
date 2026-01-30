@@ -142,4 +142,12 @@ class CandidateProfile extends Model
     {
         return $this->belongsToMany(Category::class, 'candidate_profile_category');
     }
+
+    /**
+     * Get the trainings for the profile
+     */
+    public function trainings(): HasMany
+    {
+        return $this->hasMany(Training::class);
+    }
 }

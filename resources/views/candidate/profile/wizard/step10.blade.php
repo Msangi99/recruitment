@@ -287,7 +287,7 @@
                                             <p class="text-sm text-slate-500 font-medium">Upload Introduction Video</p>
                                             <p class="text-xs text-slate-400">Drag & drop or click</p>
                                         </div>
-                                        <input id="video_cv" name="video_cv" type="file" class="hidden" accept="video/mp4,video/quicktime">
+                                        <input id="video_cv" name="video_cv" type="file" class="hidden" accept="video/mp4,video/quicktime,video/webm,video/x-msvideo,video/mpeg,video/3gpp,video/x-matroska">
                                     </label>
                                     
                                     <button type="button" id="upload-video-btn"
@@ -499,7 +499,16 @@
                             resolve(false);
                         }
                     } else {
-                        alert('Video upload error: ' + xhr.statusText);
+                        try {
+                            const data = JSON.parse(xhr.responseText);
+                            let errorMsg = data.message || xhr.statusText;
+                            if (data.errors && data.errors.video_cv) {
+                                errorMsg = data.errors.video_cv[0];
+                            }
+                            alert('Video upload error: ' + errorMsg);
+                        } catch (e) {
+                            alert('Video upload error: ' + xhr.statusText);
+                        }
                         videoProgress.classList.add('hidden');
                         videoBtn.style.display = 'inline-flex';
                         resolve(false);

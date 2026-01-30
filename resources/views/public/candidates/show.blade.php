@@ -196,7 +196,8 @@
             <!-- Right Main Content -->
             <div class="lg:col-span-8">
 
-                <div class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6 overflow-hidden">
+                <div
+                    class="bg-white rounded-[1.5rem] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 p-6 overflow-hidden">
 
                     <!-- 1. Professional summary -->
                     <div id="summary" class="mb-6">
@@ -242,9 +243,14 @@
                                     <div class="absolute left-0 top-1.5 w-2 h-2 bg-deep-green rounded-full"></div>
                                     <div class="space-y-2">
                                         <p class="text-sm font-bold text-gray-900">Job title: <span
-                                                class="font-medium text-gray-700 break-words">{{ $experience->job_title }}</span></p>
+                                                class="font-medium text-gray-700 break-words">{{ $experience->job_title }}</span>
+                                        </p>
                                         <p class="text-sm font-bold text-gray-900">Organization: <span
-                                                class="font-medium text-gray-700 break-words">{{ $experience->employer }}</span></p>
+                                                class="font-medium text-gray-700 break-words">{{ $experience->employer }}</span>
+                                        </p>
+                                        <p class="text-sm font-bold text-gray-900">Location: <span
+                                                class="font-medium text-gray-700">{{ $experience->city }},
+                                                {{ $experience->country }}</span></p>
                                         <p class="text-sm font-bold text-gray-900">From: <span
                                                 class="font-medium text-gray-700">
                                                 {{ $experience->start_date->format('M Y') }} -
@@ -301,14 +307,38 @@
 
                     <div class="h-px bg-gray-100 w-full mb-6"></div>
 
-                    <!-- 5. Certification & Training -->
+                    <!-- 5. Training & Certification -->
                     <div id="certifications" class="mb-6">
-                        <h2 class="text-lg font-bold text-gray-900 mb-4">Certification & Training</h2>
+                        <h2 class="text-lg font-bold text-gray-900 mb-4">Training & Certification</h2>
                         <div class="grid grid-cols-1 gap-4">
                             @php
                                 $certifications = $candidate->candidateProfile->educations->where('level', 'Certificate');
+                                $trainings = $candidate->candidateProfile->trainings;
                                 $complianceDocs = $candidate->documents->whereIn('document_type', ['Medical Fitness Status', 'Police Clearance Status']);
                             @endphp
+
+                            {{-- Trainings --}}
+                            @foreach($trainings as $training)
+                                <div class="p-4 rounded-xl bg-orange-50/50 border border-orange-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="p-2 bg-orange-100 rounded-lg text-orange-600 flex-shrink-0">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                            </svg>
+                                        </div>
+                                        <div class="min-w-0">
+                                            <h3 class="font-bold text-gray-900 text-sm break-words">
+                                                {{ $training->name }}</h3>
+                                            <p class="text-xs text-orange-600 font-bold mt-0.5 break-words">
+                                                {{ $training->institution }} • {{ $training->start_date->format('Y') }} - {{ $training->end_date ? $training->end_date->format('Y') : 'Present' }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            {{-- Certifications --}}
                             @forelse($certifications as $cert)
                                 <div class="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100">
                                     <div class="flex items-center gap-3">
@@ -319,13 +349,15 @@
                                             </svg>
                                         </div>
                                         <div class="min-w-0">
-                                            <h3 class="font-bold text-gray-900 text-sm break-words">{{ $cert->field_of_study }}</h3>
-                                            <p class="text-xs text-indigo-600 font-bold mt-0.5 break-words">{{ $cert->institution }}</p>
+                                            <h3 class="font-bold text-gray-900 text-sm break-words">
+                                                {{ $cert->field_of_study }}</h3>
+                                            <p class="text-xs text-indigo-600 font-bold mt-0.5 break-words">
+                                                {{ $cert->institution }}</p>
                                         </div>
                                     </div>
                                 </div>
                             @empty
-                                @if($complianceDocs->isEmpty())
+                                @if($complianceDocs->isEmpty() && $trainings->isEmpty())
                                     <p class="text-gray-400 italic text-center py-4 bg-gray-50 rounded-xl w-full">No
                                         certifications or trainings listed.</p>
                                 @endif
@@ -342,7 +374,8 @@
                                                 </svg>
                                             </div>
                                             <div class="min-w-0">
-                                                <h3 class="font-bold text-gray-900 text-sm break-words">{{ $doc->document_type }}</h3>
+                                                <h3 class="font-bold text-gray-900 text-sm break-words">
+                                                    {{ $doc->document_type }}</h3>
                                                 <p class="text-xs text-emerald-600 font-bold mt-0.5">Verified PDF Document
                                                 </p>
                                             </div>
