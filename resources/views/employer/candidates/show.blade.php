@@ -34,7 +34,9 @@
                                 <div>
                                     <h3 class="text-2xl font-bold text-gray-900">{{ $candidate->name }}</h3>
                                 @if($candidate->candidateProfile && $candidate->candidateProfile->title)
-                                    <p class="text-lg text-indigo-600 font-medium">{{ $candidate->candidateProfile->title }}</p>
+                                    <p class="text-lg text-indigo-600 font-medium">
+                                        {{ is_array($candidate->candidateProfile->title) ? implode(', ', $candidate->candidateProfile->title) : $candidate->candidateProfile->title }}
+                                    </p>
                                 @endif
                                 <p class="mt-1 text-sm text-gray-600 flex items-center">
                                         <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">

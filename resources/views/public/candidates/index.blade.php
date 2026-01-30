@@ -532,7 +532,7 @@
                                             </p>
                                         @elseif($candidate->candidateProfile->title)
                                             <p class="text-xs font-bold text-blue-600 uppercase mt-1 tracking-wide">
-                                                {{ $candidate->candidateProfile->title }}
+                                                {{ is_array($candidate->candidateProfile->title) ? implode(', ', $candidate->candidateProfile->title) : $candidate->candidateProfile->title }}
                                             </p>
                                         @elseif($candidate->candidateProfile->categories->count() > 0)
                                             <p class="text-xs font-bold text-emerald-600 uppercase mt-1 tracking-wide">

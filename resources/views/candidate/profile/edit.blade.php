@@ -84,7 +84,7 @@
                                 <div>
                                     <dt class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Job Title</dt>
                                     <dd class="mt-1 text-sm text-slate-900 font-medium">
-                                        {{ $profile->title ?? 'Not specified' }}
+                                        {{ is_array($profile->title) ? implode(', ', $profile->title) : ($profile->title ?? 'Not specified') }}
                                     </dd>
                                 </div>
                                 <div>

@@ -27,7 +27,9 @@
                     @endif
                     <div class="ml-6">
                         <h2 class="text-2xl font-bold text-gray-900">{{ $candidate->name }}</h2>
-                        <p class="text-blue-600 font-bold">{{ $candidate->candidateProfile->title ?? 'Candidate' }}</p>
+                        <p class="text-blue-600 font-bold">
+                            {{ is_array($candidate->candidateProfile->title) ? implode(', ', $candidate->candidateProfile->title) : ($candidate->candidateProfile->title ?? 'Candidate') }}
+                        </p>
                         <div class="flex items-center text-gray-500 mt-1">
                             <i data-lucide="mail" class="w-4 h-4 mr-1"></i>
                             <span class="text-sm font-medium">{{ $candidate->email }}</span>

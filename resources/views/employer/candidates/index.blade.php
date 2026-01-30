@@ -185,7 +185,7 @@
                                                 </h3>
                                                 @if($candidate->candidateProfile->title)
                                                     <p class="text-xs font-semibold text-blue-600 mb-0.5">
-                                                        {{ $candidate->candidateProfile->title }}</p>
+                                                        {{ is_array($candidate->candidateProfile->title) ? implode(', ', $candidate->candidateProfile->title) : $candidate->candidateProfile->title }}</p>
                                                 @endif
                                                 <p class="text-[10px] text-gray-500 italic">
                                                     From: {{ $candidate->country ?? 'N/A' }}
