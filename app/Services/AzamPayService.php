@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AzamPesaSetting;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
@@ -243,6 +244,111 @@ class AzamPayService
                 'externalId' => $externalId,
             ]);
             return null;
+        }
+    }
+
+    /**
+     * Fetch the RSA public key from AzamPay for webhook signature verification
+     * The key is cached for 24 hours to avoid excessive API calls
+     */
+    public function getPublicKey()
+    {
+        return Cache::remember('azampay_public_key', 3600 * 24, function () {
+            $token = $this->getAccessToken();
+
+            if (!$token) {
+                Log::error('AzamPay: Cannot fetch public key, token missing');
+                return null;
+            }
+
+            try {
+                $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $token,
+                ])->get($this->baseUrl . '/azampay/v1/public-key', [
+                    'format' => 'Pem',
+                ]);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (!empty($data['publicKey'])) {
+                        // Clean up the PEM key - ensure proper line breaks
+                        $pem = $data['publicKey'];
+                        $pem = str_replace('\n', "\n", $pem);
+                        return $pem;
+                    }
+                }
+
+                Log::error('AzamPay public key fetch failed', [
+                    'status' => $response->status(),
+                    'response' => $response->body(),
+                ]);
+
+                return null;
+            } catch (\Exception $e) {
+                Log::error('AzamPay public key fetch exception', [
+                    'message' => $e->getMessage(),
+                ]);
+                return null;
+            }
+        });
+    }
+
+    /**
+     * Verify the RSA signature of a webhook callback
+     * 
+     * Signature is computed over: {utilityref}{externalreference}{transactionstatus}{operator}
+     * 
+     * @param string $utilityref Partner's reference
+     * @param string $externalreference AzamPay's reference
+     * @param string $transactionstatus Transaction status
+     * @param string $operator Payment operator
+     * @param string $signatureBase64 Base64-encoded RSA signature
+     * @return bool
+     */
+    public function verifyWebhookSignature(
+        string $utilityref,
+        string $externalreference,
+        string $transactionstatus,
+        string $operator,
+        string $signatureBase64
+    ): bool {
+        try {
+            $publicKey = $this->getPublicKey();
+
+            if (!$publicKey) {
+                Log::warning('AzamPay webhook: Public key not available for signature verification');
+                return false;
+            }
+
+            $dataToVerify = $utilityref . $externalreference . $transactionstatus . $operator;
+            $signature = base64_decode($signatureBase64, true);
+
+            if ($signature === false) {
+                Log::warning('AzamPay webhook: Invalid base64 signature');
+                return false;
+            }
+
+            $result = openssl_verify(
+                $dataToVerify,
+                $signature,
+                $publicKey,
+                OPENSSL_ALGO_SHA256
+            );
+
+            if ($result !== 1) {
+                Log::warning('AzamPay webhook: Signature verification failed', [
+                    'data_to_verify' => $dataToVerify,
+                    'result' => $result,
+                ]);
+            }
+
+            return $result === 1;
+        } catch (\Exception $e) {
+            Log::error('AzamPay webhook signature verification exception', [
+                'message' => $e->getMessage(),
+            ]);
+            return false;
         }
     }
 }

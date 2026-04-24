@@ -143,6 +143,10 @@ Route::post('/azampay/webhook', [AzamPayController::class, 'webhook'])->name('az
 Route::get('/azampay/redirect', [AzamPayController::class, 'redirect'])->name('azampay.redirect');
 Route::get('/azampay/cancel', [AzamPayController::class, 'cancel'])->name('azampay.cancel');
 
+// AzamPay card checkout (authenticated)
+Route::get('/azampay/card/checkout/{appointment}', [AzamPayController::class, 'cardCheckout'])->middleware('auth')->name('azampay.card.checkout');
+Route::post('/azampay/card/checkout/{appointment}', [AzamPayController::class, 'processCardCheckout'])->middleware('auth')->name('azampay.card.checkout.process');
+
 // Authentication routes
 Route::middleware('guest')->group(function () {
     // Login routes
