@@ -120,9 +120,10 @@
                                     <option value="">Select Provider</option>
                                     <!-- AzamPay Providers -->
                                     <option value="Mpesa" {{ old('mobile_provider') == 'Mpesa' ? 'selected' : '' }}>M-Pesa</option>
-                                    <option value="Tigo Pesa" {{ old('mobile_provider') == 'Tigo Pesa' ? 'selected' : '' }}>Tigo Pesa</option>
+                                    <option value="Tigo" {{ old('mobile_provider') == 'Tigo' ? 'selected' : '' }}>Tigo Pesa</option>
                                     <option value="Airtel" {{ old('mobile_provider') == 'Airtel' ? 'selected' : '' }}>Airtel Money</option>
-                                    <option value="Azampay" {{ old('mobile_provider') == 'Azampay' ? 'selected' : '' }}>Azampay</option>
+                                    <option value="Halopesa" {{ old('mobile_provider') == 'Halopesa' ? 'selected' : '' }}>Halopesa</option>
+                                    <option value="Azampesa" {{ old('mobile_provider') == 'Azampesa' ? 'selected' : '' }}>AzamPesa</option>
                                 </select>
                                 @error('mobile_provider')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -137,6 +138,40 @@
                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('account_number') border-red-300 @enderror">
                                 <p class="mt-1 text-xs text-gray-500">Enter your mobile money number</p>
                                 @error('account_number')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Bank Provider -->
+                            <div id="bank_provider_field" style="display: none;" class="mb-4">
+                                <label for="bank_provider" class="block text-sm font-medium text-gray-700 mb-2">Bank Provider *</label>
+                                <select id="bank_provider" name="bank_provider"
+                                        class="appearance-none relative block w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('bank_provider') border-red-300 @enderror">
+                                    <option value="">Select Bank</option>
+                                    <option value="CRDB" {{ old('bank_provider') == 'CRDB' ? 'selected' : '' }}>CRDB</option>
+                                    <option value="NMB" {{ old('bank_provider') == 'NMB' ? 'selected' : '' }}>NMB</option>
+                                </select>
+                                @error('bank_provider')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div id="bank_account_number_field" style="display: none;" class="mb-4">
+                                <label for="bank_account_number" class="block text-sm font-medium text-gray-700 mb-2">Bank Account Number *</label>
+                                <input type="text" id="bank_account_number" name="bank_account_number" value="{{ old('bank_account_number') }}"
+                                       placeholder="Enter bank account number"
+                                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('bank_account_number') border-red-300 @enderror">
+                                @error('bank_account_number')
+                                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div id="bank_otp_field" style="display: none;" class="mb-4">
+                                <label for="bank_otp" class="block text-sm font-medium text-gray-700 mb-2">Bank OTP *</label>
+                                <input type="text" id="bank_otp" name="bank_otp" value="{{ old('bank_otp') }}"
+                                       placeholder="Enter OTP from bank USSD"
+                                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm @error('bank_otp') border-red-300 @enderror">
+                                @error('bank_otp')
                                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                                 @enderror
                             </div>
@@ -202,18 +237,40 @@ if (paymentMethodSelect) {
         const accountNumberField = document.getElementById('account_number_field');
         if (mobileProviderField) mobileProviderField.style.display = 'block';
         if (accountNumberField) accountNumberField.style.display = 'block';
+    } else if (paymentMethodSelect.value === 'bank') {
+        const bankProviderField = document.getElementById('bank_provider_field');
+        const bankAccountNumberField = document.getElementById('bank_account_number_field');
+        const bankOtpField = document.getElementById('bank_otp_field');
+        if (bankProviderField) bankProviderField.style.display = 'block';
+        if (bankAccountNumberField) bankAccountNumberField.style.display = 'block';
+        if (bankOtpField) bankOtpField.style.display = 'block';
     }
     
     paymentMethodSelect.addEventListener('change', function() {
         const mobileProviderField = document.getElementById('mobile_provider_field');
         const accountNumberField = document.getElementById('account_number_field');
+        const bankProviderField = document.getElementById('bank_provider_field');
+        const bankAccountNumberField = document.getElementById('bank_account_number_field');
+        const bankOtpField = document.getElementById('bank_otp_field');
         
         if (this.value === 'mobile') {
             if (mobileProviderField) mobileProviderField.style.display = 'block';
             if (accountNumberField) accountNumberField.style.display = 'block';
+            if (bankProviderField) bankProviderField.style.display = 'none';
+            if (bankAccountNumberField) bankAccountNumberField.style.display = 'none';
+            if (bankOtpField) bankOtpField.style.display = 'none';
+        } else if (this.value === 'bank') {
+            if (mobileProviderField) mobileProviderField.style.display = 'none';
+            if (accountNumberField) accountNumberField.style.display = 'none';
+            if (bankProviderField) bankProviderField.style.display = 'block';
+            if (bankAccountNumberField) bankAccountNumberField.style.display = 'block';
+            if (bankOtpField) bankOtpField.style.display = 'block';
         } else {
             if (mobileProviderField) mobileProviderField.style.display = 'none';
             if (accountNumberField) accountNumberField.style.display = 'none';
+            if (bankProviderField) bankProviderField.style.display = 'none';
+            if (bankAccountNumberField) bankAccountNumberField.style.display = 'none';
+            if (bankOtpField) bankOtpField.style.display = 'none';
         }
     });
 }

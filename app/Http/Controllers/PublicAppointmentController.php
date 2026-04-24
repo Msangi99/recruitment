@@ -210,8 +210,12 @@ class PublicAppointmentController extends Controller
 
         $validated = $request->validate([
             'payment_gateway' => 'required|string|max:255',
-            'payment_method' => 'required|string|max:255',
+            'payment_method' => 'required|in:mobile,bank',
             'payment_phone' => 'nullable|string|max:255',
+            'mobile_provider' => 'required_if:payment_method,mobile|nullable|in:Mpesa,Tigo,Airtel,Halopesa,Azampesa',
+            'bank_provider' => 'required_if:payment_method,bank|nullable|in:CRDB,NMB',
+            'bank_account_number' => 'required_if:payment_method,bank|nullable|string|max:100',
+            'bank_otp' => 'required_if:payment_method,bank|nullable|string|max:20',
         ]);
 
         $amount = $consultationRequest->amount;
@@ -224,6 +228,9 @@ class PublicAppointmentController extends Controller
             'meta_data' => json_encode(array_merge($metaData, [
                 'payment_method' => $validated['payment_method'],
                 'payment_phone' => $validated['payment_phone'] ?? null,
+                'mobile_provider' => $validated['mobile_provider'] ?? null,
+                'bank_provider' => $validated['bank_provider'] ?? null,
+                'bank_account_number' => $validated['bank_account_number'] ?? null,
             ])),
              'updated_at' => now(),
         ]);
@@ -238,12 +245,12 @@ class PublicAppointmentController extends Controller
 
         try {
             if ($paymentGateway === 'azampay') {
-                if ($paymentMethod === 'mobile_money') {
+                if ($paymentMethod === 'mobile') {
                     $response = $this->azampayService->mobileCheckout([
                         'amount' => $amount,
                         'accountNumber' => $paymentPhone,
                         'externalId' => $orderId,
-                        'provider' => 'Mpesa',
+                        'provider' => $validated['mobile_provider'] ?? 'Mpesa',
                     ]);
 
                     if (isset($response['success']) && $response['success'] === true) {
@@ -258,6 +265,35 @@ class PublicAppointmentController extends Controller
                         ]);
                     } else {
                         $paymentError = 'AzamPay checkout failed';
+                        $paymentErrorDetails = $response['message'] ?? 'Unknown error';
+                    }
+                } elseif ($paymentMethod === 'bank') {
+                    $response = $this->azampayService->bankCheckout([
+                        'amount' => $amount,
+                        'currency' => 'TZS',
+                        'merchantAccountNumber' => $validated['bank_account_number'],
+                        'merchantMobileNumber' => config('azampay.merchant_mobile_number', $paymentPhone),
+                        'merchantName' => config('azampay.app_name'),
+                        'otp' => $validated['bank_otp'],
+                        'provider' => $validated['bank_provider'],
+                        'referenceId' => $orderId,
+                        'additionalProperties' => [
+                            'consultation_request_id' => $id,
+                        ],
+                    ]);
+
+                    if (isset($response['success']) && $response['success'] === true) {
+                        DB::table('consultation_requests')->where('id', $id)->update([
+                            'payment_status' => 'processing',
+                        ]);
+
+                        return view('public.appointments.confirmation', [
+                            'request' => $consultationRequest,
+                            'message' => 'Bank payment initiated successfully.',
+                            'status' => 'pending_payment'
+                        ]);
+                    } else {
+                        $paymentError = 'AzamPay bank checkout failed';
                         $paymentErrorDetails = $response['message'] ?? 'Unknown error';
                     }
                 }

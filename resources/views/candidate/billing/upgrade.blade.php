@@ -104,6 +104,7 @@
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('payment_method') ? 'border-red-300' : '' }}">
                                         <option value="">Select Method</option>
                                         <option value="mobile" {{ $isThisForm && old('payment_method') == 'mobile' ? 'selected' : '' }}>Mobile Money</option>
+                                    <option value="bank" {{ $isThisForm && old('payment_method') == 'bank' ? 'selected' : '' }}>Bank Transfer</option>
                                         <option value="card" {{ $isThisForm && old('payment_method') == 'card' ? 'selected' : '' }}>Card Payment</option>
                                     </select>
                                     @if($isThisForm && $errors->has('payment_method'))
@@ -134,6 +135,39 @@
                                         <p class="mt-1 text-sm text-red-600">{{ $errors->first('account_number') }}</p>
                                     @endif
                                 </div>
+
+                                <div id="bank_provider_field_{{ $plan['id'] }}" style="display: none;" class="mb-3">
+                                    <label for="bank_provider_{{ $plan['id'] }}" class="block text-sm font-medium text-gray-700 mb-2">Bank Provider *</label>
+                                    <select id="bank_provider_{{ $plan['id'] }}" name="bank_provider"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('bank_provider') ? 'border-red-300' : '' }}">
+                                        <option value="">Select Bank</option>
+                                        <option value="CRDB" {{ $isThisForm && old('bank_provider') == 'CRDB' ? 'selected' : '' }}>CRDB</option>
+                                        <option value="NMB" {{ $isThisForm && old('bank_provider') == 'NMB' ? 'selected' : '' }}>NMB</option>
+                                    </select>
+                                    @if($isThisForm && $errors->has('bank_provider'))
+                                        <p class="mt-1 text-sm text-red-600">{{ $errors->first('bank_provider') }}</p>
+                                    @endif
+                                </div>
+
+                                <div id="bank_account_number_field_{{ $plan['id'] }}" style="display: none;" class="mb-3">
+                                    <label for="bank_account_number_{{ $plan['id'] }}" class="block text-sm font-medium text-gray-700 mb-2">Bank Account Number *</label>
+                                    <input type="text" id="bank_account_number_{{ $plan['id'] }}" name="bank_account_number" value="{{ $isThisForm ? old('bank_account_number') : '' }}"
+                                           placeholder="Enter bank account number"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('bank_account_number') ? 'border-red-300' : '' }}">
+                                    @if($isThisForm && $errors->has('bank_account_number'))
+                                        <p class="mt-1 text-sm text-red-600">{{ $errors->first('bank_account_number') }}</p>
+                                    @endif
+                                </div>
+
+                                <div id="bank_otp_field_{{ $plan['id'] }}" style="display: none;" class="mb-3">
+                                    <label for="bank_otp_{{ $plan['id'] }}" class="block text-sm font-medium text-gray-700 mb-2">Bank OTP *</label>
+                                    <input type="text" id="bank_otp_{{ $plan['id'] }}" name="bank_otp" value="{{ $isThisForm ? old('bank_otp') : '' }}"
+                                           placeholder="Enter OTP from bank USSD"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 {{ $isThisForm && $errors->has('bank_otp') ? 'border-red-300' : '' }}">
+                                    @if($isThisForm && $errors->has('bank_otp'))
+                                        <p class="mt-1 text-sm text-red-600">{{ $errors->first('bank_otp') }}</p>
+                                    @endif
+                                </div>
                             </div>
                             
                             <button type="submit" class="w-full px-4 py-2 {{ $plan['id'] == 'premium' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-600 hover:bg-gray-700' }} text-white rounded-md">
@@ -160,9 +194,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const azampayProviders = [
         { value: 'Mpesa', label: 'M-Pesa' },
-        { value: 'Tigo Pesa', label: 'Tigo Pesa' },
+        { value: 'Tigo', label: 'Tigo Pesa' },
         { value: 'Airtel', label: 'Airtel Money' },
-        { value: 'Azampay', label: 'Azampay' }
+        { value: 'Halopesa', label: 'Halopesa' },
+        { value: 'Azampesa', label: 'AzamPesa' }
     ];
 
     // Handle payment gateway selection for each plan
@@ -173,6 +208,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const mobileProviderField = document.getElementById('mobile_provider_field_' + planId);
         const mobileProviderSelect = document.getElementById('mobile_provider_' + planId);
         const accountNumberField = document.getElementById('account_number_field_' + planId);
+        const bankProviderField = document.getElementById('bank_provider_field_' + planId);
+        const bankAccountNumberField = document.getElementById('bank_account_number_field_' + planId);
+        const bankOtpField = document.getElementById('bank_otp_field_' + planId);
         
         // Function to update providers based on gateway
         function updateProviders(gateway) {
@@ -219,6 +257,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (paymentMethodSelect.value === 'mobile') {
                     mobileProviderField.style.display = 'block';
                     accountNumberField.style.display = 'block';
+                } else if (paymentMethodSelect.value === 'bank') {
+                    bankProviderField.style.display = 'block';
+                    bankAccountNumberField.style.display = 'block';
+                    bankOtpField.style.display = 'block';
                 }
             }
             
@@ -237,9 +279,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (this.value === 'mobile') {
                     mobileProviderField.style.display = 'block';
                     accountNumberField.style.display = 'block';
+                    bankProviderField.style.display = 'none';
+                    bankAccountNumberField.style.display = 'none';
+                    bankOtpField.style.display = 'none';
+                } else if (this.value === 'bank') {
+                    mobileProviderField.style.display = 'none';
+                    accountNumberField.style.display = 'none';
+                    bankProviderField.style.display = 'block';
+                    bankAccountNumberField.style.display = 'block';
+                    bankOtpField.style.display = 'block';
                 } else {
                     mobileProviderField.style.display = 'none';
                     accountNumberField.style.display = 'none';
+                    bankProviderField.style.display = 'none';
+                    bankAccountNumberField.style.display = 'none';
+                    bankOtpField.style.display = 'none';
                 }
             });
         }

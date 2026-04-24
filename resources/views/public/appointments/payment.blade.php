@@ -73,8 +73,7 @@
                                     <div
                                         class="p-4 rounded-xl border-2 border-gray-100 hover:border-emerald-200 peer-checked:border-emerald-500 peer-checked:bg-emerald-50/50 transition-all text-center h-full flex flex-col items-center justify-center gap-2">
                                         <div class="font-bold text-slate-700">AzamPay</div>
-                                        <span class="text-[10px] text-slate-400 font-medium">Card / M-Pesa / Tigo /
-                                            Airtel</span>
+                                        <span class="text-[10px] text-slate-400 font-medium">Mobile Money / Bank</span>
                                     </div>
                                     <div
                                         class="absolute top-2 right-2 opacity-0 peer-checked:opacity-100 transition-opacity">
@@ -96,22 +95,55 @@
                                 <select name="payment_method" required x-model="payment_method"
                                     class="w-full rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-3 text-sm border bg-white font-medium text-slate-700">
                                     <option value="">Select Method</option>
-                                    <option value="mobile_money">Mobile Money</option>
-                                    <template x-if="payment_gateway === 'selcom' || payment_gateway === 'azampay'">
-                                        <option value="card">Card (Visa/MasterCard)</option>
-                                    </template>
+                                    <option value="mobile">Mobile Money</option>
+                                    <option value="bank">Bank</option>
                                 </select>
                             </div>
 
                             <!-- Mobile Number -->
-                            <div x-show="payment_method === 'mobile_money'" x-transition>
+                            <div x-show="payment_method === 'mobile'" x-transition>
+                                <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Mobile Provider <span class="text-red-500">*</span></label>
+                                <select name="mobile_provider" :required="payment_method === 'mobile'"
+                                    class="w-full rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-3 text-sm border bg-white font-medium text-slate-700 mb-3">
+                                    <option value="">Select Provider</option>
+                                    <option value="Mpesa">M-Pesa</option>
+                                    <option value="Tigo">Tigo Pesa</option>
+                                    <option value="Airtel">Airtel Money</option>
+                                    <option value="Halopesa">Halopesa</option>
+                                    <option value="Azampesa">AzamPesa</option>
+                                </select>
                                 <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Mobile
                                     Number <span class="text-red-500">*</span></label>
-                                <input type="text" name="payment_phone" :required="payment_method === 'mobile_money'"
+                                <input type="text" name="payment_phone" :required="payment_method === 'mobile'"
                                     placeholder="e.g 2557..." value="{{ $request->phone ?? '' }}"
                                     class="w-full rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-3 text-sm border font-medium text-slate-700">
                                 <p class="text-[10px] text-slate-400 mt-1">Please ensure this number has sufficient balance.
                                 </p>
+                            </div>
+
+                            <!-- Bank Details -->
+                            <div x-show="payment_method === 'bank'" x-transition class="space-y-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Bank Provider <span class="text-red-500">*</span></label>
+                                    <select name="bank_provider" :required="payment_method === 'bank'"
+                                        class="w-full rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-3 text-sm border bg-white font-medium text-slate-700">
+                                        <option value="">Select Bank</option>
+                                        <option value="CRDB">CRDB</option>
+                                        <option value="NMB">NMB</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Bank Account Number <span class="text-red-500">*</span></label>
+                                    <input type="text" name="bank_account_number" :required="payment_method === 'bank'"
+                                        placeholder="Enter bank account number"
+                                        class="w-full rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-3 text-sm border font-medium text-slate-700">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Bank OTP <span class="text-red-500">*</span></label>
+                                    <input type="text" name="bank_otp" :required="payment_method === 'bank'"
+                                        placeholder="Enter OTP from bank USSD"
+                                        class="w-full rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-3 text-sm border font-medium text-slate-700">
+                                </div>
                             </div>
                         </div>
 

@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\AzamPesaSetting;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 class AzamPayService
 {
     protected $baseUrl;
+    protected $authBaseUrl;
     protected $appName;
     protected $clientId;
     protected $clientSecret;
@@ -16,11 +19,15 @@ class AzamPayService
 
     public function __construct()
     {
-        $this->environment = config('azampay.environment', 'sandbox');
+        $dbSettings = Schema::hasTable('azampesa_settings') ? AzamPesaSetting::first() : null;
+
+        $mode = $dbSettings?->mode ?? config('azampay.environment', 'sandbox');
+        $this->environment = $mode === 'live' ? 'production' : $mode;
         $this->baseUrl = config('azampay.urls.' . $this->environment);
-        $this->appName = config('azampay.app_name');
-        $this->clientId = config('azampay.client_id');
-        $this->clientSecret = config('azampay.client_secret');
+        $this->authBaseUrl = config('azampay.auth_urls.' . $this->environment);
+        $this->appName = $dbSettings?->app_name ?? config('azampay.app_name');
+        $this->clientId = $dbSettings?->client_id ?? config('azampay.client_id');
+        $this->clientSecret = $dbSettings?->secret_id ?? config('azampay.client_secret');
         $this->token = config('azampay.token');
     }
 
@@ -36,7 +43,7 @@ class AzamPayService
         try {
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
-            ])->post($this->baseUrl . '/appregistration/oauth2/token', [
+            ])->post($this->authBaseUrl . '/AppRegistration/GenerateToken', [
                 'appName' => $this->appName,
                 'clientId' => $this->clientId,
                 'clientSecret' => $this->clientSecret,
@@ -44,7 +51,7 @@ class AzamPayService
 
             if ($response->successful()) {
                 $data = $response->json();
-                return $data['accessToken'] ?? null;
+                return $data['data']['accessToken'] ?? null;
             }
 
             Log::error('AzamPay token request failed', [
@@ -81,7 +88,7 @@ class AzamPayService
                 'Authorization' => 'Bearer ' . $token,
             ])->post($this->baseUrl . '/azampay/mno/checkout', [
                 'amount' => $data['amount'],
-                'currencyCode' => $data['currency'] ?? 'TZS',
+                'currency' => $data['currency'] ?? 'TZS',
                 'accountNumber' => $data['accountNumber'],
                 'externalId' => $data['externalId'] ?? uniqid('COYZON-'),
                 'provider' => $data['provider'] ?? 'Mpesa',
@@ -132,7 +139,9 @@ class AzamPayService
                 'merchantAccountNumber' => $data['merchantAccountNumber'],
                 'merchantMobileNumber' => $data['merchantMobileNumber'],
                 'merchantName' => $data['merchantName'] ?? $this->appName,
-                'externalId' => $data['externalId'] ?? uniqid('COYZON-'),
+                'otp' => $data['otp'],
+                'provider' => $data['provider'],
+                'referenceId' => $data['referenceId'] ?? uniqid('COYZON-'),
                 'additionalProperties' => $data['additionalProperties'] ?? [],
             ]);
 

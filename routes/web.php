@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\VerificationController;
 use App\Http\Controllers\Admin\AppointmentManagementController;
 use App\Http\Controllers\Admin\PaymentManagementController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CommandController;
 use App\Http\Controllers\Candidate\CandidateController;
 use App\Http\Controllers\Candidate\ProfileController;
 use App\Http\Controllers\Candidate\JobApplicationController;
@@ -229,6 +230,10 @@ Route::middleware('auth')->group(function () {
 
         // Sidebar Calendar
         Route::get('/calendar', [AdminController::class, 'calendar'])->name('calendar');
+
+        // System Commands
+        Route::get('/commands', [CommandController::class, 'index'])->name('commands.index');
+        Route::post('/commands/run', [CommandController::class, 'run'])->name('commands.run');
 
         // Contact Messages Management
         Route::get('/contact-messages', [\App\Http\Controllers\Admin\ContactMessageController::class, 'index'])->name('contact-messages.index');

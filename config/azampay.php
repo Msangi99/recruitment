@@ -57,6 +57,10 @@ return [
         'sandbox' => 'https://sandbox.azampay.co.tz',
         'production' => 'https://checkout.azampay.co.tz',
     ],
+    'auth_urls' => [
+        'sandbox' => 'https://authenticator-sandbox.azampay.co.tz',
+        'production' => 'https://authenticator.azampay.co.tz',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -86,8 +90,15 @@ return [
     */
     'providers' => [
         'Mpesa',
-        'Tigo Pesa',
+        'Tigo',
         'Airtel',
-        'Azampay',
+        'Halopesa',
+        'Azampesa',
     ],
+    'bank_providers' => [
+        'CRDB',
+        'NMB',
+    ],
+    'merchant_account_number' => env('AZAMPAY_MERCHANT_ACCOUNT_NUMBER'),
+    'merchant_mobile_number' => env('AZAMPAY_MERCHANT_MOBILE_NUMBER'),
 ];

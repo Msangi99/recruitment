@@ -142,6 +142,65 @@
             </div>
         </div>
 
+        <!-- AzamPesa Settings -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a5 5 0 00-10 0v2M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    AzamPesa Settings
+                </h3>
+                <p class="text-sm text-gray-500 mt-1">Configure AzamPesa API credentials for checkout</p>
+            </div>
+            <div class="p-6 space-y-6">
+                <div>
+                    <label for="azampesa_appname" class="block text-sm font-medium text-gray-700 mb-2">App Name</label>
+                    <input type="text" id="azampesa_appname" name="azampesa_appname"
+                           value="{{ old('azampesa_appname', $azamPesaSetting?->app_name) }}"
+                           placeholder="My Application"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('azampesa_appname') border-red-300 @enderror">
+                    @error('azampesa_appname')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="azampesa_client_id" class="block text-sm font-medium text-gray-700 mb-2">Client ID</label>
+                    <input type="text" id="azampesa_client_id" name="azampesa_client_id"
+                           value="{{ old('azampesa_client_id', $azamPesaSetting?->client_id) }}"
+                           placeholder="Client ID"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('azampesa_client_id') border-red-300 @enderror">
+                    @error('azampesa_client_id')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="azampesa_secret_id" class="block text-sm font-medium text-gray-700 mb-2">Secret ID</label>
+                    <input type="text" id="azampesa_secret_id" name="azampesa_secret_id"
+                           value="{{ old('azampesa_secret_id', $azamPesaSetting?->secret_id) }}"
+                           placeholder="Secret ID"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('azampesa_secret_id') border-red-300 @enderror">
+                    @error('azampesa_secret_id')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="azampesa_mode" class="block text-sm font-medium text-gray-700 mb-2">Mode</label>
+                    <select id="azampesa_mode" name="azampesa_mode"
+                            class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('azampesa_mode') border-red-300 @enderror">
+                        <option value="sandbox" {{ old('azampesa_mode', $azamPesaSetting?->mode ?? 'sandbox') === 'sandbox' ? 'selected' : '' }}>Sandbox</option>
+                        <option value="live" {{ old('azampesa_mode', $azamPesaSetting?->mode ?? 'sandbox') === 'live' ? 'selected' : '' }}>Live</option>
+                    </select>
+                    @error('azampesa_mode')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
         <!-- Info Box -->
         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <div class="flex">

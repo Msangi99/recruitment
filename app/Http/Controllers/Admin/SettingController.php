@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AzamPesaSetting;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 
@@ -11,12 +12,13 @@ class SettingController extends Controller
     public function index()
     {
         $emailSettings = Setting::getByGroup('email');
+        $azamPesaSetting = AzamPesaSetting::first();
         $skills = \App\Models\Skill::orderBy('name')->get();
         $languages = \App\Models\Language::orderBy('name')->get();
         $currencies = \App\Models\Currency::orderBy('code')->get();
         $jobTitles = \App\Models\JobTitle::orderBy('name')->get();
 
-        return view('admin.settings.index', compact('emailSettings', 'skills', 'languages', 'currencies', 'jobTitles'));
+        return view('admin.settings.index', compact('emailSettings', 'azamPesaSetting', 'skills', 'languages', 'currencies', 'jobTitles'));
     }
 
     public function update(Request $request)
@@ -28,6 +30,10 @@ class SettingController extends Controller
             'package_basic_price' => 'nullable|numeric|min:0',
             'package_premium_price' => 'nullable|numeric|min:0',
             'consultation_price' => 'nullable|numeric|min:0',
+            'azampesa_appname' => 'nullable|string|max:255',
+            'azampesa_client_id' => 'nullable|string|max:255',
+            'azampesa_secret_id' => 'nullable|string|max:1000',
+            'azampesa_mode' => 'required|in:sandbox,live',
         ]);
 
         // Update HR Email
@@ -51,6 +57,16 @@ class SettingController extends Controller
         if ($request->has('consultation_price')) {
             Setting::set('consultation_price', $request->consultation_price);
         }
+
+        AzamPesaSetting::updateOrCreate(
+            ['id' => 1],
+            [
+                'app_name' => $validated['azampesa_appname'] ?? null,
+                'client_id' => $validated['azampesa_client_id'] ?? null,
+                'secret_id' => $validated['azampesa_secret_id'] ?? null,
+                'mode' => $validated['azampesa_mode'],
+            ]
+        );
 
         return back()->with('success', 'Settings updated successfully.');
     }

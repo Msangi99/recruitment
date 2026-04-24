@@ -63,8 +63,11 @@ class ConsultationController extends Controller
             'notes' => 'nullable|string|max:1000',
             // 'payment_gateway' => 'required|in:selcom,azampay', // Removed
             'payment_method' => 'required|in:mobile,card,bank',
-            'mobile_provider' => 'required_if:payment_method,mobile|nullable|string',
+            'mobile_provider' => 'required_if:payment_method,mobile|nullable|in:Mpesa,Tigo,Airtel,Halopesa,Azampesa',
             'account_number' => 'required_if:payment_method,mobile|nullable|string|max:20',
+            'bank_provider' => 'required_if:payment_method,bank|nullable|in:CRDB,NMB',
+            'bank_account_number' => 'required_if:payment_method,bank|nullable|string|max:100',
+            'bank_otp' => 'required_if:payment_method,bank|nullable|string|max:20',
         ], [
             'payment_method.required' => 'Please select a payment method.',
             'mobile_provider.required_if' => 'Please select a mobile money provider.',
@@ -259,10 +262,12 @@ class ConsultationController extends Controller
             $response = $this->azampayService->bankCheckout([
                 'amount' => $appointment->amount,
                 'currency' => 'TZS',
-                'merchantAccountNumber' => config('azampay.merchant_account_number'),
-                'merchantMobileNumber' => $candidate->phone ?? '255000000000',
+                'merchantAccountNumber' => $validated['bank_account_number'],
+                'merchantMobileNumber' => config('azampay.merchant_mobile_number', $candidate->phone ?? '255000000000'),
                 'merchantName' => config('azampay.app_name'),
-                'externalId' => $appointment->order_id,
+                'otp' => $validated['bank_otp'],
+                'provider' => $validated['bank_provider'],
+                'referenceId' => $appointment->order_id,
             ]);
 
             if ($response && isset($response['success']) && $response['success']) {

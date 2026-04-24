@@ -221,6 +221,8 @@
                             :badge="$unreadEmails > 0 ? $unreadEmails : null" />
                         <x-admin-sidebar-item href="{{ route('admin.settings.index') }}" icon="settings"
                             label="Settings" :active="request()->routeIs('admin.settings.*')" />
+                        <x-admin-sidebar-item href="{{ route('admin.commands.index') }}" icon="terminal"
+                            label="Commands" :active="request()->routeIs('admin.commands.*')" />
                     </nav>
                 </div>
             </div>
