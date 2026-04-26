@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\AzamPesaSetting;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Validation\Rule;
 
 class SettingController extends Controller
 {
@@ -23,10 +25,30 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
+        $mailConfigOn = $request->has('mail_config_enabled');
         $validated = $request->validate([
             'hr_email' => 'nullable|email|max:255',
             'notification_email' => 'nullable|email|max:255',
             'email_notifications_enabled' => 'boolean',
+            'mail_mailer' => 'nullable|in:smtp,log,array',
+            'mail_host' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::requiredIf($mailConfigOn),
+            ],
+            'mail_port' => 'nullable|integer|min:1|max:65535',
+            'mail_username' => 'nullable|string|max:255',
+            'mail_password' => 'nullable|string|max:1000',
+            'mail_clear_password' => 'nullable|boolean',
+            'mail_encryption' => 'nullable|in:tls,ssl,none',
+            'mail_from_address' => [
+                'nullable',
+                'email',
+                'max:255',
+                Rule::requiredIf($mailConfigOn),
+            ],
+            'mail_from_name' => 'nullable|string|max:255',
             'package_basic_price' => 'nullable|numeric|min:0',
             'package_premium_price' => 'nullable|numeric|min:0',
             'consultation_price' => 'nullable|numeric|min:0',
@@ -44,6 +66,23 @@ class SettingController extends Controller
 
         // Update Email Notifications Enabled
         Setting::set('email_notifications_enabled', $request->has('email_notifications_enabled') ? '1' : '0');
+
+        // Mail transport (from database)
+        Setting::set('mail_config_enabled', $request->has('mail_config_enabled') ? '1' : '0');
+        Setting::set('mail_mailer', $validated['mail_mailer'] ?? 'smtp');
+        Setting::set('mail_host', $validated['mail_host'] ?? '');
+        Setting::set('mail_port', (string) ($validated['mail_port'] ?? 587));
+        Setting::set('mail_username', $validated['mail_username'] ?? '');
+
+        if ($request->boolean('mail_clear_password')) {
+            Setting::set('mail_password', null);
+        } elseif ($request->filled('mail_password')) {
+            Setting::set('mail_password', Crypt::encryptString($request->string('mail_password')->toString()));
+        }
+
+        Setting::set('mail_encryption', $validated['mail_encryption'] ?? 'tls');
+        Setting::set('mail_from_address', $validated['mail_from_address'] ?? '');
+        Setting::set('mail_from_name', $validated['mail_from_name'] ?? '');
 
         // Update Package Prices
         if ($request->has('package_basic_price')) {

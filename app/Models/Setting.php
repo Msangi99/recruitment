@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
 
 class Setting extends Model
 {
@@ -63,5 +64,26 @@ class Setting extends Model
     public static function emailNotificationsEnabled(): bool
     {
         return (bool) self::get('email_notifications_enabled', true);
+    }
+
+    /**
+     * Decrypt SMTP password stored in settings (if present).
+     */
+    public static function getDecryptedMailPassword(): ?string
+    {
+        $raw = self::get('mail_password');
+        if (!is_string($raw) || $raw === '') {
+            return null;
+        }
+        try {
+            return Crypt::decryptString($raw);
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    public static function isMailConfigFromDatabaseEnabled(): bool
+    {
+        return self::get('mail_config_enabled', '0') === '1';
     }
 }

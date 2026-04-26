@@ -86,6 +86,134 @@
             </div>
         </div>
 
+        <!-- Email server (SMTP) configuration -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
+            <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                <h3 class="font-bold text-gray-900 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                    </svg>
+                    Email server (SMTP)
+                </h3>
+                <p class="text-sm text-gray-500 mt-1">Override <code class="text-xs bg-gray-100 px-1 rounded">.env</code> mail settings at runtime. Uses values below only when &ldquo;Use these mail settings&rdquo; is enabled and saved.</p>
+            </div>
+            <div class="p-6 space-y-6">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input type="checkbox" id="mail_config_enabled" name="mail_config_enabled" value="1"
+                               {{ \App\Models\Setting::get('mail_config_enabled', '0') == '1' ? 'checked' : '' }}
+                               class="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-gray-300 rounded">
+                    </div>
+                    <div class="ml-3">
+                        <label for="mail_config_enabled" class="text-sm font-medium text-gray-700">Use these mail settings (disable to rely on <code class="text-xs">.env</code> / server config only)</label>
+                        <p class="text-xs text-gray-500">Applies the mailer, SMTP, and from-address fields below to Laravel&rsquo;s mail configuration after save.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="mail_mailer" class="block text-sm font-medium text-gray-700 mb-2">Default mailer</label>
+                        <select id="mail_mailer" name="mail_mailer"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 @error('mail_mailer') border-red-300 @enderror">
+                            <option value="smtp" {{ old('mail_mailer', \App\Models\Setting::get('mail_mailer', 'smtp')) == 'smtp' ? 'selected' : '' }}>smtp</option>
+                            <option value="log" {{ old('mail_mailer', \App\Models\Setting::get('mail_mailer', 'smtp')) == 'log' ? 'selected' : '' }}>log (for debugging)</option>
+                            <option value="array" {{ old('mail_mailer', \App\Models\Setting::get('mail_mailer', 'smtp')) == 'array' ? 'selected' : '' }}>array (tests)</option>
+                        </select>
+                        @error('mail_mailer')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="mail_encryption" class="block text-sm font-medium text-gray-700 mb-2">Encryption</label>
+                        <select id="mail_encryption" name="mail_encryption"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 @error('mail_encryption') border-red-300 @enderror">
+                            <option value="tls" {{ old('mail_encryption', \App\Models\Setting::get('mail_encryption', 'tls')) == 'tls' ? 'selected' : '' }}>TLS (STARTTLS)</option>
+                            <option value="ssl" {{ old('mail_encryption', \App\Models\Setting::get('mail_encryption', 'tls')) == 'ssl' ? 'selected' : '' }}>SSL</option>
+                            <option value="none" {{ old('mail_encryption', \App\Models\Setting::get('mail_encryption', 'tls')) == 'none' ? 'selected' : '' }}>None</option>
+                        </select>
+                        @error('mail_encryption')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="mail_host" class="block text-sm font-medium text-gray-700 mb-2">SMTP host <span class="text-red-500">*</span> <span class="text-gray-400 font-normal">(if enabled above)</span></label>
+                        <input type="text" id="mail_host" name="mail_host" autocomplete="off"
+                               value="{{ old('mail_host', \App\Models\Setting::get('mail_host')) }}"
+                               placeholder="smtp.example.com"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 @error('mail_host') border-red-300 @enderror">
+                        @error('mail_host')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="mail_port" class="block text-sm font-medium text-gray-700 mb-2">SMTP port</label>
+                        <input type="number" id="mail_port" name="mail_port" min="1" max="65535"
+                               value="{{ old('mail_port', \App\Models\Setting::get('mail_port', '587')) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 @error('mail_port') border-red-300 @enderror">
+                        @error('mail_port')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="mail_username" class="block text-sm font-medium text-gray-700 mb-2">SMTP username</label>
+                        <input type="text" id="mail_username" name="mail_username" autocomplete="off"
+                               value="{{ old('mail_username', \App\Models\Setting::get('mail_username')) }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 @error('mail_username') border-red-300 @enderror">
+                        @error('mail_username')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="mail_password" class="block text-sm font-medium text-gray-700 mb-2">SMTP password</label>
+                        <input type="password" id="mail_password" name="mail_password" autocomplete="new-password"
+                               placeholder="Leave blank to keep current"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 @error('mail_password') border-red-300 @enderror">
+                        @if(\App\Models\Setting::get('mail_password'))
+                            <p class="mt-1 text-xs text-amber-700">A password is already stored (encrypted). Enter a new value to replace it.</p>
+                        @endif
+                        <div class="mt-2 flex items-start">
+                            <div class="flex items-center h-5">
+                                <input type="checkbox" id="mail_clear_password" name="mail_clear_password" value="1" class="h-4 w-4 text-cyan-600 focus:ring-cyan-500 border-gray-300 rounded">
+                            </div>
+                            <label for="mail_clear_password" class="ml-2 text-sm text-gray-600">Remove stored password</label>
+                        </div>
+                        @error('mail_password')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="mail_from_address" class="block text-sm font-medium text-gray-700 mb-2">From address <span class="text-red-500">*</span> <span class="text-gray-400 font-normal">(if enabled above)</span></label>
+                        <input type="email" id="mail_from_address" name="mail_from_address"
+                               value="{{ old('mail_from_address', \App\Models\Setting::get('mail_from_address')) }}"
+                               placeholder="no-reply@example.com"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 @error('mail_from_address') border-red-300 @enderror">
+                        @error('mail_from_address')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="mail_from_name" class="block text-sm font-medium text-gray-700 mb-2">From name</label>
+                        <input type="text" id="mail_from_name" name="mail_from_name"
+                               value="{{ old('mail_from_name', \App\Models\Setting::get('mail_from_name')) }}"
+                               placeholder="{{ config('app.name', 'Recruitment') }}"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 @error('mail_from_name') border-red-300 @enderror">
+                        @error('mail_from_name')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Package Settings -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden mb-6">
             <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
