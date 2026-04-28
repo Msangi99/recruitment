@@ -26,10 +26,10 @@ class AzamPayService
         $this->environment = $mode === 'live' ? 'production' : $mode;
         $this->baseUrl = config('azampay.urls.' . $this->environment);
         $this->authBaseUrl = config('azampay.auth_urls.' . $this->environment);
-        $this->appName = $dbSettings?->app_name ?? config('azampay.app_name');
-        $this->clientId = $dbSettings?->client_id ?? config('azampay.client_id');
-        $this->clientSecret = $dbSettings?->secret_id ?? config('azampay.client_secret');
-        $this->token = config('azampay.token');
+        $this->appName = $dbSettings?->app_name ?: config('azampay.app_name');
+        $this->clientId = $dbSettings?->client_id ?: config('azampay.client_id');
+        $this->clientSecret = $dbSettings?->secret_id ?: config('azampay.client_secret');
+        $this->token = $dbSettings?->token ?: config('azampay.token');
     }
 
     /**

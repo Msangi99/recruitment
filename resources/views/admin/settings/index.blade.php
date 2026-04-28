@@ -316,6 +316,17 @@
                 </div>
 
                 <div>
+                    <label for="azampesa_token" class="block text-sm font-medium text-gray-700 mb-2">Callback Token</label>
+                    <input type="text" id="azampesa_token" name="azampesa_token"
+                           value="{{ old('azampesa_token', $azamPesaSetting?->token) }}"
+                           placeholder="Token used to validate callbacks"
+                           class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('azampesa_token') border-red-300 @enderror">
+                    @error('azampesa_token')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
                     <label for="azampesa_mode" class="block text-sm font-medium text-gray-700 mb-2">Mode</label>
                     <select id="azampesa_mode" name="azampesa_mode"
                             class="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 @error('azampesa_mode') border-red-300 @enderror">

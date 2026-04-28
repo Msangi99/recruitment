@@ -12,6 +12,7 @@ class AzamPesaSetting extends Model
         'app_name',
         'client_id',
         'secret_id',
+        'token',
         'mode',
     ];
 }

@@ -55,6 +55,7 @@ class SettingController extends Controller
             'azampesa_appname' => 'nullable|string|max:255',
             'azampesa_client_id' => 'nullable|string|max:255',
             'azampesa_secret_id' => 'nullable|string|max:1000',
+            'azampesa_token' => 'nullable|string|max:1000',
             'azampesa_mode' => 'required|in:sandbox,live',
         ]);
 
@@ -103,6 +104,7 @@ class SettingController extends Controller
                 'app_name' => $validated['azampesa_appname'] ?? null,
                 'client_id' => $validated['azampesa_client_id'] ?? null,
                 'secret_id' => $validated['azampesa_secret_id'] ?? null,
+                'token' => $validated['azampesa_token'] ?? null,
                 'mode' => $validated['azampesa_mode'],
             ]
         );
