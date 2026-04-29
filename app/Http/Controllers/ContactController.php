@@ -21,27 +21,35 @@ class ContactController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
             'subject' => 'required|string|max:255',
-            'message' => 'required|string|max:2000',
+            'contact_message' => 'required|string|max:2000',
         ]);
 
         try {
+            $payload = $validated;
+            $payload['message'] = $validated['contact_message'];
+            unset($payload['contact_message']);
+
+            $emailPayload = $payload;
+            $emailPayload['contactBody'] = $payload['message'];
+            unset($emailPayload['message']);
+
             // Save to database
-            $contactMessage = ContactMessage::create($validated);
+            $contactMessage = ContactMessage::create($payload);
 
             // Log the contact message
             Log::info('Contact form submission', [
                 'id' => $contactMessage->id,
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'subject' => $validated['subject'],
+                'name' => $payload['name'],
+                'email' => $payload['email'],
+                'subject' => $payload['subject'],
             ]);
 
             // Try to send email notification to admin (optional, won't fail if mail not configured)
             try {
-                Mail::send('emails.contact', $validated, function ($message) use ($validated) {
+                Mail::send('emails.contact', $emailPayload, function ($message) use ($payload) {
                     $message->to(config('mail.admin_email', 'info@coyzon.com'))
-                        ->subject('Contact Form: ' . $validated['subject'])
-                        ->replyTo($validated['email'], $validated['name']);
+                        ->subject('Contact Form: ' . $payload['subject'])
+                        ->replyTo($payload['email'], $payload['name']);
                 });
             } catch (\Exception $e) {
                 // Email failed but message is saved in database, so just log

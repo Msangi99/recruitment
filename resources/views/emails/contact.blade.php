@@ -53,7 +53,7 @@
             <div style="margin-top: 20px;">
                 <h3 style="color: #4f46e5; margin-bottom: 10px;">Message:</h3>
                 <div style="background-color: #f9fafb; padding: 15px; border-left: 4px solid #4f46e5; border-radius: 4px;">
-                    {!! nl2br(e($message)) !!}
+                    {!! nl2br(e($contactBody)) !!}
                 </div>
             </div>
 

@@ -15,7 +15,7 @@ class AzamPayService
     protected $appName;
     protected $clientId;
     protected $clientSecret;
-    protected $token;
+    protected $callbackToken;
     protected $environment;
 
     public function __construct()
@@ -29,7 +29,7 @@ class AzamPayService
         $this->appName = $dbSettings?->app_name ?: config('azampay.app_name');
         $this->clientId = $dbSettings?->client_id ?: config('azampay.client_id');
         $this->clientSecret = $dbSettings?->secret_id ?: config('azampay.client_secret');
-        $this->token = $dbSettings?->token ?: config('azampay.token');
+        $this->callbackToken = $dbSettings?->token ?: config('azampay.token');
     }
 
     /**
@@ -37,36 +37,46 @@ class AzamPayService
      */
     public function getAccessToken()
     {
-        if ($this->token) {
-            return $this->token;
+        if (empty($this->appName) || empty($this->clientId) || empty($this->clientSecret)) {
+            Log::error('AzamPay credentials are missing. Please update admin settings.');
+            return null;
         }
 
-        try {
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post($this->authBaseUrl . '/AppRegistration/GenerateToken', [
-                'appName' => $this->appName,
-                'clientId' => $this->clientId,
-                'clientSecret' => $this->clientSecret,
-            ]);
+        $cacheKey = 'azampay_access_token_' . md5($this->appName . '|' . $this->clientId . '|' . $this->environment);
 
-            if ($response->successful()) {
-                $data = $response->json();
-                return $data['data']['accessToken'] ?? null;
+        return Cache::remember($cacheKey, 3000, function () {
+            try {
+                $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                ])->post($this->authBaseUrl . '/AppRegistration/GenerateToken', [
+                    'appName' => $this->appName,
+                    'clientId' => $this->clientId,
+                    'clientSecret' => $this->clientSecret,
+                ]);
+
+                if ($response->successful()) {
+                    $data = $response->json();
+                    return $data['data']['accessToken'] ?? $data['data']['token'] ?? null;
+                }
+
+                Log::error('AzamPay token request failed', [
+                    'status' => $response->status(),
+                    'response' => $response->body(),
+                ]);
+
+                return null;
+            } catch (\Exception $e) {
+                Log::error('AzamPay token exception', [
+                    'message' => $e->getMessage(),
+                ]);
+                return null;
             }
+        });
+    }
 
-            Log::error('AzamPay token request failed', [
-                'status' => $response->status(),
-                'response' => $response->body(),
-            ]);
-
-            return null;
-        } catch (\Exception $e) {
-            Log::error('AzamPay token exception', [
-                'message' => $e->getMessage(),
-            ]);
-            return null;
-        }
+    public function getCallbackToken(): ?string
+    {
+        return $this->callbackToken ?: null;
     }
 
     /**
@@ -93,7 +103,7 @@ class AzamPayService
                 'accountNumber' => $data['accountNumber'],
                 'externalId' => $data['externalId'] ?? uniqid('COYZON-'),
                 'provider' => $data['provider'] ?? 'Mpesa',
-                'additionalProperties' => $data['additionalProperties'] ?? [],
+                'additionalProperties' => $this->normalizeAdditionalProperties($data['additionalProperties'] ?? null),
             ]);
 
             if ($response->successful()) {
@@ -143,7 +153,7 @@ class AzamPayService
                 'otp' => $data['otp'],
                 'provider' => $data['provider'],
                 'referenceId' => $data['referenceId'] ?? uniqid('COYZON-'),
-                'additionalProperties' => $data['additionalProperties'] ?? [],
+                'additionalProperties' => $this->normalizeAdditionalProperties($data['additionalProperties'] ?? null),
             ]);
 
             if ($response->successful()) {
@@ -190,7 +200,7 @@ class AzamPayService
                 'cardExpiry' => $data['cardExpiry'],
                 'cardCvv' => $data['cardCvv'],
                 'externalId' => $data['externalId'] ?? uniqid('COYZON-'),
-                'additionalProperties' => $data['additionalProperties'] ?? [],
+                'additionalProperties' => $this->normalizeAdditionalProperties($data['additionalProperties'] ?? null),
             ]);
 
             if ($response->successful()) {
@@ -350,5 +360,18 @@ class AzamPayService
             ]);
             return false;
         }
+    }
+
+    protected function normalizeAdditionalProperties($additionalProperties): object
+    {
+        if (is_object($additionalProperties)) {
+            return $additionalProperties;
+        }
+
+        if (!is_array($additionalProperties) || empty($additionalProperties)) {
+            return (object) [];
+        }
+
+        return (object) $additionalProperties;
     }
 }

@@ -262,9 +262,9 @@
                         <!-- Message -->
                         <div>
                             <label for="message" class="block text-xs font-bold text-gray-700 mb-1">Message *</label>
-                            <textarea id="message" name="message" rows="2" required
-                                class="w-full px-3 py-1.5 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm">{{ old('message') }}</textarea>
-                            @error('message')
+                            <textarea id="message" name="contact_message" rows="2" required
+                                class="w-full px-3 py-1.5 rounded-lg border border-gray-300 focus:ring-1 focus:ring-green-500 focus:border-green-500 text-sm">{{ old('contact_message') }}</textarea>
+                            @error('contact_message')
                                 <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
