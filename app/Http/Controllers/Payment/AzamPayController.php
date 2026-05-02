@@ -35,15 +35,20 @@ class AzamPayController extends Controller
             Log::info('AzamPay webhook received', $requestLogContext);
 
             // Optional shared-secret validation for callback endpoint.
+            // Some AzamPay callbacks do not include token fields.
             $expectedToken = $this->azampayService->getCallbackToken();
             if ($expectedToken) {
                 $providedToken = $request->header('X-AzamPay-Token')
                     ?? $request->header('X-Callback-Token')
                     ?? ($data['token'] ?? null);
 
-                if (!is_string($providedToken) || !hash_equals($expectedToken, $providedToken)) {
-                    Log::warning('AzamPay webhook: invalid callback token', $requestLogContext);
-                    return response()->json(['error' => 'Invalid callback token'], 401);
+                if (is_string($providedToken) && $providedToken !== '') {
+                    if (!hash_equals($expectedToken, $providedToken)) {
+                        Log::warning('AzamPay webhook: invalid callback token', $requestLogContext);
+                        return response()->json(['error' => 'Invalid callback token'], 401);
+                    }
+                } else {
+                    Log::notice('AzamPay webhook: callback token missing, continuing with signature checks', $requestLogContext);
                 }
             }
 
