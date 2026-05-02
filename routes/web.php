@@ -139,7 +139,9 @@ Route::view('/privacy', 'legal.privacy')->name('privacy');
 Route::view('/about', 'about')->name('about');
 
 // AzamPay webhook (no auth required)
-Route::post('/azampay/webhook', [AzamPayController::class, 'webhook'])->name('azampay.webhook');
+Route::post('/azampay/webhook', [AzamPayController::class, 'webhook'])
+    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+    ->name('azampay.webhook');
 Route::get('/azampay/redirect', [AzamPayController::class, 'redirect'])->name('azampay.redirect');
 Route::get('/azampay/cancel', [AzamPayController::class, 'cancel'])->name('azampay.cancel');
 
