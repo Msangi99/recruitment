@@ -31,8 +31,8 @@ class AzamPayController extends Controller
     {
         try {
             $data = $request->all();
-
-            Log::info('AzamPay webhook received', $data);
+            $requestLogContext = $this->buildCallbackLogContext($request, $data);
+            Log::info('AzamPay webhook received', $requestLogContext);
 
             // Optional shared-secret validation for callback endpoint.
             $expectedToken = $this->azampayService->getCallbackToken();
@@ -42,7 +42,7 @@ class AzamPayController extends Controller
                     ?? ($data['token'] ?? null);
 
                 if (!is_string($providedToken) || !hash_equals($expectedToken, $providedToken)) {
-                    Log::warning('AzamPay webhook: invalid callback token');
+                    Log::warning('AzamPay webhook: invalid callback token', $requestLogContext);
                     return response()->json(['error' => 'Invalid callback token'], 401);
                 }
             }
@@ -67,12 +67,14 @@ class AzamPayController extends Controller
                     Log::warning('AzamPay webhook: Invalid signature', [
                         'utilityref' => $utilityref,
                         'externalreference' => $externalreference,
+                        'request' => $requestLogContext,
                     ]);
                     return response()->json(['error' => 'Invalid signature'], 401);
                 }
             } else {
                 Log::warning('AzamPay webhook: Missing signature fields (allowing in sandbox)', [
                     'data_keys' => array_keys($data),
+                    'request' => $requestLogContext,
                 ]);
             }
 
@@ -82,7 +84,7 @@ class AzamPayController extends Controller
                 Log::warning('AzamPay webhook: Could not resolve payment record', [
                     'utilityref' => $utilityref,
                     'externalreference' => $externalreference,
-                    'data' => $data,
+                    'request' => $requestLogContext,
                 ]);
                 return response()->json(['error' => 'Payment record not found'], 404);
             }
@@ -115,11 +117,34 @@ class AzamPayController extends Controller
             Log::error('AzamPay webhook exception', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
-                'data' => $request->all(),
+                'request' => $this->buildCallbackLogContext($request, $request->all()),
             ]);
 
             return response()->json(['error' => 'Webhook processing failed'], 500);
         }
+    }
+
+    /**
+     * Build a complete callback request context for diagnostics.
+     */
+    protected function buildCallbackLogContext(Request $request, array $data): array
+    {
+        return [
+            'url' => $request->fullUrl(),
+            'path' => $request->path(),
+            'method' => $request->method(),
+            'query' => $request->query(),
+            'body' => $data,
+            'headers' => $request->headers->all(),
+            'raw_body' => $request->getContent(),
+            'route_parameters' => $request->route()?->parameters() ?? [],
+            'ip' => $request->ip(),
+            'ips' => $request->ips(),
+            'user_agent' => $request->userAgent(),
+            'content_type' => $request->header('Content-Type'),
+            'content_length' => $request->header('Content-Length'),
+            'received_at' => now()->toDateTimeString(),
+        ];
     }
 
     /**
