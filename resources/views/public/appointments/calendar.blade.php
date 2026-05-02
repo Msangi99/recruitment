@@ -108,6 +108,24 @@
                             <div id="bookingCalendar" class="booking-calendar-fc"></div>
                         </div>
 
+                        <div id="timeSlotPanel"
+                            class="hidden rounded-xl bg-white ring-1 ring-slate-200/80 p-3 sm:p-4 shadow-sm">
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <button type="button" id="timePanelBack"
+                                    class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-slate-900 py-1 px-1 -ml-1 rounded-lg hover:bg-slate-100 transition-colors">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                    Dates
+                                </button>
+                                <span id="timePanelDateLabel" class="text-xs font-semibold text-slate-800 truncate"></span>
+                            </div>
+                            <p class="text-[11px] font-medium text-slate-500 mb-2">Available times</p>
+                            <div id="timeSlotGrid" class="grid grid-cols-3 sm:grid-cols-4 gap-1.5"></div>
+                            <p id="timeSlotEmpty" class="hidden text-xs text-slate-500 text-center py-4"></p>
+                        </div>
+
                         <div id="selectionPreview"
                             class="hidden flex-col sm:flex-row sm:items-center justify-between gap-3 bg-blue-50/90 border border-blue-100/80 p-3 rounded-xl">
                             <div class="flex items-center gap-3">
@@ -316,19 +334,18 @@
                 padding: 0.35rem 0.45rem !important;
             }
 
-            .booking-calendar-fc .fc-timegrid-slot {
-                height: 2.75rem !important;
-                border-bottom: 1px solid #f1f5f9 !important;
-            }
-
-            .booking-calendar-fc .fc-timegrid-axis-cushion,
-            .booking-calendar-fc .fc-timegrid-slot-label-cushion {
-                font-size: 0.7rem !important;
-                color: #94a3b8 !important;
+            .booking-calendar-fc .fc-daygrid-day.booking-day-picked .fc-daygrid-day-number {
+                background: var(--cal-accent) !important;
+                color: #fff !important;
+                box-shadow: none !important;
             }
 
             .booking-calendar-fc .fc-list-event-title {
                 font-weight: 600 !important;
+            }
+
+            .time-slot-chip {
+                min-height: 2.25rem;
             }
 
             @media (max-width: 640px) {
@@ -352,7 +369,117 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const calendarEl = document.getElementById('bookingCalendar');
-                const isMobile = window.innerWidth < 768;
+                const timeSlotPanel = document.getElementById('timeSlotPanel');
+                const timeSlotGrid = document.getElementById('timeSlotGrid');
+                const timeSlotEmpty = document.getElementById('timeSlotEmpty');
+                const timePanelDateLabel = document.getElementById('timePanelDateLabel');
+                const timePanelBack = document.getElementById('timePanelBack');
+
+                const SLOT_MIN_MINUTES = 8 * 60;
+                const SLOT_MAX_MINUTES = 18 * 60;
+                const SLOT_STEP = 30;
+
+                let pickedDateStr = null;
+
+                function toYmd(d) {
+                    const y = d.getFullYear();
+                    const m = String(d.getMonth() + 1).padStart(2, '0');
+                    const day = String(d.getDate()).padStart(2, '0');
+                    return y + '-' + m + '-' + day;
+                }
+
+                function formatTime12(hhmm) {
+                    const [hStr, mStr] = hhmm.split(':');
+                    const h = parseInt(hStr, 10);
+                    const ampm = h >= 12 ? 'PM' : 'AM';
+                    const h12 = h % 12 || 12;
+                    return h12 + ':' + mStr + ' ' + ampm;
+                }
+
+                function hideTimePanel() {
+                    timeSlotPanel.classList.add('hidden');
+                    timeSlotGrid.innerHTML = '';
+                    timeSlotEmpty.classList.add('hidden');
+                }
+
+                function openTimePanel(ymd, dateObj) {
+                    timePanelDateLabel.textContent = dateObj.toLocaleDateString(undefined, {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric',
+                    });
+
+                    timeSlotGrid.innerHTML = '';
+                    timeSlotEmpty.classList.add('hidden');
+
+                    if (dateObj.getDay() === 0) {
+                        timeSlotEmpty.textContent = 'No appointments on Sundays. Please pick another date.';
+                        timeSlotEmpty.classList.remove('hidden');
+                        timeSlotPanel.classList.remove('hidden');
+                        return;
+                    }
+
+                    const now = new Date();
+                    const isToday = toYmd(now) === ymd;
+                    let nextBoundary = SLOT_MIN_MINUTES;
+                    if (isToday) {
+                        const cur = now.getHours() * 60 + now.getMinutes();
+                        nextBoundary = Math.ceil(cur / SLOT_STEP) * SLOT_STEP;
+                        if (nextBoundary >= SLOT_MAX_MINUTES) {
+                            timeSlotEmpty.textContent = 'No more times left today. Try another date.';
+                            timeSlotEmpty.classList.remove('hidden');
+                            timeSlotPanel.classList.remove('hidden');
+                            return;
+                        }
+                    }
+
+                    for (let t = Math.max(SLOT_MIN_MINUTES, nextBoundary); t < SLOT_MAX_MINUTES; t += SLOT_STEP) {
+                        const hh = String(Math.floor(t / 60)).padStart(2, '0');
+                        const mm = String(t % 60).padStart(2, '0');
+                        const value = hh + ':' + mm;
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.dataset.time = value;
+                        btn.className =
+                            'time-slot-chip rounded-lg border border-slate-200 bg-white px-1.5 py-2 text-center text-xs font-semibold text-slate-700 shadow-sm hover:border-blue-400 hover:bg-blue-50/60 active:scale-[0.98] transition-all';
+                        btn.textContent = formatTime12(value);
+                        btn.addEventListener('click', function () {
+                            applySlot(ymd, value, dateObj);
+                        });
+                        timeSlotGrid.appendChild(btn);
+                    }
+
+                    timeSlotPanel.classList.remove('hidden');
+                    timeSlotPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+
+                function applySlot(ymd, time, dateObj) {
+                    document.getElementById('requested_date_hidden').value = ymd;
+                    document.getElementById('requested_time_hidden').value = time;
+
+                    const formattedDate = dateObj.toLocaleDateString(undefined, {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                    });
+                    const formattedTime = formatTime12(time);
+                    document.getElementById('selectedDateTimeText').textContent =
+                        formattedDate + ' at ' + formattedTime;
+
+                    document.getElementById('selectionPreview').classList.remove('hidden');
+                    document.getElementById('selectionPreview').classList.add('flex');
+
+                    hideTimePanel();
+
+                    if (window.innerWidth < 768) {
+                        document.getElementById('selectionPreview').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+
+                    const submitBtn = document.getElementById('submitBtn');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
 
                 const calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
@@ -362,101 +489,76 @@
                     showNonCurrentDates: true,
                     dayHeaderFormat: { weekday: 'short' },
                     titleFormat: { month: 'long', year: 'numeric' },
-                    views: {
-                        dayGridMonth: { buttonText: 'Month' },
-                        timeGridDay: { buttonText: 'Day' },
-                    },
                     headerToolbar: {
                         left: 'prev,next',
                         center: 'title',
-                        right: 'dayGridMonth,timeGridDay'
+                        right: false,
                     },
-                    selectable: true,
+                    selectable: false,
                     validRange: { start: new Date().toISOString().split('T')[0] },
-                    allDaySlot: false,
-                    slotMinTime: '08:00:00',
-                    slotMaxTime: '18:00:00',
-                    slotDuration: '00:30:00',
                     expandRows: false,
-                    selectConstraint: {
-                        daysOfWeek: [1, 2, 3, 4, 5, 6] // Mon-Sat
+                    dayCellClassNames: function (arg) {
+                        if (pickedDateStr && toYmd(arg.date) === pickedDateStr) {
+                            return ['booking-day-picked'];
+                        }
+                        return [];
                     },
-                    selectLongPressDelay: 100, // Better touch response
-                    select: function (info) {
-                        // If in month view, just switch to day view for that date
-                        if (info.view.type === 'dayGridMonth') {
-                            calendar.changeView('timeGridDay', info.startStr);
+                    dateClick: function (info) {
+                        if (info.view.type !== 'dayGridMonth') {
+                            return;
+                        }
+                        const dayEl = info.dayEl || info.el;
+                        if (!dayEl || dayEl.closest('.fc-day-other')) {
+                            return;
+                        }
+                        if (dayEl.closest('.fc-day-past') || dayEl.closest('.fc-day-disabled')) {
                             return;
                         }
 
-                        // In time selection view
-                        const date = info.startStr.split('T')[0];
-                        const time = info.startStr.split('T')[1].substring(0, 5);
+                        const d = info.date;
+                        const ymd = toYmd(d);
 
-                        document.getElementById('requested_date_hidden').value = date;
-                        document.getElementById('requested_time_hidden').value = time;
+                        document.getElementById('requested_date_hidden').value = '';
+                        document.getElementById('requested_time_hidden').value = '';
+                        const submitBtn = document.getElementById('submitBtn');
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                        document.getElementById('selectionPreview').classList.add('hidden');
+                        document.getElementById('selectionPreview').classList.remove('flex');
 
-                        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                        const formattedDate = new Date(date).toLocaleDateString(undefined, options);
-
-                        // Convert 24h to 12h for display
-                        const [hours, minutes] = time.split(':');
-                        const ampm = hours >= 12 ? 'PM' : 'AM';
-                        const hours12 = hours % 12 || 12;
-                        const formattedTime = `${hours12}:${minutes} ${ampm}`;
-
-                        document.getElementById('selectedDateTimeText').textContent = `${formattedDate} at ${formattedTime}`;
-
-                        document.getElementById('selectionPreview').classList.remove('hidden');
-                        document.getElementById('selectionPreview').classList.add('flex');
-
-                        // Scroll to preview on mobile
-                        if (window.innerWidth < 768) {
-                            document.getElementById('selectionPreview').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        if (d.getDay() === 0) {
+                            pickedDateStr = null;
+                            calendar.render();
+                            openTimePanel(ymd, d);
+                            return;
                         }
 
-                        const btn = document.getElementById('submitBtn');
-                        btn.disabled = false;
-                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        pickedDateStr = ymd;
+                        calendar.render();
+                        openTimePanel(ymd, d);
                     },
-                    windowResize: function (view) {
-                        if (window.innerWidth < 768) {
-                            calendar.setOption('headerToolbar', {
-                                left: 'prev,next',
-                                center: 'title',
-                                right: 'timeGridDay' // Simplify on mobile
-                            });
-                        } else {
-                            calendar.setOption('headerToolbar', {
-                                left: 'prev,next',
-                                center: 'title',
-                                right: 'dayGridMonth,timeGridDay'
-                            });
-                        }
-                    }
                 });
-
-                // Initial mobile check
-                if (isMobile) {
-                    calendar.setOption('headerToolbar', {
-                        left: 'prev,next',
-                        center: 'title',
-                        right: 'timeGridDay'
-                    });
-                }
 
                 calendar.render();
 
+                timePanelBack.addEventListener('click', function () {
+                    pickedDateStr = null;
+                    hideTimePanel();
+                    calendar.render();
+                });
+
                 window.clearSelection = function () {
+                    pickedDateStr = null;
                     document.getElementById('requested_date_hidden').value = '';
                     document.getElementById('requested_time_hidden').value = '';
                     document.getElementById('selectionPreview').classList.add('hidden');
                     document.getElementById('selectionPreview').classList.remove('flex');
+                    hideTimePanel();
                     const btn = document.getElementById('submitBtn');
                     btn.disabled = true;
                     btn.classList.add('opacity-50', 'cursor-not-allowed');
-                    calendar.changeView('dayGridMonth');
-                }
+                    calendar.render();
+                };
             });
         </script>
     @endpush
