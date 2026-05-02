@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-    <div class="bg-gray-50 min-h-screen py-12">
+    <div id="booking-schedule-page" class="bg-gray-50 min-h-screen py-12">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100">
                 <div class="bg-blue-600 px-8 py-8 text-center text-white relative overflow-hidden">
@@ -108,9 +108,9 @@
                         </div>
 
                         <div
-                            class="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-gradient-to-b from-slate-50 to-white p-4 shadow-[0_1px_0_rgba(15,23,42,0.04),0_18px_45px_-24px_rgba(15,23,42,0.18)] sm:p-6">
+                            class="relative overflow-visible rounded-3xl border border-slate-200/90 bg-gradient-to-b from-slate-50 to-white p-4 shadow-[0_1px_0_rgba(15,23,42,0.04),0_18px_45px_-24px_rgba(15,23,42,0.18)] sm:p-6">
                             <p id="bookingTimeHint" class="mb-3 hidden text-sm font-medium text-amber-800"></p>
-                            <div id="calendarBookingHost" class="relative">
+                            <div id="calendarBookingHost" class="booking-calendarjs-host relative z-20">
                                 <label for="bookingDateInput" class="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">Consultation slot</label>
                                 <div class="flex flex-col gap-3 sm:flex-row sm:items-stretch">
                                     <input type="text" id="bookingDateInput" readonly autocomplete="off"
@@ -125,8 +125,7 @@
                                         Open calendar
                                     </button>
                                 </div>
-                                {{-- Reparented to body on init so the CalendarJS modal is not clipped by this card --}}
-                                <div id="calendarJsMount" class="calendarjs-mount" hidden></div>
+                                <div id="calendarJsMount" class="calendarjs-mount"></div>
                             </div>
                         </div>
 
@@ -176,15 +175,32 @@
         <script src="https://cdn.jsdelivr.net/npm/lemonadejs/dist/lemonade.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@calendarjs/ce/dist/index.min.js"></script>
         <style>
-            /* CalendarJS modal above page content */
-            .lm-modal,
-            .lm-modal .lm-backdrop {
-                z-index: 100 !important;
+            /*
+               CalendarJS ships .lm-modal { position: fixed; left: 0; bottom: 0 } which pins the picker
+               to the bottom-left. Override only within this booking flow.
+            */
+            #booking-schedule-page .lm-modal {
+                position: fixed !important;
+                left: 50% !important;
+                top: 50% !important;
+                right: auto !important;
+                bottom: auto !important;
+                width: min(22rem, calc(100vw - 1.5rem)) !important;
+                min-width: min(22rem, calc(100vw - 1.5rem)) !important;
+                min-height: unset !important;
+                max-height: min(32rem, 90vh) !important;
+                transform: translate(-50%, -50%) !important;
+                margin: 0 !important;
+                margin-left: 0 !important;
+                margin-top: 0 !important;
+                z-index: 9999 !important;
+                box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+                border-radius: 1rem;
+                overflow: auto;
             }
 
-            .calendarjs-mount .lm-calendar[data-type="default"],
-            .calendarjs-mount .lm-calendar[data-type="picker"] {
-                position: static;
+            #booking-schedule-page .lm-modal .lm-modal-title {
+                border-radius: 1rem 1rem 0 0;
             }
         </style>
         <script>
@@ -193,8 +209,6 @@
 
                 const inputEl = document.getElementById('bookingDateInput');
                 const mountEl = document.getElementById('calendarJsMount');
-                document.body.appendChild(mountEl);
-                mountEl.removeAttribute('hidden');
                 const hintEl = document.getElementById('bookingTimeHint');
                 let calInstance = null;
                 let calendarOpenedOnce = false;
