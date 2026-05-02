@@ -2,30 +2,34 @@
 
 @section('title', 'Schedule Consultation - Coyzon')
 
-@push('styles')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@calendarjs/ce/dist/style.min.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons" />
-@endpush
-
 @section('content')
-    <div id="booking-schedule-page" class="bg-gray-50 min-h-screen py-12">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-gray-100">
-                <div class="bg-blue-600 px-8 py-8 text-center text-white relative overflow-hidden">
-                    <div class="absolute top-0 right-0 -mt-8 -mr-8 h-32 w-32 rounded-full bg-white/10 blur-2xl"></div>
-                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
+    <div class="bg-slate-100/80 min-h-screen py-8 sm:py-10">
+        <div class="max-w-md mx-auto px-4 sm:px-5">
+            <div
+                class="bg-white rounded-2xl shadow-lg shadow-slate-200/60 ring-1 ring-slate-200/80 overflow-hidden">
+                <div
+                    class="relative px-5 py-4 sm:px-6 sm:py-5 bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 text-white">
+                    <div class="absolute inset-0 opacity-30 pointer-events-none"
+                        style="background-image: radial-gradient(circle at 20% 0%, rgba(255,255,255,0.25), transparent 45%);">
                     </div>
-                    <h1 class="text-2xl font-bold relative z-10">Select Date & Time</h1>
-                    <p class="text-blue-100 mt-2 relative z-10">Choose a convenient slot for your consultation. Payment will
-                        be required in the next step.</p>
+                    <div class="relative flex items-start gap-3">
+                        <div
+                            class="flex-shrink-0 w-10 h-10 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center ring-1 ring-white/20">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="min-w-0 text-left">
+                            <h1 class="text-lg font-semibold tracking-tight leading-snug">Select date & time</h1>
+                            <p class="text-xs text-blue-100/95 mt-1 leading-relaxed">Pick a slot, then continue to payment.
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 @if(session('info'))
-                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mx-6 mt-6 rounded-r-xl">
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-3 mx-4 mt-4 sm:mx-5 sm:mt-5 rounded-r-lg">
                         <div class="flex items-start gap-3">
                             <svg class="w-6 h-6 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -40,9 +44,9 @@
                     </div>
                 @endif
 
-                <div class="p-8 space-y-8">
+                <div class="p-4 sm:p-5 space-y-5">
                     @if(session('error'))
-                        <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-2xl shadow-sm">
+                        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl shadow-sm">
                             <div class="flex items-start gap-4">
                                 <div class="flex-shrink-0">
                                     <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,66 +93,41 @@
                         </div>
                     @endif
 
-                    <div class="space-y-4">
-                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                            <div>
-                                <h3 class="text-xl font-bold tracking-tight text-slate-900">Pick date &amp; time</h3>
-                                <p class="mt-1 text-sm text-slate-500">Tap the field below to open the calendar. Monday–Saturday,
-                                    8:00–18:00.</p>
-                            </div>
-                            <div
-                                class="inline-flex items-center gap-2 self-start rounded-full border border-slate-200/80 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm">
-                                <span class="relative flex h-2 w-2">
-                                    <span
-                                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500/40 opacity-75"></span>
-                                    <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-600"></span>
-                                </span>
-                                CalendarJS
-                            </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between gap-2">
+                            <h3 class="text-sm font-semibold text-slate-800 tracking-tight">Calendar</h3>
+                            <span
+                                class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-500 ring-1 ring-slate-200/80">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                Open days
+                            </span>
                         </div>
 
                         <div
-                            class="relative overflow-visible rounded-3xl border border-slate-200/90 bg-gradient-to-b from-slate-50 to-white p-4 shadow-[0_1px_0_rgba(15,23,42,0.04),0_18px_45px_-24px_rgba(15,23,42,0.18)] sm:p-6">
-                            <p id="bookingTimeHint" class="mb-3 hidden text-sm font-medium text-amber-800"></p>
-                            <div id="calendarBookingHost" class="booking-calendarjs-host relative z-20">
-                                <label for="bookingDateInput" class="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">Consultation slot</label>
-                                <div class="flex flex-col gap-3 sm:flex-row sm:items-stretch">
-                                    <input type="text" id="bookingDateInput" readonly autocomplete="off"
-                                        placeholder="Tap to open calendar…"
-                                        class="min-h-[3.25rem] w-full flex-1 cursor-pointer rounded-2xl border border-slate-200 bg-white px-4 py-3 text-base font-medium text-slate-900 shadow-sm outline-none ring-blue-500/0 transition hover:border-blue-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/15" />
-                                    <button type="button" id="bookingOpenCalendarBtn"
-                                        class="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition hover:bg-blue-700">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
-                                        Open calendar
-                                    </button>
-                                </div>
-                                <div id="calendarJsMount" class="calendarjs-mount"></div>
-                            </div>
+                            class="rounded-xl bg-slate-50/90 ring-1 ring-slate-200/70 p-2 sm:p-2.5 booking-calendar-shell">
+                            <div id="bookingCalendar" class="booking-calendar-fc"></div>
                         </div>
 
                         <div id="selectionPreview"
-                            class="hidden bg-blue-50 border border-blue-100 p-6 rounded-2xl md:flex-row items-center justify-between gap-4">
-                            <div class="flex items-center gap-4">
+                            class="hidden flex-col sm:flex-row sm:items-center justify-between gap-3 bg-blue-50/90 border border-blue-100/80 p-3 rounded-xl">
+                            <div class="flex items-center gap-3">
                                 <div
-                                    class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-md shadow-blue-500/25">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
                                         </path>
                                     </svg>
                                 </div>
-                                <div>
-                                    <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest">Selected Slot
+                                <div class="min-w-0">
+                                    <p class="text-[10px] font-semibold text-blue-600 uppercase tracking-wide">Selected</p>
+                                    <p id="selectedDateTimeText" class="text-sm font-semibold text-slate-900 leading-snug">
                                     </p>
-                                    <p id="selectedDateTimeText" class="text-lg font-bold text-slate-900"></p>
                                 </div>
                             </div>
                             <button type="button" onclick="clearSelection()"
-                                class="px-4 py-2 text-xs font-bold text-blue-600 hover:bg-blue-100 rounded-lg transition-colors">
-                                Change Time
+                                class="shrink-0 px-3 py-1.5 text-xs font-semibold text-blue-700 hover:bg-blue-100/80 rounded-lg transition-colors">
+                                Change
                             </button>
                         </div>
 
@@ -158,10 +137,10 @@
                             <input type="hidden" name="scheduled_date" id="requested_date_hidden" required>
                             <input type="hidden" name="scheduled_time" id="requested_time_hidden" required>
 
-                            <div class="pt-6">
+                            <div class="pt-3">
                                 <button type="submit" id="submitBtn" disabled
-                                    class="w-full py-5 bg-blue-600 opacity-50 cursor-not-allowed text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 text-xl transition-all hover:bg-blue-700">
-                                    Proceed to Payment
+                                    class="w-full py-3.5 bg-blue-600 opacity-50 cursor-not-allowed text-white font-semibold rounded-xl shadow-md shadow-blue-600/20 text-sm transition-all hover:bg-blue-700">
+                                    Proceed to payment
                                 </button>
                             </div>
                         </form>
@@ -172,192 +151,312 @@
     </div>
 
     @push('scripts')
-        <script src="https://cdn.jsdelivr.net/npm/lemonadejs/dist/lemonade.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@calendarjs/ce/dist/index.min.js"></script>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
         <style>
-            /*
-               CalendarJS ships .lm-modal { position: fixed; left: 0; bottom: 0 } which pins the picker
-               to the bottom-left. Override only within this booking flow.
-            */
-            #booking-schedule-page .lm-modal {
-                position: fixed !important;
-                left: 50% !important;
-                top: 50% !important;
-                right: auto !important;
-                bottom: auto !important;
-                width: min(22rem, calc(100vw - 1.5rem)) !important;
-                min-width: min(22rem, calc(100vw - 1.5rem)) !important;
-                min-height: unset !important;
-                max-height: min(32rem, 90vh) !important;
-                transform: translate(-50%, -50%) !important;
-                margin: 0 !important;
-                margin-left: 0 !important;
-                margin-top: 0 !important;
-                z-index: 9999 !important;
-                box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
-                border-radius: 1rem;
-                overflow: auto;
+            .booking-calendar-shell {
+                --cal-accent: #2563eb;
+                --cal-accent-soft: #dbeafe;
+                --cal-muted: #94a3b8;
+                --cal-surface: #f8fafc;
             }
 
-            #booking-schedule-page .lm-modal .lm-modal-title {
-                border-radius: 1rem 1rem 0 0;
+            .booking-calendar-fc .fc {
+                --fc-border-color: transparent;
+                --fc-neutral-bg-color: transparent;
+                --fc-page-bg-color: transparent;
+                --fc-today-bg-color: rgba(37, 99, 235, 0.06);
+                font-family: ui-sans-serif, system-ui, sans-serif;
+                font-size: 0.8125rem;
+            }
+
+            .booking-calendar-fc .fc-scrollgrid,
+            .booking-calendar-fc .fc-scrollgrid-section,
+            .booking-calendar-fc .fc-scrollgrid-sync-table {
+                border-color: transparent !important;
+            }
+
+            .booking-calendar-fc .fc-theme-standard td,
+            .booking-calendar-fc .fc-theme-standard th {
+                border-color: transparent !important;
+            }
+
+            .booking-calendar-fc .fc-col-header-cell {
+                padding: 0.125rem 0 0.375rem !important;
+                background: transparent !important;
+            }
+
+            .booking-calendar-fc .fc-col-header-cell-cushion {
+                font-weight: 600 !important;
+                color: var(--cal-muted) !important;
+                font-size: 0.65rem !important;
+                padding: 0 !important;
+                text-decoration: none !important;
+                letter-spacing: 0.02em;
+            }
+
+            .booking-calendar-fc .fc-daygrid-day {
+                background: transparent !important;
+            }
+
+            .booking-calendar-fc .fc-daygrid-day-frame {
+                min-height: 2rem !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            .booking-calendar-fc .fc-daygrid-day-top {
+                flex-direction: row !important;
+                justify-content: center !important;
+            }
+
+            .booking-calendar-fc .fc-daygrid-day-number {
+                font-weight: 600 !important;
+                color: #475569 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 1.75rem !important;
+                height: 1.75rem !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                border-radius: 9999px !important;
+                font-size: 0.75rem !important;
+                text-decoration: none !important;
+                transition: background 0.15s, color 0.15s;
+            }
+
+            .booking-calendar-fc .fc-daygrid-day:not(.fc-day-other):not(.fc-day-disabled) .fc-daygrid-day-number:hover {
+                background: #e2e8f0 !important;
+                color: #0f172a !important;
+            }
+
+            .booking-calendar-fc .fc-day-other .fc-daygrid-day-number {
+                color: #cbd5e1 !important;
+                font-weight: 500 !important;
+            }
+
+            .booking-calendar-fc .fc-day-disabled .fc-daygrid-day-number,
+            .booking-calendar-fc .fc-day-past:not(.fc-day-other) .fc-daygrid-day-number {
+                opacity: 0.35 !important;
+            }
+
+            .booking-calendar-fc .fc-day-today:not(.fc-day-other) .fc-daygrid-day-number {
+                box-shadow: inset 0 0 0 1.5px var(--cal-accent) !important;
+                color: var(--cal-accent) !important;
+                background: rgba(37, 99, 235, 0.06) !important;
+            }
+
+            .booking-calendar-fc .fc-highlight {
+                background: var(--cal-accent-soft) !important;
+            }
+
+            .booking-calendar-fc .fc-header-toolbar {
+                margin-bottom: 0.5rem !important;
+                padding: 0 0.125rem !important;
+                gap: 0.5rem !important;
+            }
+
+            .booking-calendar-fc .fc-toolbar-title {
+                font-size: 0.9375rem !important;
+                font-weight: 600 !important;
+                color: #0f172a !important;
+                text-transform: none !important;
+                letter-spacing: -0.02em !important;
+            }
+
+            .booking-calendar-fc .fc-button {
+                background: #fff !important;
+                border: 1px solid #e2e8f0 !important;
+                color: #64748b !important;
+                font-weight: 600 !important;
+                font-size: 0.75rem !important;
+                border-radius: 0.5rem !important;
+                padding: 0.35rem 0.55rem !important;
+                line-height: 1.2 !important;
+                transition: background 0.15s, border-color 0.15s, color 0.15s !important;
+                box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04) !important;
+            }
+
+            .booking-calendar-fc .fc-button:hover {
+                background: #f8fafc !important;
+                border-color: #cbd5e1 !important;
+                color: #334155 !important;
+            }
+
+            .booking-calendar-fc .fc-button-primary:not(:disabled):active,
+            .booking-calendar-fc .fc-button-primary:not(:disabled).fc-button-active {
+                background: var(--cal-accent) !important;
+                color: #fff !important;
+                border-color: var(--cal-accent) !important;
+            }
+
+            .booking-calendar-fc .fc-button-group {
+                border-radius: 0.5rem !important;
+                overflow: hidden !important;
+                box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04) !important;
+            }
+
+            .booking-calendar-fc .fc-button-group > .fc-button {
+                border-radius: 0 !important;
+                margin-left: -1px !important;
+            }
+
+            .booking-calendar-fc .fc-button-group > .fc-button:first-child {
+                border-radius: 0.5rem 0 0 0.5rem !important;
+                margin-left: 0 !important;
+            }
+
+            .booking-calendar-fc .fc-button-group > .fc-button:last-child {
+                border-radius: 0 0.5rem 0.5rem 0 !important;
+            }
+
+            .booking-calendar-fc .fc-prev-button,
+            .booking-calendar-fc .fc-next-button {
+                padding: 0.35rem 0.45rem !important;
+            }
+
+            .booking-calendar-fc .fc-timegrid-slot {
+                height: 2.75rem !important;
+                border-bottom: 1px solid #f1f5f9 !important;
+            }
+
+            .booking-calendar-fc .fc-timegrid-axis-cushion,
+            .booking-calendar-fc .fc-timegrid-slot-label-cushion {
+                font-size: 0.7rem !important;
+                color: #94a3b8 !important;
+            }
+
+            .booking-calendar-fc .fc-list-event-title {
+                font-weight: 600 !important;
+            }
+
+            @media (max-width: 640px) {
+                .booking-calendar-fc .fc-header-toolbar {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 0.625rem;
+                }
+
+                .booking-calendar-fc .fc-toolbar-chunk {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                }
+
+                .booking-calendar-fc .fc-toolbar-title {
+                    font-size: 0.875rem !important;
+                }
             }
         </style>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const { Calendar } = calendarjs;
+                const calendarEl = document.getElementById('bookingCalendar');
+                const isMobile = window.innerWidth < 768;
 
-                const inputEl = document.getElementById('bookingDateInput');
-                const mountEl = document.getElementById('calendarJsMount');
-                const hintEl = document.getElementById('bookingTimeHint');
-                let calInstance = null;
-                let calendarOpenedOnce = false;
-
-                function pad2(n) {
-                    return String(n).padStart(2, '0');
-                }
-
-                function parseCalValue(val) {
-                    if (!val || typeof val !== 'string') return null;
-                    const normalized = val.trim().replace('T', ' ');
-                    const m = normalized.match(/^(\d{4})-(\d{2})-(\d{2})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?/);
-                    if (!m) return null;
-                    const y = parseInt(m[1], 10);
-                    const mo = parseInt(m[2], 10) - 1;
-                    const da = parseInt(m[3], 10);
-                    const hh = m[4] !== undefined ? parseInt(m[4], 10) : 9;
-                    const mi = m[5] !== undefined ? parseInt(m[5], 10) : 0;
-                    return new Date(Date.UTC(y, mo, da, hh, mi, 0));
-                }
-
-                function toCalUtcString(d) {
-                    return (
-                        d.getUTCFullYear() +
-                        '-' +
-                        pad2(d.getUTCMonth() + 1) +
-                        '-' +
-                        pad2(d.getUTCDate()) +
-                        ' ' +
-                        pad2(d.getUTCHours()) +
-                        ':' +
-                        pad2(d.getUTCMinutes()) +
-                        ':00'
-                    );
-                }
-
-                function clampToBusinessHours(d) {
-                    let total = d.getUTCHours() * 60 + d.getUTCMinutes();
-                    const open = 8 * 60;
-                    const close = 18 * 60;
-                    if (total < open) total = open;
-                    if (total >= close) total = close - 30;
-                    let step = Math.round((total - open) / 30) * 30 + open;
-                    if (step >= close) step = close - 30;
-                    const h = Math.floor(step / 60);
-                    const min = step % 60;
-                    return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), h, min, 0));
-                }
-
-                function formatSlotLabel(d) {
-                    const local = new Date(d.getTime());
-                    const dateStr = local.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                    const h = local.getHours();
-                    const min = pad2(local.getMinutes());
-                    const ampm = h >= 12 ? 'PM' : 'AM';
-                    const h12 = h % 12 || 12;
-                    return dateStr + ' at ' + h12 + ':' + min + ' ' + ampm;
-                }
-
-                function applyFromCalendar(instance) {
-                    hintEl.classList.add('hidden');
-                    hintEl.textContent = '';
-                    const raw = instance && typeof instance.getValue === 'function' ? instance.getValue() : '';
-                    const d = parseCalValue(raw);
-                    if (!d) return;
-
-                    let adjusted = clampToBusinessHours(d);
-                    const orig = d.getTime();
-                    if (adjusted.getTime() !== orig) {
-                        instance.setValue(toCalUtcString(adjusted));
-                        hintEl.textContent = 'Time adjusted to allowed hours (last slot 17:30, 30-minute steps).';
-                        hintEl.classList.remove('hidden');
-                    }
-
-                    const local = new Date(adjusted.getTime());
-                    const datePart =
-                        local.getFullYear() + '-' + pad2(local.getMonth() + 1) + '-' + pad2(local.getDate());
-                    const timePart = pad2(local.getHours()) + ':' + pad2(local.getMinutes());
-
-                    document.getElementById('requested_date_hidden').value = datePart;
-                    document.getElementById('requested_time_hidden').value = timePart;
-                    document.getElementById('selectedDateTimeText').textContent = formatSlotLabel(adjusted);
-                    document.getElementById('selectionPreview').classList.remove('hidden');
-                    document.getElementById('selectionPreview').classList.add('flex');
-
-                    const btn = document.getElementById('submitBtn');
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-                    if (window.innerWidth < 768) {
-                        document.getElementById('selectionPreview').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-                }
-
-                const today = new Date();
-
-                const calOpts = Calendar(mountEl, {
-                    type: 'default',
-                    input: inputEl,
-                    time: true,
-                    value: new Date(),
-                    startingDay: 1,
-                    footer: true,
-                    validRange: function (day, m, year) {
-                        const d = new Date(Date.UTC(year, m, day));
-                        const utcToday = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
-                        if (d.getTime() < utcToday) return true;
-                        if (d.getUTCDay() === 0) return true;
-                        return false;
+                const calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    height: 'auto',
+                    contentHeight: 'auto',
+                    fixedWeekCount: false,
+                    showNonCurrentDates: true,
+                    dayHeaderFormat: { weekday: 'short' },
+                    titleFormat: { month: 'long', year: 'numeric' },
+                    views: {
+                        dayGridMonth: { buttonText: 'Month' },
+                        timeGridDay: { buttonText: 'Day' },
                     },
-                    onopen: function () {
-                        calendarOpenedOnce = true;
+                    headerToolbar: {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridDay'
                     },
-                    onchange: function (instance) {
-                        calInstance = instance;
-                        if (!calendarOpenedOnce) return;
-                        applyFromCalendar(instance);
+                    selectable: true,
+                    validRange: { start: new Date().toISOString().split('T')[0] },
+                    allDaySlot: false,
+                    slotMinTime: '08:00:00',
+                    slotMaxTime: '18:00:00',
+                    slotDuration: '00:30:00',
+                    expandRows: false,
+                    selectConstraint: {
+                        daysOfWeek: [1, 2, 3, 4, 5, 6] // Mon-Sat
                     },
-                });
+                    selectLongPressDelay: 100, // Better touch response
+                    select: function (info) {
+                        // If in month view, just switch to day view for that date
+                        if (info.view.type === 'dayGridMonth') {
+                            calendar.changeView('timeGridDay', info.startStr);
+                            return;
+                        }
 
-                requestAnimationFrame(function () {
-                    if (calOpts && typeof calOpts.open === 'function') {
-                        calInstance = calOpts;
+                        // In time selection view
+                        const date = info.startStr.split('T')[0];
+                        const time = info.startStr.split('T')[1].substring(0, 5);
+
+                        document.getElementById('requested_date_hidden').value = date;
+                        document.getElementById('requested_time_hidden').value = time;
+
+                        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                        const formattedDate = new Date(date).toLocaleDateString(undefined, options);
+
+                        // Convert 24h to 12h for display
+                        const [hours, minutes] = time.split(':');
+                        const ampm = hours >= 12 ? 'PM' : 'AM';
+                        const hours12 = hours % 12 || 12;
+                        const formattedTime = `${hours12}:${minutes} ${ampm}`;
+
+                        document.getElementById('selectedDateTimeText').textContent = `${formattedDate} at ${formattedTime}`;
+
+                        document.getElementById('selectionPreview').classList.remove('hidden');
+                        document.getElementById('selectionPreview').classList.add('flex');
+
+                        // Scroll to preview on mobile
+                        if (window.innerWidth < 768) {
+                            document.getElementById('selectionPreview').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+
+                        const btn = document.getElementById('submitBtn');
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    },
+                    windowResize: function (view) {
+                        if (window.innerWidth < 768) {
+                            calendar.setOption('headerToolbar', {
+                                left: 'prev,next',
+                                center: 'title',
+                                right: 'timeGridDay' // Simplify on mobile
+                            });
+                        } else {
+                            calendar.setOption('headerToolbar', {
+                                left: 'prev,next',
+                                center: 'title',
+                                right: 'dayGridMonth,timeGridDay'
+                            });
+                        }
                     }
                 });
 
-                document.getElementById('bookingOpenCalendarBtn').addEventListener('click', function () {
-                    inputEl.focus();
-                    if (calInstance && typeof calInstance.open === 'function' && calInstance.isClosed && calInstance.isClosed()) {
-                        calInstance.open();
-                    }
-                });
+                // Initial mobile check
+                if (isMobile) {
+                    calendar.setOption('headerToolbar', {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'timeGridDay'
+                    });
+                }
+
+                calendar.render();
 
                 window.clearSelection = function () {
-                    calendarOpenedOnce = false;
                     document.getElementById('requested_date_hidden').value = '';
                     document.getElementById('requested_time_hidden').value = '';
-                    inputEl.value = '';
                     document.getElementById('selectionPreview').classList.add('hidden');
                     document.getElementById('selectionPreview').classList.remove('flex');
-                    hintEl.classList.add('hidden');
-                    hintEl.textContent = '';
                     const btn = document.getElementById('submitBtn');
                     btn.disabled = true;
                     btn.classList.add('opacity-50', 'cursor-not-allowed');
-                    if (calInstance && typeof calInstance.setValue === 'function') {
-                        calInstance.setValue(new Date());
-                    }
-                };
+                    calendar.changeView('dayGridMonth');
+                }
             });
         </script>
     @endpush
