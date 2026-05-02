@@ -85,17 +85,27 @@
                     @endif
 
                     <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-xl font-bold text-slate-800">Pick Date & Time</h3>
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></span>
-                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Available
-                                    Slots</span>
+                        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold tracking-tight text-slate-900">Pick date &amp; time</h3>
+                                <p class="mt-1 text-sm text-slate-500">Choose a day, then pick a slot. Weekdays &amp;
+                                    Saturday, 8:00–18:00.</p>
+                            </div>
+                            <div
+                                class="inline-flex items-center gap-2 self-start rounded-full border border-slate-200/80 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 shadow-sm">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-500/40 opacity-75"></span>
+                                    <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-600"></span>
+                                </span>
+                                Live availability
                             </div>
                         </div>
 
-                        <div class="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-inner bg-gray-50/30">
-                            <div id="bookingCalendar" class="p-4"></div>
+                        <div
+                            class="relative overflow-hidden rounded-3xl border border-slate-200/90 bg-gradient-to-b from-slate-50 to-white shadow-[0_1px_0_rgba(15,23,42,0.04),0_18px_45px_-24px_rgba(15,23,42,0.18)]">
+                            <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white to-transparent opacity-90"></div>
+                            <div id="bookingCalendar" class="booking-cal-root p-3 sm:p-5"></div>
                         </div>
 
                         <div id="selectionPreview"
@@ -143,95 +153,299 @@
     @push('scripts')
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
         <style>
-            .fc {
-                --fc-border-color: #f1f5f9;
-                --fc-today-bg-color: #f0f9ff;
+            /* Scoped FullCalendar — booking flow only */
+            #bookingCalendar.fc {
+                --booking-primary: #2563eb;
+                --booking-primary-hover: #1d4ed8;
+                --booking-soft: #eff6ff;
+                --booking-soft-strong: #dbeafe;
+                --fc-border-color: rgba(148, 163, 184, 0.35);
+                --fc-today-bg-color: transparent;
+                --fc-page-bg-color: transparent;
+                --fc-neutral-bg-color: #f8fafc;
                 font-family: inherit;
             }
 
-            .fc-toolbar-title {
-                font-size: 1.125rem !important;
-                font-weight: 800 !important;
-                color: #1e293b !important;
-                text-transform: uppercase;
-                letter-spacing: -0.025em;
+            #bookingCalendar .fc-scrollgrid {
+                border-radius: 1.25rem;
+                overflow: hidden;
+                border: 1px solid rgba(148, 163, 184, 0.25) !important;
+                background: #fff;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
             }
 
-            .fc-button {
+            #bookingCalendar .fc-scrollgrid-section-header > td {
+                border-bottom: 1px solid rgba(148, 163, 184, 0.2) !important;
+                background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            }
+
+            #bookingCalendar .fc-col-header-cell {
+                padding: 0.5rem 0;
+                border-color: rgba(148, 163, 184, 0.2) !important;
+            }
+
+            #bookingCalendar .fc-col-header-cell-cushion {
+                font-weight: 600 !important;
+                color: #64748b !important;
+                font-size: 0.6875rem !important;
+                letter-spacing: 0.08em;
+                text-transform: uppercase !important;
+                text-decoration: none !important;
+                padding: 0.5rem 0 !important;
+            }
+
+            #bookingCalendar .fc-daygrid-day {
+                min-height: 3.25rem;
+                border-color: rgba(241, 245, 249, 0.9) !important;
+            }
+
+            @media (min-width: 640px) {
+                #bookingCalendar .fc-daygrid-day {
+                    min-height: 3.75rem;
+                }
+            }
+
+            #bookingCalendar .fc-daygrid-day-frame {
+                padding: 0.35rem 0.25rem 0.5rem;
+            }
+
+            #bookingCalendar .fc-daygrid-day-top {
+                justify-content: center;
+            }
+
+            #bookingCalendar .fc-daygrid-day-number {
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+                width: 2.125rem;
+                height: 2.125rem;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                border-radius: 9999px;
+                font-weight: 600 !important;
+                font-size: 0.8125rem !important;
+                color: #334155 !important;
+                text-decoration: none !important;
+                transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+            }
+
+            @media (min-width: 640px) {
+                #bookingCalendar .fc-daygrid-day-number {
+                    width: 2.375rem;
+                    height: 2.375rem;
+                    font-size: 0.875rem !important;
+                }
+            }
+
+            #bookingCalendar .fc-daygrid-day:not(.fc-day-other):not(.fc-day-past) .fc-daygrid-day-number:hover {
+                background: var(--booking-soft);
+                color: var(--booking-primary) !important;
+                transform: scale(1.04);
+            }
+
+            #bookingCalendar .fc-day-other {
+                background: #f8fafc !important;
+            }
+
+            #bookingCalendar .fc-day-other .fc-daygrid-day-number {
+                color: #94a3b8 !important;
+                font-weight: 500 !important;
+            }
+
+            #bookingCalendar .fc-day-past .fc-daygrid-day-number {
+                color: #cbd5e1 !important;
+                pointer-events: none;
+            }
+
+            #bookingCalendar .fc-day-today:not(.fc-day-other) .fc-daygrid-day-number {
+                box-shadow: 0 0 0 2px var(--booking-primary), 0 4px 14px -4px rgba(37, 99, 235, 0.45);
+                color: var(--booking-primary) !important;
+                background: #fff;
+            }
+
+            #bookingCalendar .fc-daygrid-day.fc-day-today {
+                background: rgba(239, 246, 255, 0.55) !important;
+            }
+
+            #bookingCalendar .fc-highlight {
+                background: rgba(37, 99, 235, 0.12) !important;
+                border-radius: 0.5rem;
+            }
+
+            #bookingCalendar .fc-timegrid-slot {
+                height: 3.25rem !important;
+                border-color: rgba(241, 245, 249, 0.95) !important;
+            }
+
+            #bookingCalendar .fc-timegrid-slot-label {
+                font-size: 0.75rem;
+                font-weight: 500;
+                color: #64748b;
+            }
+
+            #bookingCalendar .fc-timegrid-axis-cushion {
+                color: #94a3b8;
+                font-weight: 600;
+                font-size: 0.6875rem;
+            }
+
+            #bookingCalendar .fc-timegrid-col.fc-day-today {
+                background: rgba(239, 246, 255, 0.35) !important;
+            }
+
+            #bookingCalendar .fc-timegrid-now-indicator-line {
+                border-color: var(--booking-primary) !important;
+                border-width: 2px 0 0 !important;
+                opacity: 0.9;
+            }
+
+            #bookingCalendar .fc-timegrid-now-indicator-arrow {
+                border-color: var(--booking-primary) !important;
+            }
+
+            /* Toolbar */
+            #bookingCalendar .fc-header-toolbar {
+                margin-bottom: 1rem !important;
+                padding: 0.25rem;
+                gap: 0.75rem;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 1rem;
+                background: rgba(248, 250, 252, 0.95);
+                border: 1px solid rgba(226, 232, 240, 0.9);
+            }
+
+            #bookingCalendar .fc-toolbar-title {
+                font-size: 1.0625rem !important;
+                font-weight: 700 !important;
+                color: #0f172a !important;
+                text-transform: none !important;
+                letter-spacing: -0.02em;
+            }
+
+            #bookingCalendar .fc-button {
                 background: #ffffff !important;
                 border: 1px solid #e2e8f0 !important;
                 color: #475569 !important;
-                font-weight: 700 !important;
-                font-size: 0.875rem !important;
-                border-radius: 12px !important;
-                padding: 8px 16px !important;
-                transition: all 0.2s !important;
+                font-weight: 600 !important;
+                font-size: 0.8125rem !important;
+                border-radius: 0.75rem !important;
+                padding: 0.5rem 0.875rem !important;
+                line-height: 1.25 !important;
+                box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+                transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease !important;
             }
 
-            .fc-button:hover {
+            #bookingCalendar .fc-button:hover {
                 background: #f8fafc !important;
                 border-color: #cbd5e1 !important;
+                color: #0f172a !important;
             }
 
-            .fc-button-active {
-                background: #2563eb !important;
-                color: white !important;
-                border-color: #2563eb !important;
+            #bookingCalendar .fc-button:focus {
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25) !important;
             }
 
-            .fc-daygrid-day-number {
-                font-weight: 700 !important;
+            #bookingCalendar .fc-button-primary:not(:disabled):active,
+            #bookingCalendar .fc-button-primary:not(:disabled).fc-button-active {
+                background: var(--booking-primary) !important;
+                border-color: var(--booking-primary) !important;
+                color: #fff !important;
+                box-shadow: 0 4px 14px -4px rgba(37, 99, 235, 0.55);
+            }
+
+            #bookingCalendar .fc-button-primary:not(:disabled):not(.fc-button-active):hover {
+                background: #f1f5f9 !important;
+                border-color: #cbd5e1 !important;
+                color: #0f172a !important;
+                box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+            }
+
+            #bookingCalendar .fc-button-primary.fc-button-active:hover {
+                background: var(--booking-primary-hover) !important;
+                border-color: var(--booking-primary-hover) !important;
+                color: #fff !important;
+            }
+
+            #bookingCalendar .fc-prev-button,
+            #bookingCalendar .fc-next-button {
+                border-radius: 9999px !important;
+                width: 2.5rem;
+                height: 2.5rem;
+                padding: 0 !important;
+                display: inline-flex !important;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #bookingCalendar .fc-toolbar-chunk:last-child {
+                display: inline-flex;
+                padding: 0.2rem;
+                border-radius: 9999px;
+                background: #fff;
+                border: 1px solid #e2e8f0;
+                gap: 0.15rem;
+                box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+            }
+
+            #bookingCalendar .fc-toolbar-chunk:last-child .fc-button {
+                border-radius: 9999px !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0.45rem 1rem !important;
+                font-size: 0.75rem !important;
+                text-transform: capitalize;
+            }
+
+            #bookingCalendar .fc-toolbar-chunk:last-child .fc-button.fc-button-active {
+                background: var(--booking-soft) !important;
+                color: var(--booking-primary) !important;
+            }
+
+            #bookingCalendar .fc-toolbar-chunk:last-child .fc-button:not(.fc-button-active) {
+                background: transparent !important;
                 color: #64748b !important;
-                padding: 12px !important;
-                text-decoration: none !important;
-                font-size: 0.875rem;
             }
 
-            .fc-col-header-cell-cushion {
-                font-weight: 800 !important;
-                color: #94a3b8 !important;
-                text-transform: uppercase !important;
-                font-size: 0.7rem !important;
-                padding: 12px 0 !important;
-                text-decoration: none !important;
-                letter-spacing: 0.05em;
+            #bookingCalendar .fc-toolbar-chunk:last-child .fc-button:not(.fc-button-active):hover {
+                background: #f8fafc !important;
+                color: #0f172a !important;
             }
 
-            .selected-date {
-                background-color: #2563eb !important;
-                color: white !important;
-                border-radius: 12px;
-            }
-
-            .fc-timegrid-slot {
-                height: 3.5rem !important;
-                border-bottom: 1px dashed #f1f5f9 !important;
-            }
-
-            .fc-list-event-title {
+            #bookingCalendar .fc-list-event-title {
                 font-weight: 600 !important;
             }
 
-            /* Mobile Responsive Optimizations */
             @media (max-width: 640px) {
-                .fc-header-toolbar {
+                #bookingCalendar .fc-header-toolbar {
                     flex-direction: column;
-                    gap: 1rem;
-                    align-items: center;
+                    align-items: stretch;
                 }
 
-                .fc-toolbar-chunk {
+                #bookingCalendar .fc-toolbar-chunk {
                     display: flex;
                     justify-content: center;
                     width: 100%;
                 }
 
-                .fc-toolbar-title {
-                    font-size: 1rem !important;
+                /* Center (month title) first, then nav, then view toggle */
+                #bookingCalendar .fc-toolbar-chunk:nth-child(2) {
+                    order: -1;
                 }
 
-                .fc-button {
-                    padding: 6px 12px !important;
+                #bookingCalendar .fc-toolbar-title {
+                    font-size: 1rem !important;
+                    text-align: center;
+                    width: 100%;
+                }
+
+                #bookingCalendar .fc-toolbar-chunk:last-child {
+                    justify-content: center;
+                }
+
+                #bookingCalendar .fc-button {
+                    padding: 0.45rem 0.75rem !important;
                     font-size: 0.75rem !important;
                 }
             }
@@ -243,20 +457,30 @@
 
                 const calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'dayGridMonth',
-                    height: 'auto', // Adjusts height based on content
+                    height: 'auto',
                     contentHeight: 'auto',
+                    titleFormat: { year: 'numeric', month: 'long' },
+                    dayHeaderFormat: { weekday: 'short' },
+                    slotLabelFormat: { hour: 'numeric', minute: '2-digit', meridiem: 'short' },
+                    scrollTime: '09:00:00',
+                    nowIndicator: true,
                     headerToolbar: {
                         left: 'prev,next',
                         center: 'title',
                         right: 'dayGridMonth,timeGridDay'
+                    },
+                    buttonText: {
+                        today: 'Today',
+                        month: 'Month',
+                        day: 'Day',
                     },
                     selectable: true,
                     validRange: { start: new Date().toISOString().split('T')[0] },
                     allDaySlot: false,
                     slotMinTime: '08:00:00',
                     slotMaxTime: '18:00:00',
-                    slotDuration: '00:30:00', // 30 min slots for finer selection
-                    expandRows: true, // Make rows expand to fill height
+                    slotDuration: '00:30:00',
+                    expandRows: true,
                     selectConstraint: {
                         daysOfWeek: [1, 2, 3, 4, 5, 6] // Mon-Sat
                     },
