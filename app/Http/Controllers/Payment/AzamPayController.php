@@ -157,7 +157,10 @@ class AzamPayController extends Controller
      */
     protected function resolvePaymentRecord(?string $utilityref, ?string $externalreference, array $data)
     {
-        // For logged-in candidate bookings, the external reference maps to appointment.order_id
+        // Per AzamPay docs:
+        // - utilityref: partner reference (our order_id)
+        // - externalreference: AzamPay reference
+        // Try both when resolving local records.
         if ($externalreference) {
             $appointment = $this->findAppointment($externalreference);
             if ($appointment) {
@@ -168,6 +171,20 @@ class AzamPayController extends Controller
             $consultationRequest = DB::table('consultation_requests')
                 ->where('meta_data', 'like', "%\"order_id\":\"{$externalreference}\"%")
                 ->orWhere('meta_data', 'like', "%\"order_id\":\"{$utilityref}\"%")
+                ->first();
+            if ($consultationRequest) {
+                return ['type' => 'consultation_request', 'record' => $consultationRequest];
+            }
+        }
+
+        if ($utilityref) {
+            $appointment = $this->findAppointment($utilityref);
+            if ($appointment) {
+                return ['type' => 'appointment', 'record' => $appointment];
+            }
+
+            $consultationRequest = DB::table('consultation_requests')
+                ->where('meta_data', 'like', "%\"order_id\":\"{$utilityref}\"%")
                 ->first();
             if ($consultationRequest) {
                 return ['type' => 'consultation_request', 'record' => $consultationRequest];

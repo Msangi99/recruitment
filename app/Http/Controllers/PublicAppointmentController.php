@@ -248,9 +248,15 @@ class PublicAppointmentController extends Controller
                 if ($paymentMethod === 'mobile') {
                     $response = $this->azampayService->mobileCheckout([
                         'amount' => $amount,
+                        'currency' => 'TZS',
                         'accountNumber' => $paymentPhone,
                         'externalId' => $orderId,
                         'provider' => $validated['mobile_provider'] ?? 'Mpesa',
+                        'additionalProperties' => [
+                            'consultation_request_id' => (string) $id,
+                            'payment_gateway' => 'azampay',
+                            'payment_method' => 'mobile',
+                        ],
                     ]);
 
                     if (isset($response['success']) && $response['success'] === true) {
