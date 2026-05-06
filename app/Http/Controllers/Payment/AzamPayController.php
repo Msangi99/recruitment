@@ -157,6 +157,17 @@ class AzamPayController extends Controller
      */
     protected function resolvePaymentRecord(?string $utilityref, ?string $externalreference, array $data)
     {
+        // 1) Most reliable for public flow: consultation_request_id sent in additionalProperties.
+        $additionalProperties = $data['additionalProperties'] ?? null;
+        if (is_array($additionalProperties) && !empty($additionalProperties['consultation_request_id'])) {
+            $consultationRequest = DB::table('consultation_requests')
+                ->where('id', (int) $additionalProperties['consultation_request_id'])
+                ->first();
+            if ($consultationRequest) {
+                return ['type' => 'consultation_request', 'record' => $consultationRequest];
+            }
+        }
+
         // Per AzamPay docs:
         // - utilityref: partner reference (our order_id)
         // - externalreference: AzamPay reference
@@ -188,6 +199,15 @@ class AzamPayController extends Controller
                 ->first();
             if ($consultationRequest) {
                 return ['type' => 'consultation_request', 'record' => $consultationRequest];
+            }
+        }
+
+        // Final fallback: try reference field as a partner reference.
+        $reference = $data['reference'] ?? null;
+        if (is_string($reference) && $reference !== '') {
+            $appointment = $this->findAppointment($reference);
+            if ($appointment) {
+                return ['type' => 'appointment', 'record' => $appointment];
             }
         }
 
