@@ -29,7 +29,11 @@ class AzamPayService
         $this->appName = $dbSettings?->app_name ?: config('azampay.app_name');
         $this->clientId = $dbSettings?->client_id ?: config('azampay.client_id');
         $this->clientSecret = $dbSettings?->secret_id ?: config('azampay.client_secret');
-        $this->callbackToken = $dbSettings?->token ?: config('azampay.token');
+        // Access token is always fetched from AzamPay provider using app/client/secret.
+        // DB token is treated as callback verification token only, and only in sandbox.
+        $this->callbackToken = $this->environment === 'production'
+            ? (config('azampay.token') ?: null)
+            : ($dbSettings?->token ?: config('azampay.token'));
     }
 
     /**
