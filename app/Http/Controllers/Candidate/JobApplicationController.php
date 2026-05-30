@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\JobListing;
 use App\Models\JobApplication;
 use App\Models\Category;
+use App\Services\NotificationMailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -261,7 +262,7 @@ class JobApplicationController extends Controller
             $videoPath = $file->storeAs('application_videos', $fileName, 'public');
         }
 
-        JobApplication::create([
+        $application = JobApplication::create([
             'job_id' => $job->id,
             'candidate_id' => $candidate->id,
             'cover_letter' => $validated['cover_letter'] ?? null,
@@ -269,6 +270,8 @@ class JobApplicationController extends Controller
             'video_path' => $videoPath,
             'status' => 'pending',
         ]);
+
+        NotificationMailService::notifyNewJobApplication($application->load(['job.employer', 'candidate']));
 
         return redirect()->route('public.jobs.show', $job)
             ->with('success', 'Application submitted successfully!');

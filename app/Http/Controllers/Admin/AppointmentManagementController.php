@@ -178,5 +178,18 @@ class AppointmentManagementController extends Controller
                 'reason' => $emailData['cancellationReason']
             ]);
         }
+
+        $candidateEmail = $appointment->user->email ?? null;
+        if ($candidateEmail) {
+            Mail::send('emails.appointment-cancelled-candidate', $emailData, function ($message) use ($candidateEmail, $appointment) {
+                $message->to($candidateEmail)
+                        ->subject('Interview Cancelled - ' . ($appointment->company_name ?? 'Employer'));
+            });
+
+            Log::info('Sent appointment cancellation email to candidate', [
+                'appointment_id' => $appointment->id,
+                'email' => $candidateEmail,
+            ]);
+        }
     }
 }

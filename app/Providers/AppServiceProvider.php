@@ -76,6 +76,13 @@ class AppServiceProvider extends ServiceProvider
                 ],
             ]);
         }
+
+        if (Schema::hasTable('settings')) {
+            $adminEmail = Setting::getAdminEmail();
+            if ($adminEmail !== '') {
+                config(['mail.admin_email' => $adminEmail]);
+            }
+        }
         
         // Configure Laravel HTTP facade defaults
         Http::macro('selcom', function () {

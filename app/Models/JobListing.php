@@ -79,10 +79,25 @@ class JobListing extends Model
         parent::boot();
         
         static::creating(function ($job) {
-            if (empty($job->slug)) {
-                $job->slug = Str::slug($job->title);
-            }
+            $base = $job->slug ?: $job->title;
+            $job->slug = static::generateUniqueSlug($base);
         });
+    }
+
+    public static function generateUniqueSlug(string $title, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $counter = 2;
+
+        while (static::where('slug', $slug)
+            ->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))
+            ->exists()) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
     }
 
     /**

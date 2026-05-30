@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewAppointmentNotification;
 use App\Services\AzamPayService;
+use App\Services\NotificationMailService;
 use App\Services\SelcomService;
 use Illuminate\Support\Facades\Log;
 
@@ -68,14 +69,11 @@ class PublicAppointmentController extends Controller
             'updated_at' => now(),
         ]);
 
-        // Send Email Notification
-        try {
-            $hrEmail = \App\Models\Setting::getHrEmail() ?? 'hr@coyzon.com';
+        NotificationMailService::sendIfEnabled(function () use ($validated) {
+            $hrEmail = \App\Models\Setting::getHrEmail() ?? NotificationMailService::adminEmail();
             $appointmentData = DB::table('consultation_requests')->where('email', $validated['email'])->orderBy('id', 'desc')->first();
             Mail::to($hrEmail)->send(new NewAppointmentNotification($appointmentData));
-        } catch (\Exception $e) {
-            // Log error or ignore for now to preventing blocking the flow
-        }
+        }, 'employer_consultation_request');
 
         return redirect()->route('public.appointments.index')->with('success', 'Your employer consultation request has been submitted. We will confirm your appointment shortly via email.');
     }
@@ -118,14 +116,11 @@ class PublicAppointmentController extends Controller
             'updated_at' => now(),
         ]);
 
-        // Send Email Notification
-        try {
-            $hrEmail = \App\Models\Setting::getHrEmail() ?? 'hr@coyzon.com';
+        NotificationMailService::sendIfEnabled(function () use ($validated) {
+            $hrEmail = \App\Models\Setting::getHrEmail() ?? NotificationMailService::adminEmail();
             $appointmentData = DB::table('consultation_requests')->where('email', $validated['email'])->orderBy('id', 'desc')->first();
             Mail::to($hrEmail)->send(new NewAppointmentNotification($appointmentData));
-        } catch (\Exception $e) {
-            // Log error
-        }
+        }, 'partnership_consultation_request');
 
         return redirect()->route('public.appointments.index')->with('success', 'Your partnership request has been submitted for review. We will contact you shortly.');
     }

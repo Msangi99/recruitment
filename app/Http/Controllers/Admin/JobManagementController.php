@@ -7,6 +7,7 @@ use App\Models\JobListing;
 use App\Models\JobApplication;
 use App\Models\Category;
 use App\Models\Skill;
+use App\Services\NotificationMailService;
 use Illuminate\Http\Request;
 
 class JobManagementController extends Controller
@@ -201,7 +202,13 @@ class JobManagementController extends Controller
             'status' => 'required|in:pending,reviewed,shortlisted,interview,offered,rejected,withdrawn',
         ]);
 
+        $previousStatus = $application->status;
         $application->update(['status' => $validated['status']]);
+
+        NotificationMailService::notifyApplicationStatusChange(
+            $application->fresh(['job', 'candidate']),
+            $previousStatus
+        );
 
         return back()->with('success', 'Application status updated to ' . ucfirst($validated['status']) . '.');
     }

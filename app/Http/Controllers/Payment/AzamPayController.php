@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AppointmentConfirmed;
 use App\Models\Appointment;
 use App\Models\User;
 use App\Services\AzamPayService;
+use App\Services\NotificationMailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -260,14 +262,9 @@ class AzamPayController extends Controller
                 'updated_at' => now(),
             ]);
 
-            // Optionally send email
-            try {
-                Mail::to($record->email)->send(
-                    new \App\Mail\AppointmentConfirmed($record)
-                );
-            } catch (\Throwable $e) {
-                Log::error('Failed to send confirmation email', ['message' => $e->getMessage()]);
-            }
+            NotificationMailService::sendIfEnabled(function () use ($record) {
+                Mail::to($record->email)->send(new AppointmentConfirmed($record));
+            }, 'consultation_payment_confirmed');
         }
     }
 

@@ -1,38 +1,51 @@
-<!DOCTYPE html>
-<html>
+@extends('emails.layouts.base', [
+    'tone' => $consultation->status === 'cancelled' ? 'danger' : ($consultation->status === 'confirmed' ? 'success' : 'brand'),
+    'title' => 'Consultation Status Update',
+    'preheader' => 'Your consultation status is now ' . ucwords(str_replace('_', ' ', $consultation->status)) . '.',
+    'heroTitle' => 'Consultation Update',
+    'heroSubtitle' => 'The status of your request has changed',
+])
 
-<head>
-    <title>Consultation Status Update</title>
-</head>
+@section('content')
+    @php
+        $statusVariant = match ($consultation->status) {
+            'confirmed' => 'success',
+            'cancelled' => 'danger',
+            default => 'brand',
+        };
+        $statusText = ucwords(str_replace('_', ' ', $consultation->status));
+    @endphp
+    <p style="margin: 0 0 18px; font-size: 16px; color: #0f172a;">Dear {{ $consultation->name }},</p>
+    <p style="margin: 0 0 16px;">The status of your consultation request with Coyzon has been updated.</p>
 
-<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-    <h2 style="color: #2563eb;">Consultation Status Update</h2>
+    @include('emails.partials.badge', ['text' => $statusText, 'variant' => $statusVariant])
 
-    <p>Dear {{ $consultation->name }},</p>
-
-    <p>The status of your consultation request with Coyzon has been updated.</p>
-
-    <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
-        <p><strong>Current Status:</strong> <span
-                style="text-transform: uppercase; font-weight: bold; color: {{ $consultation->status == 'confirmed' ? '#16a34a' : ($consultation->status == 'cancelled' ? '#dc2626' : '#2563eb') }}">{{ str_replace('_', ' ', $consultation->status) }}</span>
-        </p>
-
+    @include('emails.partials.card-open', ['title' => 'Request Summary'])
+        @include('emails.partials.row', ['label' => 'Current Status', 'value' => '<strong>' . e($statusText) . '</strong>'])
         @if($consultation->requested_date)
-            <p><strong>Scheduled Date:</strong> {{ $consultation->requested_date->format('F d, Y h:i A') }}</p>
+            @include('emails.partials.row', ['label' => 'Scheduled Date', 'value' => e($consultation->requested_date->format('F d, Y h:i A'))])
         @endif
-    </div>
+    @include('emails.partials.card-close')
 
     @if($consultation->status == 'confirmed')
-        <p>Your appointment is confirmed. We look forward to meeting with you.</p>
+        @include('emails.partials.callout', [
+            'variant' => 'success',
+            'title' => 'You are all set',
+            'body' => 'Your appointment is confirmed. We look forward to meeting with you.',
+        ])
     @elseif($consultation->status == 'cancelled')
-        <p>We regret to inform you that your appointment has been cancelled. Please contact us if you have any questions.
-        </p>
+        @include('emails.partials.callout', [
+            'variant' => 'danger',
+            'title' => 'Appointment cancelled',
+            'body' => 'Your appointment has been cancelled. Please contact us if you have any questions.',
+        ])
     @else
-        <p>We will keep you updated on any further changes.</p>
+        @include('emails.partials.callout', [
+            'variant' => 'info',
+            'title' => 'Stay tuned',
+            'body' => 'We will keep you updated on any further changes to your request.',
+        ])
     @endif
 
-    <p>Best regards,<br>
-        Coyzon Team</p>
-</body>
-
-</html>
+    @include('emails.partials.signoff')
+@endsection

@@ -7,6 +7,7 @@ use App\Models\ConsultationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ConsultationStatusUpdated;
+use App\Services\NotificationMailService;
 
 class ConsultationRequestController extends Controller
 {
@@ -36,15 +37,13 @@ class ConsultationRequestController extends Controller
             'status' => 'required|in:pending,confirmed,completed,cancelled,pending_review',
         ]);
 
+        $previousStatus = $consultation->status;
         $consultation->update(['status' => $request->status]);
 
-        // Send email notification on status change
-        try {
-            if ($consultation->email) {
+        if ($previousStatus !== $request->status && $consultation->email) {
+            NotificationMailService::sendIfEnabled(function () use ($consultation) {
                 Mail::to($consultation->email)->send(new ConsultationStatusUpdated($consultation));
-            }
-        } catch (\Exception $e) {
-            // Log error but continue
+            }, 'consultation_status_updated');
         }
 
         return back()->with('success', 'Status updated successfully.');

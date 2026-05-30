@@ -58,6 +58,20 @@ class Setting extends Model
         return self::get('hr_email');
     }
 
+    public static function getNotificationEmail(): ?string
+    {
+        $email = self::get('notification_email');
+
+        return is_string($email) && $email !== '' ? $email : null;
+    }
+
+    public static function getAdminEmail(): string
+    {
+        return self::getNotificationEmail()
+            ?? self::getHrEmail()
+            ?? config('mail.admin_email', 'info@coyzon.com');
+    }
+
     /**
      * Check if email notifications are enabled
      */

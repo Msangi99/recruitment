@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CandidateProfile;
 use App\Models\Document;
 use App\Models\User;
+use App\Services\NotificationMailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -41,6 +42,8 @@ class VerificationController extends Controller
             'is_public' => true,
         ]);
 
+        NotificationMailService::notifyProfileVerification($profile->fresh('user'));
+
         return back()->with('success', 'Candidate profile verified successfully.');
     }
 
@@ -58,6 +61,11 @@ class VerificationController extends Controller
             'admin_notes' => $request->rejection_reason,
             'is_public' => false,
         ]);
+
+        NotificationMailService::notifyProfileVerification(
+            $profile->fresh('user'),
+            $request->rejection_reason
+        );
 
         return back()->with('success', 'Candidate profile rejected.');
     }

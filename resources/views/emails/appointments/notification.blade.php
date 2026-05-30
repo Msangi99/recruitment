@@ -1,118 +1,67 @@
-<!DOCTYPE html>
-<html>
+@extends('emails.layouts.base', [
+    'tone' => match ($data->type) {
+        'employer' => 'brand',
+        'partnership' => 'dark',
+        default => 'success',
+    },
+    'title' => 'New Consultation Request',
+    'preheader' => 'New ' . ucwords(str_replace('_', ' ', $data->type)) . ' request from ' . $data->name . '.',
+    'heroTitle' => 'New Consultation Request',
+    'heroSubtitle' => 'A new booking request was submitted on the website',
+])
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Appointment Request</title>
-</head>
+@section('content')
+    @php
+        $typeLabel = ucwords(str_replace('_', ' ', $data->type));
+        $badgeVariant = match ($data->type) {
+            'employer' => 'brand',
+            'partnership' => 'neutral',
+            default => 'success',
+        };
+    @endphp
+    <p style="margin: 0 0 18px; font-size: 16px; color: #0f172a;">Hello HR Team,</p>
+    <p style="margin: 0 0 16px;">A new consultation request has been received. Please review the details below.</p>
 
-<body
-    style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #1e293b; background-color: #f8fafc; margin: 0; padding: 0;">
-    <div
-        style="max-width: 600px; margin: 40px auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); border: 1px solid #e2e8f0;">
-        {{-- Branded Header --}}
-        <div style="background-color: #0f172a; padding: 32px; text-align: center;">
-            <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.025em;">Coyzon
-                Recruitment</h1>
-            <p style="color: #94a3b8; margin: 8px 0 0 0; font-size: 14px; font-weight: 500;">New Booking Notification
-            </p>
-        </div>
+    @include('emails.partials.badge', ['text' => $typeLabel, 'variant' => $badgeVariant])
 
-        <div style="padding: 40px;">
-            <div style="margin-bottom: 32px;">
-                <h2 style="color: #0f172a; margin: 0 0 12px 0; font-size: 20px; font-weight: 700;">Hello HR Team,</h2>
-                <p style="margin: 0; color: #64748b;">A new consultation request has been received from the website.
-                    Please review the details below and take appropriate action in the admin dashboard.</p>
-            </div>
+    @include('emails.partials.card-open', ['title' => 'Request Details'])
+        @include('emails.partials.row', ['label' => 'Requested By', 'value' => e($data->name)])
+        @if(!empty($data->company))
+            @include('emails.partials.row', ['label' => 'Company', 'value' => e($data->company)])
+        @endif
+        @include('emails.partials.row', ['label' => 'Email', 'value' => '<a href="mailto:' . e($data->email) . '" style="color:#2563EB;text-decoration:none;font-weight:600;">' . e($data->email) . '</a>'])
+        @include('emails.partials.row', ['label' => 'Phone', 'value' => e($data->phone ?? 'N/A')])
+        @if(!empty($data->country))
+            @include('emails.partials.row', ['label' => 'Country', 'value' => e($data->country)])
+        @endif
+        @if(!empty($data->requested_date))
+            @include('emails.partials.row', ['label' => 'Proposed Date', 'value' => '<strong>' . e(\Carbon\Carbon::parse($data->requested_date)->format('M d, Y \a\t h:i A')) . '</strong>'])
+        @endif
+    @include('emails.partials.card-close')
 
-            <div style="background-color: #f1f5f9; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
-                <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                    <span
-                        style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;">Request
-                        Category</span>
-                </div>
-
-                <div style="margin-bottom: 24px;">
-                    <span style="display: inline-block; padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.025em; 
-                        @if($data->type == 'employer') background-color: #dbeafe; color: #1e40af; 
-                        @elseif($data->type == 'partnership') background-color: #f3e8ff; color: #6b21a8; 
-                        @else background-color: #dcfce7; color: #166534; @endif">
-                        {{ str_replace('_', ' ', $data->type) }}
-                    </span>
-                </div>
-
-                <table style="width: 100%; border-collapse: collapse;">
-                    <tr>
-                        <td style="padding: 8px 0; font-size: 13px; font-weight: 600; color: #64748b; width: 120px;">
-                            Requested By:</td>
-                        <td style="padding: 8px 0; font-size: 14px; font-weight: 700; color: #0f172a;">{{ $data->name }}
-                        </td>
-                    </tr>
-                    @if($data->company)
-                        <tr>
-                            <td style="padding: 8px 0; font-size: 13px; font-weight: 600; color: #64748b;">Company:</td>
-                            <td style="padding: 8px 0; font-size: 14px; font-weight: 700; color: #0f172a;">
-                                {{ $data->company }}</td>
-                        </tr>
+    @if(!empty($data->meta_data))
+        @php $metaData = json_decode($data->meta_data, true); @endphp
+        @if(is_array($metaData) && count($metaData) > 0)
+            @include('emails.partials.card-open', ['title' => 'Additional Information'])
+                @foreach($metaData as $key => $value)
+                    @if(filled($value))
+                        @include('emails.partials.row', [
+                            'label' => ucwords(str_replace('_', ' ', $key)),
+                            'value' => e(is_array($value) ? json_encode($value) : $value),
+                        ])
                     @endif
-                    <tr>
-                        <td style="padding: 8px 0; font-size: 13px; font-weight: 600; color: #64748b;">Email Addr:</td>
-                        <td style="padding: 8px 0; font-size: 14px; font-weight: 500; color: #2563eb;">
-                            {{ $data->email }}</td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px 0; font-size: 13px; font-weight: 600; color: #64748b;">Phone Nom:</td>
-                        <td style="padding: 8px 0; font-size: 14px; font-weight: 700; color: #0f172a;">
-                            {{ $data->phone ?? 'N/A' }}</td>
-                    </tr>
-                    @if($data->requested_date)
-                        <tr>
-                            <td style="padding: 8px 0; font-size: 13px; font-weight: 600; color: #64748b;">Proposed Date:
-                            </td>
-                            <td style="padding: 8px 0; font-size: 14px; font-weight: 700; color: #0f172a;">
-                                {{ \Carbon\Carbon::parse($data->requested_date)->format('M d, Y @ h:i A') }}</td>
-                        </tr>
-                    @endif
-                </table>
-            </div>
+                @endforeach
+            @include('emails.partials.card-close')
+        @endif
+    @endif
 
-            @if($data->meta_data)
-                @php $metaData = json_decode($data->meta_data, true); @endphp
-                @if(is_array($metaData) && count($metaData) > 0)
-                    <div style="margin-bottom: 32px;">
-                        <h4
-                            style="font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 12px 0;">
-                            Additional Context:</h4>
-                        <div style="border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;">
-                            @foreach($metaData as $key => $value)
-                                <div
-                                    style="padding: 12px; border-bottom: 1px solid #f1f5f9; background-color: {{ $loop->index % 2 == 0 ? '#ffffff' : '#f8fafc' }};">
-                                    <span
-                                        style="display: block; font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 2px;">{{ str_replace('_', ' ', $key) }}</span>
-                                    <span style="display: block; font-size: 13px; color: #334155; font-weight: 500;">
-                                        @if(is_array($value)) {{ json_encode($value) }} @else {{ $value }} @endif
-                                    </span>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
-            @endif
+    @include('emails.partials.button', [
+        'url' => url('/admin/consultations'),
+        'label' => 'Open Admin Dashboard',
+        'color' => '#2563EB',
+    ])
+@endsection
 
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="{{ url('/admin/consultations') }}"
-                    style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 16px 32px; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none; shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);">
-                    View in Dashboard
-                </a>
-            </div>
-        </div>
-
-        <div style="background-color: #f8fafc; padding: 24px; text-align: center; border-top: 1px solid #e2e8f0;">
-            <p style="margin: 0; font-size: 12px; color: #94a3b8;">This is an automated notification from the Coyzon
-                Recruitment Platform.</p>
-        </div>
-    </div>
-</body>
-
-</html>
+@section('footer_note')
+    Automated notification from the Coyzon recruitment platform.
+@endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactMessage;
+use App\Services\NotificationMailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -47,7 +48,7 @@ class ContactController extends Controller
             // Try to send email notification to admin (optional, won't fail if mail not configured)
             try {
                 Mail::send('emails.contact', $emailPayload, function ($message) use ($payload) {
-                    $message->to(config('mail.admin_email', 'info@coyzon.com'))
+                    $message->to(NotificationMailService::adminEmail())
                         ->subject('Contact Form: ' . $payload['subject'])
                         ->replyTo($payload['email'], $payload['name']);
                 });

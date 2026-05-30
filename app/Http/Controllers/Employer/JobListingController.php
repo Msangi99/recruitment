@@ -7,6 +7,7 @@ use App\Models\JobListing;
 use App\Models\Category;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
+use App\Services\NotificationMailService;
 
 class JobListingController extends Controller
 {
@@ -215,7 +216,13 @@ class JobListingController extends Controller
             $updateData['employer_notes'] = $validated['employer_notes'];
         }
 
+        $previousStatus = $application->status;
         $application->update($updateData);
+
+        NotificationMailService::notifyApplicationStatusChange(
+            $application->fresh(['job', 'candidate']),
+            $previousStatus
+        );
 
         return back()->with('success', 'Application status updated successfully.');
     }

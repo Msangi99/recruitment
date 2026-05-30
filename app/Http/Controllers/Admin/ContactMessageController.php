@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ContactMessage;
+use App\Services\NotificationMailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -65,8 +66,7 @@ class ContactMessageController extends Controller
             'reply_message' => 'required|string|max:5000',
         ]);
 
-        try {
-            // Send reply email
+        $sent = NotificationMailService::send(function () use ($contactMessage, $validated) {
             Mail::send('emails.contact-reply', [
                 'recipientName' => $contactMessage->name,
                 'originalSubject' => $contactMessage->subject,
@@ -76,7 +76,13 @@ class ContactMessageController extends Controller
                 $message->to($contactMessage->email, $contactMessage->name)
                     ->subject($validated['reply_subject']);
             });
+        }, 'contact_reply');
 
+        if (! $sent) {
+            return back()->with('error', 'Failed to send reply. Please check mail configuration.')->withInput();
+        }
+
+        try {
             // Mark as replied
             $contactMessage->markAsReplied();
 
@@ -99,8 +105,8 @@ class ContactMessageController extends Controller
 
             return back()->with('success', 'Reply sent successfully to ' . $contactMessage->email);
         } catch (\Exception $e) {
-            Log::error('Failed to send contact reply: ' . $e->getMessage());
-            return back()->with('error', 'Failed to send reply. Please check mail configuration. Error: ' . $e->getMessage())->withInput();
+            Log::error('Failed to record contact reply: ' . $e->getMessage());
+            return back()->with('error', 'Reply was sent but failed to save notes.')->withInput();
         }
     }
 

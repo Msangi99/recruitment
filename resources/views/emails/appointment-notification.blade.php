@@ -1,43 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Appointment Scheduled - {{ config('app.name') }}</title>
-</head>
-<body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
-        <h1 style="color: white; margin: 0;">COYZON</h1>
-    </div>
-    
-    <div style="background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px;">
-        <h2 style="color: #333; margin-top: 0;">New Appointment Scheduled</h2>
-        
-        <p>Dear {{ $employer->name }},</p>
-        
-        <p>A new appointment has been scheduled with a candidate.</p>
-        
-        <div style="background: white; padding: 20px; border-radius: 5px; margin: 20px 0; border-left: 4px solid #667eea;">
-            <h3 style="margin-top: 0; color: #667eea;">Appointment Details</h3>
-            <p><strong>Candidate:</strong> {{ $appointment->user->name }}</p>
-            <p><strong>Type:</strong> {{ ucfirst(str_replace('-', ' ', $appointment->appointment_type)) }}</p>
-            <p><strong>Date & Time:</strong> {{ $appointment->scheduled_at->format('F d, Y \a\t h:i A') }}</p>
-            <p><strong>Duration:</strong> {{ $appointment->duration_minutes }} minutes</p>
-            <p><strong>Mode:</strong> {{ ucfirst($appointment->meeting_mode) }}</p>
-            @if($appointment->meeting_link)
-            <p><strong>Meeting Link:</strong> <a href="{{ $appointment->meeting_link }}" style="color: #667eea;">{{ $appointment->meeting_link }}</a></p>
-            @endif
-            @if($appointment->meeting_location)
-            <p><strong>Location:</strong> {{ $appointment->meeting_location }}</p>
-            @endif
-            @if($appointment->notes)
-            <p><strong>Notes:</strong> {{ $appointment->notes }}</p>
-            @endif
-        </div>
-        
-        <p>Please review the appointment details and confirm your availability.</p>
-        
-        <p style="margin-top: 30px;">Best regards,<br>The COYZON Team</p>
-    </div>
-</body>
-</html>
+@extends('emails.layouts.base', [
+    'tone' => 'brand',
+    'title' => 'New Appointment Scheduled',
+    'preheader' => 'A new appointment has been scheduled with ' . ($appointment->user->name ?? 'a candidate') . '.',
+    'heroTitle' => 'New Appointment',
+    'heroSubtitle' => 'A candidate session has been scheduled',
+])
+
+@section('content')
+    <p style="margin: 0 0 18px; font-size: 16px; color: #0f172a;">Dear {{ $employer->name }},</p>
+    <p style="margin: 0 0 24px;">A new appointment has been scheduled. Please review the details below and confirm your availability.</p>
+
+    @include('emails.partials.card-open', ['title' => 'Appointment Details'])
+        @include('emails.partials.row', ['label' => 'Candidate', 'value' => e($appointment->user->name)])
+        @include('emails.partials.row', ['label' => 'Type', 'value' => e(ucfirst(str_replace('-', ' ', $appointment->appointment_type)))])
+        @include('emails.partials.row', ['label' => 'Date & Time', 'value' => '<strong>' . e($appointment->scheduled_at->format('F d, Y \a\t h:i A')) . '</strong>'])
+        @include('emails.partials.row', ['label' => 'Duration', 'value' => e($appointment->duration_minutes . ' minutes')])
+        @include('emails.partials.row', ['label' => 'Mode', 'value' => e(ucfirst($appointment->meeting_mode))])
+        @if($appointment->meeting_link)
+            @include('emails.partials.row', ['label' => 'Meeting Link', 'value' => '<a href="' . e($appointment->meeting_link) . '" style="color:#4F46E5;font-weight:600;text-decoration:none;">Join meeting</a>'])
+        @endif
+        @if($appointment->meeting_location)
+            @include('emails.partials.row', ['label' => 'Location', 'value' => e($appointment->meeting_location)])
+        @endif
+        @if($appointment->notes)
+            @include('emails.partials.row', ['label' => 'Notes', 'value' => e($appointment->notes)])
+        @endif
+    @include('emails.partials.card-close')
+
+    @include('emails.partials.signoff')
+@endsection
