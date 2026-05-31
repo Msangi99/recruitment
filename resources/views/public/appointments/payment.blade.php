@@ -114,11 +114,11 @@
                                 </select>
                                 <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Mobile
                                     Number <span class="text-red-500">*</span></label>
-                                <input type="text" name="payment_phone" :required="payment_method === 'mobile'"
-                                    placeholder="e.g 2557..." value="{{ $request->phone ?? '' }}"
+                                <input type="text" name="payment_phone" id="payment_phone" :required="payment_method === 'mobile'"
+                                    placeholder="e.g 0712345678"
+                                    value="{{ \App\Helpers\PhoneHelper::toLocalFormat($request->phone ?? '') }}"
                                     class="w-full rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm p-3 text-sm border font-medium text-slate-700">
-                                <p class="text-[10px] text-slate-400 mt-1">Please ensure this number has sufficient balance.
-                                </p>
+                                <p class="text-[10px] text-slate-400 mt-1">Use local format starting with 0 (not +255 or 255). Ensure this number has sufficient balance.</p>
                             </div>
 
                             <!-- Bank Details -->
@@ -169,3 +169,37 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    function sanitizeLocalPhone(value) {
+        let digits = (value || '').replace(/\D/g, '');
+
+        if (digits.startsWith('255')) {
+            digits = '0' + digits.slice(3);
+        } else if (!digits.startsWith('0') && digits.length === 9) {
+            digits = '0' + digits;
+        }
+
+        return digits;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentPhoneInput = document.getElementById('payment_phone');
+
+        if (!paymentPhoneInput) {
+            return;
+        }
+
+        paymentPhoneInput.value = sanitizeLocalPhone(paymentPhoneInput.value);
+
+        paymentPhoneInput.addEventListener('blur', function () {
+            this.value = sanitizeLocalPhone(this.value);
+        });
+
+        paymentPhoneInput.closest('form')?.addEventListener('submit', function () {
+            paymentPhoneInput.value = sanitizeLocalPhone(paymentPhoneInput.value);
+        });
+    });
+</script>
+@endpush

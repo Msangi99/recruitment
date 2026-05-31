@@ -8,6 +8,7 @@ use App\Models\ConsultationRequest; // We will create this model
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\NewAppointmentNotification;
+use App\Helpers\PhoneHelper;
 use App\Services\AzamPayService;
 use App\Services\NotificationMailService;
 use App\Services\SelcomService;
@@ -187,15 +188,86 @@ class PublicAppointmentController extends Controller
         // Note: In new flow, we might have a date set, but payment is still pending.
 
         if ($request->payment_status === 'paid' || $request->status === 'confirmed') {
-             // If already paid, show confirmation
-             return view('public.appointments.confirmation', [
-                'request' => $request,
-                'message' => 'Payment already completed.',
-                'status' => 'confirmed'
-            ]);
+            return redirect()->route('public.appointments.jobSeeker.confirmation', ['id' => $id]);
+        }
+
+        if (in_array($request->payment_status, ['processing', 'pending'], true)) {
+            return redirect()->route('public.appointments.jobSeeker.confirmation', ['id' => $id]);
         }
 
         return view('public.appointments.payment', compact('request'));
+    }
+
+    public function paymentConfirmation($id)
+    {
+        $request = DB::table('consultation_requests')->where('id', $id)->first();
+        if (!$request) {
+            abort(404);
+        }
+
+        return view('public.appointments.confirmation', $this->buildConfirmationViewData($request));
+    }
+
+    public function paymentStatus($id)
+    {
+        $request = DB::table('consultation_requests')->where('id', $id)->first();
+        if (!$request) {
+            return response()->json(['error' => 'Not found'], 404);
+        }
+
+        return response()->json([
+            'status' => $this->resolveConfirmationStatus($request),
+            'payment_status' => $request->payment_status,
+            'request_status' => $request->status,
+        ]);
+    }
+
+    protected function resolveConfirmationStatus($request): string
+    {
+        if ($request->payment_status === 'paid' || $request->status === 'confirmed') {
+            return 'confirmed';
+        }
+
+        if ($request->payment_status === 'failed') {
+            return 'payment_failed';
+        }
+
+        return 'pending_payment';
+    }
+
+    protected function buildConfirmationViewData($request, ?string $message = null, ?string $errorDetails = null): array
+    {
+        $meta = json_decode($request->meta_data, true) ?? [];
+        $status = $this->resolveConfirmationStatus($request);
+
+        if ($message === null) {
+            $message = session('message');
+
+            if ($message === null) {
+                if ($status === 'confirmed') {
+                    $message = 'Payment completed successfully! Your consultation is confirmed.';
+                } elseif ($status === 'payment_failed') {
+                    $message = $meta['payment_error'] ?? 'Payment failed. Please try again.';
+                    $errorDetails = $meta['payment_error_details'] ?? null;
+                } else {
+                    $message = 'Payment initiated! Please check your phone and enter your PIN to complete the payment.';
+                }
+            }
+        }
+
+        $data = [
+            'request' => $request,
+            'message' => $message,
+            'status' => $status,
+        ];
+
+        if ($errorDetails !== null) {
+            $data['error_details'] = $errorDetails;
+        } elseif ($status === 'payment_failed' && ! empty($meta['payment_error_details'])) {
+            $data['error_details'] = $meta['payment_error_details'];
+        }
+
+        return $data;
     }
 
     public function processPayment(Request $request, $id)
@@ -217,6 +289,10 @@ class PublicAppointmentController extends Controller
         $metaData = json_decode($consultationRequest->meta_data, true);
         $orderId = $metaData['order_id']; // Reuse existing order ID
 
+        if (! empty($validated['payment_phone'])) {
+            $validated['payment_phone'] = PhoneHelper::toLocalFormat($validated['payment_phone']);
+        }
+
         // Update with selected payment method
         DB::table('consultation_requests')->where('id', $id)->update([
             'payment_gateway' => $validated['payment_gateway'],
@@ -233,7 +309,9 @@ class PublicAppointmentController extends Controller
         // Proceed with payment logic
         $paymentGateway = $validated['payment_gateway'];
         $paymentMethod = $validated['payment_method'];
-        $paymentPhone = $validated['payment_phone'] ?? $consultationRequest->phone;
+        $paymentPhone = PhoneHelper::toLocalFormat(
+            $validated['payment_phone'] ?? $consultationRequest->phone
+        );
 
         $paymentError = null;
         $paymentErrorDetails = null;
@@ -259,11 +337,9 @@ class PublicAppointmentController extends Controller
                             'payment_status' => 'processing',
                         ]);
 
-                        return view('public.appointments.confirmation', [
-                            'request' => $consultationRequest,
-                            'message' => 'Payment initiated! Please check your phone and enter your PIN to complete the payment.',
-                            'status' => 'pending_payment'
-                        ]);
+                        return redirect()
+                            ->route('public.appointments.jobSeeker.confirmation', ['id' => $id])
+                            ->with('message', 'Payment initiated! Please check your phone and enter your PIN to complete the payment.');
                     } else {
                         $paymentError = 'AzamPay checkout failed';
                         $paymentErrorDetails = $response['message'] ?? 'Unknown error';
@@ -288,11 +364,9 @@ class PublicAppointmentController extends Controller
                             'payment_status' => 'processing',
                         ]);
 
-                        return view('public.appointments.confirmation', [
-                            'request' => $consultationRequest,
-                            'message' => 'Bank payment initiated successfully.',
-                            'status' => 'pending_payment'
-                        ]);
+                        return redirect()
+                            ->route('public.appointments.jobSeeker.confirmation', ['id' => $id])
+                            ->with('message', 'Bank payment initiated successfully.');
                     } else {
                         $paymentError = 'AzamPay bank checkout failed';
                         $paymentErrorDetails = $response['message'] ?? 'Unknown error';
@@ -343,20 +417,15 @@ class PublicAppointmentController extends Controller
                 ])),
             ]);
 
-            return view('public.appointments.confirmation', [
-                'request' => $consultationRequest,
-                'message' => $paymentError,
-                'error_details' => $paymentErrorDetails,
-                'status' => 'payment_failed'
-            ]);
+            return redirect()
+                ->route('public.appointments.jobSeeker.confirmation', ['id' => $id])
+                ->with('message', $paymentError);
         }
 
         // Default fallback (though usually covered by returns above)
-        return view('public.appointments.confirmation', [
-            'request' => $consultationRequest,
-            'message' => 'Payment processing...',
-            'status' => 'pending_payment'
-        ]);
+        return redirect()
+            ->route('public.appointments.jobSeeker.confirmation', ['id' => $id])
+            ->with('message', 'Payment processing...');
     }
 
     public function calendar($id)

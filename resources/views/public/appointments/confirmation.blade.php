@@ -47,7 +47,7 @@
                         </div>
                     </div>
 
-                    <button onclick="window.location.reload()" 
+                    <button type="button" id="refresh-payment-status"
                         class="w-full py-4 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl transition-all">
                         Refresh Status
                     </button>
@@ -184,7 +184,7 @@
 
                 <div class="p-8 text-center">
                     <p class="text-gray-600 mb-6">Please wait while we confirm your payment...</p>
-                    <button onclick="window.location.reload()" 
+                    <button type="button" id="refresh-payment-status"
                         class="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all">
                         Refresh Status
                     </button>
@@ -192,17 +192,56 @@
             @endif
 
         </div>
-
-        {{-- Debug Information (Only in Dev) --}}
-        @if(config('app.debug'))
-            <div class="mt-6 bg-gray-800 text-white p-6 rounded-xl text-xs font-mono">
-                <p class="font-bold mb-2">Debug Info:</p>
-                <p>Status: {{ $status ?? 'N/A' }}</p>
-                <p>Payment Status: {{ $request->payment_status ?? 'N/A' }}</p>
-                <p>Request Status: {{ $request->status ?? 'N/A' }}</p>
-                <p>Message: {{ $message ?? 'N/A' }}</p>
-            </div>
-        @endif
     </div>
 </div>
 @endsection
+
+@if(in_array($status, ['pending_payment', 'processing'], true))
+@push('scripts')
+<script>
+    (function () {
+        const statusUrl = @json(route('public.appointments.jobSeeker.payment.status', ['id' => $request->id]));
+        const confirmationUrl = @json(route('public.appointments.jobSeeker.confirmation', ['id' => $request->id]));
+        let polling = true;
+
+        function checkPaymentStatus() {
+            if (!polling) {
+                return;
+            }
+
+            fetch(statusUrl, {
+                headers: {
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Status check failed');
+                    }
+
+                    return response.json();
+                })
+                .then(function (data) {
+                    if (data.status === 'confirmed' || data.status === 'payment_failed') {
+                        polling = false;
+                        window.location.href = confirmationUrl;
+                    }
+                })
+                .catch(function () {
+                    // Ignore transient polling errors and retry.
+                });
+        }
+
+        document.querySelectorAll('#refresh-payment-status').forEach(function (button) {
+            button.addEventListener('click', function () {
+                window.location.href = confirmationUrl;
+            });
+        });
+
+        checkPaymentStatus();
+        setInterval(checkPaymentStatus, 5000);
+    })();
+</script>
+@endpush
+@endif

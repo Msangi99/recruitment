@@ -60,6 +60,8 @@ Route::prefix('book-appointment')->name('public.appointments.')->group(function 
     // Step 2: Payment
     Route::get('/job-seeker/payment/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'paymentForm'])->name('jobSeeker.payment');
     Route::post('/job-seeker/payment/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'processPayment'])->name('jobSeeker.payment.process');
+    Route::get('/job-seeker/payment/{id}/confirmation', [App\Http\Controllers\PublicAppointmentController::class, 'paymentConfirmation'])->name('jobSeeker.confirmation');
+    Route::get('/job-seeker/payment/{id}/status', [App\Http\Controllers\PublicAppointmentController::class, 'paymentStatus'])->name('jobSeeker.payment.status');
 
     // Step 3: Scheduling (Calendar)
     Route::get('/calendar/{id}', [App\Http\Controllers\PublicAppointmentController::class, 'calendar'])->name('calendar');
