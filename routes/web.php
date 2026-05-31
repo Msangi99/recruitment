@@ -231,7 +231,7 @@ Route::middleware('auth')->group(function () {
 
         // Payment Management
         Route::get('/payments', [PaymentManagementController::class, 'index'])->name('payments.index');
-        Route::get('/payments/{appointment}', [PaymentManagementController::class, 'show'])->name('payments.show');
+        Route::get('/payments/{source}/{id}', [PaymentManagementController::class, 'show'])->name('payments.show');
 
         // Category Management
         Route::resource('categories', CategoryController::class);

@@ -54,7 +54,8 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Customer</th>
-                        <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Appointment Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Source</th>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Amount</th>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
                         <th class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Transaction ID</th>
@@ -66,11 +67,16 @@
                     @forelse($payments as $payment)
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-bold text-gray-900">{{ $payment->user->name }}</div>
-                                <div class="text-xs text-gray-500">{{ $payment->user->email }}</div>
+                                <div class="text-sm font-bold text-gray-900">{{ $payment->customer_name }}</div>
+                                <div class="text-xs text-gray-500">{{ $payment->customer_email }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="text-sm font-medium text-gray-900">{{ ucfirst($payment->appointment_type) }}</span>
+                                <span class="text-sm font-medium text-gray-900">{{ $payment->type_label }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 text-xs font-bold rounded-full {{ $payment->source === 'consultation' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700' }}">
+                                    {{ $payment->source === 'consultation' ? 'Public' : 'Platform' }}
+                                </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-bold text-gray-900">{{ number_format($payment->amount) }} {{ $payment->currency }}</div>
@@ -83,19 +89,19 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-xs text-gray-500">
-                                {{ $payment->transaction_id ?? 'N/A' }}
+                                {{ $payment->transaction_id ?? $payment->order_id ?? 'N/A' }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">
                                 {{ $payment->created_at->format('M d, Y') }}
                                 <div class="text-[10px] text-gray-400">{{ $payment->created_at->format('h:i A') }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold">
-                                <a href="{{ route('admin.payments.show', $payment) }}" class="fb-blue hover:underline">View Details</a>
+                                <a href="{{ $payment->showRoute() }}" class="fb-blue hover:underline">View Details</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-6 py-12 text-center text-gray-500 italic">
+                            <td colspan="8" class="px-6 py-12 text-center text-gray-500 italic">
                                 <div class="flex flex-col items-center">
                                     <i data-lucide="banknote" class="w-12 h-12 text-gray-300 mb-2"></i>
                                     <p>No payment records found.</p>
