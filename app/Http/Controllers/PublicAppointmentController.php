@@ -191,7 +191,7 @@ class PublicAppointmentController extends Controller
             return redirect()->route('public.appointments.jobSeeker.confirmation', ['id' => $id]);
         }
 
-        if (in_array($request->payment_status, ['processing', 'pending'], true)) {
+        if ($request->payment_status === 'processing') {
             return redirect()->route('public.appointments.jobSeeker.confirmation', ['id' => $id]);
         }
 
