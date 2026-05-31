@@ -22,7 +22,7 @@
                         </div>
                         <div class="min-w-0 text-left">
                             <h1 class="text-lg font-semibold tracking-tight leading-snug">Select date & time</h1>
-                            <p class="text-xs text-blue-100/95 mt-1 leading-relaxed">Pick a slot, then continue to payment.
+                            <p class="text-xs text-blue-100/95 mt-1 leading-relaxed">Pick a slot, then submit your application.
                             </p>
                         </div>
                     </div>
@@ -158,7 +158,7 @@
                             <div class="pt-3">
                                 <button type="submit" id="submitBtn" disabled
                                     class="w-full py-3.5 bg-blue-600 opacity-50 cursor-not-allowed text-white font-semibold rounded-xl shadow-md shadow-blue-600/20 text-sm transition-all hover:bg-blue-700">
-                                    Proceed to payment
+                                    Proceed to submit application
                                 </button>
                             </div>
                         </form>

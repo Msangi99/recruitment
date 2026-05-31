@@ -175,8 +175,32 @@ class PublicAppointmentController extends Controller
             'updated_at' => now(),
         ]);
 
-        // Redirect to Step 2: Calendar (Scheduling)
-        return redirect()->route('public.appointments.calendar', ['id' => $id]);
+        // Redirect to Step 2: Payment
+        return redirect()->route('public.appointments.jobSeeker.payment', ['id' => $id]);
+    }
+
+    protected function isApplicationComplete($request): bool
+    {
+        return $request->payment_status === 'paid'
+            && $request->status === 'confirmed'
+            && ! empty($request->requested_date);
+    }
+
+    protected function resolveNextStepUrl($request): ?string
+    {
+        if ($request->payment_status === 'failed') {
+            return route('public.appointments.jobSeeker.confirmation', ['id' => $request->id]);
+        }
+
+        if ($request->payment_status === 'paid') {
+            if ($this->isApplicationComplete($request)) {
+                return route('public.appointments.jobSeeker.confirmation', ['id' => $request->id]);
+            }
+
+            return route('public.appointments.calendar', ['id' => $request->id]);
+        }
+
+        return null;
     }
 
     public function paymentForm($id)
@@ -187,8 +211,12 @@ class PublicAppointmentController extends Controller
         // Allow access if pending_payment. 
         // Note: In new flow, we might have a date set, but payment is still pending.
 
-        if ($request->payment_status === 'paid' || $request->status === 'confirmed') {
+        if ($this->isApplicationComplete($request)) {
             return redirect()->route('public.appointments.jobSeeker.confirmation', ['id' => $id]);
+        }
+
+        if ($request->payment_status === 'paid') {
+            return redirect()->route('public.appointments.calendar', ['id' => $id]);
         }
 
         if ($request->payment_status === 'processing') {
@@ -219,17 +247,22 @@ class PublicAppointmentController extends Controller
             'status' => $this->resolveConfirmationStatus($request),
             'payment_status' => $request->payment_status,
             'request_status' => $request->status,
+            'next_url' => $this->resolveNextStepUrl($request),
         ]);
     }
 
     protected function resolveConfirmationStatus($request): string
     {
-        if ($request->payment_status === 'paid' || $request->status === 'confirmed') {
+        if ($request->payment_status === 'failed') {
+            return 'payment_failed';
+        }
+
+        if ($this->isApplicationComplete($request)) {
             return 'confirmed';
         }
 
-        if ($request->payment_status === 'failed') {
-            return 'payment_failed';
+        if ($request->payment_status === 'paid') {
+            return 'payment_success';
         }
 
         return 'pending_payment';
@@ -245,7 +278,9 @@ class PublicAppointmentController extends Controller
 
             if ($message === null) {
                 if ($status === 'confirmed') {
-                    $message = 'Payment completed successfully! Your consultation is confirmed.';
+                    $message = 'Your application has been submitted successfully! Your consultation is confirmed.';
+                } elseif ($status === 'payment_success') {
+                    $message = 'Payment successful! Select your consultation date and time to complete your application.';
                 } elseif ($status === 'payment_failed') {
                     $message = $meta['payment_error'] ?? 'Payment failed. Please try again.';
                     $errorDetails = $meta['payment_error_details'] ?? null;
@@ -432,7 +467,17 @@ class PublicAppointmentController extends Controller
     {
         $request = DB::table('consultation_requests')->where('id', $id)->first();
         if (!$request) abort(404);
-        
+
+        if ($request->payment_status !== 'paid') {
+            return redirect()
+                ->route('public.appointments.jobSeeker.payment', ['id' => $id])
+                ->with('info', 'Please complete payment before scheduling your consultation.');
+        }
+
+        if ($this->isApplicationComplete($request)) {
+            return redirect()->route('public.appointments.jobSeeker.confirmation', ['id' => $id]);
+        }
+
         return view('public.appointments.calendar', compact('request'));
     }
 
@@ -444,21 +489,38 @@ class PublicAppointmentController extends Controller
         ]);
 
         $requestedAt = $request->scheduled_date . ' ' . $request->scheduled_time;
-        
-        // Get consultation request
+
         $consultationRequest = DB::table('consultation_requests')->where('id', $id)->first();
         if (!$consultationRequest) {
             abort(404);
         }
 
-        // Update with scheduled date/time
-        // Do NOT set status to confirmed yet, as payment is next.
+        if ($consultationRequest->payment_status !== 'paid') {
+            return redirect()
+                ->route('public.appointments.jobSeeker.payment', ['id' => $id])
+                ->with('error', 'Please complete payment before submitting your application.');
+        }
+
         DB::table('consultation_requests')->where('id', $id)->update([
             'requested_date' => $requestedAt,
+            'duration_minutes' => $consultationRequest->duration_minutes ?? 45,
+            'status' => 'confirmed',
             'updated_at' => now(),
         ]);
 
-        // Redirect to Step 3: Payment
-        return redirect()->route('public.appointments.jobSeeker.payment', ['id' => $id])->with('info', 'Slot reserved! Please complete payment to confirm.');
+        $submittedRequest = DB::table('consultation_requests')->where('id', $id)->first();
+
+        NotificationMailService::sendIfEnabled(function () use ($submittedRequest) {
+            Mail::to($submittedRequest->email)->send(new \App\Mail\AppointmentConfirmed($submittedRequest));
+        }, 'consultation_payment_confirmed');
+
+        NotificationMailService::sendIfEnabled(function () use ($submittedRequest) {
+            $hrEmail = \App\Models\Setting::getHrEmail() ?? NotificationMailService::adminEmail();
+            Mail::to($hrEmail)->send(new NewAppointmentNotification($submittedRequest));
+        }, 'job_seeker_consultation_request');
+
+        return redirect()
+            ->route('public.appointments.jobSeeker.confirmation', ['id' => $id])
+            ->with('message', 'Your application has been submitted successfully!');
     }
 }

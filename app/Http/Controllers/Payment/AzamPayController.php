@@ -252,7 +252,7 @@ class AzamPayController extends Controller
             $meta = json_decode($record->meta_data, true) ?? [];
             DB::table('consultation_requests')->where('id', $record->id)->update([
                 'payment_status' => 'paid',
-                'status' => 'confirmed',
+                'status' => 'pending_schedule',
                 'meta_data' => json_encode(array_merge($meta, [
                     'transid' => $transid,
                     'operator' => $data['operator'] ?? null,
@@ -261,10 +261,6 @@ class AzamPayController extends Controller
                 ])),
                 'updated_at' => now(),
             ]);
-
-            NotificationMailService::sendIfEnabled(function () use ($record) {
-                Mail::to($record->email)->send(new AppointmentConfirmed($record));
-            }, 'consultation_payment_confirmed');
         }
     }
 

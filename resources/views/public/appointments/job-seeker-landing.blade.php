@@ -232,14 +232,14 @@
                     <div class="relative p-6 pt-12 bg-slate-50 rounded-2xl border border-slate-100 h-full group hover:bg-emerald-50/50 hover:border-emerald-100 transition-colors duration-300">
                         <div class="absolute -top-6 left-6 w-12 h-12 bg-slate-950 text-white text-xl font-bold rounded-xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">3</div>
                         <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Choose Your Slot</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">Select a date and time that works best for you from the available slots.</p>
+                        <p class="text-sm text-slate-600 leading-relaxed">Select a date and time that works best for you, then submit your application.</p>
                     </div>
 
                     <!-- Step 4 -->
                     <div class="relative p-6 pt-12 bg-slate-50 rounded-2xl border border-slate-100 h-full group hover:bg-emerald-50/50 hover:border-emerald-100 transition-colors duration-300">
                         <div class="absolute -top-6 left-6 w-12 h-12 bg-slate-950 text-white text-xl font-bold rounded-xl shadow-lg flex items-center justify-center group-hover:scale-110 transition-transform">4</div>
                         <h3 class="text-lg font-bold text-gray-900 mb-3 mt-2">Receive Confirmation</h3>
-                        <p class="text-sm text-slate-600 leading-relaxed">Once payment is complete and your slot is chosen, you will receive a confirmation email or SMS with your consultation details.</p>
+                        <p class="text-sm text-slate-600 leading-relaxed">After payment, select your preferred date and time and submit your application.</p>
                     </div>
 
                     <!-- Step 5 -->

@@ -34,12 +34,14 @@
                     </div>
 
                     <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Appointment Details</p>
+                        <p class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Payment Details</p>
                         <div class="space-y-2 text-sm">
-                            <div class="flex justify-between">
-                                <span class="text-gray-600">Date & Time:</span>
-                                <span class="font-bold text-gray-900">{{ \Carbon\Carbon::parse($request->requested_date)->format('M d, Y @ H:i') }}</span>
-                            </div>
+                            @if(!empty($request->requested_date))
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Date & Time:</span>
+                                    <span class="font-bold text-gray-900">{{ \Carbon\Carbon::parse($request->requested_date)->format('M d, Y @ H:i') }}</span>
+                                </div>
+                            @endif
                             <div class="flex justify-between">
                                 <span class="text-gray-600">Amount:</span>
                                 <span class="font-bold text-blue-600">TZS {{ number_format($request->amount) }}</span>
@@ -118,6 +120,45 @@
                     </div>
                 </div>
 
+            @elseif($status === 'payment_success')
+                {{-- Payment Successful - Schedule Next --}}
+                <div class="bg-green-600 px-8 py-8 text-center text-white relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mt-10 -mr-10 h-32 w-32 rounded-full bg-white/10 blur-3xl"></div>
+                    <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </div>
+                    <h1 class="text-3xl font-bold relative z-10">Payment Successful!</h1>
+                    <p class="text-green-100 mt-2 text-lg relative z-10">One more step to complete your application</p>
+                </div>
+
+                <div class="p-8 space-y-6">
+                    <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-2xl">
+                        <div class="flex items-start gap-4">
+                            <svg class="w-6 h-6 text-green-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <div>
+                                <p class="font-bold text-green-900 mb-2">Next Step: Schedule Consultation</p>
+                                <p class="text-sm text-green-800">{{ $message ?? 'Select your preferred date and time to submit your application.' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-600 text-sm">Amount Paid:</span>
+                            <span class="font-bold text-green-600 text-lg">TZS {{ number_format($request->amount) }}</span>
+                        </div>
+                    </div>
+
+                    <a href="{{ route('public.appointments.calendar', ['id' => $request->id]) }}"
+                        class="block w-full py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all text-center">
+                        Select Date & Time
+                    </a>
+                </div>
+
             @elseif($status === 'confirmed' || $status === 'completed')
                 {{-- Payment Successful --}}
                 <div class="bg-green-600 px-8 py-8 text-center text-white relative overflow-hidden">
@@ -127,7 +168,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                         </svg>
                     </div>
-                    <h1 class="text-3xl font-bold relative z-10">Payment Successful!</h1>
+                    <h1 class="text-3xl font-bold relative z-10">Application Submitted!</h1>
                     <p class="text-green-100 mt-2 text-lg relative z-10">Your consultation is confirmed</p>
                 </div>
 
@@ -138,8 +179,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                             <div>
-                                <p class="font-bold text-green-900 mb-2">Booking Confirmed</p>
-                                <p class="text-sm text-green-800">We've sent a confirmation email to <strong>{{ $request->email }}</strong> with your meeting details.</p>
+                                <p class="font-bold text-green-900 mb-2">Application Complete</p>
+                                <p class="text-sm text-green-800">We've sent a confirmation email to <strong>{{ $request->email }}</strong> with your consultation details.</p>
                             </div>
                         </div>
                     </div>
@@ -223,7 +264,13 @@
                     return response.json();
                 })
                 .then(function (data) {
-                    if (data.status === 'confirmed' || data.status === 'payment_failed') {
+                    if (data.next_url) {
+                        polling = false;
+                        window.location.href = data.next_url;
+                        return;
+                    }
+
+                    if (data.status === 'payment_failed') {
                         polling = false;
                         window.location.href = confirmationUrl;
                     }
