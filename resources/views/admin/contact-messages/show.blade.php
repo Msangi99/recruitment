@@ -82,9 +82,14 @@
                             </div>
                             <div>
                                 <label for="reply_message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                                <p class="mb-2 text-sm text-gray-500">
+                                    The email already includes a greeting and:
+                                    <em>“Thank you for reaching out to Coyzon. We appreciate your inquiry and are pleased to provide our response below.”</em>
+                                    Write your actual reply only — do not repeat that introduction.
+                                </p>
                                 <textarea id="reply_message" name="reply_message" rows="6" 
                                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 @error('reply_message') border-red-300 @enderror"
-                                          placeholder="Type your reply message here..."
+                                          placeholder="Write your answer here..."
                                           required>{{ old('reply_message') }}</textarea>
                                 @error('reply_message')
                                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

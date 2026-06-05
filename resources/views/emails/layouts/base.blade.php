@@ -1,7 +1,7 @@
 @php
     $tone = $tone ?? 'brand';
     $tones = [
-        'brand' => ['from' => '#4F46E5', 'to' => '#6366F1', 'accent' => '#4F46E5', 'soft' => '#EEF2FF'],
+        'brand' => ['from' => '#105e46', 'to' => '#059669', 'accent' => '#105e46', 'soft' => '#ECFDF5'],
         'success' => ['from' => '#059669', 'to' => '#10B981', 'accent' => '#059669', 'soft' => '#ECFDF5'],
         'danger' => ['from' => '#DC2626', 'to' => '#EF4444', 'accent' => '#DC2626', 'soft' => '#FEF2F2'],
         'warning' => ['from' => '#D97706', 'to' => '#F59E0B', 'accent' => '#B45309', 'soft' => '#FFFBEB'],
@@ -12,6 +12,7 @@
     $preheader = $preheader ?? '';
     $heroTitle = $heroTitle ?? $title ?? $appName;
     $heroSubtitle = $heroSubtitle ?? 'Professional Overseas Recruitment';
+    $hideHeaderBrand = $hideHeaderBrand ?? false;
     $title = $title ?? $heroTitle;
 @endphp
 <!DOCTYPE html>
@@ -56,9 +57,11 @@
                 {{-- Header --}}
                 <tr>
                     <td style="background: linear-gradient(135deg, {{ $palette['from'] }} 0%, {{ $palette['to'] }} 100%); background-color: {{ $palette['from'] }}; padding: 36px 32px; text-align: center;">
-                        <p style="margin: 0 0 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.82);">
-                            {{ $appName }}
-                        </p>
+                        @if(empty($hideHeaderBrand))
+                            <p style="margin: 0 0 8px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.82);">
+                                {{ $appName }}
+                            </p>
+                        @endif
                         <h1 style="margin: 0; font-size: 26px; line-height: 1.25; font-weight: 700; color: #ffffff;">
                             {{ $heroTitle }}
                         </h1>
