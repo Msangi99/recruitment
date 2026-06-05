@@ -50,6 +50,12 @@ class LoginController extends Controller
         switch ($user->role) {
             case 'admin':
                 return redirect()->route('admin.dashboard');
+            case 'regional_manager':
+                return redirect()->route('regional-manager.dashboard');
+            case 'team_leader':
+                return redirect()->route('team-leader.dashboard');
+            case 'agent':
+                return redirect()->route('agent.dashboard');
             case 'employer':
                 return redirect()->route('employer.dashboard');
             case 'candidate':

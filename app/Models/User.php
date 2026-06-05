@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'supervisor_id',
         'phone',
         'address',
         'city',
@@ -113,6 +115,36 @@ class User extends Authenticatable
     public function isCandidate(): bool
     {
         return $this->role === 'candidate';
+    }
+
+    public function isRegionalManager(): bool
+    {
+        return $this->role === 'regional_manager';
+    }
+
+    public function isTeamLeader(): bool
+    {
+        return $this->role === 'team_leader';
+    }
+
+    public function isAgent(): bool
+    {
+        return $this->role === 'agent';
+    }
+
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'supervisor_id');
+    }
+
+    public function subordinates(): HasMany
+    {
+        return $this->hasMany(User::class, 'supervisor_id');
+    }
+
+    public function assignedDevices(): HasMany
+    {
+        return $this->hasMany(Device::class, 'assigned_to_user_id');
     }
 
     public function hasRole(string $role): bool

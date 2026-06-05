@@ -178,6 +178,10 @@
                             label="Verifications" :active="request()->routeIs('admin.verification.*')" />
                         <x-admin-sidebar-item href="{{ route('admin.categories.index') }}" icon="tag" label="Categories"
                             :active="request()->routeIs('admin.categories.*')" />
+                        <x-admin-sidebar-item href="{{ route('admin.regional-managers.index') }}" icon="map-pin"
+                            label="Regional Managers" :active="request()->routeIs('admin.regional-managers.*')" />
+                        <x-admin-sidebar-item href="{{ route('admin.devices.index') }}" icon="smartphone"
+                            label="Devices" :active="request()->routeIs('admin.devices.*')" />
                         <x-admin-sidebar-item href="{{ route('admin.jobs.index') }}" icon="briefcase" label="Jobs"
                             :active="request()->routeIs('admin.jobs.*')" />
                         {{-- <x-admin-sidebar-item href="{{ route('admin.appointments.index') }}" icon="calendar"

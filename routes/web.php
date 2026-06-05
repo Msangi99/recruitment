@@ -188,6 +188,12 @@ Route::middleware('auth')->group(function () {
         switch ($user->role) {
             case 'admin':
                 return redirect()->route('admin.dashboard');
+            case 'regional_manager':
+                return redirect()->route('regional-manager.dashboard');
+            case 'team_leader':
+                return redirect()->route('team-leader.dashboard');
+            case 'agent':
+                return redirect()->route('agent.dashboard');
             case 'candidate':
                 return redirect()->route('candidate.dashboard');
             default:
@@ -266,6 +272,39 @@ Route::middleware('auth')->group(function () {
         Route::post('/settings/currencies/{currency}/default', [\App\Http\Controllers\Admin\SettingController::class, 'setDefaultCurrency'])->name('settings.currencies.default');
         Route::put('/settings/currencies/{currency}/rate', [\App\Http\Controllers\Admin\SettingController::class, 'updateCurrencyRate'])->name('settings.currencies.rate');
         Route::post('/settings/currencies/update-rates', [\App\Http\Controllers\Admin\SettingController::class, 'updateExchangeRates'])->name('settings.currencies.update-rates');
+
+        // Field Operations — Regional Managers & Devices
+        Route::get('/regional-managers', [\App\Http\Controllers\Admin\RegionalManagerController::class, 'index'])->name('regional-managers.index');
+        Route::get('/regional-managers/create', [\App\Http\Controllers\Admin\RegionalManagerController::class, 'create'])->name('regional-managers.create');
+        Route::post('/regional-managers', [\App\Http\Controllers\Admin\RegionalManagerController::class, 'store'])->name('regional-managers.store');
+        Route::get('/regional-managers/{regionalManager}', [\App\Http\Controllers\Admin\RegionalManagerController::class, 'show'])->name('regional-managers.show');
+        Route::post('/regional-managers/{regionalManager}/assign-device', [\App\Http\Controllers\Admin\RegionalManagerController::class, 'assignDevice'])->name('regional-managers.assign-device');
+        Route::post('/regional-managers/{regionalManager}/team-leaders', [\App\Http\Controllers\Admin\RegionalManagerController::class, 'storeTeamLeader'])->name('regional-managers.team-leaders.store');
+
+        Route::get('/devices', [\App\Http\Controllers\Admin\DeviceController::class, 'index'])->name('devices.index');
+        Route::get('/devices/create', [\App\Http\Controllers\Admin\DeviceController::class, 'create'])->name('devices.create');
+        Route::post('/devices', [\App\Http\Controllers\Admin\DeviceController::class, 'store'])->name('devices.store');
+        Route::patch('/devices/{device}/unassign', [\App\Http\Controllers\Admin\DeviceController::class, 'unassign'])->name('devices.unassign');
+    });
+
+    // Regional Manager routes
+    Route::middleware('role:regional_manager')->prefix('regional-manager')->name('regional-manager.')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\RegionalManager\DashboardController::class, 'index'])->name('dashboard');
+        Route::post('/team-leaders', [\App\Http\Controllers\RegionalManager\DashboardController::class, 'storeTeamLeader'])->name('team-leaders.store');
+        Route::get('/team-leaders/{teamLeader}', [\App\Http\Controllers\RegionalManager\DashboardController::class, 'showTeamLeader'])->name('team-leaders.show');
+        Route::post('/team-leaders/{teamLeader}/assign-device', [\App\Http\Controllers\RegionalManager\DashboardController::class, 'assignDevice'])->name('team-leaders.assign-device');
+    });
+
+    // Team Leader routes
+    Route::middleware('role:team_leader')->prefix('team-leader')->name('team-leader.')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\TeamLeader\DashboardController::class, 'index'])->name('dashboard');
+        Route::post('/agents', [\App\Http\Controllers\TeamLeader\DashboardController::class, 'storeAgent'])->name('agents.store');
+        Route::post('/agents/{agent}/assign-device', [\App\Http\Controllers\TeamLeader\DashboardController::class, 'assignDevice'])->name('agents.assign-device');
+    });
+
+    // Agent routes
+    Route::middleware('role:agent')->prefix('agent')->name('agent.')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Agent\DashboardController::class, 'index'])->name('dashboard');
     });
 
     // Employer routes removed - employers can now browse candidates and request interviews without an account
