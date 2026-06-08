@@ -466,7 +466,7 @@
                     </div>
                     <div class="p-6 flex-1 flex flex-col">
                         <p class="text-blue-100/80 font-medium mb-6 italic text-sm">{{ $ind['desc'] }}</p>
-                        <div class="flex flex-wrap gap-2 mt-auto">
+                        <div class="flex flex-wrap gap-2">
                             @foreach($ind['roles'] as $role)
                                 <span class="inline-flex items-center px-2.5 py-1 bg-{{$ind['c']}}-900/30 text-{{$ind['c']}}-200 text-[10px] font-medium rounded-full border border-{{$ind['c']}}-700/50">
                                     <span class="w-1 h-1 bg-{{$ind['c']}}-400 rounded-full mr-1.5"></span>
