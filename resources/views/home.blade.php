@@ -431,21 +431,21 @@
                         'title' => 'Construction Industry',
                         'img' => 'industry_construction.png',
                         'desc' => '"we connect qualified and hardworking professionals with trusted employers in the construction Industry."',
-                        'roles' => ['General Laborer', 'Construction Helper', 'Mason / Bricklayer', 'Plumber Assistant', 'Carpenter', 'Steel Fixer', 'Scaffolder', 'Painter', 'Tiler', 'Electrician Helper'],
+                        'roles' => ['General Laborer', 'Construction Helper', 'Mason / Bricklayer', 'Plumber Assistant', 'Carpenter', 'Steel Fixer', 'Scaffolder', 'Painter', 'Tiler', 'Electrician Helper', 'Plumber', 'Electrician', 'Welder', 'Gypsum Installer', 'Forklift Operator', 'Site Cleaner', 'HVAC Technician', 'Heavy Equipment Mechanic', 'Excavator Operator', 'Bulldozer Operator', 'Crane Operator', 'Grader Operator'],
                         'c' => 'blue'
                     ],
                     [
                         'title' => 'Hospitality Industry',
                         'img' => 'industry_hospitality.png',
                         'desc' => '"we place professionals in top restaurants, resorts, and hospitality companies worldwide. In the following position"',
-                        'roles' => ['Housekeeping Attendant', 'Laundry Attendant', 'Waiter / Waitress', 'Cook / Assistant Cook', 'Kitchen Helper', 'Security Guard', 'Cleaner'],
+                        'roles' => ['Housekeeping Attendant', 'Laundry Attendant', 'Waiter / Waitress', 'Cook / Assistant Cook', 'Kitchen Helper', 'Security Guard', 'Cleaner', 'Housekeeping', 'Waiter & Waitress', 'Chef', 'Cook & Assistant Cook', 'Pool Attendant', 'Barista', 'Bartender', 'Room Service Attendant', 'Butcher', 'Dishwasher', 'Catering Staff', 'Storekeeper', 'Receptionist', 'Domestic Helpers / Household Staff', 'Housemaid, Nanny'],
                         'c' => 'indigo'
                     ],
                     [
                         'title' => 'Logistics & Transport',
                         'img' => 'industry_logistics.png',
                         'desc' => '"We are recruiting for"',
-                        'roles' => ['Drivers', 'Warehouse Worker / Assistant', 'Delivery Driver / Van Driver', 'Forklift Operator', 'Storekeeper', 'Packing & Sorting Staff', 'Loader / Unloader', 'Vehicle Mechanic'],
+                        'roles' => ['Drivers', 'Warehouse Worker / Assistant', 'Delivery Driver / Van Driver', 'Forklift Operator', 'Storekeeper', 'Packing & Sorting Staff', 'Loader / Unloader', 'Vehicle Mechanic', 'Truck drivers', 'Bus Driver', 'Heavy Truck Driver', 'Fuel Tanker Driver', 'Taxi Driver', 'Delivery Driver', 'Motorcycle Delivery Rider', 'Warehouse Worker', 'Picker / Packer', 'Loading & Offloading Staff', 'Company Driver', 'Mechanic technicians', 'Safety Officer'],
                         'c' => 'teal'
                     ],
                     [
